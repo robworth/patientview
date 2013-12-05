@@ -22,6 +22,8 @@
  */
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 

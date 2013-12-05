@@ -1,7 +1,7 @@
 package org.patientview.radar.web.panels;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.model.ClinicalPresentation;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Karotype;
@@ -55,9 +55,9 @@ import java.util.List;
 
 public class DiagnosisPanel extends Panel {
 
-    public static final Long SRNS_ID = new Long(1);
+    public static final Long SRNS_ID = 1L;
     public static final String OTHER_CONTAINER_ID = "otherContainer";
-    public static final Long KAROTYPE_OTHER_ID = new Long(8);
+    public static final Long KAROTYPE_OTHER_ID = 8L;
     @SpringBean
     private DiagnosisManager diagnosisManager;
     @SpringBean
@@ -129,8 +129,8 @@ public class DiagnosisPanel extends Panel {
                             radarNumber = Long.parseLong((String) obj);
                         }
 
-                        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                        Date dob = demographics.getDateOfBirth();
+                        Patient patient = demographicsManager.getDemographicsByRadarNumber(radarNumber);
+                        Date dob = patient.getDob();
                         if (dateOfDiagnosis != null && dob != null) {
                             int age = Years.yearsBetween(new DateTime(dob), new DateTime(dateOfDiagnosis)).getYears();
                             diagnosis.setAgeAtDiagnosis(age);

@@ -3,8 +3,8 @@ package org.patientview.radar.model.filter;
 public class PatientUserFilter extends BaseFilter {
     public enum UserField {
         RADAR_NO("tbl_Patient_Users.RADAR_NO"),
-        SURNAME("tbl_Demographics.SNAME"), // TODO: cant search these fields at the mo as they are encrypted
-        FORENAME("tbl_Demographics.FNAME"), // TODO: cant search these fields at the mo as they are encrypted
+        SURNAME("patient.surname"), // TODO: cant search these fields at the mo as they are encrypted
+        FORENAME("patient.forename"), // TODO: cant search these fields at the mo as they are encrypted
         REGISTRATION_DATE("pDateReg"),
         DOB("pDob"),
         USERNAME("username");

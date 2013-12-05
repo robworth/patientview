@@ -1,21 +1,27 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.patientview.model.Centre;
+import org.patientview.model.Country;
+import org.patientview.model.Ethnicity;
+import org.patientview.model.Patient;
+import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Centre;
 import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Country;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.Ethnicity;
 import org.patientview.radar.model.Relative;
-import org.patientview.radar.model.enums.NhsNumberType;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.test.TestDataHelper;
 
+import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +32,39 @@ import static org.junit.Assert.assertTrue;
 
 public class UtilityDaoTest extends BaseDaoTest {
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
 
-    @Autowired
+    @Inject
     private DiagnosisDao diagnosisDao;
 
-    @Autowired
+    @Inject
+    private UserDao userDao;
+
+    @Inject
     private DemographicsDao demographicDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Inject
+    private UserManager userManager;
+
+    private DiseaseGroup diseaseGroup;
+
+    private Centre centre;
+
+
+    @Before
+    public void setUp() {
+        centre = new Centre();
+        centre.setUnitCode("testCodeA");
+        testDataHelper.createUnit();
+        testDataHelper.createCountryData();
+        testDataHelper.createConsultant();
+        testDataHelper.createDiagCode();
+        testDataHelper.createSpecialty();
+    }
 
     @Test
     public void testGetCentre() {
@@ -171,51 +202,101 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertNotNull("Relatives list is null", relatives);
     }
 
+    /**
+     * We create 4 patients in at the same centre and disease group and then query back the patient by
+     * disease group.
+     *
+     * @throws Exception
+     */
     @Test
     public void testGetPatientCountPerUnitByDiagnosisCode() throws Exception {
         Centre centre = new Centre();
-        centre.setId(3L);
+        centre.setId(2L);
+        centre.setUnitCode("8876543210");
 
-        addDiagnosisForDemographic(createDemographics("Test", "User", centre), DiagnosisCode.SRNS_ID);
-        addDiagnosisForDemographic(createDemographics("Test2", "User2", centre), DiagnosisCode.MPGN_ID);
-        addDiagnosisForDemographic(createDemographics("Test3", "User3", centre), DiagnosisCode.SRNS_ID);
-        addDiagnosisForDemographic(createDemographics("Test4", "User4", centre), DiagnosisCode.MPGN_ID);
+        diseaseGroup = new DiseaseGroup();
+        diseaseGroup.setId("5");
+        diseaseGroup.setName("testGroup");
+        diseaseGroup.setShortName("shortName");
+
+        Patient patient = null;
+        patient = createDemographics("Test", "User", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.SRNS_ID);
+        userDao.createUserMappingInPatientView("Test User", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test2", "User2", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.MPGN_ID);
+        userDao.createUserMappingInPatientView("Test2 User2", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test3", "User3", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.SRNS_ID);
+        userDao.createUserMappingInPatientView("Test3 User3", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test4", "User4", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.MPGN_ID);
+        userDao.createUserMappingInPatientView("Test4 User4", patient.getNhsno(), patient.getDiseaseGroup().getId());
 
         DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
         Map<Long, Integer> patientCountMap = utilityDao.getPatientCountPerUnitByDiagnosisCode(diagnosisCode);
-        assertTrue(patientCountMap.get(3L).equals(2));
+        assertTrue(patientCountMap.get(5L).equals(4));
     }
 
     @Test
     public void testGetPatientCountByUnit() throws Exception {
         Centre centre = new Centre();
-        centre.setId(3L);
+        centre.setId(2L);
+        centre.setUnitCode("9876543210");
 
-        createDemographics("Test1", "User", centre);
-        createDemographics("Test2", "User", centre);
-        createDemographics("Test3", "User", centre);
-        createDemographics("Test4", "User", centre);
+        diseaseGroup = new DiseaseGroup();
+        diseaseGroup.setId("2");
+        diseaseGroup.setName("testGroup");
+        diseaseGroup.setShortName("shortName");
+
+        createDemographics("Test1", "User", centre, diseaseGroup);
+        createDemographics("Test2", "User", centre, diseaseGroup);
+        createDemographics("Test3", "User", centre, diseaseGroup);
+        createDemographics("Test4", "User", centre, diseaseGroup);
 
         int count = utilityDao.getPatientCountByUnit(centre);
         assertEquals(4, count);
+
+
     }
 
-    private Demographics createDemographics(String forename, String surname, Centre centre) {
-        Demographics demographics = new Demographics();
-        demographics.setForename(forename);
-        demographics.setSurname(surname);
-        demographics.setNhsNumberType(NhsNumberType.NHS_NUMBER);
-        demographics.setRenalUnit(centre);
-        demographicDao.saveDemographics(demographics);
-        assertNotNull(demographics.getId());
-        return demographics;
+    @Test
+    public void testGetRenalUnitCentre() throws Exception {
+        userDao.createUserMappingInPatientView("testuser", "9876543210", "5");
+        userDao.createUserMappingInPatientView("testuser", "9876543210", "PATIENT");
+        userDao.createUserMappingInPatientView("testuser-GP", "9876543210", "6");
+
+        Centre centre1 = utilityDao.getRenalUnitCentre("9876543210").get(0);
+
+        assertNotNull("Could not get the unit", centre1);
+        assertEquals("Get the wrong unit", "5", centre1.getUnitCode());
     }
 
-    private void addDiagnosisForDemographic(Demographics demographics, Long diagnosisCodeId) {
+    private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup)
+            throws Exception {
+        Patient patient = new Patient();
+        patient.setForename(forename);
+        patient.setSurname(surname);
+        patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
+        patient.setRenalUnit(centre);
+        patient.setNhsno(getTestNhsNo());
+        patient.setDiseaseGroup(diseaseGroup);
+        patient.setUnitcode(centre.getUnitCode());
+        patient.setDob(new Date());
+        patient.setEditableDemographics(true);
+        userManager.savePatientUser(patient);
+        assertNotNull(patient.getId());
+        return patient;
+    }
+
+    private void addDiagnosisForDemographic(Patient patient, Long diagnosisCodeId) {
         Diagnosis diagnosis = new Diagnosis();
         diagnosis.setText("Testing");
         diagnosis.setDiagnosisCode(diagnosisDao.getDiagnosisCode(diagnosisCodeId));
-        diagnosis.setRadarNumber(demographics.getId());
+        diagnosis.setRadarNumber(patient.getId());
         diagnosisDao.saveDiagnosis(diagnosis);
     }
 }

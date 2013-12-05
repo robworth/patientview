@@ -1,11 +1,14 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
 import org.patientview.radar.dao.ImmunosuppressionDao;
 import org.patientview.radar.model.Immunosuppression;
 import org.patientview.radar.model.ImmunosuppressionTreatment;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +20,15 @@ public class ImmunosuppressionDaoTest extends BaseDaoTest {
 
     @Autowired
     private ImmunosuppressionDao immunosuppressionDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() {
+        testDataHelper.createImmunsupTreatment();
+        testDataHelper.createImmunoSupp();
+    }
 
     @Test
     public void testSaveImmunoSuppressionTreatment() throws Exception {

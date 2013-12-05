@@ -23,7 +23,7 @@
 
 package org.patientview.ibd.model;
 
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 import org.patientview.patientview.utils.TimestampUtils;
 
 import javax.persistence.Column;

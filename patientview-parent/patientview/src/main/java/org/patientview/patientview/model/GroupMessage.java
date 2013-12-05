@@ -22,6 +22,8 @@
  */
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

@@ -1,9 +1,9 @@
 package org.patientview.radar.test;
 
-import org.patientview.radar.util.UserUpgradeManager;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.patientview.radar.util.UserUpgradeManager;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
@@ -20,7 +20,7 @@ public class TestUserUpgrade {
     private UserUpgradeManager userUpgradeManager;
 
     @Test
-    public void testUserUpgrade() {
-        userUpgradeManager.run();
+    public void testUserUpgrade() throws Exception {
+        userUpgradeManager.addUserForAllRadarPatients();
     }
 }

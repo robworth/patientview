@@ -1,41 +1,53 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
 import org.patientview.radar.dao.DemographicsDao;
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.Status;
+import org.patientview.radar.dao.UnitDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.model.user.DemographicsUserDetail;
+import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 
 import java.util.List;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
+
     private DemographicsDao demographicsDao;
 
-    public void saveDemographics(Demographics demographics) {
+    private UserDao userDao;
+
+    private UnitDao unitDao;
+
+    public void saveDemographics(Patient patient) {
         // Save or update the demographics object
-        demographicsDao.saveDemographics(demographics);
+        demographicsDao.saveDemographics(patient);
     }
 
-    public Demographics getDemographicsByRadarNumber(long radarNumber) {
+    public Patient get(Long id) {
+        return demographicsDao.get(id);
+    }
+
+    public Patient getDemographicsByRadarNumber(long radarNumber) {
         return demographicsDao.getDemographicsByRadarNumber(radarNumber);
     }
 
-    public List<Demographics> getDemographicsByRenalUnit(Centre centre) {
-        return demographicsDao.getDemographicsByRenalUnit(centre);
+    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
+        return demographicsDao.getDemographicsByNhsNoAndUnitCode(nhsNo, unitCode);
     }
 
-    public List<Demographics> getDemographics() {
+    public List<Patient> getDemographics() {
         return getDemographics(new DemographicsFilter(), -1, -1);
     }
 
-    public List<Demographics> getDemographics(DemographicsFilter filter) {
+    public List<Patient> getDemographics(DemographicsFilter filter) {
         return getDemographics(filter, -1, -1);
     }
 
-    public List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
+    public List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage) {
         return demographicsDao.getDemographics(filter, page, numberPerPage);
     }
 
@@ -51,6 +63,18 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getStatus(id);
     }
 
+    public List<Patient> getDemographicsByUser(User user) {
+
+        List<String> unitCodes;
+        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
+            unitCodes = unitDao.getAllUnitCodes();
+        } else {
+            unitCodes = unitDao.getUnitCodes(user);
+        }
+
+        return demographicsDao.getDemographicsByUnitCode(unitCodes);
+    }
+
     public List<Status> getStatuses() {
         return demographicsDao.getStatuses();
     }
@@ -59,67 +83,19 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao;
     }
 
-    public boolean isNhsNumberValid(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, false);
-    }
-
-    public boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, true);
-    }
-
-    private boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
-
-        // Remove all whitespace and non-visible characters such as tab, new line etc
-        nhsNumber = nhsNumber.replaceAll("\\s", "");
-
-        // Only permit 10 characters
-        if (nhsNumber.length() != 10) {
-            return false;
-        }
-
-        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
-        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
-
-        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
-            return true;
-        }
-
-        return isNhsChecksumValid(nhsNumber);
-    }
-
-    private boolean isNhsChecksumValid(String nhsNumber) {
-        /**
-         * Generate the checksum using modulus 11 algorithm
-         */
-        int checksum = 0;
-
-        try {
-            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= 8; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
-                checksum += value;
-            }
-
-            //(modulus 11)
-            checksum = 11 - checksum % 11;
-
-            if (checksum == 11) {
-                checksum = 0;
-            }
-
-            // Does checksum match the 10th digit?
-            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false; // nhsNumber contains letters
-        }
-    }
-
     public void setDemographicsDao(DemographicsDao demographicsDao) {
         this.demographicsDao = demographicsDao;
     }
 
+    public DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode) {
+        return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setUnitDao(UnitDao unitDao) {
+        this.unitDao = unitDao;
+    }
 }

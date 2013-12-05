@@ -23,7 +23,7 @@
 
 package org.patientview.test.helpers.impl;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.security.model.SecurityUser;
 import org.patientview.test.helpers.SecurityHelpers;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

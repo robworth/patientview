@@ -1,6 +1,6 @@
 package org.patientview.radar.service;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.exception.InvalidSecurityQuestionAnswer;
 import org.patientview.radar.model.exception.UserEmailAlreadyExists;
 import org.patientview.radar.model.exception.DaoException;
@@ -44,7 +44,7 @@ public interface UserManager {
 
     void deletePatientUser(PatientUser patientUser) throws Exception;
 
-    void registerPatient(Demographics demographics) throws Exception;
+    PatientUser savePatientUser(Patient patient) throws Exception;
 
     void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
             RegistrationException, InvalidSecurityQuestionAnswer;
@@ -81,4 +81,11 @@ public interface UserManager {
     void changeUserPassword(String username, String password) throws DecryptionException, DaoException;
 
     boolean userExistsInPatientView(String nhsno);
+
+    User getExternallyCreatedUser(String nshNo);
+
+    String generateUsername(Patient patient);
+
+    List<String> getPatientRadarMappings(String nhsNo);
+
 }

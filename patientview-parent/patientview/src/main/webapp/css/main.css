@@ -471,3 +471,13 @@ section article.conversation .dull, section article.message .dull, .dull{
 .conversation-container a:hover .action-test {
     display: inline;
 }
+
+.numberNote {
+    position: relative;
+    top:-15px;
+}
+
+.join-request-span12 {
+    width: 1040px;
+    margin-left: -20px;
+}

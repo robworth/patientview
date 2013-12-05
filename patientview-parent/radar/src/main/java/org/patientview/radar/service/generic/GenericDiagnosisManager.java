@@ -1,7 +1,7 @@
 package org.patientview.radar.service.generic;
 
-import org.patientview.radar.model.generic.DiseaseGroup;
-import org.patientview.radar.model.generic.GenericDiagnosis;
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 
 import java.util.List;
 

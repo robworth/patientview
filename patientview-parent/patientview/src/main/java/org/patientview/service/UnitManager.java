@@ -24,8 +24,8 @@
 package org.patientview.service;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.patientview.model.User;
 import org.springframework.security.access.annotation.Secured;
@@ -44,7 +44,22 @@ public interface UnitManager {
 
     Unit get(Long id);
 
+    /**
+     * It is planned to have this method secured so that only users with mapping to this unit
+     * can access the unit, using: @UnitSecured(value = "UNIT_ACCESS")
+     *
+     * It should be possible to turn this on now, but there may well still be a couple of bugs in there.
+     * @param unitCode
+     * @return
+     */
     Unit get(String unitCode);
+
+    /**
+     * a new unitcode doesn't exist, so any user doesn't have SecurityConfig.UNIT_ACCESS permission to check this code
+     * @param unitCode String
+     * @return true if duplicate
+     */
+    boolean checkDuplicateUnitCode(String unitCode);
 
     void save(Unit unit);
 
@@ -55,6 +70,8 @@ public interface UnitManager {
     List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
 
     List<Unit> getAdminsUnits();
+
+    List<Unit> getAdminsUnits(boolean isRadarGroup);
 
     List<Unit> getUnitsWithUser();
 
@@ -71,6 +88,9 @@ public interface UnitManager {
     List<UnitStat> getUnitStatsForUnit(String unitCode);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
+
+    @Secured(value =  "ROLE_RENAL_SUPERADMIN")
+    List<UnitAdmin> getAllUnitUsers();
 
     List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
 }

@@ -142,6 +142,11 @@ vertical-align:text-top;
     padding: 2px 9px;
 }
 
+.add-patient-save{
+    float:left;
+    margin:0;
+}
+
 .infoItemHidden {
     display:none !important;
     height: 0px !important;
@@ -212,3 +217,37 @@ vertical-align:text-top;
 
 /* Patient page */
 .style3 textarea, fieldset table.style3 { width: 100%; }
+
+
+/* Add Patient Styles */
+
+.add-patient-container{
+    margin-bottom:20px;
+}
+
+#mainBlock.short-container{
+    min-height:0;
+}
+
+.select-patient-table{
+    width:93%;
+    margin-left:50px;
+    margin-top:35px;
+}
+
+.link-patient{
+    margin:20px 0 0 10px;
+}
+
+.create-new-patient{
+    margin-right:0;
+}
+
+.patientsLisitingTable tbody td{
+    word-wrap: break-word;
+}
+
+.patientsLisitingTable thead th{
+    font-size:88%;
+    word-wrap: break-word;
+}

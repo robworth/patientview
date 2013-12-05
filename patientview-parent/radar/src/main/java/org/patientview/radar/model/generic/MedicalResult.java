@@ -1,5 +1,7 @@
 package org.patientview.radar.model.generic;
 
+import org.patientview.model.generic.DiseaseGroup;
+
 import java.io.Serializable;
 import java.util.Date;
 

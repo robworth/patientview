@@ -89,10 +89,30 @@ public final class LogonUtils {
         return mapping.findForward(resultForward);
     }
 
+    public static String logonChecks(HttpServletRequest request, String defaultForward) {
+        String resultForward = defaultForward;
+
+        // access the "user principal" from spring rather than request
+        String username = LegacySpringUtils.getSecurityUserManager().getLoggedInUsername();
+
+        if (username != null) {
+            User user = LegacySpringUtils.getUserManager().get(username);
+
+            if (user.isFirstlogon()) {
+                resultForward = "/control/password_change";
+                request.setAttribute("firstLogon", "true");
+            }
+        }
+
+        recordLogon(request);
+        return resultForward;
+    }
+
     private static SplashPage activeSplashPage(User user) {
         SplashPage returnSplashPage = null;
 
-        if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equalsIgnoreCase("patient")) {
+        String specialtyRole = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
+        if (specialtyRole != null && specialtyRole.equalsIgnoreCase("patient")) {
             List<SplashPage> splashpages = SplashPageUtils.retrieveSplashPagesForPatient(user);
             List<SplashPageUserSeen> splashPagesUserHasSeen = SplashPageUtils.retrieveSplashPagesPatientHasSeen(user);
 

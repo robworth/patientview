@@ -25,10 +25,9 @@ package org.patientview.patientview.logon;
 
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.LogEntry;
+import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.news.NewsUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -47,6 +46,11 @@ public class LoggedInAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+
+        if ("/back_to_admin.do".equals(request.getRequestURI())) {
+            request.getSession().setAttribute("userBeingViewedUsername", null);
+        }
+
         String forward = "";
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
         NewsUtils.putAppropriateNewsForViewingInRequest(request);
@@ -71,19 +75,21 @@ public class LoggedInAction extends Action {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 
+
                 if (nhsno != null && !nhsno.equals("")) {
-                    LogEntry log = LegacySpringUtils.getLogEntryManager().getLatestLogEntry(nhsno,
-                            AddLog.PATIENT_DATA_FOLLOWUP);
-                    if (log != null) {
-                        request.setAttribute("lastDataDate", format.format(log.getDate().getTime()));
-                        // Get the unit from the unitcode
-                        String unitcode = log.getUnitcode();
-                        if (unitcode != null) {
-                            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-                            if (null == unit) {
-                                request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
-                            } else {
-                                request.setAttribute("lastDataFrom", unit.getName());
+                    UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(nhsno);
+                    if (userLog != null) {
+                        if (userLog.getLastdatadate() != null && userLog.getUnitcode() != null) {
+                            request.setAttribute("lastDataDate", format.format(userLog.getLastdatadate().getTime()));
+                            // Get the unit from the unitcode
+                            String unitcode = userLog.getUnitcode();
+                            if (unitcode != null) {
+                                Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+                                if (null == unit) {
+                                    request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
+                                } else {
+                                    request.setAttribute("lastDataFrom", unit.getName());
+                                }
                             }
                         }
                     }

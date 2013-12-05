@@ -23,10 +23,10 @@
 
 package org.patientview.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.PatientDetails;
 import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.Patient;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
 import org.patientview.repository.PatientDao;
@@ -120,6 +120,12 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     @Override
+    public List getAllUnitPatientsWithTreatment(String nhsno, String name, boolean showgps) {
+        return patientDao.getAllUnitPatientsWithTreatmentDao(nhsno, name, showgps,
+                securityUserManager.getLoggedInSpecialty());
+    }
+
+    @Override
     public List getUnitPatientsAllWithTreatmentDao(String unitcode) {
         return patientDao.getUnitPatientsAllWithTreatmentDao(unitcode, securityUserManager.getLoggedInSpecialty());
     }
@@ -136,9 +142,14 @@ public class PatientManagerImpl implements PatientManager {
         List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
 
         for (UserMapping userMapping : userMappings) {
-            Patient patient = get(userMapping.getNhsno(), userMapping.getUnitcode());
+            String unitcode = userMapping.getUnitcode();
+            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
+                continue;
+            }
 
-            Unit unit = unitManager.get(userMapping.getUnitcode());
+            Patient patient = get(userMapping.getNhsno(), unitcode);
+
+            Unit unit = unitManager.get(unitcode);
 
             if (patient != null && unit != null) {
                 PatientDetails patientDetail = new PatientDetails();
@@ -148,7 +159,7 @@ public class PatientManagerImpl implements PatientManager {
                 patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
                 patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
                 patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                        patient.getCentreCode()));
+                        patient.getUnitcode()));
 
                 // TODO: dont really know bout this UktUtils ?
                 patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
@@ -157,7 +168,7 @@ public class PatientManagerImpl implements PatientManager {
 
                 AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
                         AddLog.PATIENT_VIEW, "", patient.getNhsno(),
-                        patient.getCentreCode(), "");
+                        patient.getUnitcode(), "");
             }
         }
 

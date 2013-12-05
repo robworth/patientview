@@ -27,8 +27,11 @@
   --%>
 
 <html:xhtml/>
+<div class="span9">
 
-<p class="header">GP</p>
+<div class="page-header">
+    <h1>GP</h1>
+</div>
 
 
 On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfully enrolled a new GP with the following details:
@@ -37,23 +40,43 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
 <table cellpadding="3" >
     <tr>
       <td><b>User Name</b></td>
-      <td><bean:write name="gp" property="username" /></td>
+      <td><logic:notEmpty name="gp">
+            <bean:write name="gp" property="username" />
+          </logic:notEmpty>
+      </td>
     </tr>
     <tr>
       <td><b>Password</b></td>
-      <td class="password"><bean:write name="gp" property="password" /></td>
+      <td class="password">
+        <logic:notEmpty name="gp">
+          <h3><bean:write name="gp" property="password" /></h3>
+        </logic:notEmpty>
+    </td>
     </tr>
     <tr>
       <td><b>Name</b></td>
-      <td><bean:write name="gp" property="name" /></td>
+      <td>
+          <logic:notEmpty name="gp">
+              <bean:write name="gp" property="name" />
+          </logic:notEmpty>
+      </td>
     </tr>
     <tr>
       <td><b>NHS Number</b></td>
-      <td><bean:write name="userMappingGp" property="nhsno" /></td>
+      <td>
+          <logic:notEmpty name="gp">
+              <bean:write name="userMappingGp" property="nhsno" />
+          </logic:notEmpty>
+      </td>
     </tr>
     <tr>
       <td><b>Email Address</b></td>
-      <td><bean:write name="gp" property="email" /></td>
+      <td>
+          <logic:notEmpty name="gp">
+            <bean:write name="gp" property="email" />
+          </logic:notEmpty>
+      </td>
     </tr>
  </table>
-
+<br/>
+</div>

@@ -23,6 +23,8 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -53,20 +55,6 @@ public class Centre extends BaseModel {
 
     public Centre(String centreCode) {
         this.centreCode = centreCode;
-    }
-
-    public Centre(String centreCode, String centreName, String centreAddress1, String centreAddress2,
-                  String centreAddress3, String centreAddress4, String centrePostCode, String centreTelephone,
-                  String centreEmail) {
-        this.centreAddress1 = centreAddress1;
-        this.centreAddress2 = centreAddress2;
-        this.centreAddress3 = centreAddress3;
-        this.centreAddress4 = centreAddress4;
-        setCentreCode(centreCode);
-        this.centreEmail = centreEmail;
-        this.centreName = centreName;
-        this.centrePostCode = centrePostCode;
-        this.centreTelephone = centreTelephone;
     }
 
     public String getCentreAddress1() {

@@ -1,13 +1,13 @@
 package org.patientview.test.batch;
 
 import org.patientview.batch.CreateEmailQueueWriter;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.*;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.service.BaseServiceTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 /**
  *
  */
-public class CreateEmailQueueWriterTest extends BaseServiceTest {
+public class CreateEmailQueueWriterTest extends BaseBatchTest {
 
     @Autowired
     private CreateEmailQueueWriter createEmailQueueWriter;
@@ -39,6 +39,10 @@ public class CreateEmailQueueWriterTest extends BaseServiceTest {
 
     @Test
     public void testWrite() throws Exception {
+
+        if (!canRun()) {
+            return;
+        }
 
         List<Object> emailQueues = new ArrayList<Object>();
         Specialty specialty1 = serviceHelpers.createSpecialty("Specialty 1", "Specialty1", "Test description");

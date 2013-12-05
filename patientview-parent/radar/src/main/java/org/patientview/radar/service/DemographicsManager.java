@@ -1,26 +1,25 @@
 package org.patientview.radar.service;
 
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Sex;
-import org.patientview.radar.model.Status;
+import org.patientview.model.Patient;
+import org.patientview.model.Sex;
+import org.patientview.model.Status;
 import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.model.user.DemographicsUserDetail;
+import org.patientview.radar.model.user.User;
 
 import java.util.List;
 
 public interface DemographicsManager {
 
-    void saveDemographics(Demographics demographics);
+    void saveDemographics(Patient patient);
 
-    Demographics getDemographicsByRadarNumber(long radarNumber);
+    Patient getDemographicsByRadarNumber(long radarNumber);
 
-    List<Demographics> getDemographicsByRenalUnit(Centre centre);
+    List<Patient> getDemographics();
 
-    List<Demographics> getDemographics();
+    List<Patient> getDemographics(DemographicsFilter filter);
 
-    List<Demographics> getDemographics(DemographicsFilter filter);
-
-    List<Demographics> getDemographics(DemographicsFilter filter, int page, int numberPerPage);
+    List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage);
 
     Sex getSex(long id);
 
@@ -28,9 +27,15 @@ public interface DemographicsManager {
 
     Status getStatus(long id);
 
+    List<Patient> getDemographicsByUser(User user);
+
     List<Status> getStatuses();
 
-    boolean isNhsNumberValid(String nhsNumber);
+    Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode);
 
-    boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber);
+    DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
+
+    Patient get(Long id);
+
+
 }

@@ -1,12 +1,12 @@
 package org.patientview.test.batch;
 
 import org.patientview.batch.CheckSendEmailStatusWriter;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.*;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.service.JobManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.service.BaseServiceTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  *
  */
-public class CheckSendEmailStatusWriterTest extends BaseServiceTest {
+public class CheckSendEmailStatusWriterTest extends BaseBatchTest {
 
     @Autowired
     private CheckSendEmailStatusWriter checkSendEmailStatusWriter;
@@ -33,6 +33,9 @@ public class CheckSendEmailStatusWriterTest extends BaseServiceTest {
 
     @Test
     public void testWrite() throws Exception {
+        if (!canRun()) {
+            return;
+        }
 
         List<Object> jobs = new ArrayList<Object>();
         User user1 = serviceHelpers.createUser("test 1", "tester1@test.com", "test1", "Test 1");

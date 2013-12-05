@@ -1,26 +1,31 @@
 package org.patientview.test.batch;
 
+import org.junit.Test;
 import org.patientview.batch.CheckSendEmailStatusReader;
-import org.patientview.patientview.model.*;
+import org.patientview.patientview.model.Conversation;
+import org.patientview.patientview.model.EmailQueue;
+import org.patientview.patientview.model.Job;
+import org.patientview.patientview.model.Message;
+import org.patientview.model.Specialty;
+import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.service.BaseServiceTest;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
  */
-public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
+public class CheckSendEmailStatusReaderTest extends BaseBatchTest {
 
     @Autowired
     private CheckSendEmailStatusReader checkSendEmailStatusReader;
@@ -37,6 +42,10 @@ public class CheckSendEmailStatusReaderTest extends BaseServiceTest {
 
     @Test
     public void testRead() throws Exception {
+
+        if (!canRun()) {
+            return;
+        }
         User user1 = serviceHelpers.createUser("test 4", "tester1@test.com", "test1", "Test 1");
         User user2 = serviceHelpers.createUser("test 5", "tester2@test.com", "test2", "Test 2");
         User user3 = serviceHelpers.createUser("test 6", "tester3@test.com", "test3", "Test 3");

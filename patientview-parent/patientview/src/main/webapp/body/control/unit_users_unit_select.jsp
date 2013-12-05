@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 
 <%--
   ~ PatientView
@@ -28,26 +29,34 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>Select Unit</h1>
+    <h1>${isRadarGroup?'Select RaDaR Group':'Select Unit'}</h1>
 </div>
 
 
-<html:form action="/control/unitUsers">
+<form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers" method="post">
+    <input type="hidden" name="isRadarGroup" value="${isRadarGroup}">
 <table cellpadding="3" >
     <tr>
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
-      <td><html:select property="unitcode">
-             <html:options collection="units" property="unitcode" labelProperty="name"/>
-          </html:select></td>
+      <td><b><logic:present specialty="renal">${isRadarGroup? 'RaDaR Group':'Renal Unit'}</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
+      <td>
+          <select name="unitcode">
+              <logic:present role="superadmin">
+                  <option value="" >-- ${isRadarGroup? 'All RaDaR groups' : 'All units'} --</option>
+              </logic:present>
+              <logic:iterate id="unit" name="units" >
+                  <option value="${unit.unitcode}" >${unit.name}</option>
+              </logic:iterate>
+          </select>
+      </td>
     </tr>
     <tr align="right">
       <td><html:submit value="Select" styleClass="btn" /></td>
     </tr>
  </table>
 
-</html:form>
+</form>
 </div>
 </div>

@@ -1,7 +1,7 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.dao.TreatmentDao;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Treatment;
 import org.patientview.radar.model.TreatmentModality;
 import org.patientview.radar.model.exception.InvalidModelException;
@@ -58,9 +58,9 @@ public class TreatmentManagerImpl implements TreatmentManager {
         List<Date> datesToCheck = Arrays.asList(treatment.getStartDate(), treatment.getEndDate());
 
         // cannot be before date of birth
-        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(treatment.getRadarNumber());
-        if (demographics != null) {
-            Date dob = demographics.getDateOfBirth();
+        Patient patient = demographicsManager.getDemographicsByRadarNumber(treatment.getRadarNumber());
+        if (patient != null) {
+            Date dob = patient.getDob();
             if (dob != null) {
                 for (Date date : datesToCheck) {
                     if (date != null) {

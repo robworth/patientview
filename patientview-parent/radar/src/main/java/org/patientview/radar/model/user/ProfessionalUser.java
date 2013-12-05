@@ -1,6 +1,6 @@
 package org.patientview.radar.model.user;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
 
 public class ProfessionalUser extends User {
 
@@ -12,6 +12,8 @@ public class ProfessionalUser extends User {
     private Centre centre = new Centre();
 
     private String securityRole;
+
+    private boolean isGroupAdmin;
 
     /**
      * Maintain the 'wrong' implementation of hard wiring users to have super user status based on id.
@@ -115,5 +117,13 @@ public class ProfessionalUser extends User {
 
     public void setSecurityQuestionAnsw(String securityQuestionAnsw) {
         this.securityQuestionAnsw = securityQuestionAnsw;
+    }
+
+    public boolean isGroupAdmin() {
+        return isGroupAdmin;
+    }
+
+    public void setGroupAdmin(boolean groupAdmin) {
+        isGroupAdmin = groupAdmin;
     }
 }

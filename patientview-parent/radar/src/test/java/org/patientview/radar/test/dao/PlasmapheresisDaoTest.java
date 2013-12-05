@@ -1,11 +1,14 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Ignore;
 import org.patientview.radar.dao.PlasmapheresisDao;
 import org.patientview.radar.model.Plasmapheresis;
 import org.patientview.radar.model.PlasmapheresisExchangeUnit;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +19,9 @@ public class PlasmapheresisDaoTest extends BaseDaoTest {
 
     @Autowired
     private PlasmapheresisDao plasmapheresisDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     @Test
     public void testSavePlasmapheresis() throws Exception {
@@ -32,6 +38,7 @@ public class PlasmapheresisDaoTest extends BaseDaoTest {
 
     @Test
     public void testPlasmapheresisDelete() throws Exception {
+        createTestData();
         Plasmapheresis plasmapheresis =
                 plasmapheresisDao.getPlasmapheresis(new Long(1));
         assertNotNull(plasmapheresis);
@@ -43,6 +50,7 @@ public class PlasmapheresisDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetPlasmapheresis() {
+        createTestData();
         Plasmapheresis plasmapheresis = plasmapheresisDao.getPlasmapheresis(1L);
         assertNotNull("Plasmapheresis wasn't null", plasmapheresis);
         assertEquals("Wrong ID", new Long(1), plasmapheresis.getId());
@@ -53,6 +61,7 @@ public class PlasmapheresisDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetPlasmapheresisByRadarNumber() {
+        createTestData();
         List<Plasmapheresis> plasmapheresisList = plasmapheresisDao.getPlasmapheresisByRadarNumber(218L);
         assertNotNull("List was null", plasmapheresisList);
         assertEquals("Wrong size", 5, plasmapheresisList.size());
@@ -65,8 +74,14 @@ public class PlasmapheresisDaoTest extends BaseDaoTest {
 
     @Test
     public void testGetPlasmapheresisExchangeUnits() {
+        testDataHelper.createPlasmaLu();
         List<PlasmapheresisExchangeUnit> exchangeUnits = plasmapheresisDao.getPlasmapheresisExchangeUnits();
         assertNotNull("List null", exchangeUnits);
         assertEquals("List is wrong size", 8, exchangeUnits.size());
+    }
+
+    private void createTestData(){
+        testDataHelper.createPlasmapheresis();
+        testDataHelper.createPlasmaLu();
     }
 }

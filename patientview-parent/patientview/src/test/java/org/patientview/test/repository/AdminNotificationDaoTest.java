@@ -23,8 +23,9 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.ibd.model.AdminNotification;
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.junit.Before;
+import org.patientview.model.AdminNotification;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AdminNotificationDao;
 import org.junit.Test;
 
@@ -39,12 +40,20 @@ public class AdminNotificationDaoTest extends BaseDaoTest {
     @Inject
     private AdminNotificationDao adminNotificationDao;
 
+    @Before
+    public void setup() {
+        AdminNotification adminNotification = new AdminNotification();
+        adminNotification.setEmail("test@test.com");
+        adminNotification.setXmlImportNotification(XmlImportNotification.FAILED_IMPORT);
+        adminNotificationDao.save(adminNotification);
+    }
+
     @Test
     public void testGetAllAdminNotifications() throws Exception {
-        List<AdminNotification> adminNotifications = adminNotificationDao.getAll();
 
+        List<AdminNotification> adminNotifications = adminNotificationDao.getAll();
         assertNotNull(adminNotifications);
-        assertTrue(adminNotifications.size() > 0);
+        assertTrue("Should be some AdminNotifications", adminNotifications.size() > 0);
     }
 
     @Test
@@ -52,7 +61,7 @@ public class AdminNotificationDaoTest extends BaseDaoTest {
         List<String> emails = adminNotificationDao.getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        assertTrue(emails.size() > 0);
+        assertTrue("Wrong size of email", emails.size() > 0);
     }
 
 }

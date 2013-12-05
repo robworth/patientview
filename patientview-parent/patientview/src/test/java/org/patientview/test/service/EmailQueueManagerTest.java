@@ -1,5 +1,6 @@
 package org.patientview.test.service;
 
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.*;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;

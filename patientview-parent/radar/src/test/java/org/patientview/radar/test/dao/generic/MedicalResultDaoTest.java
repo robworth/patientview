@@ -1,14 +1,17 @@
 package org.patientview.radar.test.dao.generic;
 
+import org.junit.Before;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.MedicalResultDao;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.generic.MedicalResult;
+import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.test.dao.BaseDaoTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.Date;
 
 public class MedicalResultDaoTest extends BaseDaoTest {
@@ -18,6 +21,14 @@ public class MedicalResultDaoTest extends BaseDaoTest {
 
     @Autowired
     DiseaseGroupDao diseaseGroupDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() {
+        testDataHelper.createUnit();
+    }
 
     @Test
     public void testSave() throws Exception {

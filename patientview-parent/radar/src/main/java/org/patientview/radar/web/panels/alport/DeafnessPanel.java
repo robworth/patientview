@@ -1,6 +1,6 @@
 package org.patientview.radar.web.panels.alport;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.alport.Deafness;
 import org.patientview.radar.service.alport.DeafnessManager;
 import org.patientview.radar.web.RadarApplication;
@@ -32,7 +32,7 @@ public class DeafnessPanel extends Panel {
     @SpringBean
     private DeafnessManager deafnessManager;
 
-    public DeafnessPanel(final String id, final Demographics demographics) {
+    public DeafnessPanel(final String id, final Patient patient) {
         super(id);
 
         setOutputMarkupId(true);
@@ -40,13 +40,13 @@ public class DeafnessPanel extends Panel {
 
         Deafness deafness = null;
 
-        if (demographics.hasValidId()) {
-            deafness = deafnessManager.get(demographics.getId());
+        if (patient.hasValidId()) {
+            deafness = deafnessManager.get(patient.getId());
         }
 
         if (deafness == null) {
             deafness = new Deafness();
-            deafness.setRadarNo(demographics.getId());
+            deafness.setRadarNo(patient.getId());
         }
 
         // main model for this tab
@@ -71,7 +71,7 @@ public class DeafnessPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    deafness.setRadarNo(demographics.getId());
+                    deafness.setRadarNo(patient.getId());
                     deafnessManager.save(deafness);
                 }
             }
@@ -106,7 +106,7 @@ public class DeafnessPanel extends Panel {
         form.add(formFeedback);
 
         // add the patient detail bar to the tab
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Deafness");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Deafness");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);

@@ -1,11 +1,24 @@
 package org.patientview.radar.web.pages.patient.srns;
 
-import org.patientview.radar.model.Demographics;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.model.Patient;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.generic.DiseaseGroup;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.ClinicalDataManager;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.DiagnosisManager;
 import org.patientview.radar.web.RadarApplication;
@@ -21,32 +34,20 @@ import org.patientview.radar.web.panels.HospitalisationPanel;
 import org.patientview.radar.web.panels.PathologyPanel;
 import org.patientview.radar.web.panels.RelapsePanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
-public class SrnsPatientPage extends BasePage {
+public class SrnsPatientPage extends BasePage implements PatientCallBack {
 
     protected static final String PARAM_ID = "id";
+
     @SpringBean
     private DiagnosisManager diagnosisManager;
+
     @SpringBean
     private DemographicsManager demographicsManager;
-    @SpringBean
-    private ClinicalDataManager clinicalDataManager;
 
     public enum CurrentTab {
         // Used for storing the current tab
@@ -83,26 +84,39 @@ public class SrnsPatientPage extends BasePage {
 
     private CurrentTab currentTab = CurrentTab.DEMOGRAPHICS;
 
-    public SrnsPatientPage(PageParameters parameters) {
+    private List<Component> componentsToUpdate = new ArrayList<Component>();
+
+    private IModel<Patient> patientModel = new Model<Patient>();
+
+
+    public SrnsPatientPage(){
+        patientModel.setObject(new Patient());
+    }
+
+
+    public SrnsPatientPage(PageParameters pageParameters) {
         super();
 
-        // Get radar number from parameters - we might not have one for new patients
-        StringValue idValue = parameters.get(PARAM_ID);
-        if (!idValue.isEmpty()) {
-            radarNumberModel.setObject(idValue.toLongObject());
-        }
+        // this constructor is used when a patient exists
+        patientModel.setObject(demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong()));
+        demographicsPanel = new DemographicsPanel("demographicsPanel", patientModel, this) ;
+        radarNumberModel.setObject(patientModel.getObject().getRadarNo());
+        init();
+    }
 
-        // Construct panels for each of the tabs
-        if (parameters != null) {
-            if (parameters.get("idType").toString() != null) {
-                demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel, parameters);
-            } else {
-                demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
-            }
-        } else {
-            demographicsPanel = new DemographicsPanel("demographicsPanel", radarNumberModel);
-        }
+    public SrnsPatientPage(Patient patient) {
+        patientModel.setObject(patient);
+        demographicsPanel = new DemographicsPanel("demographicsPanel", patientModel, this) ;
+        patientModel.setObject(patient);
+        init();
 
+    }
+
+    public void updateModel(Long radarNumber) {
+        this.radarNumberModel.setObject(radarNumber);
+    }
+
+     public void init() {
 
         diagnosisPanel = new DiagnosisPanel("diagnosisPanel", radarNumberModel);
         firstVisitPanel = new FirstVisitPanel("firstVisitPanel", radarNumberModel);
@@ -110,6 +124,8 @@ public class SrnsPatientPage extends BasePage {
         pathologyPanel = new PathologyPanel("pathologyPanel", radarNumberModel);
         relapsePanel = new RelapsePanel("relapsePanel", radarNumberModel);
         hospitalisationPanel = new HospitalisationPanel("hospitalisationPanel", radarNumberModel);
+
+        componentsToUpdate.add(diagnosisPanel);
 
         // Add them all to the page
         add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel, relapsePanel,
@@ -167,27 +183,27 @@ public class SrnsPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            if (radarNumberModel.getObject() != null) {
-                currentTab = tab;
-                // Add the links container to update hover class
-                target.add(linksContainer);
-                target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
-                        relapsePanel, hospitalisationPanel);
+//            if (radarNumberModel.getObject() != null) {
+            currentTab = tab;
+            // Add the links container to update hover class
+            target.add(linksContainer);
+            target.add(demographicsPanel, diagnosisPanel, firstVisitPanel, followUpPanel, pathologyPanel,
+            relapsePanel, hospitalisationPanel);
 
-                Component pageNumber = getPage().get("pageNumber");
-                PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
+            Component pageNumber = getPage().get("pageNumber");
+            PageNumberModel pageNumberModel = (PageNumberModel) pageNumber.getDefaultModel();
 
-                // if a tab has sub tabs then get the current selected page number of the sub tab
-                if (currentTab.equals(CurrentTab.FIRST_VISIT)) {
-                    pageNumberModel.setPageNumber(firstVisitPanel.getCurrentTab().getPageNumber());
-                } else if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
-                    pageNumberModel.setPageNumber(followUpPanel.getCurrentTab().getPageNumber());
-                } else {
-                    pageNumberModel.setPageNumber(currentTab.getPageNumber());
-                }
-
-                target.add(pageNumber);
+            // if a tab has sub tabs then get the current selected page number of the sub tab
+            if (currentTab.equals(CurrentTab.FIRST_VISIT)) {
+                pageNumberModel.setPageNumber(firstVisitPanel.getCurrentTab().getPageNumber());
+            } else if (currentTab.equals(CurrentTab.FOLLOW_UP)) {
+                pageNumberModel.setPageNumber(followUpPanel.getCurrentTab().getPageNumber());
+            } else {
+                pageNumberModel.setPageNumber(currentTab.getPageNumber());
             }
+
+            target.add(pageNumber);
+            //            }
 
         }
 
@@ -197,8 +213,8 @@ public class SrnsPatientPage extends BasePage {
         }
     }
 
-    public static PageParameters getParameters(Demographics demographics) {
-        return new PageParameters().set(PARAM_ID, demographics.getId());
+    public static PageParameters getParameters(Patient patient) {
+        return new PageParameters().set(PARAM_ID, patient.getId());
     }
 
     public static PageParameters getParameters(AddPatientModel patientModel) {

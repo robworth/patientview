@@ -1,10 +1,14 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.radar.dao.LabDataDao;
 import org.patientview.radar.model.sequenced.LabData;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +19,14 @@ public class LabDataDaoTest extends BaseDaoTest {
 
     @Autowired
     private LabDataDao labDataDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Before
+    public void setUp() {
+        testDataHelper.createLabData();
+    }
 
     @Test
     public void testSaveLabData () {
