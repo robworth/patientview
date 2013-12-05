@@ -23,8 +23,8 @@
 
 package org.patientview.patientview;
 
-import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.model.Unit;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +33,8 @@ import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 @Component(value = "xmlImportUtils")
@@ -171,7 +173,6 @@ public final class XmlImportUtils {
 
     }
 
-
     public String getNhsNumber(String filename) {
         try {
             int firstUnderscore = filename.indexOf("_");
@@ -190,5 +191,36 @@ public final class XmlImportUtils {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    /**
+     * Copy all the fields from one source object to another original object
+     *
+     * @param original
+     * @param source
+     * @param <T>
+     * @return
+     */
+    public static <T> T copyObject(T original, T source) {
+        Class clazz = original.getClass();
+        for (Method setterMethod : clazz.getDeclaredMethods()) {
+
+            if (setterMethod.getName().startsWith("set") && !setterMethod.getName().equals("setId")) {
+
+                try {
+                    Method getterMethod = null;
+
+                    getterMethod = source.getClass().getMethod(setterMethod.getName().replace("set", "get"));
+
+                    setterMethod.invoke(original, getterMethod.invoke(source));
+
+                } catch (NoSuchMethodException msh) {
+                } catch (InvocationTargetException ete) {
+                } catch (IllegalAccessException ie) {
+                }
+            }
+        }
+
+        return original;
     }
 }
