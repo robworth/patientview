@@ -26,7 +26,7 @@ package org.patientview.test.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.patientview.patientview.model.DiabetesCarePlan;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.User;
 import org.patientview.service.DiabetesCarePlanManager;
 import org.patientview.test.helpers.SecurityHelpers;

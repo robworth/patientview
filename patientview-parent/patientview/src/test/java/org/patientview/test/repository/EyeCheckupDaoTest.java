@@ -25,17 +25,17 @@ package org.patientview.test.repository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.EyeCheckup;
-import org.patientview.patientview.model.FootCheckup;
-import org.patientview.patientview.model.Specialty;
 import org.patientview.repository.EyeCheckupDao;
-import org.patientview.repository.FootCheckupDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 
 import javax.inject.Inject;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class EyeCheckupDaoTest extends BaseDaoTest {
 

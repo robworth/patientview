@@ -23,14 +23,9 @@
 
 package org.patientview.test.repository;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.patientview.patientview.model.DiabetesCarePlan;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.User;
 import org.patientview.repository.DiabetesCarePlanDao;
-import org.patientview.test.helpers.SecurityHelpers;
-import org.patientview.test.helpers.ServiceHelpers;
 
 import javax.inject.Inject;
 import java.util.Date;
