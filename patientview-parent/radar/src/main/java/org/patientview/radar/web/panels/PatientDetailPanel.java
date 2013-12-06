@@ -34,8 +34,8 @@ public class PatientDetailPanel extends Panel {
         details.add(new Label("title", title));
 
         // radar number
-        TextField radarNumberField = null;
-        if (patient.getRadarNo() == null) {
+        TextField radarNumberField;
+        if (patient.getRadarNo() != null) {
             radarNumberField = new TextField<Long>("id", new PropertyModel<Long>(patient, "radarNo"));
         } else {
             radarNumberField = new TextField<Long>("id");
