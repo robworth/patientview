@@ -85,7 +85,7 @@
             <id>dev</id>
             <properties>
                 <env>dev</env>
-                <tomcatmanagerurl>http://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <tomcatmanagerurl>https://patientview.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
                 </profile.build.output-webapp-dir>
