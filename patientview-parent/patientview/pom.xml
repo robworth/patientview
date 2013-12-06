@@ -92,6 +92,16 @@
             </properties>
         </profile>
         <profile>
+            <id>dev-diabetes</id>
+            <properties>
+                <env>dev-diabetes</env>
+                <tomcatmanagerurl>http://diabetes-pv.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <warpath>/</warpath>
+                <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
+                </profile.build.output-webapp-dir>
+            </properties>
+        </profile>
+        <profile>
             <id>staging</id>
             <properties>
                 <env>staging</env>
