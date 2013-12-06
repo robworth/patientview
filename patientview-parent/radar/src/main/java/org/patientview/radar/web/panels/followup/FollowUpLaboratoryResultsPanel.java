@@ -1,14 +1,5 @@
 package org.patientview.radar.web.panels.followup;
 
-import org.patientview.radar.model.sequenced.LabData;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.LabDataManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.panels.FollowUpPanel;
-import org.patientview.radar.web.panels.subtabs.LaboratoryResultsPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -23,6 +14,15 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.sequenced.LabData;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.LabDataManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.panels.FollowUpPanel;
+import org.patientview.radar.web.panels.subtabs.LaboratoryResultsPanel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,11 +31,11 @@ import java.util.List;
 
 public class FollowUpLaboratoryResultsPanel extends Panel {
     @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
     private DiagnosisManager diagnosisManager;
     @SpringBean
     private LabDataManager labDataManager;
+    @SpringBean
+    private PatientManager patientManager;
 
     public FollowUpLaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -53,17 +53,17 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         labResultsContainer.add(radarNumber);
 
         labResultsContainer.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
-                radarNumberModel, demographicsManager)));
+                radarNumberModel, patientManager)));
 
         labResultsContainer.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.
                 getDiagnosisCodeModel(radarNumberModel, diagnosisManager), "abbreviation")));
 
         labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
         labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
         labResultsContainer.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel,
-                demographicsManager), RadarApplication.DATE_PATTERN));
+                patientManager), RadarApplication.DATE_PATTERN));
 
         final IModel<LabData> followUpModel = new Model<LabData>(new LabData());
 

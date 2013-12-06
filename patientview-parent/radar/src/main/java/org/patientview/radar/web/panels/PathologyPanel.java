@@ -1,18 +1,5 @@
 package org.patientview.radar.web.panels;
 
-import org.patientview.radar.model.enums.KidneyTransplantedNative;
-import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.model.sequenced.Pathology;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.PathologyManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -36,6 +23,19 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
+import org.patientview.radar.model.enums.KidneyTransplantedNative;
+import org.patientview.radar.model.exception.InvalidModelException;
+import org.patientview.radar.model.sequenced.Pathology;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PathologyManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,9 +47,9 @@ public class PathologyPanel extends Panel {
     @SpringBean
     private PathologyManager pathologyManager;
     @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
     private DiagnosisManager diagnosisManager;
+    @SpringBean
+    private PatientManager patientManager;
 
     public PathologyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -144,15 +144,15 @@ public class PathologyPanel extends Panel {
         form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisManager), "abbreviation")));
 
         form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsManager)));
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                patientManager)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, patientManager)));
+        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, patientManager),
                 RadarApplication.DATE_PATTERN));
 
         // Add inputs

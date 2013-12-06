@@ -1,23 +1,5 @@
 package org.patientview.radar.web.panels.firstvisit;
 
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.sequenced.ClinicalData;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
-import org.patientview.radar.web.components.ComponentHelper;
-import org.patientview.radar.web.components.PhenotypeChooser;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.components.TextAreaWithHelpText;
-import org.patientview.radar.web.components.YesNoRadioGroup;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.panels.DiagnosisPanel;
-import org.patientview.radar.web.panels.FirstVisitPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -46,6 +28,24 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.sequenced.ClinicalData;
+import org.patientview.radar.service.ClinicalDataManager;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
+import org.patientview.radar.web.components.ComponentHelper;
+import org.patientview.radar.web.components.PhenotypeChooser;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.components.TextAreaWithHelpText;
+import org.patientview.radar.web.components.YesNoRadioGroup;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.panels.DiagnosisPanel;
+import org.patientview.radar.web.panels.FirstVisitPanel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,9 +88,9 @@ public class ClinicalPicturePanel extends Panel {
     @SpringBean
     private ClinicalDataManager clinicalDataManager;
     @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
     private DiagnosisManager diagnosisManager;
+    @SpringBean
+    private PatientManager patientManager;
 
     public ClinicalPicturePanel(String id, final IModel<Long> radarNumberModel, final boolean isFirstVisit) {
 
@@ -334,19 +334,19 @@ public class ClinicalPicturePanel extends Panel {
         form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
 
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisManager), "abbreviation")));
 
         form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
 
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, patientManager)));
 
 
-        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, patientManager),
                 RadarApplication.DATE_PATTERN));
 
         RadarRequiredDateTextField clinicalPictureDate =
