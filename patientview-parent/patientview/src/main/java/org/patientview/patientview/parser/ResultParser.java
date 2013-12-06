@@ -38,6 +38,8 @@ import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.FootCheckup;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.patientview.model.enums.DiagnosticType;
 import org.patientview.patientview.model.enums.NodeError;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -79,6 +81,8 @@ public class ResultParser {
     private List<Diagnosis> otherDiagnoses = new ArrayList<Diagnosis>();
     private List<Medicine> medicines = new ArrayList<Medicine>();
     private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+    private List<FootCheckup> footCheckupses = new ArrayList<FootCheckup>();
+    private List<EyeCheckup> eyeCheckupses = new ArrayList<EyeCheckup>();
     private List<Procedure> procedures = new ArrayList<Procedure>();
     private List<Allergy> allergies = new ArrayList<Allergy>();
     private List<CorruptNode> corruptNodes = new ArrayList<CorruptNode>();
@@ -126,6 +130,8 @@ public class ResultParser {
             collectDiagnostics(document);
             collectProcedures(document);
             collectAllergies(document);
+            collectFootCheckups(document);
+            collectEyeCheckups(document);
             return true;
         }  else  {
             return false;
@@ -348,6 +354,153 @@ public class ResultParser {
 
             if (diagnostic.getDiagnosticType() != null) {
                 diagnostics.add(diagnostic);
+            }
+        }
+    }
+
+    private void collectFootCheckups(Document doc) {
+        NodeList footCheckupNodes = doc.getElementsByTagName("footcheckup");
+
+        for (int i = 0; i < footCheckupNodes.getLength(); i++) {
+            Node footCheckupNode = footCheckupNodes.item(i);
+            FootCheckup checkups = new FootCheckup();
+            checkups.setNhsno(getData("nhsno"));
+            checkups.setUnitcode(getData("centrecode"));
+
+            try {
+                NodeList footCheckupNodeDetails = footCheckupNode.getChildNodes();
+                for (int j = 0; j < footCheckupNodeDetails.getLength(); j++) {
+                    Node footDetail = footCheckupNodeDetails.item(j);
+                    if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (footDetail.getNodeName().equals("datestamp"))) {
+
+                        checkups.setFootCheckDate(footDetail.getFirstChild().getNodeValue());
+                    } else if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (footDetail.getNodeName().equals("location"))) {
+                        checkups.setFootCheckPlace(footDetail.getFirstChild().getNodeValue());
+                    } else if ((footDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (footDetail.getNodeName().equals("foot"))) {
+
+                        NamedNodeMap namedNodeMap = footDetail.getAttributes();
+                        Node sideNode = namedNodeMap.getNamedItem("side");
+                        NodeList sides = footDetail.getChildNodes();
+
+                        for (int k = 0; k < sides.getLength(); k++) {
+                            Node sideDetails = sides.item(k);
+                            if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "left".equals(sideNode.getNodeValue())) {
+                                // left side foot
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("dppulse"))) {
+                                    checkups.setLeftDpPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("ptpulse"))) {
+                                    checkups.setLeftPtPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("tengmonofilament"))) {
+                                    checkups.setLeftMonofilament(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("riskscore"))) {
+                                    checkups.setLeftRiskScore(sideDetails.getFirstChild().getNodeValue());
+                                }
+
+                            } else if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "right".equals(sideNode.getNodeValue())) {
+                                // right side foot
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("dppulse"))) {
+                                    checkups.setRightDpPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("ptpulse"))) {
+                                    checkups.setRightPtPulse(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("tengmonofilament"))) {
+                                    checkups.setRightMonofilament(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("riskscore"))) {
+                                    checkups.setRightRiskScore(sideDetails.getFirstChild().getNodeValue());
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (checkups.getFootCheckPlace() != null) {
+                footCheckupses.add(checkups);
+            }
+        }
+    }
+
+    private void collectEyeCheckups(Document doc) {
+        NodeList eyeCheckupNodes = doc.getElementsByTagName("eyecheckup");
+        int index = -1;
+
+        for (int i = 0; i < eyeCheckupNodes.getLength(); i++) {
+            Node eyeCheckupNode = eyeCheckupNodes.item(i);
+            EyeCheckup checkups = new EyeCheckup();
+            checkups.setNhsno(getData("nhsno"));
+            checkups.setUnitcode(getData("centrecode"));
+
+            try {
+                NodeList eyeCheckupNodeDetails = eyeCheckupNode.getChildNodes();
+                for (int j = 0; j < eyeCheckupNodeDetails.getLength(); j++) {
+                    Node eyeDetail = eyeCheckupNodeDetails.item(j);
+                    if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (eyeDetail.getNodeName().equals("datestamp"))) {
+
+                        checkups.setLastRetinalDate(eyeDetail.getFirstChild().getNodeValue());
+                    } else if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (eyeDetail.getNodeName().equals("location"))) {
+                        checkups.setLastRetinalPlace(eyeDetail.getFirstChild().getNodeValue());
+                    } else if ((eyeDetail.getNodeType() == Node.ELEMENT_NODE)
+                            && (eyeDetail.getNodeName().equals("eye"))) {
+
+                        NamedNodeMap namedNodeMap = eyeDetail.getAttributes();
+                        Node sideNode = namedNodeMap.getNamedItem("side");
+                        NodeList sides = eyeDetail.getChildNodes();
+
+                        for (int k = 0; k < sides.getLength(); k++) {
+                            Node sideDetails = sides.item(k);
+                            if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "left".equals(sideNode.getNodeValue())) {
+                                // left side eye
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("rgrade"))) {
+                                    checkups.setLeftRGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("mgrade"))) {
+                                    checkups.setLeftMGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("va"))) {
+                                    checkups.setLeftVA(sideDetails.getFirstChild().getNodeValue());
+                                }
+
+                            } else if (sideNode != null && sideNode.getNodeValue() != null
+                                    && "right".equals(sideNode.getNodeValue())) {
+                                // right side eye
+                                if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("rgrade"))) {
+                                    checkups.setRightRGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("mgrade"))) {
+                                    checkups.setRightMGrade(sideDetails.getFirstChild().getNodeValue());
+                                } else if ((sideDetails.getNodeType() == Node.ELEMENT_NODE)
+                                        && (sideDetails.getNodeName().equals("va"))) {
+                                    checkups.setRightVA(sideDetails.getFirstChild().getNodeValue());
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (checkups.getLastRetinalDate() != null) {
+                eyeCheckupses.add(checkups);
             }
         }
     }
@@ -609,6 +762,14 @@ public class ResultParser {
 
     public List<Allergy> getAllergies() {
         return allergies;
+    }
+
+    public List<EyeCheckup> getEyeCheckupses() {
+        return eyeCheckupses;
+    }
+
+    public List<FootCheckup> getFootCheckupses() {
+        return footCheckupses;
     }
 
     public List<CorruptNode> getCorruptNodes() {

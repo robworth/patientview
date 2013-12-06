@@ -40,5 +40,9 @@ public final class Routes {
 
     public static final String EMAIL_VERIFICATION_URL = "/control/emailverification";
 
+    public static final String DIABETES_CAREPLAN_URL = "/careplan-diabetes";
+    public static final String DIABETES_CAREPLAN_UPDATE_URL = "/careplan-update";
+    public static final String DIABETES_CAREPLAN_PAGE = "/diabetes/careplan/careplan-edit";
+
     private Routes() { }
 }

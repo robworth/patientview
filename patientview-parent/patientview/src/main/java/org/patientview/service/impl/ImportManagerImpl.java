@@ -38,6 +38,8 @@ import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.LogEntry;
 import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.model.FootCheckup;
+import org.patientview.patientview.model.EyeCheckup;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
@@ -65,9 +67,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- *
- */
 @Service(value = "importManager")
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = ProcessException.class)
 public class ImportManagerImpl implements ImportManager {
@@ -221,6 +220,10 @@ public class ImportManagerImpl implements ImportManager {
             insertProcedures(resultParser.getProcedures());
             deleteAllergies(resultParser.getData("nhsno"), resultParser.getData("centrecode"));
             insertAllergies(resultParser.getAllergies());
+            deleteFootCheckup(resultParser.getData("nhsno"), resultParser.getData("centrecode"));
+            insertFootCheckup(resultParser.getFootCheckupses());
+            deleteEyeCheckup(resultParser.getData("nhsno"), resultParser.getData("centrecode"));
+            insertEyeCheckup(resultParser.getEyeCheckupses());
             // todo improvement: we should build a set of all units updated, then mark them at the end of the job
             markLastImportDateOnUnit(resultParser.getCentre());
 
@@ -412,5 +415,27 @@ public class ImportManagerImpl implements ImportManager {
             logEntry.setExtrainfo(xmlFile.getName());
         }
         logEntryManager.save(logEntry);
+    }
+
+    private void deleteFootCheckup(String nhsno, String unitcode) {
+        LegacySpringUtils.getFootCheckupManager().delete(nhsno, unitcode);
+    }
+
+    private void insertFootCheckup(Collection<FootCheckup> checkupses) {
+        for (Iterator iterator = checkupses.iterator(); iterator.hasNext();) {
+            FootCheckup checkups = (FootCheckup) iterator.next();
+            LegacySpringUtils.getFootCheckupManager().save(checkups);
+        }
+    }
+
+    private void deleteEyeCheckup(String nhsno, String unitcode) {
+        LegacySpringUtils.getEyeCheckupManager().delete(nhsno, unitcode);
+    }
+
+    private void insertEyeCheckup(Collection<EyeCheckup> checkupses) {
+        for (Iterator iterator = checkupses.iterator(); iterator.hasNext();) {
+            EyeCheckup checkups = (EyeCheckup) iterator.next();
+            LegacySpringUtils.getEyeCheckupManager().save(checkups);
+        }
     }
 }
