@@ -25,7 +25,6 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.model.Unit;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.Diagnosis;
@@ -42,8 +41,8 @@ import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.DiseaseGroupManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
 import org.patientview.radar.web.components.ClinicianDropDown;
+import org.patientview.radar.web.components.PatientCentreDropDown;
 import org.patientview.radar.web.components.RadarComponentFactory;
 import org.patientview.radar.web.components.RadarRequiredCheckBox;
 import org.patientview.radar.web.components.RadarRequiredDateTextField;
@@ -372,14 +371,11 @@ public class DemographicsPanel extends Panel {
         final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
         form.add(clinician);
 
-        DropDownChoice<Centre> renalUnit;
-
+        DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, form.getModelObject());
 
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
         if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit = new CentreDropDown("renalUnit", model.getObject().getNhsno());
-
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
@@ -394,17 +390,6 @@ public class DemographicsPanel extends Panel {
                     target.add(clinician);
                 }
             });
-        } else {
-            List<Centre> centres = new ArrayList<Centre>();
-
-            for (Unit unit : unitManager.getRenalUnits(RadarSecuredSession.get().getUser())) {
-                Centre centre = new Centre();
-                centre.setUnitCode(unit.getUnitcode());
-                centre.setName(unit.getName());
-                centres.add(centre);
-            }
-
-            renalUnit = new CentreDropDown("renalUnit", centres);
         }
 
         form.add(renalUnit);
@@ -413,7 +398,6 @@ public class DemographicsPanel extends Panel {
                 patientModel.getObject().getRadarConsentConfirmedByUserId()));
 
         form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
-
 
         final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
                 consentUserModel) {

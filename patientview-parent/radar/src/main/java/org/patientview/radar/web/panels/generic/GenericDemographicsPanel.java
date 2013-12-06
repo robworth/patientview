@@ -29,7 +29,6 @@ import org.patientview.model.Centre;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
-import org.patientview.model.Unit;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
@@ -41,10 +40,10 @@ import org.patientview.radar.service.generic.GenericDiagnosisManager;
 import org.patientview.radar.util.RadarUtility;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
 import org.patientview.radar.web.components.ClinicianDropDown;
 import org.patientview.radar.web.components.ComponentHelper;
 import org.patientview.radar.web.components.LabelMessage;
+import org.patientview.radar.web.components.PatientCentreDropDown;
 import org.patientview.radar.web.components.RadarComponentFactory;
 import org.patientview.radar.web.components.RadarRequiredCheckBox;
 import org.patientview.radar.web.components.RadarRequiredDateTextField;
@@ -422,14 +421,11 @@ public class GenericDemographicsPanel extends Panel {
         Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) ;
         form.add(sourceUnitCode);
 
-
-        DropDownChoice<Centre> renalUnit;
-
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
-        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit = new CentreDropDown("renalUnit", patient.getNhsno());
+        DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
 
+        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
@@ -444,31 +440,12 @@ public class GenericDemographicsPanel extends Panel {
                     target.add(clinician);
                 }
             });
-        } else if (user.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
-
-            List<Centre> centres = new ArrayList<Centre>();
-            for (Unit unit : unitManager.getRenalUnits(user)) {
-                Centre centre = new Centre();
-                centre.setUnitCode(unit.getUnitcode());
-                centre.setName(unit.getName());
-                centres.add(centre);
-            }
-            renalUnit = new CentreDropDown("renalUnit", centres);
-
-        } else {
-            List<Centre> centres = new ArrayList<Centre>();
-            centres.add(form.getModelObject().getRenalUnit());
-
-            renalUnit = new CentreDropDown("renalUnit", centres);
         }
-
 
         form.add(renalUnit);
 
         final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
                 patient.getRadarConsentConfirmedByUserId()));
-
-
 
         final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
                 consentUserModel) {
