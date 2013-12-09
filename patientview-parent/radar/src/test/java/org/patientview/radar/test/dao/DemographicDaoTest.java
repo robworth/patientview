@@ -145,7 +145,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         // Call DAO
         List<String> unitCodes = new ArrayList<String>();
         unitCodes.add(centre.getUnitCode());
-        List<Patient> demographics = demographicDao.getDemographicsByUnitCode(unitCodes);
+        List<Patient> demographics = null;//demographicDao.getDemographicsByUnitCode(unitCodes);
         assertNotNull("List was null", demographics);
         assertEquals("Wrong size", 2, demographics.size());
         for (Patient de : demographics) {

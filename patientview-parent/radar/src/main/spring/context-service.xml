@@ -33,6 +33,7 @@
         <property name="demographicsDao" ref="demographicsDao"/>
         <property name="userDao" ref="userDao"/>
         <property name="unitDao" ref="unitDao"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="diagnosisManager" class="org.patientview.radar.service.impl.DiagnosisManagerImpl">
@@ -56,10 +57,6 @@
         <property name="patientDao" ref="patientDao"/>
     </bean>
 
-    <bean id="patientLinkManager" class="org.patientview.radar.service.impl.PatientLinkManagerImpl">
-        <property name="patientLinkDao" ref="patientLinkDao"/>
-        <property name="demographicsDao" ref="demographicsDao"/>
-    </bean>
 
     <bean id="pathologyManager" class="org.patientview.radar.service.impl.PathologyManagerImpl">
         <property name="pathologyDao" ref="pathologyDao"/>
@@ -112,7 +109,6 @@
         <property name="userDao" ref="userDao"/>
         <property name="patientManager" ref="patientManager"/>
         <property name="authenticationManager" ref="authenticationManager"/>
-        <property name="patientLinkManager" ref="patientLinkManager"/>
     </bean>
 
     <bean id="unitManager" class="org.patientview.radar.service.impl.UnitManagerImpl">

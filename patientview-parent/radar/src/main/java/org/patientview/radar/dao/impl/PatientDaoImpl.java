@@ -342,6 +342,33 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         }
     }
 
+    public List<Patient> getPatientsByUnitCode(List<String> unitCodes) {
+        String unitCodeValues = buildValueList(unitCodes);
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT  DISTINCT p.* ");
+        query.append("FROM    user u ");
+        query.append("INNER JOIN patient p ");
+        query.append("INNER JOIN usermapping m ");
+        query.append("WHERE  m.nhsno = p.nhsno ");
+        query.append("AND    u.username NOT LIKE '%-GP%' ");
+        query.append("AND    u.username = m.username ");
+        query.append("AND    m.unitcode IN (");
+        query.append(unitCodeValues);
+        query.append(")");
+        query.append("AND    (p.sourceType = '");
+        query.append(SourceType.RADAR.getName());
+        query.append("' OR p.patientLinkId IS NOT NULL)");
+
+        if (StringUtils.isNotEmpty(unitCodeValues)) {
+            return jdbcTemplate.query(query.toString(), new PatientRowMapper());
+        } else {
+            return null;
+        }
+    }
+
+
+
 
     // This is here to move away from the old Demographic Dao Class and clean the mapping up.
     public class PatientRowMapper implements RowMapper<Patient> {
@@ -410,6 +437,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             return patient;
         }
     }
+
 
 
     //// Helper methods for the Row Mapper

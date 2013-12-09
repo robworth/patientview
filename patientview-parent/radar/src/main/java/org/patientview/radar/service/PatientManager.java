@@ -24,6 +24,8 @@ public interface PatientManager {
 
     void save(final Patient patient);
 
+    List<Patient> getPatientsByUnitCode(List<String> unitCodes);
+
     List<Sex> getSexes();
 
     List<Status> getStatuses();

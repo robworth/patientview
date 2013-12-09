@@ -13,8 +13,6 @@ public interface DemographicsManager {
 
     void saveDemographics(Patient patient);
 
-    Patient getDemographicsByRadarNumber(long radarNumber);
-
     List<Patient> getDemographics();
 
     List<Patient> getDemographics(DemographicsFilter filter);
@@ -30,8 +28,6 @@ public interface DemographicsManager {
     List<Patient> getDemographicsByUser(User user);
 
     List<Status> getStatuses();
-
-    Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode);
 
     DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
 

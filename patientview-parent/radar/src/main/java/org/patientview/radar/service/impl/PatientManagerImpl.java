@@ -4,13 +4,18 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
+import org.patientview.model.enums.SourceType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.util.RadarUtility;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created for the new functionality with using just the on patient table. Going forward this can be then merged with
@@ -48,17 +53,63 @@ public class PatientManagerImpl implements PatientManager {
     public void save(final Patient patient){
 
         // If this is a link record then we need to start any duplicated data being saved
-        if (patient.getPatientLinkId() != null) {
+        if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
             RadarUtility.cleanLinkRecord(patient);
         }
 
         patientDao.save(patient);
 
         // We have to re-populate fields after they are cleaned from the save, only for link patients
-        if (patient.getPatientLinkId() != null) {
+        if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
             RadarUtility.overRideLinkRecord(patientDao.getByPatientLinkId(patient.getPatientLinkId()), patient);
 
         }
+
+    }
+
+    public List<Patient> getPatientsByUnitCode(List<String> unitCodes) {
+
+        List<Patient> patients = patientDao.getPatientsByUnitCode(unitCodes);
+        Map<Long, Patient> linkedPatients = new HashMap<Long, Patient>();
+
+
+        Iterator<Patient> iterator = patients.iterator();
+        while (iterator.hasNext()) {
+            Patient patient = iterator.next();
+
+            // Need to override linked patients
+            if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
+                Patient linkedPatient = RadarUtility.overRideLinkRecord(patient,
+                        patientDao.getById(patient.getPatientLinkId()));
+                linkedPatients.put(patient.getPatientLinkId(), linkedPatient);
+                iterator.remove();
+            }
+        }
+
+        resolveLinkedPatients(patients, linkedPatients);
+
+        return patients;
+    }
+
+    // This removes the patient view patients and replaces the linked patient with fully loaded merged ones.
+    private void resolveLinkedPatients(List<Patient> patients, Map<Long, Patient> linkedPatients) {
+
+        Iterator<Patient> iterator = patients.iterator();
+        while (iterator.hasNext()) {
+            Patient patient = iterator.next();
+
+            if (!patient.getSourceType().equals(SourceType.RADAR.getName())) {
+                iterator.remove();
+            }
+
+            // There is a better way
+            if (StringUtils.isEmpty(patient.getSurname())) {
+                    iterator.remove();
+            }
+
+        }
+
+        patients.addAll(linkedPatients.values());
 
     }
 
@@ -84,7 +135,7 @@ public class PatientManagerImpl implements PatientManager {
             }
         } else {
 
-            Patient linkPatient = getById(patientLinkId);
+            Patient linkPatient = patientDao.getById(patientLinkId);
             if (linkPatient == null) {
                 return RadarUtility.mergePatientRecords(patient, linkPatient);
             } else {

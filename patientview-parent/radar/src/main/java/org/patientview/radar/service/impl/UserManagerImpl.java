@@ -27,6 +27,7 @@ import org.patientview.radar.service.EmailManager;
 import org.patientview.radar.service.PatientLinkManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -127,8 +128,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         if (!patient.hasValidId()) {
             patientManager.save(patient);
         } else {
-            linkPatient = patientLinkManager.createLinkPatientRecord(patient);
-
+            linkPatient = createLinkPatientRecord(patient);
+            patientManager.save(linkPatient);
+            patient.setPatientLinkId(linkPatient.getPatientLinkId());
+            patientManager.save(patient);
+            patient = linkPatient;
         }
 
 
@@ -144,12 +148,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser.setUserId(patientUser.getId());
 
 
-        if (linkPatient != null) {
-            patientManager.save(linkPatient);
-            patient.setPatientLinkId(linkPatient.getPatientLinkId());
-        }
         patientManager.save(patient);
-
 
 
         //-- Radar Tables
@@ -258,6 +257,22 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
 
     }
+
+
+
+    // create the new patient record and link entity
+    private Patient createLinkPatientRecord(Patient patient) throws PatientLinkException {
+
+        Patient newPatient = new Patient();
+        newPatient.setNhsno(patient.getNhsno());
+        newPatient.setDiagnosisDate(patient.getDiagnosisDate());
+        if (patient.getDiseaseGroup() != null) {
+            newPatient.setUnitcode(patient.getDiseaseGroup().getId());
+        }
+
+        return RadarUtility.mergePatientRecords(patient, newPatient);
+    }
+
 
     private PatientUser createPatientViewUser(Patient patient) throws UserCreationException {
 

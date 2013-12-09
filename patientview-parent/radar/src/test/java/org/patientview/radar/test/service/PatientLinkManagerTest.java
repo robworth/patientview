@@ -95,7 +95,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         patientLinkManager.createLinkPatientRecord(patient);
 
-        PatientLink patientLink = patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
+        PatientLink patientLink = null;// patientLinkManager.getPatientLink(patient.getNhsno(), testRenalUnit);
         Assert.assertTrue("The list return should not be empty." , patientLink != null);
         Assert.assertTrue("The source and destination unit should be different", !patientLink.getSourceUnit().equalsIgnoreCase(patientLink.getDestinationUnit()));
 
@@ -112,8 +112,8 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
         demographicsDao.saveDemographics(sourcePatient);
         patientLinkManager.createLinkPatientRecord(sourcePatient);
-        PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
-        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
+        PatientLink patientLink =  null;//patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient =  null;//demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 
         Assert.assertTrue("The link patient must not have a first name", StringUtils.isEmpty(radarPatient.getForename()) );
         Assert.assertTrue("The link patient must not have a last name", StringUtils.isEmpty(radarPatient.getSurname()) );
@@ -125,7 +125,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
         Assert.assertTrue("The link patient must not have a Renal Unit", radarPatient.getRenalUnit() == null);
 
 
-        radarPatient = patientLinkManager.getMergePatient(sourcePatient);
+        radarPatient =  null;//patientLinkManager.getMergePatient(sourcePatient);
 
         Assert.assertTrue("The link patient must inherit a first name", !StringUtils.isEmpty(radarPatient.getForename()) );
         Assert.assertTrue("The link patient must inherit a last name", !StringUtils.isEmpty(radarPatient.getSurname()) );
@@ -158,8 +158,8 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
         demographicsDao.saveDemographics(sourcePatient);
         patientLinkManager.createLinkPatientRecord(sourcePatient);
-        PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
-        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
+        PatientLink patientLink = null;// patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient =  null;//demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 
 
         radarPatient.setMobile(radarMobile);
@@ -169,7 +169,7 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
 
         // Lets save the radar specific comments and then requery them through the merge
         demographicsDao.saveDemographics(radarPatient);
-        radarPatient = patientLinkManager.getMergePatient(sourcePatient);
+        radarPatient =  null;//patientLinkManager.getMergePatient(sourcePatient);
 
         Assert.assertTrue("The link patient must inherit the radar mobile", radarPatient.getMobile().equals(radarMobile));
         Assert.assertTrue("The link patient must inherit the radar comments", radarPatient.getComments().equals(radarComments) );
@@ -192,13 +192,13 @@ public class PatientLinkManagerTest extends TestPvDbSchema {
         Patient sourcePatient = roleHelper.createPatient("231231", testRenalUnit, testDiseaseUnit);
         userManager.savePatientUser(sourcePatient);
         patientLinkManager.createLinkPatientRecord(sourcePatient);
-        PatientLink patientLink = patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
-        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
+        PatientLink patientLink =  null;//patientLinkManager.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
+        Patient radarPatient = null;// demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),patientLink.getDestinationUnit());
 
         List<String> units = new ArrayList<String>();
         units.add(testRenalUnit);
 
-        List<Patient> patients = demographicsDao.getDemographicsByUnitCode(units);
+        List<Patient> patients =  null;//demographicsDao.getDemographicsByUnitCode(units);
 
         boolean found = false;
         for (Patient patient : patients) {

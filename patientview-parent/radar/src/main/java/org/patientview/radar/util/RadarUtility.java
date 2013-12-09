@@ -96,7 +96,7 @@ public class RadarUtility {
 
 
         link.setForename(source.getForename());
-        link.setSurname(source.getSurname());
+        link.setSurname("(LINKED) " + source.getSurname());
         link.setDob(source.getDob());
         link.setAddress1(source.getAddress1());
         link.setAddress2(source.getAddress2());
@@ -109,7 +109,6 @@ public class RadarUtility {
         link.setRenalUnit(source.getRenalUnit());
         link.setUnitcode(source.getUnitcode());
         link.setEditableDemographics(false);
-
         return link;
 
     }
