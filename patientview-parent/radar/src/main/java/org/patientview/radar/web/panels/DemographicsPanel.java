@@ -368,6 +368,23 @@ public class DemographicsPanel extends Panel {
         Centre renalUnitSelected = form.getModelObject().getRenalUnit();
         centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getUnitCode() : null);
 
+        Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().isLink();
+
+            }
+        };
+
+        Label sourceUnitCode = new Label("sourceUnitCode", form.getModelObject().getUnitcode()) {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().isLink();
+
+            }
+        };
+        form.add(sourceUnitCodeLabel, sourceUnitCode);
+
         final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
         form.add(clinician);
 

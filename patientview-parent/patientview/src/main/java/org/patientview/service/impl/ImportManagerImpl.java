@@ -298,7 +298,9 @@ public class ImportManagerImpl implements ImportManager {
         Patient existingPatientRecord
                 = LegacySpringUtils.getPatientManager().get(patient.getNhsno(), patient.getUnitcode());
 
-        if (existingPatientRecord.getSourceType().equals(SourceType.RADAR.getName())) {
+        // This field should be not nullable.
+        if (existingPatientRecord != null && existingPatientRecord.getSourceType() != null &&
+                existingPatientRecord.getSourceType().equals(SourceType.RADAR.getName())) {
             throw new ProcessException("Cannot update an existing Radar patient record");
         }
 
@@ -312,8 +314,11 @@ public class ImportManagerImpl implements ImportManager {
         // Have to do it like this because Radar uses JDBC only
         patient.setSourceType(SourceType.PATIENT_VIEW.getName());
 
-
-        LegacySpringUtils.getPatientManager().save(XmlImportUtils.copyObject(existingPatientRecord, patient));
+        if (existingPatientRecord != null) {
+            LegacySpringUtils.getPatientManager().save(XmlImportUtils.copyObject(existingPatientRecord, patient));
+        } else {
+            LegacySpringUtils.getPatientManager().save(patient);
+        }
     }
 
     private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,
