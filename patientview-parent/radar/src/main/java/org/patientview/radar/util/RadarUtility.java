@@ -109,6 +109,7 @@ public class RadarUtility {
         link.setRenalUnit(source.getRenalUnit());
         link.setUnitcode(source.getUnitcode());
         link.setEditableDemographics(false);
+        link.setLink(true);
         return link;
 
     }

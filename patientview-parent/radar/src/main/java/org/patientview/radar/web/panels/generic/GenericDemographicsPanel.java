@@ -417,19 +417,22 @@ public class GenericDemographicsPanel extends Panel {
         final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
         form.add(clinician);
 
+        Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().isLink();
+
+            }
+        };
 
         Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) {
             @Override
             public boolean isVisible() {
-                if (model.getObject().getPatientLinkId() != null && model.getObject().getPatientLinkId() > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return model.getObject().isLink();
 
             }
         };
-        form.add(sourceUnitCode);
+        form.add(sourceUnitCodeLabel, sourceUnitCode);
 
 
 
