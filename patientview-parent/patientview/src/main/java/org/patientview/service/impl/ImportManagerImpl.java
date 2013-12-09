@@ -299,7 +299,7 @@ public class ImportManagerImpl implements ImportManager {
                 = LegacySpringUtils.getPatientManager().get(patient.getNhsno(), patient.getUnitcode());
 
         // This field should be not nullable.
-        if (existingPatientRecord.getSourceType() != null &&
+        if (existingPatientRecord != null && existingPatientRecord.getSourceType() != null &&
                 existingPatientRecord.getSourceType().equals(SourceType.RADAR.getName())) {
             throw new ProcessException("Cannot update an existing Radar patient record");
         }
