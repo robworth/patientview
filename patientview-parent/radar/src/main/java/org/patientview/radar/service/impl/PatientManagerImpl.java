@@ -52,8 +52,8 @@ public class PatientManagerImpl implements PatientManager {
 
     public void save(final Patient patient){
 
-        // If this is a link record then we need to start any duplicated data being saved
-        if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
+        // If this is a link record then we need to stop any duplicated data being saved
+        if (patientDao.getByPatientLinkId(patient.getId()) != null) {
             RadarUtility.cleanLinkRecord(patient);
         }
 
