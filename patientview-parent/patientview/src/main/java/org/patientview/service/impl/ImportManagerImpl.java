@@ -314,8 +314,11 @@ public class ImportManagerImpl implements ImportManager {
         // Have to do it like this because Radar uses JDBC only
         patient.setSourceType(SourceType.PATIENT_VIEW.getName());
 
-
-        LegacySpringUtils.getPatientManager().save(XmlImportUtils.copyObject(existingPatientRecord, patient));
+        if (existingPatientRecord != null) {
+            LegacySpringUtils.getPatientManager().save(XmlImportUtils.copyObject(existingPatientRecord, patient));
+        } else {
+            LegacySpringUtils.getPatientManager().save(patient);
+        }
     }
 
     private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,
