@@ -24,11 +24,7 @@ public interface DemographicsDao {
 
     List<Status> getStatuses();
 
-    Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode);
-
     DemographicsUserDetail getDemographicsUserDetail(String nhsno, String unitcode);
-
-    List<Patient> getDemographicsByUnitCode(List<String> unitCodes);
 
     Patient get(Long id);
 }

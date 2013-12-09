@@ -9,13 +9,13 @@ import org.patientview.model.PatientLink;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.model.enums.SourceType;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.patientview.radar.util.RadarUtility;
@@ -33,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
@@ -236,12 +235,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
         }
 
-        // We have to re-populate fields after they are cleaned from the save, only for link patients
-        if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
-            RadarUtility.overRideLinkRecord(getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
-                    patientLink.getSourceUnit()), patient);
-
-        }
     }
 
 
@@ -262,8 +255,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 }
             }
 
-            patient = resolveLinkRecord(patient);
-
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("No demographic record found for radar number {}", radarNumber);
             return null;
@@ -272,123 +263,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         return patient;
     }
 
-    /**
-     * Resolve a two way link.
-     *
-     * 1) If it's a source record them merge the link record on top of it
-     * 2) If it's a link record over write the standard demographic fields.
-     *
-     * @param patient
-     * @return
-     */
-    private Patient resolveLinkRecord(Patient patient){
-        PatientLink patientLink = null;
-
-        if (patientLink == null) {
-
-            PatientLink sourcePatientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(),
-                    patient.getUnitcode());
-            if (sourcePatientLink != null) {
-                Patient source = getDemographicsByNhsNoAndUnitCode(sourcePatientLink.getSourceNhsNO(),
-                        sourcePatientLink.getSourceUnit());
-                return RadarUtility.overRideLinkRecord(source, patient);
-            } else {
-                return patient;
-            }
-        } else {
-
-            Patient linkPatient = getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
-                    patientLink.getDestinationUnit());
-
-            return RadarUtility.mergePatientRecords(patient, linkPatient);
-        }
-
-    }
 
     public List<Patient> getDemographicsByRenalUnit(Centre centre) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
-    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
-        try {
-            return jdbcTemplate.queryForObject("SELECT * FROM patient WHERE nhsno = ? AND unitcode = ? ",
-                    new Object[]{nhsNo, unitCode}, new DemographicsRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("No demographic record found for radar number {}", nhsNo);
-            return null;
-        }
-    }
-
-
-    public List<Patient> getDemographicsByUnitCode(List<String> unitCodes) {
-        String unitCodeValues = buildValueList(unitCodes);
-        List<Patient> patients = null;
-        StringBuilder query = new StringBuilder();
-        query.append("SELECT  DISTINCT p.* ");
-        query.append("FROM    user u ");
-        query.append("INNER JOIN patient p ");
-        query.append("INNER JOIN usermapping m ");
-        query.append("WHERE  m.nhsno = p.nhsno ");
-        query.append("AND    u.username NOT LIKE '%-GP%' ");
-        query.append("AND    u.username = m.username ");
-        query.append("AND    m.unitcode IN (");
-        query.append(unitCodeValues);
-        query.append(")");
-        query.append("AND    p.sourceType = '");
-        query.append(SourceType.RADAR.getName());
-        query.append("'");
-
-        if (StringUtils.isNotEmpty(unitCodeValues)) {
-            patients =  jdbcTemplate.query(query.toString(), new DemographicsRowMapper());
-
-
-            List<Patient> linkedPatients = new ArrayList<Patient>();
-
-            for (Patient patient : patients)  {
-
-                // Look for the source patient record
-                PatientLink patientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(),
-                        patient.getUnitcode());
-
-                if (patientLink != null) {
-                    Patient linkedPatient = RadarUtility.overRideLinkRecord(
-                            this.getDemographicsByNhsNoAndUnitCode(patientLink.getSourceNhsNO(),
-                                    patientLink.getSourceUnit()), patient);
-                    linkedPatient.setSurname("(LINKED) " + linkedPatient.getSurname());
-                    linkedPatients.add(linkedPatient);
-                }
-            }
-
-            replaceLinkedPatientsRecords(patients, linkedPatients);
-
-        } else {
-            return null;
-        }
-    
-
-        return patients;
-    }
-
-
-    private void replaceLinkedPatientsRecords(List<Patient> patients, List<Patient> linkedPatients) {
-
-        for (Patient linkedPatient : linkedPatients) {
-
-            Iterator<Patient> iterator = patients.iterator();
-            while (iterator.hasNext()) {
-                Patient patient = iterator.next();
-                if (patient.getNhsno().equals(linkedPatient.getNhsno())
-                        && patient.getUnitcode().equals(linkedPatient.getUnitcode())) {
-                    iterator.remove();
-                }
-            }
-
-        }
-
-        patients.addAll(linkedPatients);
-
-    }
-
 
     public Patient get(Long id) {
 

@@ -10,6 +10,7 @@ import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     private UnitDao unitDao;
 
+    private PatientManager patientManager;
+
+
     public void saveDemographics(Patient patient) {
         // Save or update the demographics object
         demographicsDao.saveDemographics(patient);
@@ -31,13 +35,6 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.get(id);
     }
 
-    public Patient getDemographicsByRadarNumber(long radarNumber) {
-        return demographicsDao.getDemographicsByRadarNumber(radarNumber);
-    }
-
-    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
-        return demographicsDao.getDemographicsByNhsNoAndUnitCode(nhsNo, unitCode);
-    }
 
     public List<Patient> getDemographics() {
         return getDemographics(new DemographicsFilter(), -1, -1);
@@ -63,6 +60,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getStatus(id);
     }
 
+    // Needs refactoring out. Patient Data Provider needs creating
     public List<Patient> getDemographicsByUser(User user) {
 
         List<String> unitCodes;
@@ -72,7 +70,7 @@ public class DemographicsManagerImpl implements DemographicsManager {
             unitCodes = unitDao.getUnitCodes(user);
         }
 
-        return demographicsDao.getDemographicsByUnitCode(unitCodes);
+        return patientManager.getPatientsByUnitCode(unitCodes);
     }
 
     public List<Status> getStatuses() {
@@ -98,4 +96,10 @@ public class DemographicsManagerImpl implements DemographicsManager {
     public void setUnitDao(UnitDao unitDao) {
         this.unitDao = unitDao;
     }
+
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
+    }
 }
+
+

@@ -28,6 +28,8 @@ public interface PatientDao {
 
     Patient getByPatientLinkId(final Long patientLinkId);
 
+    List<Patient> getPatientsByUnitCode(List<String> unitCodes);
+
     List<Sex> getSexes();
 
     List<Status> getStatuses();

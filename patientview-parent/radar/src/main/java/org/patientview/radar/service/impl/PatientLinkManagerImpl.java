@@ -1,7 +1,6 @@
 package org.patientview.radar.service.impl;
 
 import org.patientview.model.Patient;
-import org.patientview.model.PatientLink;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.exception.PatientLinkException;
@@ -23,17 +22,6 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
 
     private PatientLinkDao patientLinkDao;
 
-    public PatientLink createLink(PatientLink patientLink) {
-        return patientLinkDao.createLink(patientLink);
-    }
-
-    public PatientLink getPatientLink(String nhsNo, String unitCode) {
-        return patientLinkDao.getPatientLink(nhsNo, unitCode);
-    }
-
-    public void setPatientLinkDao(PatientLinkDao patientLinkDao) {
-        this.patientLinkDao = patientLinkDao;
-    }
 
     // create the new patient record and link entity
     public Patient createLinkPatientRecord(Patient patient) throws PatientLinkException {
@@ -46,14 +34,6 @@ public class PatientLinkManagerImpl implements PatientLinkManager {
        }
 
        return RadarUtility.mergePatientRecords(patient, newPatient);
-    }
-
-    public Patient getMergePatient(Patient sourcePatient) throws Exception {
-        PatientLink patientLink = this.getPatientLink(sourcePatient.getNhsno(), sourcePatient.getUnitcode());
-        Patient radarPatient = demographicsDao.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
-                patientLink.getDestinationUnit());
-
-        return RadarUtility.mergePatientRecords(sourcePatient, radarPatient);
     }
 
 

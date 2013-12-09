@@ -418,8 +418,20 @@ public class GenericDemographicsPanel extends Panel {
         form.add(clinician);
 
 
-        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) ;
+        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) {
+            @Override
+            public boolean isVisible() {
+                if (model.getObject().getPatientLinkId() != null && model.getObject().getPatientLinkId() > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        };
         form.add(sourceUnitCode);
+
+
 
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
