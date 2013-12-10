@@ -81,6 +81,10 @@ public class SelectPatientPanel extends Panel {
                 patient = patientManager.getById(patient.getId());
                 patient.setLink(true);
 
+                if (patient.getDiseaseGroup() == null) {
+                    patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+                }
+
                 setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
             }

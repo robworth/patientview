@@ -96,7 +96,7 @@ public class RadarUtility {
 
 
         link.setForename(source.getForename());
-        link.setSurname("(LINKED) " + source.getSurname());
+        link.setSurname(source.getSurname());
         link.setDob(source.getDob());
         link.setAddress1(source.getAddress1());
         link.setAddress2(source.getAddress2());

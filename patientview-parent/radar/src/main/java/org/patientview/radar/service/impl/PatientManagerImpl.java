@@ -29,6 +29,7 @@ public class PatientManagerImpl implements PatientManager {
 
     private PatientDao patientDao;
 
+
     public List<Patient> getPatientByNhsNumber(String nhsNo) {
         return patientDao.getPatientsByNhsNumber(nhsNo);
     }
@@ -50,6 +51,7 @@ public class PatientManagerImpl implements PatientManager {
         return patient;
     }
 
+    // Before save we strip the duplicated fields away, then after save we repopulate from the source
     public void save(final Patient patient){
 
         // If this is a link record then we need to stop any duplicated data being saved
@@ -60,8 +62,9 @@ public class PatientManagerImpl implements PatientManager {
         patientDao.save(patient);
 
         // We have to re-populate fields after they are cleaned from the save, only for link patients
-        if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
-            RadarUtility.overRideLinkRecord(patientDao.getByPatientLinkId(patient.getPatientLinkId()), patient);
+        Patient sourcePatient = patientDao.getByPatientLinkId(patient.getId());
+        if (sourcePatient != null) {
+            RadarUtility.overRideLinkRecord(sourcePatient, patient);
 
         }
 
@@ -81,6 +84,7 @@ public class PatientManagerImpl implements PatientManager {
             if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
                 Patient linkedPatient = RadarUtility.overRideLinkRecord(patient,
                         patientDao.getById(patient.getPatientLinkId()));
+                linkedPatient.setSurname("(LINKED)" + linkedPatient.getSurname());
                 linkedPatients.put(patient.getPatientLinkId(), linkedPatient);
                 iterator.remove();
             }
@@ -123,25 +127,31 @@ public class PatientManagerImpl implements PatientManager {
      * @return
      */
     private Patient resolveLinkRecord(final Patient patient){
-        Long patientLinkId = patient.getPatientLinkId();
 
-        if (patientLinkId == null || patientLinkId == 0) {
+        if (patient != null) {
 
-            Patient source = patientDao.getByPatientLinkId(patient.getId());
-            if (source != null) {
-                return RadarUtility.overRideLinkRecord(source, patient);
+            Long patientLinkId = patient.getPatientLinkId();
+
+            if (patientLinkId == null || patientLinkId == 0) {
+
+                Patient source = patientDao.getByPatientLinkId(patient.getId());
+                if (source != null) {
+                    return RadarUtility.overRideLinkRecord(source, patient);
+                } else {
+                    return patient;
+                }
             } else {
-                return patient;
+
+                Patient linkPatient = patientDao.getById(patientLinkId);
+                if (linkPatient == null) {
+                    return RadarUtility.mergePatientRecords(patient, linkPatient);
+                } else {
+                    return patient;
+                }
+
             }
         } else {
-
-            Patient linkPatient = patientDao.getById(patientLinkId);
-            if (linkPatient == null) {
-                return RadarUtility.mergePatientRecords(patient, linkPatient);
-            } else {
-                return patient;
-            }
-
+            return null;
         }
     }
 
