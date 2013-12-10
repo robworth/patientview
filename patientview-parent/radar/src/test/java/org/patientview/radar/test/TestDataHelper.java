@@ -1,25 +1,28 @@
 package org.patientview.radar.test;
 
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseDataSourceConnection;
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.ext.mysql.MySqlDataTypeFactory;
-import org.dbunit.operation.DatabaseOperation;
-import org.junit.Before;
 import org.junit.Ignore;
-import org.patientview.common.test.BaseTestPvDbSchema;
 import org.patientview.model.Centre;
 import org.patientview.model.Country;
+import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.IssueDao;
-import org.patientview.radar.model.*;
-import org.patientview.radar.model.enums.*;
+import org.patientview.radar.model.Consultant;
+import org.patientview.radar.model.Hospitalisation;
+import org.patientview.radar.model.Immunosuppression;
+import org.patientview.radar.model.ImmunosuppressionTreatment;
+import org.patientview.radar.model.Issue;
+import org.patientview.radar.model.Plasmapheresis;
+import org.patientview.radar.model.PlasmapheresisExchangeUnit;
+import org.patientview.radar.model.enums.IssuePriority;
+import org.patientview.radar.model.enums.IssueStatus;
+import org.patientview.radar.model.enums.IssueType;
+import org.patientview.radar.model.enums.KidneyTransplantedNative;
+import org.patientview.radar.model.enums.RemissionAchieved;
 import org.patientview.radar.model.sequenced.ClinicalData;
 import org.patientview.radar.model.sequenced.Pathology;
 import org.patientview.radar.model.sequenced.Relapse;
 import org.patientview.radar.model.sequenced.Therapy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
@@ -39,6 +42,7 @@ public class TestDataHelper {
 
     @Inject
     private DataSource dataSource;
+
 
     protected JdbcTemplate jdbcTemplate;
 
@@ -60,6 +64,7 @@ public class TestDataHelper {
         simpleJdbcInsert.execute(map);
 
     }
+
 
     public void createClinPresData() {
         try {
@@ -854,6 +859,11 @@ public class TestDataHelper {
         saveStatus(4, "Discharged", "Disch");
         saveStatus(5, "Moved abroad", "Abroad");
         saveStatus(6, "Died", "Died");
+    }
+
+    public void setPatientSource(Long id, SourceType sourceType) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("UPDATE patient SET sourceType = '" + sourceType.getName() + "' WHERE id = " + id );
     }
 
 }

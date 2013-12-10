@@ -242,7 +242,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                             "radarConsentConfirmedByUserId = ?, " +
                             "generic = ?, " +
                             "patientLinkId = ? " +
-                            " WHERE radarNo = ?",
+                            " WHERE id = ?",
                     patient.getRrNo(),
                     patient.getDateReg(),
                     patient.getNhsno(),
@@ -430,7 +430,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setGenericDiagnosisModel(getGenericDiagnosis(resultSet.getString("genericDiagnosis"),
                     patient.getDiseaseGroup()));
 
-            if (patient.getSourceType().equals(SourceType.RADAR.getName())) {
+            if (patient.getSourceType() != null && patient.getSourceType().equals(SourceType.RADAR.getName())) {
                 patient.setEditableDemographics(true);
             }
 
