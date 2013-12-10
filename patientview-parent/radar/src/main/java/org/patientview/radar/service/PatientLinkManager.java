@@ -1,7 +1,6 @@
 package org.patientview.radar.service;
 
 import org.patientview.model.Patient;
-import org.patientview.model.PatientLink;
 import org.patientview.radar.exception.PatientLinkException;
 
 /**
@@ -11,11 +10,5 @@ import org.patientview.radar.exception.PatientLinkException;
  */
 public interface PatientLinkManager {
 
-    PatientLink createLink(PatientLink patientLink);
-
-    PatientLink getPatientLink(String nhsNo, String unitCode);
-
     Patient createLinkPatientRecord(Patient patient) throws PatientLinkException;
-
-    Patient getMergePatient(Patient sourcePatient) throws Exception;
 }
