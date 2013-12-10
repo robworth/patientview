@@ -408,13 +408,8 @@ public class GenericDemographicsPanel extends Panel {
                 ukTransplantNumberContainer);
         form.add(republicOfIrelandIdContainer, isleOfManIdContainer, channelIslandsIdContainer, indiaIdContainer);
 
-
         // Consultant and renal unit
-        final IModel<String> centreNumber = new Model<String>();
-        Centre renalUnitSelected = form.getModelObject().getRenalUnit();
-        centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getUnitCode() : null);
-
-        final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
+        final ClinicianDropDown clinician = new ClinicianDropDown("clinician", user, form.getModelObject());
         form.add(clinician);
 
         Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
@@ -434,8 +429,6 @@ public class GenericDemographicsPanel extends Panel {
         };
         form.add(sourceUnitCodeLabel, sourceUnitCode);
 
-
-
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
         DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
@@ -446,11 +439,12 @@ public class GenericDemographicsPanel extends Panel {
                 protected void onUpdate(AjaxRequestTarget target) {
                     Patient patient = model.getObject();
                     if (patient != null) {
-                        centreNumber.setObject(patient.getRenalUnit() != null ?
+                        clinician.updateCentre(patient.getRenalUnit() != null ?
                                 patient.getRenalUnit().getUnitCode() :
                                 null);
                     }
 
+                    // re-render the component
                     clinician.clearInput();
                     target.add(clinician);
                 }
