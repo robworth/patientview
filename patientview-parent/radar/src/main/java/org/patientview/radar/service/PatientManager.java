@@ -6,6 +6,7 @@ import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
+import org.patientview.radar.exception.PatientLinkException;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public interface PatientManager {
     void save(final Patient patient);
 
     List<Patient> getPatientsByUnitCode(List<String> unitCodes);
+
+    Patient createLinkPatient(Patient patient) throws PatientLinkException;
 
     List<Sex> getSexes();
 

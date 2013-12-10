@@ -107,7 +107,6 @@
         <property name="emailManager" ref="emailManager"/>
         <property name="joinRequestDao" ref="joinRequestDao"/>
         <property name="userDao" ref="userDao"/>
-        <property name="patientDao" ref="patientDao"/>
         <property name="patientManager" ref="patientManager"/>
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>

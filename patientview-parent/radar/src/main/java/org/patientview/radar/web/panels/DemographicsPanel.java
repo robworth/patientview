@@ -188,7 +188,7 @@ public class DemographicsPanel extends Panel {
         form.add(new Label("addNewPatientLabel", "Add a New Patient") {
             @Override
             public boolean isVisible() {
-                return patientModel.getObject().isEditableDemographics();
+                return patientModel.getObject().hasValidId();
             }
         });
 
@@ -367,7 +367,7 @@ public class DemographicsPanel extends Panel {
         Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
             @Override
             public boolean isVisible() {
-                return model.getObject().isLink();
+                return model.getObject().isLinked();
 
             }
         };
@@ -375,7 +375,7 @@ public class DemographicsPanel extends Panel {
         Label sourceUnitCode = new Label("sourceUnitCode", form.getModelObject().getUnitcode()) {
             @Override
             public boolean isVisible() {
-                return model.getObject().isLink();
+                return model.getObject().isLinked();
 
             }
         };
@@ -513,7 +513,7 @@ public class DemographicsPanel extends Panel {
 
         form.add(ajaxSubmitLinkBottom);
 
-        if (!model.getObject().isEditableDemographics()) {
+        if (!model.getObject().isLinked()) {
             for (Component component : nonEditableComponents) {
                 component.setEnabled(false);
             }

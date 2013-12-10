@@ -504,18 +504,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setGeneric(resultSet.getBoolean("generic"));
             patient.setEthnicGp(resultSet.getString("ethnicGp"));
             patient.setSourceType(resultSet.getString("sourceType"));
-
             patient.setPatientLinkId(resultSet.getLong("patientLinkId"));
-
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
-
-            if (patient.getSourceType().equals(SourceType.RADAR.getName())) {
-                patient.setEditableDemographics(true);
-            } else {
-                patient.setEditableDemographics(false);
-            }
-
-
 
             return patient;
         }

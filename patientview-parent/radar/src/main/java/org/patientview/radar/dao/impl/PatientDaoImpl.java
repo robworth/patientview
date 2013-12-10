@@ -68,12 +68,13 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
     .usingGeneratedKeyColumns("id")
     .usingColumns(
             "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
-                    "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
-                    "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
-                    "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
-                    "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
-                    "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-                    "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType");
+            "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
+            "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
+            "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
+            "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
+            "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
+            "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
+            "patientLinkId");
     }
 
     public void afterPropertiesSet() throws Exception {
@@ -307,7 +308,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("POSTCODE", patient.getPostcode());
                     put("postcodeOld", patient.getPostcodeOld());
                     put("CONSENT", patient.isConsent());
-                    put("dateBapnReg", null); // Todo: Fix
+                    put("dateBapnReg", null);
                     put("consNeph", patient.getClinician() != null ? patient.getClinician().getId(): null);
                     put("unitcode", patient.getUnitcode() != null ? patient.getUnitcode()
                             : patient.getRenalUnit().getUnitCode());
@@ -429,10 +430,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
             patient.setGenericDiagnosisModel(getGenericDiagnosis(resultSet.getString("genericDiagnosis"),
                     patient.getDiseaseGroup()));
-
-            if (patient.getSourceType() != null && patient.getSourceType().equals(SourceType.RADAR.getName())) {
-                patient.setEditableDemographics(true);
-            }
 
             return patient;
         }

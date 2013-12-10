@@ -14,6 +14,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
+import org.patientview.radar.exception.PatientLinkException;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
@@ -62,7 +63,7 @@ public class SelectPatientPanel extends Panel {
     }
 
 
-    private Form createSelectionForm()  {
+    private Form createSelectionForm() {
 
         // Form that displays the potential patient records to link with from the Patient table
 
@@ -74,18 +75,22 @@ public class SelectPatientPanel extends Panel {
 
         Form<?> form = new Form<Patient>("patientSelectionForm") {
             @Override
-            protected void onSubmit() {
+            protected void onSubmit()  {
 
-                Patient patient = (Patient) group.getDefaultModelObject();
+                Patient sourcePatient = (Patient) group.getDefaultModelObject();
+                // Requery the patient object to include all the fields from the patient table
+                try {
+                    Patient linkedPatient = patientManager.createLinkPatient(
+                            patientManager.getById(sourcePatient.getId()));
 
-                patient = patientManager.getById(patient.getId());
-                patient.setLink(true);
+                    linkedPatient.setDiseaseGroup(patientModel.getDiseaseGroup());
 
-                if (patient.getDiseaseGroup() == null) {
-                    patient.setDiseaseGroup(patientModel.getDiseaseGroup());
+                    setResponsePage(RadarUtility.getDiseasePage(linkedPatient, this.getPage().getPageParameters()));
+
+                } catch (PatientLinkException ple)  {
+                    LOGGER.error("Error creating a link patient", ple);
                 }
 
-                setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
             }
         };

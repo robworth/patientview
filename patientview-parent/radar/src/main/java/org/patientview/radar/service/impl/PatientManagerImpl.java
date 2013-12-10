@@ -8,6 +8,7 @@ import org.patientview.model.enums.SourceType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.PatientDao;
+import org.patientview.radar.exception.PatientLinkException;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.util.RadarUtility;
 import org.springframework.util.StringUtils;
@@ -51,20 +52,28 @@ public class PatientManagerImpl implements PatientManager {
         return patient;
     }
 
-    // Before save we strip the duplicated fields away, then after save we repopulate from the source
+    /**
+     * This manages four saves. On create it will populate the radar number with the patient id field
+     *
+     * 1) A linked patient save where we strip fields out of the update statement and then re populate
+     * 2) A linked patient create
+     * 3) A unlinked patient save
+     * 4) A unlinked patient create
+     *
+     * @param patient
+     */
     public void save(final Patient patient){
 
         // If this is a link record then we need to stop any duplicated data being saved
-        if (patientDao.getByPatientLinkId(patient.getId()) != null) {
+        if (patient.isLinked()) {
             RadarUtility.cleanLinkRecord(patient);
         }
 
         patientDao.save(patient);
 
         // We have to re-populate fields after they are cleaned from the save, only for link patients
-        Patient sourcePatient = patientDao.getByPatientLinkId(patient.getId());
-        if (sourcePatient != null) {
-            RadarUtility.overRideLinkRecord(sourcePatient, patient);
+        if (patient.isLinked()) {
+            RadarUtility.overRideLinkRecord(patientDao.getById(patient.getPatientLinkId()), patient);
 
         }
 
@@ -116,6 +125,44 @@ public class PatientManagerImpl implements PatientManager {
         patients.addAll(linkedPatients.values());
 
     }
+
+
+    /**
+     * Method to create a Patient record linked to the original thats is ready for registration
+     *
+     * @param source
+     * @return
+     * @throws PatientLinkException
+     */
+    public Patient createLinkPatient(Patient source) throws PatientLinkException {
+
+        // Merge a new patient record with the source to create the new link record
+        if (!source.hasValidId()) {
+            throw new PatientLinkException("This has to be a valid source record");
+        }
+
+        Patient target = new Patient();
+
+        target.setNhsno(source.getNhsno());
+        target.setPatientLinkId(source.getId());
+        target.setForename(source.getForename());
+        target.setSurname(source.getSurname());
+        target.setDob(source.getDob());
+        target.setAddress1(source.getAddress1());
+        target.setAddress2(source.getAddress2());
+        target.setAddress3(source.getAddress3());
+        target.setAddress4(source.getAddress4());
+        target.setPostcode(source.getPostcode());
+        target.setSex(source.getSex());
+        target.setTelephone1(source.getTelephone1());
+        target.setHospitalnumber(source.getHospitalnumber());
+
+
+        return target;
+
+
+    }
+
 
     /**
      * Resolve a two way link.
@@ -180,5 +227,6 @@ public class PatientManagerImpl implements PatientManager {
     public void setPatientDao(PatientDao patientDao) {
         this.patientDao = patientDao;
     }
+
 
 }

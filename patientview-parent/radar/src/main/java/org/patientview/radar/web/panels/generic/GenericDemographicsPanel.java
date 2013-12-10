@@ -134,6 +134,7 @@ public class GenericDemographicsPanel extends Panel {
         Form<Patient> form = new Form<Patient>("form", new CompoundPropertyModel(model)) {
             @Override
             protected void onSubmit() {
+
                 Patient patient = getModel().getObject();
 
                 // make sure diagnosis date is after dob
@@ -143,11 +144,16 @@ public class GenericDemographicsPanel extends Panel {
                             .error("Your diagnosis date cannot be before your date of birth");
                 }
 
+                // Leaving this in, saved to the DB table
                 patient.setGeneric(true);
                 patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
-
+                     /** At this point we either have
+                      1) A new patient we would like to register
+                      2) A link patient we would like to register
+                      3) An existing linked patient we would like to update changes to the Patient table
+                      4) An existing patient we would like to update changes to the Patient table **/
                      userManager.savePatientUser(patient);
 
                 } catch (RegisterException re) {
@@ -157,7 +163,7 @@ public class GenericDemographicsPanel extends Panel {
                     error(message);
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
-                    LOGGER.error("{}, message {}", message, e.getMessage());
+                    LOGGER.error("Unknown error", e);
                     error(message);
                 }
             }
@@ -268,7 +274,7 @@ public class GenericDemographicsPanel extends Panel {
         DropDownChoice addIdType = null;
 
         // Link patients should not be able to add hospital numbers
-        if (patient.isLink()) {
+        if (patient.isLinked()) {
             addIdType =
                 new DropDownChoice("idType", Arrays.asList(IdType.HOSPITAL_NUMBER,
                         IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
@@ -415,7 +421,7 @@ public class GenericDemographicsPanel extends Panel {
         Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
             @Override
             public boolean isVisible() {
-                return model.getObject().isLink();
+                return model.getObject().isLinked();
 
             }
         };
@@ -423,7 +429,7 @@ public class GenericDemographicsPanel extends Panel {
         Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) {
             @Override
             public boolean isVisible() {
-                return model.getObject().isLink();
+                return model.getObject().isLinked();
 
             }
         };
@@ -600,7 +606,7 @@ public class GenericDemographicsPanel extends Panel {
         form.add(ajaxSubmitLinkTop);
         form.add(ajaxSubmitLinkBottom);
 
-        if (!patient.isEditableDemographics()) {
+        if (patient.isLinked()) {
             for (Component component : nonEditableComponents) {
                 component.setEnabled(false);
             }
