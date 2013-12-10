@@ -364,10 +364,6 @@ public class DemographicsPanel extends Panel {
                 new ChoiceRenderer<Status>("abbreviation", "id")));
 
         // Consultant and renal unit
-        final IModel<String> centreNumber = new Model<String>();
-        Centre renalUnitSelected = form.getModelObject().getRenalUnit();
-        centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getUnitCode() : null);
-
         Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
             @Override
             public boolean isVisible() {
@@ -385,7 +381,7 @@ public class DemographicsPanel extends Panel {
         };
         form.add(sourceUnitCodeLabel, sourceUnitCode);
 
-        final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
+        final ClinicianDropDown clinician = new ClinicianDropDown("clinician", user, form.getModelObject());
         form.add(clinician);
 
         DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, form.getModelObject());
@@ -398,7 +394,7 @@ public class DemographicsPanel extends Panel {
                 protected void onUpdate(AjaxRequestTarget target) {
                     Patient patient = model.getObject();
                     if (patient != null) {
-                        centreNumber.setObject(patient.getRenalUnit() != null ?
+                        clinician.updateCentre(patient.getRenalUnit() != null ?
                                 patient.getRenalUnit().getUnitCode() :
                                 null);
                     }
