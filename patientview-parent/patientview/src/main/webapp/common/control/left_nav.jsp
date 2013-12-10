@@ -45,15 +45,15 @@
             </logic:present>
 
             <logic:present role="superadmin" >
-                <li><html:link action="/control/radarGroupDisplay">
-                    <logic:present specialty="renal">RaDaR Groups</logic:present>
-                </html:link></li>
+                <logic:present specialty="renal"><li><html:link action="/control/radarGroupDisplay">
+                        RaDaR Groups
+                    </html:link></li>
+                </logic:present>
             </logic:present>
 
             <logic:present role="superadmin,unitadmin" containSourceType="renalunit">
                 <li><html:link action="/control/unitDisplay">
-                    <logic:present specialty="renal">Renal Units</logic:present>
-                    <logic:present specialty="ibd">IBD Units</logic:present>
+                    Units
                 </html:link></li>
                 <li class="divider"></li>
                 <li><html:link action="/control/unitAdminAddInput">Add Unit User</html:link></li>
