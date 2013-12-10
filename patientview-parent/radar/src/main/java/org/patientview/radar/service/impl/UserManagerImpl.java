@@ -284,9 +284,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         newPatient.setNhsno(patient.getNhsno());
         newPatient.setDiagnosisDate(patient.getDiagnosisDate());
         newPatient.setLink(true);
-        if (patient.getDiseaseGroup() != null) {
-            newPatient.setUnitcode(patient.getDiseaseGroup().getId());
-        }
+
+        newPatient.setUnitcode(patient.getUnitcode());
 
         return RadarUtility.mergePatientRecords(patient, newPatient);
     }

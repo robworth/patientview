@@ -51,7 +51,7 @@ public class PatientManagerImpl implements PatientManager {
         return patient;
     }
 
-
+    // Before save we strip the duplicated fields away, then after save we repopulate from the source
     public void save(final Patient patient){
 
         // If this is a link record then we need to stop any duplicated data being saved
