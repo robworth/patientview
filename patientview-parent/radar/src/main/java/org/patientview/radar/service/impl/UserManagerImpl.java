@@ -285,10 +285,10 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         newPatient.setDiagnosisDate(patient.getDiagnosisDate());
         newPatient.setLink(true);
 
-        if (patient.getRenalUnit() != null ) {
+        if (patient.getRenalUnit() != null) {
             newPatient.setUnitcode(patient.getRenalUnit().getUnitCode());
         } else {
-            newPatient.setUnitcode(patient.getUnitcode());
+            throw new PatientLinkException("Cannot create patient link record without a patient renal unit");
         }
 
         return RadarUtility.mergePatientRecords(patient, newPatient);
