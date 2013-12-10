@@ -3,7 +3,6 @@ package org.patientview.radar.service.impl;
 import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.JoinRequestDao;
-import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.exception.JoinCreationException;
 import org.patientview.radar.exception.PatientLinkException;
@@ -27,7 +26,6 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.EmailManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
-import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -57,7 +55,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private UserDao userDao;
     private JoinRequestDao joinRequestDao;
     private PatientManager patientManager;
-    private PatientDao patientDao;
 
 
     public AdminUser getAdminUser(String email) {
@@ -117,42 +114,14 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    // Function to contain all the workarounds for creating a link patient
-    private Patient setupLinkPatient(Patient patient) throws PatientLinkException {
-        // Store the patient Id so it can be requeryed after the merge
-        Long patientId = patient.getId();
-
-        // Create the link record from the merge
-        Patient linkPatient = this.createLinkPatientRecord(patient);
-        patientDao.save(linkPatient);
-
-        // requery and save the original patient with the link id
-        patient = patientDao.getById(patientId);
-        patient.setPatientLinkId(linkPatient.getId());
-        patientDao.save(patient);
-
-        return linkPatient;
-
-    }
 
     // This would have been much easier to set the patientlinkid on the link record instead of the save
     private PatientUser registerPatientUser(Patient patient) throws UserCreationException, UserMappingException,
             UserRoleException, PatientLinkException, JoinCreationException {
 
-
-        PatientUser patientUser = null;
-
-        // If the patient is new then we save the patient record otherwise we have to link it
-        if (!patient.hasValidId()) {
-            patientManager.save(patient);
-        } else {
-            patient = setupLinkPatient(patient);
-        }
-
-
-        //-- Patient View Tables
+        //-------- Patient View Tables ------//
         // Create the user record
-        patientUser = createPatientViewUser(patient);
+        PatientUser patientUser = createPatientViewUser(patient);
 
         // Create the patient mapping in patient view so patient view knows the user is a patient
         userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
@@ -161,15 +130,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // Switch from patient view to Radar
         patientUser.setUserId(patientUser.getId());
 
-        // Finally
-        patientManager.save(patient);
-
-
-        //-- Radar Tables
+        //---------- Radar Tables -----------//
         patientUser = createRadarUser(patientUser, patient);
         userDao.saveUserMapping(patientUser);
 
-         // We've created a new user so we need to create a join request
+        // We've created a new user so we need to create a join request
         createJoinRequest(patient);
 
 
@@ -190,17 +155,22 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return patientUser;
     }
 
-    // This needs splitting up but we use the same button for two different bit of functionality
+    /**
+     * Entry point to save or register a patient from the Demographics screen
+     *
+     * @param patient
+     * @return
+     * @throws RegisterException
+     * @throws Exception
+     */
     public PatientUser savePatientUser(Patient patient) throws RegisterException, Exception {
 
         try {
 
-            // Check of the patient needs registering first otherwise just save the patient record
-            if ((patient.isEditableDemographics() || patient.isLink())
-                    && !userExistsInPatientView(patient.getNhsno())) {
-                return registerPatientUser(patient);
-            }  else {
-                patientManager.save(patient);
+            patientManager.save(patient);
+
+            if (!userExistsInPatientView(patient.getNhsno())) {
+                registerPatientUser(patient);
             }
 
         }  catch (UserCreationException  uce) {
@@ -273,25 +243,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new JoinCreationException("Error creating join request", e);
         }
 
-    }
-
-
-
-    // create the new patient record and link entity
-    private Patient createLinkPatientRecord(Patient patient) throws PatientLinkException {
-
-        Patient newPatient = new Patient();
-        newPatient.setNhsno(patient.getNhsno());
-        newPatient.setDiagnosisDate(patient.getDiagnosisDate());
-        newPatient.setLink(true);
-
-        if (patient.getRenalUnit() != null) {
-            newPatient.setUnitcode(patient.getRenalUnit().getUnitCode());
-        } else {
-            throw new PatientLinkException("Cannot create patient link record without a patient renal unit");
-        }
-
-        return RadarUtility.mergePatientRecords(patient, newPatient);
     }
 
 
@@ -532,8 +483,5 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         this.patientManager = patientManager;
     }
 
-    public void setPatientDao(PatientDao patientDao) {
-        this.patientDao = patientDao;
-    }
 }
 

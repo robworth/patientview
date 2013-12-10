@@ -116,13 +116,12 @@ public class UserManagerTest extends TestPvDbSchema {
 
         // Create the link radarPatient
         String linkNhsNo = "897897898";
-        Patient pvPatient = createDemographics("The", "Link", centre, linkNhsNo, "890789@ajkhjk.com", SourceType.PATIENT_VIEW);
+        Patient pvPatient = createDemographics("Test", "Link", centre, linkNhsNo, "890789@ajkhjk.com", SourceType.PATIENT_VIEW);
         patientManager.save(pvPatient);
 
         // Set the user to a Patient View user
         testDataHelper.setPatientSource(pvPatient.getId(), SourceType.PATIENT_VIEW);
 
-        pvPatient.setLink(true);
         userManager.savePatientUser(pvPatient);
 
         List<Patient> patients = patientManager.getPatientByNhsNumber(linkNhsNo);
@@ -147,10 +146,7 @@ public class UserManagerTest extends TestPvDbSchema {
         patient.setRenalUnit(centre);
         patient.setEmailAddress(email);
         patient.setDiseaseGroup(diseaseGroup);
-        patient.setEditableDemographics(true);
         patient.setSourceType(sourceType.getName());
-        //patientManager.save(patient);
-        //assertNotNull(patient.getId());
         return patient;
     }
 
