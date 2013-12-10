@@ -84,7 +84,7 @@ public class PatientManagerImpl implements PatientManager {
             if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
                 Patient linkedPatient = RadarUtility.overRideLinkRecord(patient,
                         patientDao.getById(patient.getPatientLinkId()));
-                linkedPatient.setSurname(linkedPatient.getSurname());
+                linkedPatient.setSurname("(LINKED)" + linkedPatient.getSurname());
                 linkedPatients.put(patient.getPatientLinkId(), linkedPatient);
                 iterator.remove();
             }
