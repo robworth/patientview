@@ -4,19 +4,14 @@ import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
-import org.patientview.model.enums.SourceType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.exception.PatientLinkException;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.util.RadarUtility;
-import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created for the new functionality with using just the on patient table. Going forward this can be then merged with
@@ -41,14 +36,8 @@ public class PatientManagerImpl implements PatientManager {
 
     public Patient getPatientByRadarNumber(Long radarNumber) {
 
-        Patient patient = patientDao.getPatientsByRadarNumber(radarNumber);
-
-        if (patient == null) {
-            patient = patientDao.getById(radarNumber);
-        }
-
+        Patient patient = patientDao.getById(radarNumber);
         patient = resolveLinkRecord(patient);
-
         return patient;
     }
 
@@ -82,50 +71,18 @@ public class PatientManagerImpl implements PatientManager {
     public List<Patient> getPatientsByUnitCode(List<String> unitCodes) {
 
         List<Patient> patients = patientDao.getPatientsByUnitCode(unitCodes);
-        Map<Long, Patient> linkedPatients = new HashMap<Long, Patient>();
 
-
-        Iterator<Patient> iterator = patients.iterator();
-        while (iterator.hasNext()) {
-            Patient patient = iterator.next();
-
-            // Need to override linked patients
-            if (patient.getPatientLinkId() != null && patient.getPatientLinkId() > 0) {
-                Patient linkedPatient = RadarUtility.overRideLinkRecord(patient,
-                        patientDao.getById(patient.getPatientLinkId()));
-                linkedPatient.setSurname("(LINKED)" + linkedPatient.getSurname());
-                linkedPatients.put(patient.getPatientLinkId(), linkedPatient);
-                iterator.remove();
+        for (Patient patient : patients) {
+            // Need to rewrite linked patient with populated version
+            if (patient.isLinked()) {
+                Patient sourcePatient = patientDao.getById(patient.getPatientLinkId());
+                RadarUtility.overRideLinkRecord(sourcePatient, patient);
+                patient.setSurname("(LINKED) " + sourcePatient.getSurname());
             }
         }
-
-        resolveLinkedPatients(patients, linkedPatients);
 
         return patients;
     }
-
-    // This removes the patient view patients and replaces the linked patient with fully loaded merged ones.
-    private void resolveLinkedPatients(List<Patient> patients, Map<Long, Patient> linkedPatients) {
-
-        Iterator<Patient> iterator = patients.iterator();
-        while (iterator.hasNext()) {
-            Patient patient = iterator.next();
-
-            if (!patient.getSourceType().equals(SourceType.RADAR.getName())) {
-                iterator.remove();
-            }
-
-            // There is a better way
-            if (StringUtils.isEmpty(patient.getSurname())) {
-                    iterator.remove();
-            }
-
-        }
-
-        patients.addAll(linkedPatients.values());
-
-    }
-
 
     /**
      * Method to create a Patient record linked to the original thats is ready for registration
@@ -165,41 +122,27 @@ public class PatientManagerImpl implements PatientManager {
 
 
     /**
-     * Resolve a two way link.
+     * Resolve a patient link.
      *
-     * 1) If it's a source record them merge the link record on top of it
-     * 2) If it's a link record over write the standard patient fields.
+     * 1) If it's a link record - get the source linked fields
      *
      * @param patient
      * @return
      */
-    private Patient resolveLinkRecord(final Patient patient){
+    private Patient resolveLinkRecord(final Patient patient) {
 
-        if (patient != null) {
-
-            Long patientLinkId = patient.getPatientLinkId();
-
-            if (patientLinkId == null || patientLinkId == 0) {
-
-                Patient source = patientDao.getByPatientLinkId(patient.getId());
-                if (source != null) {
-                    return RadarUtility.overRideLinkRecord(source, patient);
-                } else {
-                    return patient;
-                }
+        if (patient != null && patient.isLinked()) {
+            Patient source = patientDao.getById(patient.getPatientLinkId());
+            if (source != null) {
+                RadarUtility.overRideLinkRecord(source, patient);
+                return patient;
             } else {
-
-                Patient linkPatient = patientDao.getById(patientLinkId);
-                if (linkPatient == null) {
-                    return RadarUtility.mergePatientRecords(patient, linkPatient);
-                } else {
-                    return patient;
-                }
-
+                throw new RuntimeException("Source patient does not exist when trying to resolveLinkRecord, id: "
+                        + patient.getPatientLinkId());
             }
-        } else {
-            return null;
         }
+
+        return null;
     }
 
 

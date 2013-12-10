@@ -169,7 +169,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
             patientManager.save(patient);
 
-            if (userExistsInPatientView(patient.getNhsno())) {
+            if (!userExistsInPatientView(patient.getNhsno())) {
                 registerPatientUser(patient);
             }
 

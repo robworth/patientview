@@ -93,9 +93,7 @@ public class RadarUtility {
     }
 
     // Make sure the link record displays data from the
-    public static Patient overRideLinkRecord(Patient source, Patient link) {
-
-
+    public static void overRideLinkRecord(Patient source, Patient link) {
         link.setForename(source.getForename());
         link.setSurname(source.getSurname());
         link.setDob(source.getDob());
@@ -107,9 +105,6 @@ public class RadarUtility {
         link.setSex(source.getSex());
         link.setTelephone1(source.getTelephone1());
         link.setHospitalnumber(source.getHospitalnumber());
-
-        return link;
-
     }
 
 

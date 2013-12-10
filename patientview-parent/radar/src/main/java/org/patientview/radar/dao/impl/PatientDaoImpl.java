@@ -131,39 +131,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         return patient;
     }
 
-    public Patient getByPatientLinkId(final Long patientLinkId) {
-
-        Patient patient = null;
-
-        try {
-            StringBuilder query = new StringBuilder();
-            query.append("SELECT  * ");
-            query.append("FROM    patient ");
-            query.append("WHERE   patientLinkId = ? ");
-
-            patient = jdbcTemplate.queryForObject(query.toString(), new Object[]{patientLinkId},
-                    new PatientRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Cannot find link patient with patient link id {}", patientLinkId);
-        }
-        return patient;
-    }
-
-    public Patient getPatientsByRadarNumber(final Long radarNumber) {
-
-        Patient patient = null;
-
-        try {
-            patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE radarNo = ?",
-                    new Object[]{radarNumber}, new PatientRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            // Can't find the patient by radar number try the normal key
-           LOGGER.debug("Cannot find patient with radar no {}", radarNumber);
-        }
-
-        return patient;
-    }
-
     private class PatientSearchMapper implements RowMapper<Patient> {
 
             public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -357,9 +324,9 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         query.append("AND    m.unitcode IN (");
         query.append(unitCodeValues);
         query.append(")");
-        query.append("AND    (p.sourceType = '");
+        query.append("AND    p.sourceType = '");
         query.append(SourceType.RADAR.getName());
-        query.append("' OR p.patientLinkId IS NOT NULL)");
+        query.append("'");
 
         if (StringUtils.isNotEmpty(unitCodeValues)) {
             return jdbcTemplate.query(query.toString(), new PatientRowMapper());
