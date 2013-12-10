@@ -134,7 +134,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser = createRadarUser(patientUser, patient);
         userDao.saveUserMapping(patientUser);
 
-         // We've created a new user so we need to create a join request
+        // We've created a new user so we need to create a join request
         createJoinRequest(patient);
 
 
