@@ -95,7 +95,7 @@ public class UserManagerTest extends TestPvDbSchema {
         // create a demographic
         Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", SourceType.RADAR);
 
-        userManager.savePatientUser(patient);
+        userManager.addPatientUserOrUpdatePatient(patient);
 
         // Try and register - will throw an exception as no matching radar number
         patientUser = userManager.getPatientUser(patient.getEmailAddress());
@@ -122,7 +122,7 @@ public class UserManagerTest extends TestPvDbSchema {
         // Set the user to a Patient View user
         testDataHelper.setPatientSource(pvPatient.getId(), SourceType.PATIENT_VIEW);
 
-        userManager.savePatientUser(pvPatient);
+        userManager.addPatientUserOrUpdatePatient(pvPatient);
 
         List<Patient> patients = patientManager.getPatientByNhsNumber(linkNhsNo);
 

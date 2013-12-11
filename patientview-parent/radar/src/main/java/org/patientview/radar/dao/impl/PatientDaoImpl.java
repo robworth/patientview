@@ -2,7 +2,6 @@ package org.patientview.radar.dao.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
@@ -371,7 +370,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             // Not sure on the why this field is called this
             patient.setClinician(getClinician(resultSet.getLong("consNeph")));
             patient.setUnitcode(resultSet.getString("unitCode"));
-            patient.setRenalUnit(getCentre(patient.getNhsno()));
+            patient.setRenalUnit(utilityDao.getCentre(patient.getUnitcode()));
             patient.setEmailAddress(resultSet.getString("emailAddress"));
             patient.setTelephone1(resultSet.getString("telephone1"));
             patient.setTelephone2(resultSet.getString("telephone2"));
@@ -478,17 +477,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
         return null;
 
-    }
-
-    private Centre getCentre(String nhsNo) {
-
-        if (StringUtils.isNotEmpty(nhsNo)) {
-            List<Centre> centres = utilityDao.getRenalUnitCentre(nhsNo);
-            if (CollectionUtils.isNotEmpty(centres)) {
-                return centres.get(0);
-            }
-        }
-        return null;
     }
 
     private Status getStatus(Long statusId) {

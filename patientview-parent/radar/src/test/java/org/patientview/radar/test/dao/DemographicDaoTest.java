@@ -205,7 +205,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         }
         patient.setRenalUnit(centre);
         patient.setDiseaseGroup(diseaseGroup);
-        userManager.savePatientUser(patient);
+        userManager.addPatientUserOrUpdatePatient(patient);
         assertNotNull(patient.getId());
         return patient;
     }

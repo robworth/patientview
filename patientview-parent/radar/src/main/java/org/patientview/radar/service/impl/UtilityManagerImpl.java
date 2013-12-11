@@ -87,6 +87,10 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getCentre(id);
     }
 
+    public Centre getCentre(String unitcode) {
+        return utilityDao.getCentre(unitcode);
+    }
+
     public List<Centre> getCentres() {
         return utilityDao.getCentres();
     }

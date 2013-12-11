@@ -197,6 +197,9 @@ public class Patient extends BaseModel {
     private Long patientLinkId;
 
     @Transient
+    private String patientLinkUnitCode;
+
+    @Transient
     private Clinician clinician;
 
     @Transient
@@ -836,6 +839,14 @@ public class Patient extends BaseModel {
 
     public boolean isLinked() {
         return patientLinkId != null && patientLinkId > 0;
+    }
+
+    public String getPatientLinkUnitCode() {
+        return patientLinkUnitCode;
+    }
+
+    public void setPatientLinkUnitCode(String patientLinkUnitCode) {
+        this.patientLinkUnitCode = patientLinkUnitCode;
     }
 }
 

@@ -69,7 +69,7 @@ public class RoleHelper {
             centre.setUnitCode(unitName);
             patient.setRenalUnit(centre);
 
-            patientUsers.add(userManager.savePatientUser(patient));
+            patientUsers.add(userManager.addPatientUserOrUpdatePatient(patient));
         }
         return patientUsers;
     }
@@ -127,7 +127,7 @@ public class RoleHelper {
         centre.setUnitCode(unitName);
         patient.setRenalUnit(centre);
 
-        //userManager.savePatientUser(patient);
+        //userManager.addPatientUserOrUpdatePatient(patient);
 
         return patient;
 

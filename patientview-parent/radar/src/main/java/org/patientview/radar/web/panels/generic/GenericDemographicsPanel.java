@@ -154,7 +154,7 @@ public class GenericDemographicsPanel extends Panel {
                       2) A link patient we would like to register
                       3) An existing linked patient we would like to update changes to the Patient table
                       4) An existing patient we would like to update changes to the Patient table **/
-                     userManager.savePatientUser(patient);
+                     userManager.addPatientUserOrUpdatePatient(patient);
 
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception", re);
@@ -426,7 +426,8 @@ public class GenericDemographicsPanel extends Panel {
             }
         };
 
-        Label sourceUnitCode = new Label("sourceUnitCode", patient.getUnitcode()) {
+        Label sourceUnitCode = new Label("sourceUnitCode",
+                utilityManager.getCentre(patient.getPatientLinkUnitCode()).getName()) {
             @Override
             public boolean isVisible() {
                 return model.getObject().isLinked();

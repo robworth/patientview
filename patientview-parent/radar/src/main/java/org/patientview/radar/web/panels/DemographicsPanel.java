@@ -123,7 +123,7 @@ public class DemographicsPanel extends Panel {
                     patientModel.setObject(patient);
                     patientModel.getObject().setDateReg(new Date());
 
-                    userManager.savePatientUser(patient);
+                    userManager.addPatientUserOrUpdatePatient(patient);
 
 
                     patientCallBack.updateModel(patient.getId());

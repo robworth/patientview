@@ -62,7 +62,7 @@ public class PatientManagerImpl implements PatientManager {
 
         // We have to re-populate fields after they are cleaned from the save, only for link patients
         if (patient.isLinked()) {
-            RadarUtility.overRideLinkRecord(patientDao.getById(patient.getPatientLinkId()), patient);
+            overRideLinkRecord(patientDao.getById(patient.getPatientLinkId()), patient);
 
         }
 
@@ -76,7 +76,7 @@ public class PatientManagerImpl implements PatientManager {
             // Need to rewrite linked patient with populated version
             if (patient.isLinked()) {
                 Patient sourcePatient = patientDao.getById(patient.getPatientLinkId());
-                RadarUtility.overRideLinkRecord(sourcePatient, patient);
+                overRideLinkRecord(sourcePatient, patient);
                 patient.setSurname("(LINKED) " + sourcePatient.getSurname());
             }
         }
@@ -85,7 +85,7 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     /**
-     * Method to create a Patient record linked to the original thats is ready for registration
+     * Method to create a Patient record linked to the original that is ready for registration
      *
      * @param source
      * @return
@@ -114,10 +114,27 @@ public class PatientManagerImpl implements PatientManager {
         target.setTelephone1(source.getTelephone1());
         target.setHospitalnumber(source.getHospitalnumber());
 
-
         return target;
+    }
 
-
+    /**
+     * Replace linked fields on the link patient from the source patient
+     * @param source the original PV record that is linked to
+     * @param link the radar create record that linked to the source
+     */
+    public void overRideLinkRecord(Patient source, Patient link) {
+        link.setForename(source.getForename());
+        link.setSurname(source.getSurname());
+        link.setDob(source.getDob());
+        link.setAddress1(source.getAddress1());
+        link.setAddress2(source.getAddress2());
+        link.setAddress3(source.getAddress3());
+        link.setAddress4(source.getAddress4());
+        link.setPostcode(source.getPostcode());
+        link.setSex(source.getSex());
+        link.setTelephone1(source.getTelephone1());
+        link.setHospitalnumber(source.getHospitalnumber());
+        link.setPatientLinkUnitCode(source.getUnitcode());
     }
 
 
@@ -136,7 +153,7 @@ public class PatientManagerImpl implements PatientManager {
         if (patient != null && patient.isLinked()) {
             Patient source = patientDao.getById(patient.getPatientLinkId());
             if (source != null) {
-                RadarUtility.overRideLinkRecord(source, patient);
+                overRideLinkRecord(source, patient);
                 return patient;
             } else {
                 throw new RuntimeException("Source patient does not exist when trying to resolveLinkRecord, id: "

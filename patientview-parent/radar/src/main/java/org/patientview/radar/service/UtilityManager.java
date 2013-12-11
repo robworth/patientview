@@ -23,6 +23,8 @@ public interface UtilityManager {
 
     Centre getCentre(long id);
 
+    Centre getCentre(String unitcode);
+
     List<Centre> getCentres();
 
     Consultant getConsultant(long id);
