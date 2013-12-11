@@ -32,7 +32,9 @@ public class RadarUtility {
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
 
-
+    private static final String[] LENGTH_8_DATE_FORMATS = new String[]{DATE_FORMAT_0, DATE_FORMAT_1, DATE_FORMAT_2,
+            DATE_FORMAT_3};
+    private static final String[] LENGTH_10_DATE_FORMATS = new String[] {DATE_FORMAT};
 
     /**
      * @param event1Start cannot be null
@@ -246,6 +248,7 @@ public class RadarUtility {
     /**
      * Class to return the date from the database text field representation of a date.
      *
+     *
      * @param dateField
      * @return
      */
@@ -253,12 +256,17 @@ public class RadarUtility {
 
         if (StringUtils.hasText(dateField)) {
 
-            // todo handle the PV format YYYY-MM-dd and also teh radar format dd-MM-yy, then try the others
+            // select the dat mask of the length of the field
+            String[] dataFormats;
+            if (dateField.length() == 8) {
+                dataFormats = LENGTH_8_DATE_FORMATS;
+            } else {
+                dataFormats = LENGTH_10_DATE_FORMATS;
+            }
 
             Date dateOfBirth = null;
             // It seems that the strings in the DB have different date formats, nice.
-            for (String dateFormat : new String[]{DATE_FORMAT_0,
-                    DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
+            for (String dateFormat : dataFormats) {
                 try {
                     dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateField);
                     break;
