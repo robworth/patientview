@@ -94,7 +94,7 @@ public class PatientManagerImpl implements PatientManager {
     public Patient createLinkPatient(Patient source) throws PatientLinkException {
 
         // Merge a new patient record with the source to create the new link record
-        if (!source.hasValidId()) {
+        if (source == null || !source.hasValidId()) {
             throw new PatientLinkException("This has to be a valid source record");
         }
 
@@ -126,8 +126,10 @@ public class PatientManagerImpl implements PatientManager {
      *
      * 1) If it's a link record - get the source linked fields
      *
-     * @param patient
-     * @return
+     * Otherwise just return the patient object
+     *
+     * @param patient a potentially linked patient that may need resolving
+     * @return the same patient, but override the linked fields if it's a linked patient
      */
     private Patient resolveLinkRecord(final Patient patient) {
 
@@ -142,7 +144,7 @@ public class PatientManagerImpl implements PatientManager {
             }
         }
 
-        return null;
+        return patient;
     }
 
 
