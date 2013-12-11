@@ -69,7 +69,7 @@ public class RoleHelper {
             centre.setUnitCode(unitName);
             patient.setRenalUnit(centre);
 
-            patientUsers.add(userManager.savePatientUser(patient));
+            patientUsers.add(userManager.addPatientUserOrUpdatePatient(patient));
         }
         return patientUsers;
     }
@@ -118,7 +118,6 @@ public class RoleHelper {
         patient.setUnitcode(unitName);
         patient.setEmailAddress("test@test.com");
         patient.setSex("Male");
-        patient.setEditableDemographics(true);
 
         DiseaseGroup diseaseGroup = new DiseaseGroup();
         diseaseGroup.setId(diseaseName);
@@ -128,7 +127,7 @@ public class RoleHelper {
         centre.setUnitCode(unitName);
         patient.setRenalUnit(centre);
 
-        //userManager.savePatientUser(patient);
+        //userManager.addPatientUserOrUpdatePatient(patient);
 
         return patient;
 

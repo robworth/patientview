@@ -104,7 +104,7 @@ public class DemographicsPanel extends Panel {
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patientModel.getObject());
-        final IModel<Date> registrationHeaderModel = new Model<Date>(patientModel.getObject().getDateReg());
+        final IModel<Date> registrationHeaderModel = new Model<Date>(new Date());
         final IModel<Long> radarHeaderModel = new Model<Long>(patientModel.getObject().getRadarNo());
         final IModel<String> forenameHeaderModel = new Model<String>(patientModel.getObject().getForename());
         final IModel<String> surnameHeaderModel = new Model<String>(patientModel.getObject().getSurname());
@@ -123,7 +123,7 @@ public class DemographicsPanel extends Panel {
                     patientModel.setObject(patient);
                     patientModel.getObject().setDateReg(new Date());
 
-                    userManager.savePatientUser(patient);
+                    userManager.addPatientUserOrUpdatePatient(patient);
 
 
                     patientCallBack.updateModel(patient.getId());
@@ -188,7 +188,7 @@ public class DemographicsPanel extends Panel {
         form.add(new Label("addNewPatientLabel", "Add a New Patient") {
             @Override
             public boolean isVisible() {
-                return patientModel.getObject().isEditableDemographics();
+                return patientModel.getObject().hasValidId();
             }
         });
 
@@ -367,15 +367,19 @@ public class DemographicsPanel extends Panel {
         Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
             @Override
             public boolean isVisible() {
-                return model.getObject().isLink();
+                return model.getObject().isLinked();
 
             }
         };
 
-        Label sourceUnitCode = new Label("sourceUnitCode", form.getModelObject().getUnitcode()) {
+        String sourceUnitNameLabelValue = model.getObject().getPatientLinkUnitCode() != null
+                ? utilityManager.getCentre(model.getObject().getPatientLinkUnitCode()).getName() : "";
+
+        Label sourceUnitCode = new Label("sourceUnitCode", sourceUnitNameLabelValue)
+                 {
             @Override
             public boolean isVisible() {
-                return model.getObject().isLink();
+                return model.getObject().isLinked();
 
             }
         };
@@ -513,7 +517,7 @@ public class DemographicsPanel extends Panel {
 
         form.add(ajaxSubmitLinkBottom);
 
-        if (!model.getObject().isEditableDemographics()) {
+        if (model.getObject().isLinked()) {
             for (Component component : nonEditableComponents) {
                 component.setEnabled(false);
             }

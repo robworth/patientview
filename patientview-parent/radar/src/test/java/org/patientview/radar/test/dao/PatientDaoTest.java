@@ -7,7 +7,6 @@ import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.test.TestPvDbSchema;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
@@ -22,7 +21,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:test-context.xml"})
 public class PatientDaoTest extends TestPvDbSchema {
 
-    @Autowired
+    @Inject
     private PatientDao patientDao;
 
     @Inject

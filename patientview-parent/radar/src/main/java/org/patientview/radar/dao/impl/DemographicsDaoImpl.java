@@ -5,20 +5,17 @@ import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Patient;
-import org.patientview.model.PatientLink;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.DemographicsDao;
-import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
-import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -49,7 +46,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
-    private PatientLinkDao patientLinkDao;
     private UserDao userDao;
 
 
@@ -72,12 +68,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     }
 
     public void saveDemographics(final Patient patient) {
-
-        // If this is a link record then we need to start any duplicated data being saved
-        PatientLink patientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode());
-        if (patientLink != null) {
-            RadarUtility.cleanLinkRecord(patient);
-        }
 
         // If we have an ID then update, otherwise insert new and set the ID
         if (patient.hasValidId()) {
@@ -514,18 +504,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setGeneric(resultSet.getBoolean("generic"));
             patient.setEthnicGp(resultSet.getString("ethnicGp"));
             patient.setSourceType(resultSet.getString("sourceType"));
-
             patient.setPatientLinkId(resultSet.getLong("patientLinkId"));
-
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
-
-            if (patient.getSourceType().equals(SourceType.RADAR.getName())) {
-                patient.setEditableDemographics(true);
-            } else {
-                patient.setEditableDemographics(false);
-            }
-
-
 
             return patient;
         }
@@ -615,7 +595,4 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         this.userDao = userDao;
     }
 
-    public void setPatientLinkDao(PatientLinkDao patientLinkDao) {
-        this.patientLinkDao = patientLinkDao;
-    }
 }

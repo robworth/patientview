@@ -2,7 +2,6 @@ package org.patientview.radar.dao.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Ethnicity;
 import org.patientview.model.Patient;
@@ -68,12 +67,13 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
     .usingGeneratedKeyColumns("id")
     .usingColumns(
             "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
-                    "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
-                    "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
-                    "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
-                    "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
-                    "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-                    "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType");
+            "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
+            "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
+            "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
+            "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
+            "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
+            "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
+            "patientLinkId");
     }
 
     public void afterPropertiesSet() throws Exception {
@@ -125,39 +125,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         } catch (EmptyResultDataAccessException e) {
             // Can't find the patient by id
             LOGGER.debug("Cannot find patient with id {}", id);
-        }
-
-        return patient;
-    }
-
-    public Patient getByPatientLinkId(final Long patientLinkId) {
-
-        Patient patient = null;
-
-        try {
-            StringBuilder query = new StringBuilder();
-            query.append("SELECT  * ");
-            query.append("FROM    patient ");
-            query.append("WHERE   patientLinkId = ? ");
-
-            patient = jdbcTemplate.queryForObject(query.toString(), new Object[]{patientLinkId},
-                    new PatientRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Cannot find link patient with patient link id {}", patientLinkId);
-        }
-        return patient;
-    }
-
-    public Patient getPatientsByRadarNumber(final Long radarNumber) {
-
-        Patient patient = null;
-
-        try {
-            patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE radarNo = ?",
-                    new Object[]{radarNumber}, new PatientRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            // Can't find the patient by radar number try the normal key
-           LOGGER.debug("Cannot find patient with radar no {}", radarNumber);
         }
 
         return patient;
@@ -242,7 +209,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                             "radarConsentConfirmedByUserId = ?, " +
                             "generic = ?, " +
                             "patientLinkId = ? " +
-                            " WHERE radarNo = ?",
+                            " WHERE id = ?",
                     patient.getRrNo(),
                     patient.getDateReg(),
                     patient.getNhsno(),
@@ -307,7 +274,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("POSTCODE", patient.getPostcode());
                     put("postcodeOld", patient.getPostcodeOld());
                     put("CONSENT", patient.isConsent());
-                    put("dateBapnReg", null); // Todo: Fix
+                    put("dateBapnReg", null);
                     put("consNeph", patient.getClinician() != null ? patient.getClinician().getId(): null);
                     put("unitcode", patient.getUnitcode() != null ? patient.getUnitcode()
                             : patient.getRenalUnit().getUnitCode());
@@ -356,9 +323,9 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         query.append("AND    m.unitcode IN (");
         query.append(unitCodeValues);
         query.append(")");
-        query.append("AND    (p.sourceType = '");
+        query.append("AND    p.sourceType = '");
         query.append(SourceType.RADAR.getName());
-        query.append("' OR p.patientLinkId IS NOT NULL)");
+        query.append("'");
 
         if (StringUtils.isNotEmpty(unitCodeValues)) {
             return jdbcTemplate.query(query.toString(), new PatientRowMapper());
@@ -403,7 +370,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             // Not sure on the why this field is called this
             patient.setClinician(getClinician(resultSet.getLong("consNeph")));
             patient.setUnitcode(resultSet.getString("unitCode"));
-            patient.setRenalUnit(getCentre(patient.getNhsno()));
+            patient.setRenalUnit(utilityDao.getCentre(patient.getUnitcode()));
             patient.setEmailAddress(resultSet.getString("emailAddress"));
             patient.setTelephone1(resultSet.getString("telephone1"));
             patient.setTelephone2(resultSet.getString("telephone2"));
@@ -429,10 +396,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
             patient.setGenericDiagnosisModel(getGenericDiagnosis(resultSet.getString("genericDiagnosis"),
                     patient.getDiseaseGroup()));
-
-            if (patient.getSourceType().equals(SourceType.RADAR.getName())) {
-                patient.setEditableDemographics(true);
-            }
 
             return patient;
         }
@@ -514,17 +477,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
         return null;
 
-    }
-
-    private Centre getCentre(String nhsNo) {
-
-        if (StringUtils.isNotEmpty(nhsNo)) {
-            List<Centre> centres = utilityDao.getRenalUnitCentre(nhsNo);
-            if (CollectionUtils.isNotEmpty(centres)) {
-                return centres.get(0);
-            }
-        }
-        return null;
     }
 
     private Status getStatus(Long statusId) {

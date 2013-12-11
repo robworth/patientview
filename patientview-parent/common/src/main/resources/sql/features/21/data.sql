@@ -1,7 +1,3 @@
-ALTER TABLE patient drop UNIQUE KEY `nhsno`;
-
-ALTER TABLE patient ADD UNIQUE KEY `nhsno-unitcode-sourceType` (`nhsno`,`unitcode`, `sourceType`);
-
 
 /**
      Inserts data from tbl_demograpics to patient

@@ -12,6 +12,7 @@ import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
@@ -25,12 +26,15 @@ public class RadarUtility {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
 
+    private static final String DATE_FORMAT_0 = "dd-MM-yy";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String DATE_FORMAT_1 = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "dd-MM-y";
     private static final String DATE_FORMAT_3 = "dd/MM/y";
 
-
+    private static final String[] LENGTH_8_DATE_FORMATS = new String[]{DATE_FORMAT_0, DATE_FORMAT_1, DATE_FORMAT_2,
+            DATE_FORMAT_3};
+    private static final String[] LENGTH_10_DATE_FORMATS = new String[] {DATE_FORMAT};
 
     /**
      * @param event1Start cannot be null
@@ -91,78 +95,57 @@ public class RadarUtility {
         return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
     }
 
-    // Make sure the link record displays data from the
-    public static Patient overRideLinkRecord(Patient source, Patient link) {
-
-
-        link.setForename(source.getForename());
-        link.setSurname("(LINKED) " + source.getSurname());
-        link.setDob(source.getDob());
-        link.setAddress1(source.getAddress1());
-        link.setAddress2(source.getAddress2());
-        link.setAddress3(source.getAddress3());
-        link.setAddress4(source.getAddress4());
-        link.setPostcode(source.getPostcode());
-        link.setSex(source.getSex());
-        link.setTelephone1(source.getTelephone1());
-        link.setHospitalnumber(source.getHospitalnumber());
-        link.setRenalUnit(source.getRenalUnit());
-        link.setUnitcode(source.getUnitcode());
-        link.setEditableDemographics(false);
-        link.setLink(true);
-        return link;
-
-    }
-
     // Merge the two records together, source record taking priority on certain fields.
     // Done by getting the source record and just adding any radar stuff in it if it's found
     public static Patient mergePatientRecords(Patient source, Patient link) {
 
+        Patient mergedPatient = new Patient();
+
+        BeanUtils.copyProperties(source, mergedPatient);
+
         // Properties to mock the source object into the linked one
-        source.setId(link.getId());
-        source.setUnitcode(link.getUnitcode());
-        source.setNhsno(link.getNhsno());
+        mergedPatient.setId(link.getId());
+        mergedPatient.setUnitcode(link.getUnitcode());
+        mergedPatient.setNhsno(link.getNhsno());
 
         // Properties overridden has radar data
         if (StringUtils.hasText(link.getSurnameAlias())) {
-            source.setSurnameAlias(link.getSurnameAlias());
+            mergedPatient.setSurnameAlias(link.getSurnameAlias());
         }
 
         if (StringUtils.hasText(link.getEthnicGp())) {
-            source.setEthnicGp(link.getEthnicGp());
+            mergedPatient.setEthnicGp(link.getEthnicGp());
         }
 
         if (StringUtils.hasText(link.getTelephone2())){
-            source.setTelephone2(link.getTelephone2());
+            mergedPatient.setTelephone2(link.getTelephone2());
         }
 
         if (StringUtils.hasText(link.getMobile())) {
-            source.setMobile(link.getMobile());
+            mergedPatient.setMobile(link.getMobile());
         }
 
         if (link.getRrtModality() != null) {
-            source.setRrtModality(link.getRrtModality());
+            mergedPatient.setRrtModality(link.getRrtModality());
         }
 
         if (StringUtils.hasText(link.getDiagnosis())) {
-            source.setDiagnosis(link.getDiagnosis());
+            mergedPatient.setDiagnosis(link.getDiagnosis());
         }
 
         if (link.getDiagnosisDate() != null) {
-            source.setDiagnosisDate(link.getDiagnosisDate());
+            mergedPatient.setDiagnosisDate(link.getDiagnosisDate());
         }
 
         if (link.getOtherClinicianAndContactInfo() != null) {
-            source.setOtherClinicianAndContactInfo(link.getOtherClinicianAndContactInfo());
+            mergedPatient.setOtherClinicianAndContactInfo(link.getOtherClinicianAndContactInfo());
         }
 
         if (StringUtils.hasText(link.getComments())) {
-            source.setComments(link.getComments());
+            mergedPatient.setComments(link.getComments());
         }
 
-        source.setEditableDemographics(false);
-
-        return source;
+        return mergedPatient;
     }
 
 
@@ -179,7 +162,6 @@ public class RadarUtility {
         patient.setSex(null);
         patient.setTelephone1(null);
         patient.setHospitalnumber(null);
-        patient.setRenalUnit(null);
     }
 
 
@@ -266,15 +248,25 @@ public class RadarUtility {
     /**
      * Class to return the date from the database text field representation of a date.
      *
+     *
      * @param dateField
      * @return
      */
     public static Date parseDate(String dateField) {
 
         if (StringUtils.hasText(dateField)) {
+
+            // select the dat mask of the length of the field
+            String[] dataFormats;
+            if (dateField.length() == 8) {
+                dataFormats = LENGTH_8_DATE_FORMATS;
+            } else {
+                dataFormats = LENGTH_10_DATE_FORMATS;
+            }
+
             Date dateOfBirth = null;
-            // It seems that the encrypted strings in the DB have different date formats, nice.
-            for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
+            // It seems that the strings in the DB have different date formats, nice.
+            for (String dateFormat : dataFormats) {
                 try {
                     dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateField);
                     break;

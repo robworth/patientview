@@ -10,6 +10,7 @@ import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Diagnosis;
@@ -40,6 +41,9 @@ public class DemographicDaoTest extends BaseDaoTest {
     private UserDao userDao;
 
     @Inject
+    private PatientDao patientDao;
+
+    @Inject
     private UserManager userManager;
 
     @Inject
@@ -47,6 +51,7 @@ public class DemographicDaoTest extends BaseDaoTest {
 
     @Inject
     private TestDataHelper testDataHelper;
+
 
 
     private Centre centre;
@@ -145,7 +150,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         // Call DAO
         List<String> unitCodes = new ArrayList<String>();
         unitCodes.add(centre.getUnitCode());
-        List<Patient> demographics = null;//demographicDao.getDemographicsByUnitCode(unitCodes);
+        List<Patient> demographics = patientDao.getPatientsByUnitCode(unitCodes);
         assertNotNull("List was null", demographics);
         assertEquals("Wrong size", 2, demographics.size());
         for (Patient de : demographics) {
@@ -195,7 +200,6 @@ public class DemographicDaoTest extends BaseDaoTest {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
-        patient.setEditableDemographics(true);
         patient.setDob(new Date());
         patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
         patient.setUnitcode(centre.getUnitCode());
@@ -206,7 +210,7 @@ public class DemographicDaoTest extends BaseDaoTest {
         }
         patient.setRenalUnit(centre);
         patient.setDiseaseGroup(diseaseGroup);
-        userManager.savePatientUser(patient);
+        userManager.addPatientUserOrUpdatePatient(patient);
         assertNotNull(patient.getId());
         return patient;
     }

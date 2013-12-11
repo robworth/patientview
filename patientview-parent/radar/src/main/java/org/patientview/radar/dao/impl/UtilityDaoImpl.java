@@ -341,6 +341,8 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 "FROM user u, usermapping um " +
                 "WHERE " +
                 "    u.username = um.username " +
+                "  AND um.username NOT LIKE '%-GP%' " +
+                "  AND um.unitcode != 'PATIENT' " +
                 "AND u.id = ? ", new Long[]{id}, new ClinicianRowMapper());
 
         if (clinicians != null && !clinicians.isEmpty()) {
@@ -361,8 +363,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Centre getCentre(String unitCode) {
-        return jdbcTemplate
-                .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode},
+                            new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.error("Could not get unit with unitcode {}", unitCode);
+            return null;
+        }
     }
 
     public List<Centre> getRenalUnitCentre(String nhsNo) {

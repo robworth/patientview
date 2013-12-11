@@ -53,7 +53,6 @@ public class CreatePatientPanel extends Panel {
                 patient.setDiseaseGroup(addPatientModel.getObject().getDiseaseGroup());
                 patient.setNhsno(addPatientModel.getObject().getPatientId());
                 patient.setNhsNumberType(addPatientModel.getObject().getNhsNumberType());
-                patient.setEditableDemographics(true);
                 setResponsePage(RadarUtility.getDiseasePage(patient, this.getPage().getPageParameters()));
 
             }

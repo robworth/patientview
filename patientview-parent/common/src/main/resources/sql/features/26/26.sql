@@ -16,3 +16,7 @@
  ALTER TABLE rdc_genetic_test ADD COLUMN dateSent DATETIME NULL;
 
  ALTER TABLE patient ADD COLUMN (patientLinkId BIGINT(11));
+
+ DROP INDEX nhsno ON patient;
+
+ ALTER TABLE patient ADD UNIQUE KEY `nhsno-unitcode-sourceType` (`nhsno`,`unitcode`, `sourceType`);

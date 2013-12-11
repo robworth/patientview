@@ -22,11 +22,7 @@ public interface PatientDao {
 
     Patient getById(final Long id);
 
-    Patient getPatientsByRadarNumber(final Long radarNumber);
-
     void save(final Patient patient);
-
-    Patient getByPatientLinkId(final Long patientLinkId);
 
     List<Patient> getPatientsByUnitCode(List<String> unitCodes);
 

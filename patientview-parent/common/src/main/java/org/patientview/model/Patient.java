@@ -197,6 +197,9 @@ public class Patient extends BaseModel {
     private Long patientLinkId;
 
     @Transient
+    private String patientLinkUnitCode;
+
+    @Transient
     private Clinician clinician;
 
     @Transient
@@ -233,10 +236,7 @@ public class Patient extends BaseModel {
     private Boolean diagnosisDateSelect;
 
     @Transient
-    private boolean editableDemographics;
-
-    @Transient
-    private boolean link;
+    private boolean linked;
 
     public enum RRTModality {
         HD(1),
@@ -813,14 +813,6 @@ public class Patient extends BaseModel {
         this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
     }
 
-    public boolean isEditableDemographics() {
-        return editableDemographics;
-    }
-
-    public void setEditableDemographics(boolean editableDemographics) {
-        this.editableDemographics = editableDemographics;
-    }
-
     public Date getMostRecentTestResultDateRangeStopDate() {
         return mostRecentTestResultDateRangeStopDate;
     }
@@ -845,12 +837,16 @@ public class Patient extends BaseModel {
         this.patientLinkId = patientLinkId;
     }
 
-    public boolean isLink() {
-        return link;
+    public boolean isLinked() {
+        return patientLinkId != null && patientLinkId > 0;
     }
 
-    public void setLink(boolean link) {
-        this.link = link;
+    public String getPatientLinkUnitCode() {
+        return patientLinkUnitCode;
+    }
+
+    public void setPatientLinkUnitCode(String patientLinkUnitCode) {
+        this.patientLinkUnitCode = patientLinkUnitCode;
     }
 }
 

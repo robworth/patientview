@@ -44,7 +44,7 @@ public interface UserManager {
 
     void deletePatientUser(PatientUser patientUser) throws Exception;
 
-    PatientUser savePatientUser(Patient patient) throws Exception;
+    PatientUser addPatientUserOrUpdatePatient(Patient patient) throws Exception;
 
     void registerProfessional(ProfessionalUser professionalUser) throws UserEmailAlreadyExists,
             RegistrationException, InvalidSecurityQuestionAnswer;

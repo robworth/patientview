@@ -34,7 +34,6 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
-        <property name="patientLinkDao" ref="patientLinkDao"/>
         <property name="userDao" ref="userDao"/>
     </bean>
 
@@ -60,10 +59,6 @@
     </bean>
 
     <bean id="pathologyDao" class="org.patientview.radar.dao.impl.PathologyDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="patientLinkDao" class="org.patientview.radar.dao.impl.PatientLinkDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
