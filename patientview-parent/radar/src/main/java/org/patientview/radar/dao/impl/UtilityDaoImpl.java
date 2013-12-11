@@ -363,8 +363,13 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Centre getCentre(String unitCode) {
+        try {
         return jdbcTemplate
                 .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get unit with unitcode {}", unitCode);
+            return null;
+        }
     }
 
     public List<Centre> getRenalUnitCentre(String nhsNo) {
