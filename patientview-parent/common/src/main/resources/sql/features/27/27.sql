@@ -91,3 +91,10 @@ CREATE TABLE `dia_careplan` (
   `reviewDate` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/**
+    Extend the unique key on results_heading table to be both headingcode and specialty_id
+ */
+ALTER TABLE result_heading DROP KEY headingcode;
+
+ALTER TABLE result_heading ADD UNIQUE KEY headingcode_specialtyid  (headingcode, specialty_id);
