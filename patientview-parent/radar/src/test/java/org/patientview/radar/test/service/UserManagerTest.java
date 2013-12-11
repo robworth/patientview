@@ -83,7 +83,6 @@ public class UserManagerTest extends TestPvDbSchema {
      */
     @Test
     public void testPatientUserRegistration() throws Exception {
-        testDataHelper.createSpecialty();
         // create a user row as per patient view
         PatientUser patientUser = new PatientUser();
         patientUser.setName("my user");
@@ -122,14 +121,17 @@ public class UserManagerTest extends TestPvDbSchema {
         // Set the user to a Patient View user
         testDataHelper.setPatientSource(pvPatient.getId(), SourceType.PATIENT_VIEW);
 
-        userManager.addPatientUserOrUpdatePatient(pvPatient);
+
+        Patient linkPatient = patientManager.createLinkPatient(pvPatient);
+        linkPatient.setRenalUnit(centre);
+        userManager.addPatientUserOrUpdatePatient(linkPatient);
 
         List<Patient> patients = patientManager.getPatientByNhsNumber(linkNhsNo);
 
         // Reload the radarPatient
         pvPatient = patientManager.getById(pvPatient.getId());
 
-        assertTrue("There should be two patients with the same patient number", patients.size() == 2);
+        assertTrue("There should be two patients with the same nhs number", patients.size() == 2);
 
 
     }
