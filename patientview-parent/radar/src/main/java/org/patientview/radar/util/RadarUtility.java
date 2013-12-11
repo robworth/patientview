@@ -26,6 +26,7 @@ public class RadarUtility {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
 
+    private static final String DATE_FORMAT_0 = "dd-MM-yy";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String DATE_FORMAT_1 = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "dd-MM-y";
@@ -251,9 +252,13 @@ public class RadarUtility {
     public static Date parseDate(String dateField) {
 
         if (StringUtils.hasText(dateField)) {
+
+            // todo handle the PV format YYYY-MM-dd and also teh radar format dd-MM-yy, then try the others
+
             Date dateOfBirth = null;
-            // It seems that the encrypted strings in the DB have different date formats, nice.
-            for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
+            // It seems that the strings in the DB have different date formats, nice.
+            for (String dateFormat : new String[]{DATE_FORMAT_0,
+                    DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
                 try {
                     dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateField);
                     break;
