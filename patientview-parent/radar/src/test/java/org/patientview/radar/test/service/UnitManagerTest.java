@@ -2,6 +2,7 @@ package org.patientview.radar.test.service;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.model.Unit;
@@ -44,6 +45,7 @@ public class UnitManagerTest extends TestPvDbSchema {
     }
 
     @Test
+    @Ignore // Incomplete test
     public void testGetRenalUnitsForUser() throws Exception {
 
         User user = roleHelper.createUnitAdmin("9999999999", "RW51");
