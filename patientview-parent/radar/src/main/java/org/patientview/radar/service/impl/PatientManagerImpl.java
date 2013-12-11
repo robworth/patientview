@@ -102,6 +102,7 @@ public class PatientManagerImpl implements PatientManager {
 
         target.setNhsno(source.getNhsno());
         target.setPatientLinkId(source.getId());
+        target.setPatientLinkUnitCode(source.getUnitcode());
         target.setForename(source.getForename());
         target.setSurname(source.getSurname());
         target.setDob(source.getDob());

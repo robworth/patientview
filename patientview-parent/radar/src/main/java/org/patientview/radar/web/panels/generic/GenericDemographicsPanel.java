@@ -426,8 +426,10 @@ public class GenericDemographicsPanel extends Panel {
             }
         };
 
-        Label sourceUnitCode = new Label("sourceUnitCode",
-                utilityManager.getCentre(patient.getPatientLinkUnitCode()).getName()) {
+        String sourceUnitNameLabelValue = model.getObject().getPatientLinkUnitCode() != null
+                ? utilityManager.getCentre(model.getObject().getPatientLinkUnitCode()).getName() : "";
+
+        Label sourceUnitCode = new Label("sourceUnitCode", sourceUnitNameLabelValue) {
             @Override
             public boolean isVisible() {
                 return model.getObject().isLinked();
