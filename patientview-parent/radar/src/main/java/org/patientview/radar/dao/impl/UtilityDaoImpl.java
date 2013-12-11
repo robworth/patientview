@@ -341,6 +341,8 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 "FROM user u, usermapping um " +
                 "WHERE " +
                 "    u.username = um.username " +
+                "  AND um.username NOT LIKE '%-GP%' " +
+                "  AND um.unitcode != 'PATIENT' " +
                 "AND u.id = ? ", new Long[]{id}, new ClinicianRowMapper());
 
         if (clinicians != null && !clinicians.isEmpty()) {

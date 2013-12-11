@@ -372,7 +372,11 @@ public class DemographicsPanel extends Panel {
             }
         };
 
-        Label sourceUnitCode = new Label("sourceUnitCode", form.getModelObject().getUnitcode()) {
+        String sourceUnitNameLabelValue = model.getObject().getPatientLinkUnitCode() != null
+                ? utilityManager.getCentre(model.getObject().getPatientLinkUnitCode()).getName() : "";
+
+        Label sourceUnitCode = new Label("sourceUnitCode", sourceUnitNameLabelValue)
+                 {
             @Override
             public boolean isVisible() {
                 return model.getObject().isLinked();
@@ -513,7 +517,7 @@ public class DemographicsPanel extends Panel {
 
         form.add(ajaxSubmitLinkBottom);
 
-        if (!model.getObject().isLinked()) {
+        if (model.getObject().isLinked()) {
             for (Component component : nonEditableComponents) {
                 component.setEnabled(false);
             }
