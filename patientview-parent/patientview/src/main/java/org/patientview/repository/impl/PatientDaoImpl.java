@@ -188,13 +188,13 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",      pvl.lastdatadate ");
         query.append("FROM user usr ");
         query.append("LEFT JOIN usermapping usm ON usm.username = usr.username ");
-        query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno AND usm.unitcode = ptt.unitcode ");
+        query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
         query.append("LEFT JOIN emailverification em ON usr.username = em.username ");
         query.append("LEFT JOIN specialtyuserrole str ON str.user_id = usr.id ");
         query.append("LEFT JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
         query.append("AND    usr.id = str.user_id ");
-        query.append("AND    usm.unitcode <> 'PATIENT' ");
+        query.append("AND    usm.unitcode = 'PATIENT' ");
         query.append("AND    IF(ptt.patientLinkId = 0, NULL, ptt.patientLinkId) IS NULL ");
 
 
