@@ -66,7 +66,7 @@ public class ExistingPatientsListingPage extends BasePage {
                             GenericPatientPage.getPageParameters(patient)));
                 }
 
-                item.add(new Label("surname").setEscapeModelStrings(false), new Label("forename"));
+                item.add(new Label("surname"), new Label("forename"));
                 item.add(DateLabel.forDatePattern("dob", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("id", Long.toString(patient.getRadarNo())));
 
@@ -77,7 +77,7 @@ public class ExistingPatientsListingPage extends BasePage {
 
                 item.add(new Label("diagnosis", diseaseGroup));
 
-                item.add(new Label("nhsNumber", patient.getNhsno()));
+                item.add(new Label("nhsNumber", patient.getNhsno()).setEscapeModelStrings(false));
                 item.add(new Label("hospitalnumber"));
                 item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
                 item.add(new Label("status.abbreviation", patient.getStatusModel() != null

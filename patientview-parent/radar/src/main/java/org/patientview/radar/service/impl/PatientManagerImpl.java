@@ -23,6 +23,9 @@ import java.util.List;
  */
 public class PatientManagerImpl implements PatientManager {
 
+    private static final String LINKED_PATIENT_MARKUP = "<a class=\"patientLinked\" href=\"\" title=\"Linked Patient\">"
+            + "</a>";
+
     private PatientDao patientDao;
 
 
@@ -77,7 +80,8 @@ public class PatientManagerImpl implements PatientManager {
             if (patient.isLinked()) {
                 Patient sourcePatient = patientDao.getById(patient.getPatientLinkId());
                 overRideLinkRecord(sourcePatient, patient);
-                patient.setSurname("<span class=\"patientLinked\"> </span> " + sourcePatient.getSurname());
+                patient.setNhsno(LINKED_PATIENT_MARKUP
+                        + sourcePatient.getNhsno());
             }
         }
 
