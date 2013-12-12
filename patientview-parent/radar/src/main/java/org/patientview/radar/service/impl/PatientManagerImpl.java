@@ -23,8 +23,8 @@ import java.util.List;
  */
 public class PatientManagerImpl implements PatientManager {
 
-    private static final String LINKED_PATIENT_MARKUP = "<a class=\"patientLinked\" href=\"\" title=\"Linked Patient\">"
-            + "</a>";
+    private static final String LINKED_PATIENT_MARKUP = "<span class=\"patientLinked\" "
+            + "title=\"Linked Patient\"></span>";
 
     private PatientDao patientDao;
 
