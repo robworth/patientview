@@ -146,7 +146,6 @@ public class GenericDemographicsPanel extends Panel {
 
                 // Leaving this in, saved to the DB table
                 patient.setGeneric(true);
-                patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
                      /** At this point we either have
@@ -483,6 +482,7 @@ public class GenericDemographicsPanel extends Panel {
                 target.add(tickConsentUser);
 
                 if (consent.getModel().getObject().equals(Boolean.TRUE)) {
+                    model.getObject().setRadarConsentConfirmedByUserId(RadarSecuredSession.get().getUser().getId());
                     consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
                     tickConsentUser.setVisible(true);
 

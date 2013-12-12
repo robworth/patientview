@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -25,16 +23,6 @@ import java.util.Date;
 public class RadarUtility {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
-
-    private static final String DATE_FORMAT_0 = "dd-MM-yy";
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String DATE_FORMAT_1 = "dd.MM.y";
-    private static final String DATE_FORMAT_2 = "dd-MM-y";
-    private static final String DATE_FORMAT_3 = "dd/MM/y";
-
-    private static final String[] LENGTH_8_DATE_FORMATS = new String[]{DATE_FORMAT_0, DATE_FORMAT_1, DATE_FORMAT_2,
-            DATE_FORMAT_3};
-    private static final String[] LENGTH_10_DATE_FORMATS = new String[] {DATE_FORMAT};
 
     /**
      * @param event1Start cannot be null
@@ -244,43 +232,6 @@ public class RadarUtility {
             return false; // nhsNumber contains letters
         }
     }
-
-    /**
-     * Class to return the date from the database text field representation of a date.
-     *
-     *
-     * @param dateField
-     * @return
-     */
-    public static Date parseDate(String dateField) {
-
-        if (StringUtils.hasText(dateField)) {
-
-            // select the dat mask of the length of the field
-            String[] dataFormats;
-            if (dateField.length() == 8) {
-                dataFormats = LENGTH_8_DATE_FORMATS;
-            } else {
-                dataFormats = LENGTH_10_DATE_FORMATS;
-            }
-
-            Date dateOfBirth = null;
-            // It seems that the strings in the DB have different date formats, nice.
-            for (String dateFormat : dataFormats) {
-                try {
-                    dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateField);
-                    break;
-                } catch (ParseException e) {
-                    LOGGER.debug("Could not parse date of birth {}", dateField);
-                }
-            }
-
-            return dateOfBirth;
-        }
-
-        return null;
-    }
-
 
 
 }

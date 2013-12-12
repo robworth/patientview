@@ -16,7 +16,7 @@ import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.util.RadarUtility;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -355,7 +355,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setSurname(resultSet.getString("surname"));
             patient.setSurnameAlias(resultSet.getString("surnameAlias"));
             patient.setForename(resultSet.getString("forename"));
-            patient.setDob(RadarUtility.parseDate(resultSet.getString("dateofbirth")));
+            patient.setDob(CommonUtils.parseDate(resultSet.getString("dateofbirth")));
             // Addresses
             patient.setAddress1(resultSet.getString("address1"));
             patient.setAddress2(resultSet.getString("address2"));
