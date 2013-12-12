@@ -13,7 +13,7 @@ import java.util.Date;
  * Date: 12/12/13
  * Time: 11:02
  */
-public class CommonUtils {
+public final class CommonUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtils.class);
 
@@ -25,6 +25,11 @@ public class CommonUtils {
     private static final String DATE_FORMAT_3 = "dd/MM/y";
     private static final String[] LENGTH_8_DATE_FORMATS = new String[]{DATE_FORMAT_0, DATE_FORMAT_1, DATE_FORMAT_2,
             DATE_FORMAT_3};
+    private static final int LENGTH_OF_RADAR_DATES = 8;
+
+    private CommonUtils() {
+
+    }
 
     /**
      * Class to return the date from the database text field representation of a date.
@@ -39,7 +44,7 @@ public class CommonUtils {
 
             // select the dat mask of the length of the field
             String[] dataFormats;
-            if (dateField.length() == 8) {
+            if (dateField.length() == LENGTH_OF_RADAR_DATES) {
                 dataFormats = LENGTH_8_DATE_FORMATS;
             } else {
                 dataFormats = LENGTH_10_DATE_FORMATS;

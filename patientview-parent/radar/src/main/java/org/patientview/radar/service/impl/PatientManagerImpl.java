@@ -77,7 +77,7 @@ public class PatientManagerImpl implements PatientManager {
             if (patient.isLinked()) {
                 Patient sourcePatient = patientDao.getById(patient.getPatientLinkId());
                 overRideLinkRecord(sourcePatient, patient);
-                patient.setSurname("(LINKED) " + sourcePatient.getSurname());
+                patient.setSurname("<span class=\"patientLinked\"> </span> " + sourcePatient.getSurname());
             }
         }
 
