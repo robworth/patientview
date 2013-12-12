@@ -251,3 +251,13 @@ vertical-align:text-top;
     font-size:88%;
     word-wrap: break-word;
 }
+
+.patientsLisitingTable td .patientLinked{
+    height:20px;
+    width:25px;
+    background:url(../images/icon-linked.png) 0 0 no-repeat;
+    display:block;
+    float:right;
+    cursor:none;
+}
+
