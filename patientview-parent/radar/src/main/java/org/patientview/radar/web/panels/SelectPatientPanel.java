@@ -19,6 +19,7 @@ import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,9 @@ public class SelectPatientPanel extends Panel {
 
     @SpringBean
     private PatientManager patientManager;
+
+    @SpringBean
+    private UtilityManager utilityManager;
 
     private IModel<List<Patient>> model;
     private AddPatientModel patientModel;
@@ -131,7 +135,7 @@ public class SelectPatientPanel extends Panel {
                 it.add(new Label("forename", patient.getForename()));
                 it.add(new Label("surname", patient.getSurname()));
                 it.add(new Label("dateOfBirth", patient.getDateofbirth()));
-                it.add(new Label("unitCode", patient.getUnitcode()));
+                it.add(new Label("unitCode", utilityManager.getCentre(patient.getUnitcode()).getAbbreviation()));
                 String dateResultsLastReceivedLabel = "";
                 if (it.getModelObject().getMostRecentTestResultDateRangeStopDate() != null) {
                     dateResultsLastReceivedLabel
