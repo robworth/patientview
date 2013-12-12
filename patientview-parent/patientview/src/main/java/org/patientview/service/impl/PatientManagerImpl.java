@@ -143,9 +143,9 @@ public class PatientManagerImpl implements PatientManager {
 
         for (UserMapping userMapping : userMappings) {
             String unitcode = userMapping.getUnitcode();
-            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
-                continue;
-            }
+            //todo so by the fact that in the past the original patient record will have a unitcode
+            //todo stamped with a mapping that is in the usermapping table when this approach should
+            //todo work. However the exists statement needs to be used on the Patient get method
 
             Patient patient = get(userMapping.getNhsno(), unitcode);
 
