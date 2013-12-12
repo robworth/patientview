@@ -171,7 +171,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                                                    Specialty specialty) {
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT usr.username ");
+        query.append("SELECT DISTINCT ");
+        query.append("       usr.username ");
         query.append(",      usr.password ");
         query.append(",      usr.name ");
         query.append(",      usr.email ");
@@ -194,22 +195,17 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append("LEFT JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
         query.append("AND    usr.id = str.user_id ");
-        query.append("AND    usm.unitcode = 'PATIENT' ");
+        query.append("AND    usm.unitcode <> 'PATIENT' ");
         query.append("AND    IF(ptt.patientLinkId = 0, NULL, ptt.patientLinkId) IS NULL ");
-
-
         if (nhsno != null && nhsno.length() > 0) {
             query.append("AND usm.nhsno LIKE ? ");
         }
-
         if (name != null && name.length() > 0) {
             query.append("AND usr.name LIKE ? ");
         }
-
         if (!showgps) {
             query.append("AND usr.name NOT LIKE '%-GP' ");
         }
-
         query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC  ");
 
         List<Object> params = new ArrayList<Object>();
