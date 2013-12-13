@@ -42,6 +42,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
 
     private SimpleJdbcInsert patientInsert;
+    private SimpleJdbcInsert radarNumberInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsDaoImpl.class);
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -62,18 +63,22 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         // Call super
         super.setDataSource(dataSource);
 
-    // Initialise a simple JDBC insert to be able to get the allocated ID
-    patientInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
-    .usingGeneratedKeyColumns("id")
-    .usingColumns(
-            "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
-            "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
-            "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
-            "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
-            "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
-            "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-            "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
-            "patientLinkId");
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        patientInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
+        .usingGeneratedKeyColumns("id")
+        .usingColumns(
+                "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
+                "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
+                "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
+                "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
+                "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
+                "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
+                "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
+                "patientLinkId");
+
+        radarNumberInsert = new SimpleJdbcInsert(dataSource).withTableName("rdr_radar_number")
+                .usingGeneratedKeyColumns("id");
+
     }
 
     public void afterPropertiesSet() throws Exception {
@@ -109,6 +114,30 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         return jdbcTemplate.query(query.toString(), new Object[]{"Radar"}, new EnhancedPatientSearchMapper());
     }
 
+    public Patient getByRadarNumber(Long radarNumber) {
+
+        Patient patient = null;
+
+        try {
+
+
+
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  * ");
+            query.append("FROM    patient ");
+            query.append("WHERE   radarNo = ? ");
+
+            patient = jdbcTemplate.queryForObject(query.toString(), new Object[]{radarNumber}, new PatientRowMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            // Can't find the patient by id
+            LOGGER.debug("Cannot find patient with radar number {}", radarNumber);
+        }
+
+        return patient;
+
+    }
+
     public Patient getById(final Long id) {
 
         Patient patient = null;
@@ -128,6 +157,12 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         }
 
         return patient;
+    }
+
+    private Long getNextRadarNumber() {
+
+        Long radarNumber = radarNumberInsert.executeAndReturnKey(new HashMap() {}).longValue();
+        return radarNumber;
     }
 
     private class PatientSearchMapper implements RowMapper<Patient> {
@@ -303,8 +338,9 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setId(id.longValue());
 
             //The id of the patient record is now the new radar number
-            jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
-            patient.setRadarNo(patient.getId());
+            Long radarNumber = getNextRadarNumber();
+            jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", radarNumber, id.longValue());
+            patient.setRadarNo(radarNumber);
 
         }
     }

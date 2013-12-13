@@ -20,6 +20,8 @@ public interface PatientDao {
 
     List<Patient> getPatientsWithRadarSourceType();
 
+    Patient getByRadarNumber(Long radarNumber);
+
     Patient getById(final Long id);
 
     void save(final Patient patient);

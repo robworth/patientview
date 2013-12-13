@@ -45,7 +45,7 @@
               <option value="" >-- All Units --</option>
             </logic:present>
             <logic:iterate id="unit" name="units" >
-                <option value="${unit.unitcode}" >${unit.name}</option>
+                <option value="${unit.unitcode}">${unit.name}</option>
             </logic:iterate>
           </select>
       </td>
@@ -66,7 +66,6 @@
       <td><html:submit value="Search" styleClass="btn" /></td>
     </tr>
  </table>
-
 </form>
 </div>
 </div>

@@ -54,6 +54,7 @@ public class GenericPatientPage extends BasePage {
 
     public GenericPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
+        // it says "Id" what it actually means is RadarNumber
         patient = patientManager.getPatientByRadarNumber(pageParameters.get("id").toLong());
         init(patient);
     }
