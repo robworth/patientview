@@ -100,8 +100,28 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
-    public void delete(String nhsno, String unitcode) {
+    public List<Patient> getByNhsNo(String nhsNo) {
 
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsNo));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        // TODO Change this for 1.3
         if (nhsno == null || nhsno.length() == 0 || unitcode == null || unitcode.length() == 0) {
             throw new IllegalArgumentException("Required parameters nhsno and unitcode to delete patient");
         }
