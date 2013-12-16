@@ -60,6 +60,26 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
+    public Patient get(Long id) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.id), id));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+
+    @Override
     public Patient get(String nhsno, String unitcode) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -188,11 +208,11 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",      ptt.rrtModality ");
         query.append(",      pvl.lastdatadate ");
         query.append("FROM user usr ");
-        query.append("LEFT JOIN usermapping usm ON usm.username = usr.username ");
-        query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
-        query.append("LEFT JOIN emailverification em ON usr.username = em.username ");
-        query.append("LEFT JOIN specialtyuserrole str ON str.user_id = usr.id ");
-        query.append("LEFT JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
+        query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
+        query.append("INNER JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
+        query.append("LEFT  JOIN emailverification em ON usr.username = em.username ");
+        query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
+        query.append("LEFT  JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
         query.append("AND    usr.id = str.user_id ");
         query.append("AND    usm.unitcode <> 'PATIENT' ");
@@ -206,7 +226,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (!showgps) {
             query.append("AND usr.name NOT LIKE '%-GP' ");
         }
-        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC  ");
+        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC ");
 
         List<Object> params = new ArrayList<Object>();
 

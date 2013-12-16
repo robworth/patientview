@@ -126,7 +126,7 @@ public class DemographicsPanel extends Panel {
                     userManager.addPatientUserOrUpdatePatient(patient);
 
 
-                    patientCallBack.updateModel(patient.getId());
+                    patientCallBack.updateModel(patient.getRadarNo());
                     // Update the header with the saved record
 
                     forenameHeaderModel.setObject(patientModel.getObject().getForename());

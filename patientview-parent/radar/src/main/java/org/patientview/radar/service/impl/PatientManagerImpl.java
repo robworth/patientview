@@ -39,7 +39,7 @@ public class PatientManagerImpl implements PatientManager {
 
     public Patient getPatientByRadarNumber(Long radarNumber) {
 
-        Patient patient = patientDao.getById(radarNumber);
+        Patient patient = patientDao.getByRadarNumber(radarNumber);
         patient = resolveLinkRecord(patient);
         return patient;
     }
