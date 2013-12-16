@@ -7,7 +7,6 @@ import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.pages.ProfessionalsPage;
-import org.patientview.radar.web.pages.RecruitmentPage;
 import org.patientview.radar.web.pages.patient.AddPatientPage;
 import org.patientview.radar.web.pages.patient.ExistingPatientsListingPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
@@ -37,8 +36,7 @@ public class DefaultNavigationPanel extends BaseNavigationPanel {
         existingPatientsContainer.setVisible(isProfessionalOrSuperUserLoggedIn());
         existingPatientsContainer.add(
                 new BookmarkablePageLink<ExistingPatientsListingPage>("patientsListingPageLink",
-                        ExistingPatientsListingPage.class),
-                new BookmarkablePageLink<RecruitmentPage>("recruitmentPageLink", RecruitmentPage.class)
+                        ExistingPatientsListingPage.class)
         );
         add(existingPatientsContainer);
 
