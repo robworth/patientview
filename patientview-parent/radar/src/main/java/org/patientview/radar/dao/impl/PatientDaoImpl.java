@@ -160,9 +160,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
     }
 
     private Long getNextRadarNumber() {
-
-        Long radarNumber = radarNumberInsert.executeAndReturnKey(new HashMap() {}).longValue();
-        return radarNumber;
+        return radarNumberInsert.executeAndReturnKey(new HashMap<String, Object>() {}).longValue();
     }
 
     private class PatientSearchMapper implements RowMapper<Patient> {

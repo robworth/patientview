@@ -32,6 +32,16 @@
     <h1>Select Unit</h1>
 </div>
 
+<%
+    if (request.getParameter("validation") != null) {
+%>
+<div class="alert alert error">
+    Please select either a renal unit, NHS number or Name
+</div>
+<%
+    }
+%>
+
 <form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients" method="post">
 <table cellpadding="3" >
     <tr>

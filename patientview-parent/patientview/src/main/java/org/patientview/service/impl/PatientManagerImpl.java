@@ -24,9 +24,9 @@
 package org.patientview.service.impl;
 
 import org.patientview.model.Patient;
-import org.patientview.model.Unit;
 import org.patientview.patientview.PatientDetails;
 import org.patientview.patientview.logging.AddLog;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.uktransplant.UktUtils;
 import org.patientview.repository.PatientDao;
@@ -41,7 +41,6 @@ import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -77,15 +76,14 @@ public class PatientManagerImpl implements PatientManager {
     @Inject
     private MedicineManager medicineManager;
 
+    @Override
+    public Patient get(Long id) {
+        return patientDao.get(id);
+    }
 
     @Override
     public Patient get(String nhsno, String unitcode) {
         return patientDao.get(nhsno, unitcode);
-    }
-
-    @Override
-    public Patient get(Long id) {
-        return patientDao.get(id);
     }
 
     @Override
@@ -113,11 +111,6 @@ public class PatientManagerImpl implements PatientManager {
     @Override
     public List<Patient> get(String unitCode) {
         return patientDao.get(unitCode);
-    }
-
-    @Override
-    public List<Patient> getByNhsNo(String nhsNo) {
-        return patientDao.getByNhsNo(nhsNo);
     }
 
     @Override
@@ -169,51 +162,5 @@ public class PatientManagerImpl implements PatientManager {
         }
 
         return patientDetails;
-    }
-
-    private PatientDetails createPatientDetails(Patient patient, Unit unit) {
-        PatientDetails patientDetail = new PatientDetails();
-
-        patientDetail.setPatient(patient);
-        patientDetail.setUnit(unit);
-        patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
-        patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
-        patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                patient.getUnitcode()));
-
-        // TODO: dont really know bout this UktUtils ?
-        patientDetail.setUktStatus(UktUtils.retreiveUktStatus(patient.getNhsno()));
-
-        return patientDetail;
-
-    }
-
-    @Override
-    public List<PatientDetails> getPatientDetails(Long id) {
-
-        Patient patient = get(id);
-        List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
-
-        PatientDetails patientDetail = new PatientDetails();
-
-        patientDetail.setPatient(patient);
-        patientDetail.setUnit(unitManager.get(patient.getUnitcode()));
-        patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
-        patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
-        patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                patient.getUnitcode()));
-
-        // TODO: dont really know bout this UktUtils ?
-        patientDetail.setUktStatus(UktUtils.retreiveUktStatus(patient.getNhsno()));
-
-        patientDetails.add(patientDetail);
-
-        AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
-                AddLog.PATIENT_VIEW, "", patient.getNhsno(),
-                patient.getUnitcode(), "");
-
-
-        return patientDetails;
-
     }
 }

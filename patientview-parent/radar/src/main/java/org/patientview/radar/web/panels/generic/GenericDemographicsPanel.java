@@ -484,7 +484,7 @@ public class GenericDemographicsPanel extends Panel {
                 target.add(tickConsentUser);
 
                 if (consent.getModel().getObject().equals(Boolean.TRUE)) {
-                    model.getObject().setRadarConsentConfirmedByUserId(RadarSecuredSession.get().getUser().getId());
+                    model.getObject().setRadarConsentConfirmedByUserId(RadarSecuredSession.get().getUser().getUserId());
                     consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
                     tickConsentUser.setVisible(true);
 
