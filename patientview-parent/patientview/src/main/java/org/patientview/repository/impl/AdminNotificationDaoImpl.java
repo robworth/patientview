@@ -23,14 +23,13 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.ibd.model.AdminNotification;
-import org.patientview.ibd.model.AdminNotification_;
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.patientview.model.AdminNotification;
+import org.patientview.model.AdminNotification_;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.AdminNotificationDao;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -66,16 +65,13 @@ public class AdminNotificationDaoImpl extends AbstractHibernateDAO<AdminNotifica
         criteria.where(builder.equal(adminNotificationRoot.get(AdminNotification_.xmlImportNotificationId),
                 XmlImportNotification.DEFAULT.getId()));
 
-        try {
-            AdminNotification adminNotification = getEntityManager().createQuery(criteria).getSingleResult();
+        List<AdminNotification> list = getEntityManager().createQuery(criteria).getResultList();
 
-            if (adminNotification != null) {
-                return adminNotification.getEmail();
-            }
-        } catch (NoResultException e) {
+        if (list == null || list.isEmpty() || list.size() > 1) {
             return null;
+        } else {
+            return list.get(0).getEmail();
         }
 
-        return null;
     }
 }

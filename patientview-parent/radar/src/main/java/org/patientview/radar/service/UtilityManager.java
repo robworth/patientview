@@ -1,11 +1,11 @@
 package org.patientview.radar.service;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
+import org.patientview.model.Clinician;
+import org.patientview.model.Country;
+import org.patientview.model.Ethnicity;
 import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Clinician;
-import org.patientview.radar.model.Country;
 import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.Ethnicity;
 import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
 import org.jfree.chart.JFreeChart;
@@ -19,7 +19,11 @@ public interface UtilityManager {
 
     String getPatientViewSiteUrl();
 
+    String getPatientViewSiteResultsUrl();
+
     Centre getCentre(long id);
+
+    Centre getCentre(String unitcode);
 
     List<Centre> getCentres();
 
@@ -56,4 +60,10 @@ public interface UtilityManager {
     JFreeChart getPatientCountPerUnitChart();
 
     List<Clinician> getCliniciansByCentre(Centre centre);
+
+    List<Centre> getCentres(String nhsNo);
+
+    String getUserName(String nhsNo);
+
+    String getUserName(Long id);
 }

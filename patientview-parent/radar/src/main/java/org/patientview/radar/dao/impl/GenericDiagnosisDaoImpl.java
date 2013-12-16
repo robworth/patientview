@@ -1,8 +1,8 @@
 package org.patientview.radar.dao.impl;
 
+import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.model.generic.GenericDiagnosis;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.model.generic.DiseaseGroup;
-import org.patientview.radar.model.generic.GenericDiagnosis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -57,6 +57,8 @@ public class GenericDiagnosisDaoImpl extends BaseDaoImpl implements GenericDiagn
             GenericDiagnosis genericDiagnosis = new GenericDiagnosis();
             genericDiagnosis.setId(resultSet.getString("rdr_prd_code.ERA_EDTA_PRD_code"));
             genericDiagnosis.setTerm(resultSet.getString("rdr_prd_code.ERA_EDTA_primaryRenalDiagnosisTerm"));
+            genericDiagnosis.setPrdCode(resultSet.getString("RDR_DIAGNOSIS_MAPPING.PRDCode"));
+            genericDiagnosis.setWorkingGroup(resultSet.getString("RDR_DIAGNOSIS_MAPPING.workingGroup"));
             Integer order = getIntegerWithNullCheck("ordering", resultSet);
             genericDiagnosis.setOrder(order != null ? order : 0);
             return genericDiagnosis;

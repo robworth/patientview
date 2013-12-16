@@ -1,18 +1,5 @@
 package org.patientview.radar.web.pages.admin;
 
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.enums.ExportType;
-import org.patientview.radar.model.filter.PatientUserFilter;
-import org.patientview.radar.model.user.PatientUser;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.EmailManager;
-import org.patientview.radar.service.ExportManager;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.components.SortLink;
-import org.patientview.radar.web.dataproviders.PatientUserDataProvider;
-import org.patientview.radar.web.panels.RadarAjaxPagingNavigator;
-import org.patientview.radar.web.resources.RadarResourceFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -23,6 +10,19 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.enums.ExportType;
+import org.patientview.radar.model.filter.PatientUserFilter;
+import org.patientview.radar.model.user.PatientUser;
+import org.patientview.radar.service.EmailManager;
+import org.patientview.radar.service.ExportManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.components.SortLink;
+import org.patientview.radar.web.dataproviders.PatientUserDataProvider;
+import org.patientview.radar.web.panels.RadarAjaxPagingNavigator;
+import org.patientview.radar.web.resources.RadarResourceFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class AdminPatientsPage extends AdminsBasePage {
     @SpringBean
     private UserManager userManager;
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
     @SpringBean
     private EmailManager emailManager;
     @SpringBean
@@ -90,15 +90,15 @@ public class AdminPatientsPage extends AdminsBasePage {
      */
     private void builtDataViewRow(final Item<PatientUser> item, final FeedbackPanel feedback) {
         final PatientUser patientUser = item.getModelObject();
-        final Demographics demographics = demographicsManager.getDemographicsByRadarNumber(
+        final Patient patient = patientManager.getPatientByRadarNumber(
                 patientUser.getRadarNumber());
 
         item.add(new BookmarkablePageLink<AdminConsultantPage>("edit", AdminPatientPage.class,
                 AdminPatientPage.getPageParameters(patientUser))); //
 
         item.add(new Label("radarNo", patientUser.getRadarNumber().toString()));
-        item.add(new Label("forename", demographics.getForename()));
-        item.add(new Label("surname", demographics.getSurname()));
+        item.add(new Label("forename", patient.getForename()));
+        item.add(new Label("surname", patient.getSurname()));
         item.add(new Label("dob", patientUser.getDateOfBirth().toString()));
 
         String dateRegistered = "";

@@ -25,9 +25,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -36,6 +38,7 @@
     <import resource="context-repository.xml"/>
     <import resource="context-security.xml"/>
     <import resource="context-service.xml"/>
+    <import resource="context-controller.xml"/>
     <import resource="quartz.xml"/>
     <import resource="batch.xml"/>
 
@@ -43,5 +46,27 @@
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:patientview.properties"/>
     </bean>
+
+    <util:properties id="contextProperties" >
+        <prop key="config.site.url">${config.site.url}</prop>
+        <prop key="xml.archive.directory">${xml.archive.directory}</prop>
+        <prop key="xml.directory">${xml.directory}</prop>
+        <prop key="xml.patient.data.load.directory">${xml.patient.data.load.directory}</prop>
+        <prop key="ukt.archive.directory">${ukt.archive.directory}</prop>
+        <prop key="ukt.directory">${ukt.directory}</prop>
+        <prop key="uktexport.archive.directory">${uktexport.archive.directory}</prop>
+        <prop key="uktexport.directory">${uktexport.directory}</prop>
+        <prop key="dataout.directory">${dataout.directory}</prop>
+        <prop key="dataout.directory.thirdpart">${dataout.directory.thirdpart}</prop>
+        <prop key="unitstatfiles.directory">${unitstatfiles.directory}</prop>
+        <prop key="aboutme.image.directory">${aboutme.image.directory}</prop>
+        <prop key="default.results.per.page">${default.results.per.page}</prop>
+        <prop key="admin.email.from">${admin.email.from}</prop>
+        <prop key="admin.email.to">${admin.email.to}</prop>
+        <prop key="support.email">${support.email}</prop>
+        <prop key="noreply.email">${noreply.email}</prop>
+        <prop key="warning.email">${warning.email}</prop>
+        <prop key="email.verification.best.before.days">${email.verification.best.before.days}</prop>
+    </util:properties>
 
 </beans>

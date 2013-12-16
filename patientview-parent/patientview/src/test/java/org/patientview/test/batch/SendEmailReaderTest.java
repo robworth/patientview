@@ -1,13 +1,13 @@
 package org.patientview.test.batch;
 
 import org.patientview.batch.SendEmailReader;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.*;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.service.EmailQueueManager;
 import org.patientview.service.JobManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.patientview.test.service.BaseServiceTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class SendEmailReaderTest extends BaseServiceTest {
+public class SendEmailReaderTest extends BaseBatchTest {
 
     @Autowired
     private SendEmailReader sendEmailReader;
@@ -36,6 +36,10 @@ public class SendEmailReaderTest extends BaseServiceTest {
 
     @Test
     public void testRead() throws Exception {
+
+        if (!canRun()) {
+            return;
+        }
         User user1 = serviceHelpers.createUser("test 4", "tester1@test.com", "test1", "Test 1");
         User user2 = serviceHelpers.createUser("test 5", "tester2@test.com", "test2", "Test 2");
         User user3 = serviceHelpers.createUser("test 6", "tester3@test.com", "test3", "Test 3");

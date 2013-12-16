@@ -1,10 +1,11 @@
 package org.patientview.radar.service;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.model.ClinicalPresentation;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Diagnosis;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Karotype;
+
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface DiagnosisManager {
 
     Diagnosis getDiagnosisByRadarNumber(long radarNumber);
 
-    String getDiagnosisName(Demographics demographics);
+    String getDiagnosisName(Patient patient);
 
     DiagnosisCode getDiagnosisCode(long id);
 

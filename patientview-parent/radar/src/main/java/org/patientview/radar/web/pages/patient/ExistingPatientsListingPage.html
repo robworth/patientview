@@ -15,21 +15,29 @@
 
 <div>
 <table class="tableSorter patientsLisitingTable" cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
-       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;">
+       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;table-layout: fixed; width:100%">
 <thead>
 <tr style="background-color:#EEF6ED;">
     <th scope="col">View / Edit</th>
     <th scope="col"><a href="javascript:void(0)">Surname</a></th>
-    <th scope="col">First Name</th>
-    <th align="center" scope="col">DOB</th>
+    <th scope="col"><a href="javascript:void(0)">First Name</a></th>
+    <th align="center" scope="col"><a href="javascript:void(0)">DOB</a></th>
     <th scope="col"><a href="javascript:void(0)">RaDaRNo.</a></th>
     <th scope="col"><a href="javascript:void(0)">Diagnosis</a>
     </th>
-    <th scope="col">NHS Number</th>
-    <th scope="col">Hospital No</th>
+    <th scope="col" style="width:110px;"><a href="javascript:void(0)">NHS Number</a></th>
+    <th scope="col"><a href="javascript:void(0)">Hospital No</a></th>
     <th align="center" scope="col"><a href="javascript:void(0)">DateReg</a></th>
     <th scope="col"><a href="javascript:void(0)">Status</a></th>
     <th scope="col"><a href="javascript:void(0)">Centre</a></th>
+
+
+
+    <th scope="col"><a href="javascript:void(0)">Modality</a></th>
+    <th scope="col"><a href="javascript:void(0)">Last Verification Email Date</a></th>
+    <th scope="col"><a href="javascript:void(0)">Email</a></th>
+    <th scope="col"><a href="javascript:void(0)">Last Logon</a></th>
+    <th scope="col"><a href="javascript:void(0)">Password Locked</a></th>
 </tr>
 </thead>
 
@@ -38,15 +46,22 @@
     <td align="center"><a wicket:id="edit">Edit</a></td>
     <td wicket:id="surname"/>
     <td wicket:id="forename"/>
-    <td wicket:id="dateOfBirth"/>
+    <td wicket:id="dob"/>
 
     <td align="center" wicket:id="id"/>
     <td align="center" wicket:id="diagnosis"/>
     <td wicket:id="nhsNumber"/>
-    <td wicket:id="hospitalNumber"/>
-    <td wicket:id="dateRegistered"/>
+    <td wicket:id="hospitalnumber"/>
+    <td wicket:id="dateReg"/>
     <td wicket:id="status.abbreviation"/>
     <td wicket:id="renalUnit.name"/>
+
+    <td wicket:id="rrtModalityEunm"/>
+    <td wicket:id="lastverificationdate"/>
+    <td wicket:id="email" style="word-break:break-all; word-wrap:break-word; overflow:hidden;"/>
+    <td wicket:id="lastlogon"/>
+    <td wicket:id="accountlocked"/>
+
 </tr>
 </tbody>
 </table>

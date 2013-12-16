@@ -1,15 +1,6 @@
 package org.patientview.radar.service.impl;
 
-import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Clinician;
-import org.patientview.radar.model.Ethnicity;
-import org.patientview.radar.model.Country;
-import org.patientview.radar.model.Relative;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.filter.ConsultantFilter;
-import org.patientview.radar.service.UtilityManager;
+import org.apache.commons.io.FileUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -20,21 +11,53 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.patientview.model.Centre;
+import org.patientview.model.Clinician;
+import org.patientview.model.Country;
+import org.patientview.model.Ethnicity;
+import org.patientview.radar.dao.UserDao;
+import org.patientview.radar.dao.UtilityDao;
+import org.patientview.radar.model.Consultant;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.Relative;
+import org.patientview.radar.model.filter.ConsultantFilter;
+import org.patientview.radar.service.UtilityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class UtilityManagerImpl implements UtilityManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilityManagerImpl.class);
 
     private UtilityDao utilityDao;
 
     private String siteUrl;
 
     private String patientViewSiteUrl;
+
+    private String patientViewSiteResultsUrl;
+
+    private UserDao userDao;
+
+    public String getFilePathAndName() {
+        return filePathAndName;
+    }
+
+    public void setFilePathAndName(String filePathAndName) {
+        this.filePathAndName = filePathAndName;
+    }
+
+    private String filePathAndName;
 
     public String getSiteUrl() {
         return siteUrl;
@@ -48,6 +71,14 @@ public class UtilityManagerImpl implements UtilityManager {
         this.patientViewSiteUrl = patientViewSiteUrl;
     }
 
+    public String getPatientViewSiteResultsUrl() {
+        return patientViewSiteResultsUrl;
+    }
+
+    public void setPatientViewSiteResultsUrl(String patientViewSiteResultsUrl) {
+        this.patientViewSiteResultsUrl = patientViewSiteResultsUrl;
+    }
+
     public void setSiteUrl(String siteUrl) {
         this.siteUrl = siteUrl;
     }
@@ -56,8 +87,16 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getCentre(id);
     }
 
+    public Centre getCentre(String unitcode) {
+        return utilityDao.getCentre(unitcode);
+    }
+
     public List<Centre> getCentres() {
         return utilityDao.getCentres();
+    }
+
+    public List<Centre> getCentres(String nhsNo) {
+        return utilityDao.getCentres(nhsNo);
     }
 
     public Consultant getConsultant(long id) {
@@ -65,7 +104,7 @@ public class UtilityManagerImpl implements UtilityManager {
     }
 
     public List<Consultant> getConsultants() {
-        return getConsultants(new ConsultantFilter(), -1, -1);
+        return getConsultants(new ConsultantFilter(), 1, -1);
     }
 
     public List<Consultant> getConsultants(ConsultantFilter filter) {
@@ -210,6 +249,33 @@ public class UtilityManagerImpl implements UtilityManager {
         return chart;
     }
 
+    public String getUserName(String nhsNo) {
+        return utilityDao.getUserName(nhsNo);
+    }
+
+
+    public String getUserName(Long id) {
+        return utilityDao.getUserName(id);
+    }
+
+    private void writeConsultantToFile(List<Consultant> consultants) {
+        File file = new File(getFilePathAndName());
+        List<String> list = new ArrayList<String>();
+        for (Consultant consultant : consultants) {
+            list.add(consultant.getId() + "," +consultant.getFullName() + "," + consultant.getCentre().getId() + " : "
+                    + consultant.getCentre().getUnitCode());
+        }
+        if (!list.isEmpty()) {
+            try {
+                FileUtils.writeLines(file, "UTF-8", list);
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage());
+                LOGGER.debug(e.getMessage(), e);
+
+            }
+        }
+    }
+
     public List<Clinician> getCliniciansByCentre(Centre centre) {
         return utilityDao.getClinicians(centre);
     }
@@ -220,5 +286,13 @@ public class UtilityManagerImpl implements UtilityManager {
 
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

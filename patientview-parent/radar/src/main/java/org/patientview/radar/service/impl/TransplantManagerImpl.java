@@ -1,15 +1,15 @@
 package org.patientview.radar.service.impl;
 
-import org.patientview.radar.dao.TransplantDao;
-import org.patientview.radar.dao.impl.TransplantDaoImpl;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Transplant;
-import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.TransplantManager;
-import org.patientview.radar.service.TreatmentManager;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.patientview.model.Patient;
+import org.patientview.radar.dao.TransplantDao;
+import org.patientview.radar.dao.impl.TransplantDaoImpl;
+import org.patientview.radar.model.Transplant;
+import org.patientview.radar.model.exception.InvalidModelException;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.service.TransplantManager;
+import org.patientview.radar.service.TreatmentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class TransplantManagerImpl implements TransplantManager {
 
     TransplantDao transplantDao;
-    DemographicsManager demographicsManager;
+    PatientManager patientManager;
     private static final Logger LOGGER = LoggerFactory.getLogger(TransplantDaoImpl.class);
 
     public void saveTransplant(Transplant transplant) throws InvalidModelException {
@@ -122,9 +122,9 @@ public class TransplantManagerImpl implements TransplantManager {
                         getFailureDate() : null);
 
         // cannot be before date of birth
-        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(transplant.getRadarNumber());
-        if (demographics != null) {
-            Date dob = demographics.getDateOfBirth();
+        Patient patient =  patientManager.getPatientByRadarNumber(transplant.getRadarNumber());
+        if (patient != null) {
+            Date dob = patient.getDob();
             if (dob != null) {
                 for (Date date : datesToCheck) {
                     if (date != null) {
@@ -239,7 +239,7 @@ public class TransplantManagerImpl implements TransplantManager {
         this.transplantDao = transplantDao;
     }
 
-    public void setDemographicsManager(DemographicsManager demographicsManager) {
-        this.demographicsManager = demographicsManager;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 }

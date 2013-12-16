@@ -23,9 +23,9 @@
 
 package org.patientview.repository;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Patient;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +41,8 @@ public interface PatientDao {
 
     Patient get(String nhsno, String unitcode);
 
+    List<Patient> getByNhsNo(String nhsNo);
+
     void save(Patient patient);
 
     void delete(String nhsno, String unitcode);
@@ -50,6 +52,8 @@ public interface PatientDao {
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                          Specialty specialty);
+
+    List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps, Specialty specialty);
 
     // Note: generics not used as the result is half user, half patient
     List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty);

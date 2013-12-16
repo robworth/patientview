@@ -1,22 +1,5 @@
 package org.patientview.radar.web.panels;
 
-import org.patientview.radar.model.ClinicalPresentation;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.Karotype;
-import org.patientview.radar.model.sequenced.ClinicalData;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.components.ClinicalPresentationDropDownChoice;
-import org.patientview.radar.web.components.ComponentHelper;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarDateTextField;
-import org.patientview.radar.web.components.RadarTextFieldWithValidation;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -45,6 +28,23 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.ClinicalPresentation;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.Karotype;
+import org.patientview.radar.model.sequenced.ClinicalData;
+import org.patientview.radar.service.ClinicalDataManager;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.components.ClinicalPresentationDropDownChoice;
+import org.patientview.radar.web.components.ComponentHelper;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarDateTextField;
+import org.patientview.radar.web.components.RadarTextFieldWithValidation;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,13 +55,16 @@ import java.util.List;
 
 public class DiagnosisPanel extends Panel {
 
-    public static final Long SRNS_ID = new Long(1);
+    public static final Long SRNS_ID = 1L;
     public static final String OTHER_CONTAINER_ID = "otherContainer";
-    public static final Long KAROTYPE_OTHER_ID = new Long(8);
+    public static final Long KAROTYPE_OTHER_ID = 8L;
+
     @SpringBean
     private DiagnosisManager diagnosisManager;
+
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
+
     @SpringBean
     private ClinicalDataManager clinicalDataManager;
 
@@ -129,8 +132,8 @@ public class DiagnosisPanel extends Panel {
                             radarNumber = Long.parseLong((String) obj);
                         }
 
-                        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(radarNumber);
-                        Date dob = demographics.getDateOfBirth();
+                        Patient patient = patientManager.getPatientByRadarNumber(radarNumber);
+                        Date dob = patient.getDob();
                         if (dateOfDiagnosis != null && dob != null) {
                             int age = Years.yearsBetween(new DateTime(dob), new DateTime(dateOfDiagnosis)).getYears();
                             diagnosis.setAgeAtDiagnosis(age);
@@ -171,19 +174,19 @@ public class DiagnosisPanel extends Panel {
         form.add(radarNumber);
 
         TextField hospitalNumber = new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
-                radarNumberModel, demographicsManager));
+                radarNumberModel, patientManager));
         form.add(hospitalNumber);
 
         TextField firstName = new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsManager));
+                patientManager));
         form.add(firstName);
 
         TextField surname = new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
-                demographicsManager));
+                patientManager));
         form.add(surname);
 
         TextField dob = new DateTextField("dateOfBirth", RadarModelFactory.getDobModel(radarNumberModel,
-                demographicsManager), RadarApplication.DATE_PATTERN);
+                patientManager), RadarApplication.DATE_PATTERN);
         form.add(dob);
 
         DropDownChoice<DiagnosisCode> diagnosisCodeDropDownChoice = new DropDownChoice<DiagnosisCode>("diagnosisCode",

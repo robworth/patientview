@@ -24,8 +24,8 @@
 package org.patientview.repository;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,12 +54,16 @@ public interface UnitDao {
 
     List<Unit> getAdminsUnits(Specialty specialty);
 
+    List<Unit> getAdminsUnits(Specialty specialty, boolean isRadarGroup);
+
     List<Unit> get(List<String> usersUnitCodes, Specialty specialty);
 
     List<Unit> get(List<String> usersUnitCodes, String[] notTheseUnitCodes, String[] plusTheseUnitCodes,
                    Specialty specialty);
 
     List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty);
+
+    List<UnitAdmin> getAllUnitUsers(Specialty specialty);
 
     List<User> getUnitPatientUsers(String unitcode, Specialty specialty);
 }

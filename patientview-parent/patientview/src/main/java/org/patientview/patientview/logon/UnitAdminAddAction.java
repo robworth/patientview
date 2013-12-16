@@ -24,6 +24,7 @@
 package org.patientview.patientview.logon;
 
 import org.patientview.patientview.logging.AddLog;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
@@ -55,6 +56,16 @@ public class UnitAdminAddAction extends Action {
         unitAdmin.setIsrecipient(isRecipient);
         unitAdmin.setIsclinician(isClinician);
 
+        if ("unitstaff".equalsIgnoreCase(role)) {
+            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+            if ("radargroup".equalsIgnoreCase(unit.getSourceType())) {
+                request.setAttribute("roleInRadargroup", unit.getName());
+                request.setAttribute("adminuser", unitAdmin);
+                UnitUtils.setUserUnits(request);
+                return mapping.findForward("input");
+            }
+        }
+
         List<UserMapping> usermappingList = LegacySpringUtils.getUserManager().getUserMappings(username);
 
         String mappingToFind;
@@ -70,7 +81,7 @@ public class UnitAdminAddAction extends Action {
             if (userMapping != null) {
                 request.setAttribute(LogonUtils.USER_ALREADY_EXISTS, username);
                 unitAdmin.setUsername("");
-                UnitUtils.putRelevantUnitsInRequest(request);
+                UnitUtils.setUserUnits(request);
                 mappingToFind = "input";
             } else {
                 UserMapping userMappingNew = new UserMapping(username, unitcode, "");

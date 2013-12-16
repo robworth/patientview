@@ -1,6 +1,6 @@
 package org.patientview.radar.web.panels.hnf1b;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.enums.YesNo;
 import org.patientview.radar.model.hnf1b.HNF1BMisc;
 import org.patientview.radar.service.hnf1b.HNF1BMiscManager;
@@ -35,7 +35,7 @@ public class HNF1BMiscPanel extends Panel {
     @SpringBean
     private HNF1BMiscManager hnf1BMiscManager;
 
-    public HNF1BMiscPanel(final String id, final Demographics demographics) {
+    public HNF1BMiscPanel(final String id, final Patient patient) {
         super(id);
 
         setOutputMarkupId(true);
@@ -43,13 +43,13 @@ public class HNF1BMiscPanel extends Panel {
 
         HNF1BMisc hnf1BMisc = null;
 
-        if (demographics.hasValidId()) {
-            hnf1BMisc = hnf1BMiscManager.get(demographics.getId());
+        if (patient.hasValidId()) {
+            hnf1BMisc = hnf1BMiscManager.get(patient.getId());
         }
 
         if (hnf1BMisc == null) {
             hnf1BMisc = new HNF1BMisc();
-            hnf1BMisc.setRadarNo(demographics.getId());
+            hnf1BMisc.setRadarNo(patient.getId());
         }
 
         // main model for this tab
@@ -92,7 +92,7 @@ public class HNF1BMiscPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    hnf1BMisc.setRadarNo(demographics.getId());
+                    hnf1BMisc.setRadarNo(patient.getId());
                     hnf1BMiscManager.save(hnf1BMisc);
                 }
             }
@@ -117,7 +117,7 @@ public class HNF1BMiscPanel extends Panel {
         form.add(formFeedback);
 
         // add the patient detail bar to the tab
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "HNF1B Misc");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "HNF1B Misc");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);

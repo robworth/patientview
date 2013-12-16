@@ -20,7 +20,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.Genetics;
 import org.patientview.radar.service.alport.GeneticsManager;
 import org.patientview.radar.web.RadarApplication;
@@ -36,7 +36,7 @@ public class NonAlportGeneticsPanel extends Panel {
     @SpringBean
     private GeneticsManager geneticsManager;
 
-    public NonAlportGeneticsPanel(final String id, final Demographics demographics) {
+    public NonAlportGeneticsPanel(final String id, final Patient patient) {
         super(id);
 
         setOutputMarkupId(true);
@@ -44,13 +44,13 @@ public class NonAlportGeneticsPanel extends Panel {
 
         Genetics genetics = null;
 
-        if (demographics.hasValidId()) {
-            genetics = geneticsManager.get(demographics.getId());
+        if (patient.hasValidId()) {
+            genetics = geneticsManager.get(patient.getId());
         }
 
         if (genetics == null) {
             genetics = new Genetics();
-            genetics.setRadarNo(demographics.getId());
+            genetics.setRadarNo(patient.getId());
         }
 
         // main model for this tab
@@ -90,7 +90,7 @@ public class NonAlportGeneticsPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    genetics.setRadarNo(demographics.getId());
+                    genetics.setRadarNo(patient.getId());
                     geneticsManager.save(genetics);
                 }
             }
@@ -104,7 +104,7 @@ public class NonAlportGeneticsPanel extends Panel {
         form.add(formFeedback);
 
         // add the patient detail bar to the tab
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Genetics");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Genetics");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);

@@ -65,4 +65,5 @@ public class ProfessionalsPage extends BasePage {
         });
 
     }
+
 }

@@ -1,15 +1,15 @@
 package org.patientview.radar.dao.impl;
 
-import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Clinician;
-import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Ethnicity;
-import org.patientview.radar.model.Relative;
-import org.patientview.radar.model.Centre;
-import org.patientview.radar.model.Country;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.filter.ConsultantFilter;
 import org.apache.commons.lang.StringUtils;
+import org.patientview.model.Centre;
+import org.patientview.model.Clinician;
+import org.patientview.model.Country;
+import org.patientview.model.Ethnicity;
+import org.patientview.radar.dao.UtilityDao;
+import org.patientview.radar.model.Consultant;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.Relative;
+import org.patientview.radar.model.filter.ConsultantFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,6 +38,31 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 .usingColumns("cSNAME", "cFNAME", "cCentre");
     }
 
+    public void createUnit(String unitCode) {
+        jdbcTemplate.execute("INSERT INTO unit(unitcode, NAME, shortname, specialty_id) VALUES ('"
+                   + unitCode + "','"
+                   + unitCode + "','"
+                   + unitCode + "',0)");
+    }
+
+    public void deleteUnit(String unitCode) {
+        jdbcTemplate.execute("DELETE FROM unit WHERE unitcode = '" + unitCode + "'");
+    }
+
+    public void deletePatientViewUser(String nshNo) {
+
+        jdbcTemplate.execute("DELETE "
+        + " FROM    USER "
+        + " WHERE   username IN (SELECT  username "
+        + " FROM    usermapping "
+        + " WHERE   nhsno = '" + nshNo + "')");
+
+    }
+
+    public void deletePatientViewMapping(String nhsNo) {
+        jdbcTemplate.execute("DELETE FROM usermapping WHERE nhsno = '" + nhsNo + "'");
+    }
+
     public Centre getCentre(long id) {
         return jdbcTemplate
                 .queryForObject("SELECT * FROM unit WHERE id = ?", new Object[]{id}, new CentreRowMapper());
@@ -45,6 +70,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public List<Centre> getCentres() {
         return jdbcTemplate.query("SELECT * FROM unit WHERE sourceType = ? ORDER BY name", new Object[]{"renalunit"},
+                new CentreRowMapper());
+    }
+
+    public List<Centre> getCentres(String nhsNo) {
+        return jdbcTemplate.query("SELECT DISTINCT u.* " +
+                " FROM usermapping um, unit u " +
+                "WHERE um.unitcode = u.unitcode " +
+                "  AND u.sourceType = ?  " +
+                "  AND um.nhsno = ?  " +
+                "  AND um.username NOT LIKE '%-GP%'", new Object[]{"renalunit", nhsNo},
                 new CentreRowMapper());
     }
 
@@ -62,15 +97,15 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add("SELECT " +
-                "   tbl_Consultants.*, " +
-                "   unit.name AS cName " +
-                "FROM " +
-                "   tbl_Consultants " +
-                "INNER JOIN " +
-                "   unit " +
-                "ON " +
-                "   tbl_Consultants.cCentre = unit.id");
+        sqlQueries.add("SELECT "
+                    + "   tbl_Consultants.*, "
+                    + "   unit.name AS cName "
+                    + "FROM "
+                    + "   tbl_Consultants "
+                    + "INNER JOIN "
+                    + "   unit "
+                    + "ON "
+                    + "   tbl_Consultants.cCentre = unit.id");
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
@@ -146,6 +181,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+
     public List<Ethnicity> getEthnicities() {
         return jdbcTemplate.query("SELECT * FROM tbl_Ethnicity", new EthnicityRowMapper());
     }
@@ -165,10 +201,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
-        List<PatientCountItem> patientCountList = jdbcTemplate.query("SELECT COUNT(*) as \"count\", renal_unit " +
-                "FROM tbl_demographics demographics INNER JOIN tbl_diagnosis diagnosis ON demographics.radar_no = " +
-                "diagnosis.radar_no WHERE diag = ? " +
-                "GROUP BY renal_unit;", new Object[]{diagnosisCode.getId()},
+        List<PatientCountItem> patientCountList = jdbcTemplate.query(
+                "SELECT COUNT(*) as \"count\", u.id as \"unitcode\" " +
+                "FROM   patient p " +
+                "INNER JOIN tbl_diagnosis diagnosis ON p.radarNo = diagnosis.RADAR_NO " +
+                "INNER JOIN usermapping um on p.nhsno = um.nhsno " +
+                "INNER JOIN unit u ON um.unitcode = u.unitcode " +
+                "WHERE diag = ? " +
+                "AND    u.sourceType = ? " +
+                "AND   um.username NOT LIKE '%-GP%' " +
+                "GROUP BY u.id;", new Object[]{diagnosisCode.getId(), "renalunit"},
                 new PatientCountByUnitRowMapper());
 
         Map<Long, Integer> patientCountMap = new HashMap<Long, Integer>();
@@ -181,10 +223,16 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public int getPatientCountByUnit(Centre centre) {
         try {
-            return jdbcTemplate.queryForInt("SELECT COUNT(*) " +
-                    "FROM tbl_demographics " +
-                    "WHERE renal_unit = ? " +
-                    "GROUP BY renal_unit;", new Object[]{centre.getId()});
+
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  COUNT(DISTINCT nhsno) ");
+            query.append("FROM    usermapping usm ");
+            query.append("WHERE   EXISTS (SELECT  1 ");
+            query.append("                FROM    patient ptt ");
+            query.append("                WHERE   ptt.nhsno = usm.nhsno) ");
+            query.append("AND     usm.unitCode = ? ");
+
+            return jdbcTemplate.queryForObject(query.toString(), new Object[]{centre.getUnitCode()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }
@@ -257,7 +305,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     private class PatientCountByUnitRowMapper implements RowMapper<PatientCountItem> {
         public PatientCountItem mapRow(ResultSet resultSet, int i) throws SQLException {
 
-            return new PatientCountItem(resultSet.getLong("renal_unit"), resultSet.getInt("count"));
+            return new PatientCountItem(resultSet.getLong("unitcode"), resultSet.getInt("count"));
         }
     }
 
@@ -293,6 +341,8 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 "FROM user u, usermapping um " +
                 "WHERE " +
                 "    u.username = um.username " +
+                "  AND um.username NOT LIKE '%-GP%' " +
+                "  AND um.unitcode != 'PATIENT' " +
                 "AND u.id = ? ", new Long[]{id}, new ClinicianRowMapper());
 
         if (clinicians != null && !clinicians.isEmpty()) {
@@ -313,8 +363,94 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Centre getCentre(String unitCode) {
-        return jdbcTemplate
-                .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode},
+                            new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.error("Could not get unit with unitcode {}", unitCode);
+            return null;
+        }
+    }
+
+    public List<Centre> getRenalUnitCentre(String nhsNo) {
+        try {
+            return jdbcTemplate
+                    .query("SELECT * FROM usermapping um LEFT OUTER JOIN unit u ON um.unitcode = u.unitcode " +
+                            "WHERE um.nhsno = ? " +
+                            "  AND um.username NOT LIKE '%-GP%' " +
+                            "  AND um.unitcode != 'PATIENT' " +
+                            "  AND u.sourceType = 'renalunit' ", new Object[]{nhsNo}, new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get unit with nhsno {}", nhsNo);
+            return null;
+        }
+    }
+
+    public void deletePatient(String nshNo) {
+        jdbcTemplate.execute("DELETE FROM patient WHERE nhsno  = '" + nshNo + "'");
+    }
+
+    public void deletePatientForRadar(Long id) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("id", id);
+        namedParameterJdbcTemplate.update("DELETE FROM tbl_patient_user WHERE id  = :id", parameters);
+    }
+
+    public String getUserName(String nhsNo) {
+        String username = null;
+
+        try {
+            username = jdbcTemplate
+                .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
+                        "WHERE u.username = um.username " +
+                        "AND um.nhsno = ? " +
+                        "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+        } catch (EmptyResultDataAccessException era) {
+            LOGGER.debug("No username result found for " + nhsNo);
+        }
+
+        return username;
+
+    }
+
+    // Does the username have any mappings to any renal units.
+    public boolean isGroupAdmin(String username) {
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT  DISTINCT 1 ");
+        query.append("FROM    unit unt ");
+        query.append(",       usermapping map ");
+        query.append("WHERE   map.unitcode = unt.unitcode  ");
+        query.append("AND     map.username = '");
+        query.append(username);
+        query.append("' ");
+        query.append("AND     unt.sourceType = 'renalunit' ");
+
+        try {
+            jdbcTemplate.queryForObject(query.toString(), Integer.class);
+        } catch (EmptyResultDataAccessException ee) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public String getUserName(Long id) {
+        if (id == null) {
+            return "";
+        }
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT u.name FROM user u " +
+                            "WHERE u.id = ? " +
+                            "AND u.name NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get user with id {}", id);
+            return "";
+
+        }
     }
 
     private class ClinicianRowMapper implements RowMapper<Clinician> {

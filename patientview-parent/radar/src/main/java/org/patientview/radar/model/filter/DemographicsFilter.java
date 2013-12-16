@@ -2,13 +2,13 @@ package org.patientview.radar.model.filter;
 
 public class DemographicsFilter extends BaseFilter {
     public enum UserField {
-        RADAR_NO("tbl_Demographics.RADAR_NO"),
-        SURNAME("tbl_Demographics.SNAME"),
-        FORENAME("tbl_Demographics.FNAME"),
-        REGISTRATION_DATE("tbl_Demographics.DATE_REG"),
-        NHS_NO("tbl_Demographics.NHS_NO"),
-        ADDRESS("tbl_Demographics.ADD1,tbl_Demographics.ADD2," +
-                "tbl_Demographics.ADD3,tbl_Demographics.ADD4,tbl_Demographics.POSTCODE"),
+        RADAR_NO("patient.radarNo"),
+        SURNAME("patient.surname"),
+        FORENAME("patient.forename"),
+        REGISTRATION_DATE("patient.dateReg"),
+        NHSNO("patient.nhsno"),
+        ADDRESS("patient.address1,patient.address2," +
+                "patient.address3,patient.address4,patient.POSTCODE"),
         DIAGNOSIS("tbl_DiagCode.dcAbbr"),
         CONSULTANT_FORNAME("tbl_Consultants.cFNAME"),
         CONSULTANT_SURNAME("tbl_Consultants.cSNAME"),

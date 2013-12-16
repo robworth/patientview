@@ -1,9 +1,5 @@
 package org.patientview.radar.web.pages.admin;
 
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.user.PatientUser;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.UserManager;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -15,11 +11,16 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValue;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.user.PatientUser;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.service.UserManager;
 
 public class AdminPatientPage extends AdminsBasePage {
 
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
+
     @SpringBean
     private UserManager userManager;
 
@@ -28,12 +29,12 @@ public class AdminPatientPage extends AdminsBasePage {
     public AdminPatientPage(PageParameters parameters) {
         super();
 
-        final Demographics demographics;
+        final Patient patient;
         final PatientUser patientUser;
 
         StringValue idValue = parameters.get(PARAM_ID);
         patientUser = userManager.getPatientUser(idValue.toLong());
-        demographics = demographicsManager.getDemographicsByRadarNumber(patientUser.getRadarNumber());
+        patient = patientManager.getPatientByRadarNumber(patientUser.getRadarNumber());
 
         CompoundPropertyModel<PatientUser> patientUserModel =
                 new CompoundPropertyModel<PatientUser>(patientUser);
@@ -55,8 +56,8 @@ public class AdminPatientPage extends AdminsBasePage {
         add(userForm);
 
         userForm.add(new Label("radarNo", patientUser.getRadarNumber().toString()));
-        userForm.add(new Label("forename", demographics.getForename()));
-        userForm.add(new Label("surname", demographics.getSurname()));
+        userForm.add(new Label("forename", patient.getForename()));
+        userForm.add(new Label("surname", patient.getSurname()));
         userForm.add(new RequiredTextField("username"));
         userForm.add(new Label("dob", patientUser.getDateOfBirth().toString()));
         userForm.add(new Label("dateRegistered", patientUser.getDateRegistered().toString()));

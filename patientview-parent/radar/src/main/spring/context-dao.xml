@@ -34,6 +34,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
         <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="diagnosisDao" class="org.patientview.radar.dao.impl.DiagnosisDaoImpl">
@@ -46,6 +47,10 @@
     </bean>
 
     <bean id="immunosuppressionDao" class="org.patientview.radar.dao.impl.ImmunosuppressionDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="joinRequestDao" class="org.patientview.radar.dao.impl.JoinRequestDaoImpl">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
@@ -86,6 +91,10 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="unitDao" class="org.patientview.radar.dao.impl.UnitDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <!-- radarv generic daos -->
     <bean id="diseasGroupDao" class="org.patientview.radar.dao.impl.DiseaseGroupDaoImpl">
         <property name="dataSource" ref="dataSource"/>
@@ -98,6 +107,14 @@
     <bean id="medicalResultDao" class="org.patientview.radar.dao.impl.MedicalResultDaoImpl">
         <property name="dataSource" ref="dataSource"/>
         <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+    </bean>
+
+    <bean id="patientDao" class="org.patientview.radar.dao.impl.PatientDaoImpl">
+        <property name="utilityDao" ref="utilityDao"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="diseaseGroupDao" ref="diseasGroupDao"/>
+        <property name="genericDiagnosisDao" ref="genericDiagnosisDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">

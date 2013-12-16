@@ -23,8 +23,8 @@
 
 package org.patientview.test.service;
 
-import org.patientview.patientview.model.Patient;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Patient;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.User;
 import org.patientview.service.PatientManager;
 import org.patientview.service.UserManager;
@@ -79,7 +79,7 @@ public class PatientManagerTest extends BaseServiceTest {
         patient = new Patient();
         // required fields
         patient.setNhsno("nhsno1");
-        patient.setCentreCode("unitcode1");
+        patient.setUnitcode("unitcode1");
         // a not required fields
         patient.setSurname("surname1");
         patientManager.save(patient);
@@ -93,7 +93,7 @@ public class PatientManagerTest extends BaseServiceTest {
 
 //      todo work out why this doesn't work when run with H2 database
 //
-//        List results = patientManager.getUnitPatientsWithTreatment(patient.getCentreCode(), patient.getNhsno(),
+//        List results = patientManager.getUnitPatientsWithTreatment(patient.getUnitcode(), patient.getNhsno(),
 //                user.getName(), false);
 //
 //        List<SpecialtyUserRole> specialtyUserRoles = userManager.getSpecialtyUserRoles(user);

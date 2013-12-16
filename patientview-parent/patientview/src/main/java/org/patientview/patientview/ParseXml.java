@@ -23,17 +23,17 @@
 
 package org.patientview.patientview;
 
-import java.io.File;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.parser.XmlParserUtils;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 
 public class ParseXml extends Action {
 
@@ -41,12 +41,8 @@ public class ParseXml extends Action {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String xmlFileName = BeanUtils.getProperty(form, "src");
-
-        ServletContext context = request.getSession().getServletContext();
-        XmlParserUtils.updateXmlData(context, new File(xmlFileName));
+        LegacySpringUtils.getImportManager().process(new File(xmlFileName));
         FindXmlFiles.putXmlFilesInRequest(request);
-
         return LogonUtils.logonChecks(mapping, request);
     }
-
 }

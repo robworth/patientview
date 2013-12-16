@@ -1,11 +1,11 @@
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.dao.PlasmapheresisDao;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.Plasmapheresis;
 import org.patientview.radar.model.PlasmapheresisExchangeUnit;
 import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.PlasmapheresisManager;
 import org.patientview.radar.service.TreatmentManager;
 import org.patientview.radar.util.RadarUtility;
@@ -19,7 +19,7 @@ import java.util.List;
 public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
     private PlasmapheresisDao plasmapheresisDao;
-    DemographicsManager demographicsManager;
+    PatientManager patientManager;
 
     public void savePlasmapheresis(Plasmapheresis plasmapheresis) throws InvalidModelException {
         // validation
@@ -55,9 +55,9 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
         List<Date> datesToCheck = Arrays.asList(plasmapheresis.getStartDate(), plasmapheresis.getEndDate());
 
         // cannot be before date of birth
-        Demographics demographics = demographicsManager.getDemographicsByRadarNumber(plasmapheresis.getRadarNumber());
-        if (demographics != null) {
-            Date dob = demographics.getDateOfBirth();
+        Patient patient = patientManager.getPatientByRadarNumber(plasmapheresis.getRadarNumber());
+        if (patient != null) {
+            Date dob = patient.getDob();
             if (dob != null) {
                 for (Date date : datesToCheck) {
                     if (date != null) {
@@ -118,7 +118,7 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
         this.plasmapheresisDao = plasmapheresisDao;
     }
 
-    public void setDemographicsManager(DemographicsManager demographicsManager) {
-        this.demographicsManager = demographicsManager;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 }

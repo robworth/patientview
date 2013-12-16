@@ -24,6 +24,7 @@
 package org.patientview.patientview.model;
 
 import org.patientview.ibd.Ibd;
+import org.patientview.model.BaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,11 +49,17 @@ public class JoinRequest extends BaseModel {
     @Column(nullable = false)
     private String unitcode;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String email;
 
     @Column(nullable = false)
     private Date dateOfRequest;
+
+    @Column(nullable = true)
+    private boolean isComplete;
+
+    @Column(nullable = true)
+    private String notes;
 
     @Transient
     private String antiSpamAnswer;
@@ -69,6 +76,7 @@ public class JoinRequest extends BaseModel {
         this.unitcode = unitcode;
         this.email = email;
         this.dateOfRequest = dateOfRequest;
+        this.isComplete = false;
     }
 
     public String getFirstName() {
@@ -149,5 +157,21 @@ public class JoinRequest extends BaseModel {
         }
 
         return "";
+    }
+
+    public boolean getIsComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

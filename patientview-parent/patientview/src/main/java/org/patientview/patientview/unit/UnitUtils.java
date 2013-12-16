@@ -23,21 +23,75 @@
 
 package org.patientview.patientview.unit;
 
-import org.patientview.patientview.model.Unit;
+import org.apache.commons.collections.CollectionUtils;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.user.UserUtils;
+import org.patientview.service.UnitManager;
+import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public final class UnitUtils {
 
     public static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnitUtils.class);
+
     private UnitUtils() {
+    }
+
+    /**
+     * this method will search units depend on login user's role and sourceType of unit('radargroup', 'renalunit').
+     * superadmin will get all 'radargroup' and 'renalunit' units, unitadmin will get all units which he belongs to,
+     * other role user won't get any unit, like radaradmin.
+     * searching result will be as a attribute in request.
+     * @param request
+     */
+    public static void setUserUnits(HttpServletRequest request) {
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        UnitManager unitManager = LegacySpringUtils.getUnitManager();
+        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
+        List items;
+        final String role = userManager.getCurrentSpecialtyRole(user);
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            items = unitManager.getAll(null, new String[]{"radargroup", "renalunit"});
+        } else if (role.equals("unitadmin") || role.equals("unitstaff")) {
+            items = unitManager.getLoggedInUsersUnits();
+        } else {
+            items = new ArrayList();
+        }
+
+        request.setAttribute("units", items);
+    }
+
+    /**
+     * this method will search units depend on login user's role and 'renalunit' unit
+     * superadmin will get all 'renalunit' units, unitadmin will get all 'renalunit' units which he belongs to,
+     * other role user won't get any unit, like radaradmin.
+     * searching result will be as a attribute in request.
+     * @param request
+     */
+    public static void setUserRenalUnits(HttpServletRequest request) {
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        UnitManager unitManager = LegacySpringUtils.getUnitManager();
+        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
+        List items = unitManager.getAll(null, new String[]{"renalunit"});
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            request.setAttribute("units", items);
+        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
+            List userUnits = unitManager.getLoggedInUsersUnits();
+            Collection units = CollectionUtils.intersection(userUnits, items);
+            request.setAttribute("units", units);
+        }
     }
 
     public static void putRelevantUnitsInRequest(HttpServletRequest request) throws Exception {
@@ -56,7 +110,8 @@ public final class UnitUtils {
         try {
             unit = LegacySpringUtils.getUnitManager().get(unitcode);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
         return unit;
     }
@@ -73,6 +128,7 @@ public final class UnitUtils {
     public static void buildUnit(Unit unit, Object form) throws Exception {
 
         // set defaults for sourceType and country, note this runs for updates as well as creates
+        unit.setSourceType(BeanUtils.getProperty(form, "sourceType"));
         if (unit.getSourceType() == null || unit.getSourceType().length() == 0) {
             unit.setSourceType("renalunit");
         }

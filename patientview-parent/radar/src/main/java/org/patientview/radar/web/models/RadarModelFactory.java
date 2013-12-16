@@ -1,18 +1,18 @@
 package org.patientview.radar.web.models;
 
 
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.sequenced.ClinicalData;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.web.panels.DiagnosisPanel;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.sequenced.ClinicalData;
+import org.patientview.radar.service.ClinicalDataManager;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.panels.DiagnosisPanel;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -123,52 +123,52 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel getFirstNameModel(final IModel<Long> radarNumberModel, final DemographicsManager
-            demographicsManager) {
+    public static IModel getFirstNameModel(final IModel<Long> radarNumberModel, final PatientManager
+            patientManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
                             radarNumberModel.getObject()).getForename() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
                             getForename() : null;
                 }
             }
         };
     }
 
-    public static IModel getSurnameModel(final IModel<Long> radarNumberModel, final DemographicsManager
-            demographicsManager) {
+    public static IModel getSurnameModel(final IModel<Long> radarNumberModel, final PatientManager
+            patientManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
                             radarNumberModel.getObject()).getSurname() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
                             getSurname() : null;
                 }
             }
         };
     }
 
-    public static IModel getDobModel(final IModel<Long> radarNumberModel, final DemographicsManager
-            demographicsManager) {
+    public static IModel getDobModel(final IModel<Long> radarNumberModel, final PatientManager
+            patientManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
-                            radarNumberModel.getObject()).getDateOfBirth() : null;
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
+                            radarNumberModel.getObject()).getDob() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
-                            getDateOfBirth() : null;
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
+                            getDob() : null;
                 }
             }
 
@@ -176,17 +176,18 @@ public class RadarModelFactory {
     }
 
     public static IModel<String> getHospitalNumberModel(final IModel<Long> radarNumberModel,
-                                                        final DemographicsManager demographicsManager) {
+                                                        final PatientManager
+                                                                patientManager) {
         return new Model<String>() {
             @Override
             public String getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
-                            radarNumberModel.getObject()).getHospitalNumber() : null;
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
+                            radarNumberModel.getObject()).getHospitalnumber() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
-                            getHospitalNumber() : null;
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
+                            getHospitalnumber() : null;
                 }
             }
         };

@@ -26,7 +26,7 @@ package org.patientview.patientview.unitstat;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -70,7 +70,7 @@ public class UnitStatAction extends Action {
 
     private void addDownloadableFilenames(HttpServletRequest request, Collection<UnitMonthStats> statsInRecords) {
         ServletContext context = request.getSession().getServletContext();
-        String unitStatDirPath = context.getInitParameter("unitstatfiles.directory");
+        String unitStatDirPath = LegacySpringUtils.getContextProperties().getProperty("unitstatfiles.directory");
         for (UnitMonthStats unitMonthStat : statsInRecords) {
             String unitStatFilename = unitMonthStat.getUnitcode() + "-" + unitMonthStat.getYearmonth() + ".csv";
             File statFile = new File(unitStatDirPath, unitStatFilename);

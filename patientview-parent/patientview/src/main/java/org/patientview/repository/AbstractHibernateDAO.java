@@ -23,7 +23,7 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 import org.patientview.utils.XssUtils;
 
 import javax.inject.Inject;
@@ -68,6 +68,7 @@ public class AbstractHibernateDAO<T extends BaseModel> {
             // apply any baseModel standards
             entityManager.merge(entity);
         }
+        entityManager.flush();
     }
 
     public void delete(final T entity) {

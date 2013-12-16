@@ -23,6 +23,9 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.BaseModel;
+import org.patientview.model.Unit;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

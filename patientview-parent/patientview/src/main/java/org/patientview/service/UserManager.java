@@ -25,7 +25,7 @@ package org.patientview.service;
 
 import org.patientview.patientview.logon.PatientLogon;
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
@@ -46,6 +46,14 @@ public interface UserManager {
 
     User get(Long id);
 
+    /**
+     * It is planned to have this method secured so that only users with mappings to one of the requested users
+     * units, using: @UnitSecured(value = "UNIT_ACCESS")
+     *
+     * It should be possible to turn this on now, but there may well still be a couple of bugs in there.
+     * @param username
+     * @return
+     */
     User get(String username);
 
     String getLoggedInUserRole();

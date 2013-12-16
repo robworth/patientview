@@ -1,10 +1,13 @@
 package org.patientview.radar.test.dao;
 
+import org.junit.Ignore;
 import org.patientview.radar.dao.RelapseDao;
 import org.patientview.radar.model.sequenced.Relapse;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +18,9 @@ public class RelapseDaoTest extends BaseDaoTest {
 
     @Autowired
     private RelapseDao relapseDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     @Test
     public void testSaveRelapse() throws Exception {
@@ -31,6 +37,7 @@ public class RelapseDaoTest extends BaseDaoTest {
 
     @Test
     public void testDeleteRelapse() throws Exception {
+        testDataHelper.createRelapse();
         Relapse relapse = relapseDao.getRelapse(new Long(1));
         assertNotNull(relapse);
 
@@ -42,6 +49,7 @@ public class RelapseDaoTest extends BaseDaoTest {
     @Test
     public void getLabData() {
         // We have a lab data with ID 16 in the test dataset
+        testDataHelper.createRelapse();
         Relapse relapse = relapseDao.getRelapse(4L);
         assertNotNull("Relapse object was null", relapse);
 
@@ -52,6 +60,7 @@ public class RelapseDaoTest extends BaseDaoTest {
 
     @Test
     public void getLabDataByRadarNumber() {
+        testDataHelper.createRelapse();
         List<Relapse> relapses = relapseDao.getRelapsesByRadarNumber(237L);
         assertNotNull("Lab data list was null querying by radar number", relapses);
 

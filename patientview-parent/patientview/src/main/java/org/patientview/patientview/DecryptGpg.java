@@ -32,8 +32,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.plmatrix.gpg.GpgToolFree;
 import org.patientview.patientview.logon.LogonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DecryptGpg extends Action {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DecryptGpg.class);
 
     public ActionForward execute(
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -49,7 +53,8 @@ public class DecryptGpg extends Action {
             gpg.setGpgRuntime(gpgRuntime);
             gpg.decrypt(src, dest, passphrase);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
         return LogonUtils.logonChecks(mapping, request);
     }

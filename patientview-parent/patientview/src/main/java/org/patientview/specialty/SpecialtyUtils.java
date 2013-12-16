@@ -23,7 +23,7 @@
 
 package org.patientview.specialty;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.utils.LegacySpringUtils;
 
 

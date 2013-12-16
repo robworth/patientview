@@ -1,13 +1,13 @@
 package org.patientview.radar.dao;
 
-import org.patientview.radar.model.Centre;
+import org.patientview.model.Centre;
+import org.patientview.model.Clinician;
+import org.patientview.model.Country;
+import org.patientview.model.Ethnicity;
 import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Country;
-import org.patientview.radar.model.Ethnicity;
 import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.patientview.radar.model.Clinician;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +19,14 @@ public interface UtilityDao {
     List<Centre> getCentres();
 
     Consultant getConsultant(long id);
+
+    void deleteUnit(String unitCode);
+
+    void deletePatientViewUser(String username);
+
+    void deletePatientViewMapping(String username);
+
+    void createUnit(String unitCode);
 
     List<Consultant> getConsultants(ConsultantFilter filter, int page, int numberPerPage);
 
@@ -50,4 +58,17 @@ public interface UtilityDao {
 
     Centre getCentre(String unitCode);
 
+    List<Centre> getCentres(String nhsNo);
+
+    String getUserName(String nhsNo);
+
+    boolean isGroupAdmin(String username);
+
+    String getUserName(Long id);
+
+    List<Centre> getRenalUnitCentre(String nhsNo);
+
+    void deletePatient(String nshNo);
+
+    void deletePatientForRadar(Long radarId);
 }

@@ -14,12 +14,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValue;
-import org.patientview.radar.model.Demographics;
-import org.patientview.radar.model.generic.AddPatientModel;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.generic.MedicalResultManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
@@ -38,41 +35,34 @@ public class GenericPatientPage extends BasePage {
     private Tab currentTab = Tab.DEMOGRAPHICS;
     private MarkupContainer linksContainer;
 
-    private Demographics demographics;
+    private Patient patient;
+
 
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
 
-    @SpringBean
-    private MedicalResultManager medicalResultManager;
+    public GenericPatientPage(){
+        init(new Patient());
+    }
 
-    public GenericPatientPage(AddPatientModel patientModel) {
+    public GenericPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
         // this constructor is used when adding a new patient
-        super();
-
-        // set the nhs id or chi id based on model
-        demographics = new Demographics();
-        demographics.setDiseaseGroup(patientModel.getDiseaseGroup());
-        demographics.setRenalUnit(patientModel.getCentre());
-        demographics.setNhsNumber(patientModel.getPatientId());
-        demographics.setNhsNumberType(patientModel.getNhsNumberType());
-
-        init(demographics);
+        init(patient);
+        this.patient = patient;
     }
 
     public GenericPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
-        // get the demographics based on radar id
-        StringValue idValue = pageParameters.get("id");
-        Long id = idValue.toLong();
-        demographics = demographicsManager.getDemographicsByRadarNumber(id);
-
-        init(demographics);
+        // it says "Id" what it actually means is RadarNumber
+        patient = patientManager.getPatientByRadarNumber(pageParameters.get("id").toLong());
+        init(patient);
     }
 
-    public void init(Demographics demographics) {
+
+    public void init(Patient patient) {
         // init all the panels
-        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", demographics) {
+        genericDemographicsPanel = new GenericDemographicsPanel("demographicsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.DEMOGRAPHICS);
@@ -81,7 +71,7 @@ public class GenericPatientPage extends BasePage {
 
         genericDemographicsPanel.setOutputMarkupPlaceholderTag(true);
 
-        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", demographics) {
+        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);
@@ -90,7 +80,7 @@ public class GenericPatientPage extends BasePage {
         geneticsPanel.setOutputMarkupPlaceholderTag(true);
         add(geneticsPanel);
 
-        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", demographics) {
+        medicalResultsPanel = new MedicalResultsPanel("medicalResultsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICAL_RESULTS);
@@ -101,7 +91,7 @@ public class GenericPatientPage extends BasePage {
 
         add(genericDemographicsPanel, medicalResultsPanel);
 
-        medicinePanel = new MedicinePanel("medicinePanel", demographics) {
+        medicinePanel = new MedicinePanel("medicinePanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.MEDICINE);
@@ -134,9 +124,9 @@ public class GenericPatientPage extends BasePage {
         add(RadarBehaviourFactory.getWarningOnPatientPageExitBehaviour());
     }
 
-    public static PageParameters getPageParameters(Demographics demographics) {
+    public static PageParameters getPageParameters(Patient patient) {
         PageParameters pageParameters = new PageParameters();
-        Long id = demographics.getId();
+        Long id = patient.getId();
         pageParameters.set("id", id);
         return pageParameters;
     }
@@ -178,7 +168,7 @@ public class GenericPatientPage extends BasePage {
 
         @Override
         public void onClick(AjaxRequestTarget target) {
-            if (demographics.hasValidId()) {
+            if (patient.hasValidId()) {
                 GenericPatientPage.this.currentTab = tab;
                 // Add the links container to update hover class
                 target.add(linksContainer);
