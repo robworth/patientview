@@ -126,7 +126,9 @@ public class GenericPatientPage extends BasePage {
 
     public static PageParameters getPageParameters(Patient patient) {
         PageParameters pageParameters = new PageParameters();
-        Long id = patient.getId();
+        // BE VERY CAREFUL WITH THIS BELTER.  RadarNo != Patient.id now
+        // We are maintaining the old functionality
+        Long id = patient.getRadarNo();
         pageParameters.set("id", id);
         return pageParameters;
     }
