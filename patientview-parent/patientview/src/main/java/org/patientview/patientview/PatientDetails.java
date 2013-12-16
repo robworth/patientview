@@ -31,7 +31,6 @@ import org.patientview.model.Unit;
 
 import java.util.List;
 
-
 public class PatientDetails {
 
     private Patient patient;

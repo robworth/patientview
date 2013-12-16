@@ -41,6 +41,7 @@ import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -76,14 +77,15 @@ public class PatientManagerImpl implements PatientManager {
     @Inject
     private MedicineManager medicineManager;
 
-    @Override
-    public Patient get(Long id) {
-        return patientDao.get(id);
-    }
 
     @Override
     public Patient get(String nhsno, String unitcode) {
         return patientDao.get(nhsno, unitcode);
+    }
+
+    @Override
+    public Patient get(Long id) {
+        return patientDao.get(id);
     }
 
     @Override
@@ -114,6 +116,11 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     @Override
+    public List<Patient> getByNhsNo(String nhsNo) {
+        return patientDao.getByNhsNo(nhsNo);
+    }
+
+    @Override
     public List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps) {
         return patientDao.getUnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,
                 securityUserManager.getLoggedInSpecialty());
@@ -141,37 +148,72 @@ public class PatientManagerImpl implements PatientManager {
 
         List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
 
-        for (UserMapping userMapping : userMappings) {
-            String unitcode = userMapping.getUnitcode();
-            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
-                continue;
-            }
+        //todo This is a 'fix' to get try pateints by just nhs number if the Patient no longer has the mapping
+        //todo on the patient table 'unitcode' column which would be the case with some radar patients.
+        if (CollectionUtils.isEmpty(patientDetails) && !CollectionUtils.isEmpty(userMappings)) {
 
-            Patient patient = get(userMapping.getNhsno(), unitcode);
+            UserMapping userMapping = userMappings.get(0);
+            Unit unit = unitManager.get(userMapping.getUnitcode());
 
-            Unit unit = unitManager.get(unitcode);
 
-            if (patient != null && unit != null) {
-                PatientDetails patientDetail = new PatientDetails();
+            // Should only be one NhsNo across all user mapping
+            for (Patient patient : getByNhsNo(userMapping.getNhsno())) {
 
-                patientDetail.setPatient(patient);
-                patientDetail.setUnit(unit);
-                patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
-                patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
-                patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                        patient.getUnitcode()));
-
-                // TODO: dont really know bout this UktUtils ?
-                patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
-
-                patientDetails.add(patientDetail);
+                patientDetails.add(createPatientDetails(patient, unit));
 
                 AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
                         AddLog.PATIENT_VIEW, "", patient.getNhsno(),
                         patient.getUnitcode(), "");
             }
+
         }
 
         return patientDetails;
+    }
+
+    private PatientDetails createPatientDetails(Patient patient, Unit unit) {
+        PatientDetails patientDetail = new PatientDetails();
+
+        patientDetail.setPatient(patient);
+        patientDetail.setUnit(unit);
+        patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
+        patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
+        patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
+                patient.getUnitcode()));
+
+        // TODO: dont really know bout this UktUtils ?
+        patientDetail.setUktStatus(UktUtils.retreiveUktStatus(patient.getNhsno()));
+
+        return patientDetail;
+
+    }
+
+    @Override
+    public List<PatientDetails> getPatientDetails(Long id) {
+
+        Patient patient = get(id);
+        List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
+
+        PatientDetails patientDetail = new PatientDetails();
+
+        patientDetail.setPatient(patient);
+        patientDetail.setUnit(unitManager.get(patient.getUnitcode()));
+        patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
+        patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
+        patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
+                patient.getUnitcode()));
+
+        // TODO: dont really know bout this UktUtils ?
+        patientDetail.setUktStatus(UktUtils.retreiveUktStatus(patient.getNhsno()));
+
+        patientDetails.add(patientDetail);
+
+        AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                AddLog.PATIENT_VIEW, "", patient.getNhsno(),
+                patient.getUnitcode(), "");
+
+
+        return patientDetails;
+
     }
 }

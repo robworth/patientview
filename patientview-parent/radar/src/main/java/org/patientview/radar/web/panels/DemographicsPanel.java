@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,6 +75,7 @@ import org.patientview.radar.web.components.RadarTextFieldWithValidation;
 import org.patientview.radar.web.models.RadarModelFactory;
 import org.patientview.radar.web.pages.patient.srns.PatientCallBack;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +128,14 @@ public class DemographicsPanel extends Panel {
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patientModel.getObject());
-        final IModel<Date> registrationHeaderModel = new Model<Date>(new Date());
+        final IModel<Date> registrationHeaderModel = new Model<Date>();
+
+        if (patientModel.getObject().getDateReg() != null) {
+            registrationHeaderModel.setObject(patientModel.getObject().getDateReg());
+        }   else {
+            registrationHeaderModel.setObject(new Date());
+        }
+
         final IModel<Long> radarHeaderModel = new Model<Long>(patientModel.getObject().getRadarNo());
         final IModel<String> forenameHeaderModel = new Model<String>(patientModel.getObject().getForename());
         final IModel<String> surnameHeaderModel = new Model<String>(patientModel.getObject().getSurname());
@@ -126,7 +157,7 @@ public class DemographicsPanel extends Panel {
                     userManager.addPatientUserOrUpdatePatient(patient);
 
 
-                    patientCallBack.updateModel(patient.getId());
+                    patientCallBack.updateModel(patient.getRadarNo());
                     // Update the header with the saved record
 
                     forenameHeaderModel.setObject(patientModel.getObject().getForename());
@@ -201,7 +232,7 @@ public class DemographicsPanel extends Panel {
         componentsToUpdateList.add(radarNumberField);
 
         final TextField dateRegistered = new org.apache.wicket.extensions.markup.html.form.DateTextField("dateReg",
-                registrationHeaderModel);
+                registrationHeaderModel, CommonUtils.UK_DATE_FORMAT);
 
         dateRegistered.setOutputMarkupId(true);
         dateRegistered.setOutputMarkupPlaceholderTag(true);
@@ -306,7 +337,7 @@ public class DemographicsPanel extends Panel {
         form.add(dobLabel);
 
         final TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
-                "dateOfBirthForHeader", dobHeaderModel) {
+                "dateOfBirthForHeader", dobHeaderModel, CommonUtils.UK_DATE_FORMAT) {
             @Override
             public boolean isVisible() {
                 return patientModel.getObject().getDob() != null;

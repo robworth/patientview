@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.dao.impl;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -16,7 +39,7 @@ import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
-import org.patientview.radar.util.RadarUtility;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -42,6 +65,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
 
     private SimpleJdbcInsert patientInsert;
+    private SimpleJdbcInsert radarNumberInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemographicsDaoImpl.class);
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -62,18 +86,22 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         // Call super
         super.setDataSource(dataSource);
 
-    // Initialise a simple JDBC insert to be able to get the allocated ID
-    patientInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
-    .usingGeneratedKeyColumns("id")
-    .usingColumns(
-            "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
-            "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
-            "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
-            "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
-            "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
-            "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-            "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
-            "patientLinkId");
+        // Initialise a simple JDBC insert to be able to get the allocated ID
+        patientInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
+        .usingGeneratedKeyColumns("id")
+        .usingColumns(
+                "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
+                "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
+                "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
+                "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
+                "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
+                "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
+                "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
+                "patientLinkId");
+
+        radarNumberInsert = new SimpleJdbcInsert(dataSource).withTableName("rdr_radar_number")
+                .usingGeneratedKeyColumns("id");
+
     }
 
     public void afterPropertiesSet() throws Exception {
@@ -109,6 +137,30 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         return jdbcTemplate.query(query.toString(), new Object[]{"Radar"}, new EnhancedPatientSearchMapper());
     }
 
+    public Patient getByRadarNumber(Long radarNumber) {
+
+        Patient patient = null;
+
+        try {
+
+
+
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  * ");
+            query.append("FROM    patient ");
+            query.append("WHERE   radarNo = ? ");
+
+            patient = jdbcTemplate.queryForObject(query.toString(), new Object[]{radarNumber}, new PatientRowMapper());
+
+        } catch (EmptyResultDataAccessException e) {
+            // Can't find the patient by id
+            LOGGER.debug("Cannot find patient with radar number {}", radarNumber);
+        }
+
+        return patient;
+
+    }
+
     public Patient getById(final Long id) {
 
         Patient patient = null;
@@ -128,6 +180,10 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         }
 
         return patient;
+    }
+
+    private Long getNextRadarNumber() {
+        return radarNumberInsert.executeAndReturnKey(new HashMap<String, Object>() {}).longValue();
     }
 
     private class PatientSearchMapper implements RowMapper<Patient> {
@@ -303,8 +359,9 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setId(id.longValue());
 
             //The id of the patient record is now the new radar number
-            jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
-            patient.setRadarNo(patient.getId());
+            Long radarNumber = getNextRadarNumber();
+            jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", radarNumber, id.longValue());
+            patient.setRadarNo(radarNumber);
 
         }
     }
@@ -355,7 +412,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setSurname(resultSet.getString("surname"));
             patient.setSurnameAlias(resultSet.getString("surnameAlias"));
             patient.setForename(resultSet.getString("forename"));
-            patient.setDob(RadarUtility.parseDate(resultSet.getString("dateofbirth")));
+            patient.setDob(CommonUtils.parseDate(resultSet.getString("dateofbirth")));
             // Addresses
             patient.setAddress1(resultSet.getString("address1"));
             patient.setAddress2(resultSet.getString("address2"));

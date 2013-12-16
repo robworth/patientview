@@ -49,6 +49,8 @@ public interface PatientManager {
 
     List<Patient> get(String unitCode);
 
+    List<Patient> getByNhsNo(String nhsNo);
+
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps);
 
@@ -61,4 +63,6 @@ public interface PatientManager {
     List<Patient> getUktPatients();
 
     List<PatientDetails> getPatientDetails(String username);
+
+    List<PatientDetails> getPatientDetails(Long id);
 }

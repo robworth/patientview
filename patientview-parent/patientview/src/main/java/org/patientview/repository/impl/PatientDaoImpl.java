@@ -60,6 +60,26 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
+    public Patient get(Long id) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.id), id));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+
+    @Override
     public Patient get(String nhsno, String unitcode) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -80,8 +100,28 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
-    public void delete(String nhsno, String unitcode) {
+    public List<Patient> getByNhsNo(String nhsNo) {
 
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsNo));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    @Override
+    public void delete(String nhsno, String unitcode) {
+        // TODO Change this for 1.3
         if (nhsno == null || nhsno.length() == 0 || unitcode == null || unitcode.length() == 0) {
             throw new IllegalArgumentException("Required parameters nhsno and unitcode to delete patient");
         }
@@ -171,7 +211,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                                                    Specialty specialty) {
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT usr.username ");
+        query.append("SELECT DISTINCT ");
+        query.append("       usr.username ");
         query.append(",      usr.password ");
         query.append(",      usr.name ");
         query.append(",      usr.email ");
@@ -187,30 +228,25 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",      ptt.rrtModality ");
         query.append(",      pvl.lastdatadate ");
         query.append("FROM user usr ");
-        query.append("LEFT JOIN usermapping usm ON usm.username = usr.username ");
-        query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno AND usm.unitcode = ptt.unitcode ");
-        query.append("LEFT JOIN emailverification em ON usr.username = em.username ");
-        query.append("LEFT JOIN specialtyuserrole str ON str.user_id = usr.id ");
-        query.append("LEFT JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
+        query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
+        query.append("INNER JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
+        query.append("LEFT  JOIN emailverification em ON usr.username = em.username ");
+        query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
+        query.append("LEFT  JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
         query.append("AND    usr.id = str.user_id ");
         query.append("AND    usm.unitcode <> 'PATIENT' ");
         query.append("AND    IF(ptt.patientLinkId = 0, NULL, ptt.patientLinkId) IS NULL ");
-
-
         if (nhsno != null && nhsno.length() > 0) {
             query.append("AND usm.nhsno LIKE ? ");
         }
-
         if (name != null && name.length() > 0) {
             query.append("AND usr.name LIKE ? ");
         }
-
         if (!showgps) {
             query.append("AND usr.name NOT LIKE '%-GP' ");
         }
-
-        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC  ");
+        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC ");
 
         List<Object> params = new ArrayList<Object>();
 

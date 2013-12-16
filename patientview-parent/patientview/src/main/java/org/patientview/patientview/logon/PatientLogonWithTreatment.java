@@ -25,11 +25,10 @@ package org.patientview.patientview.logon;
 
 import org.apache.commons.lang.StringUtils;
 import org.patientview.ibd.Ibd;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PatientLogonWithTreatment extends PatientLogon {
@@ -56,16 +55,9 @@ public class PatientLogonWithTreatment extends PatientLogon {
     }
 
     public void setDateofbirth(String dateofbirth) {
-        if (dateofbirth != null) {
-            // It seems that the Dob in the DB have different date formats.
-            for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2}) {
-                try {
-                    this.dateofbirth = new SimpleDateFormat(dateFormat).parse(dateofbirth);
-                } catch (ParseException e) {
-                    LOGGER.debug("Could not parse date of birth {}", dateofbirth);
-                }
-            }
-        }
+
+       this.dateofbirth = CommonUtils.parseDate(dateofbirth);
+
     }
 
     public String getDateofbirthFormatted() {
