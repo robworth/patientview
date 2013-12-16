@@ -91,6 +91,14 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
+    <!--  TODO: turn Header (licence checking) back on -->
+    <!-- Checks for Headers                                -->
+    <!-- See http://checkstyle.sf.net/config_header.html   -->
+    <!--<module name="Header">-->
+        <!--<property name="headerFile" value="common/src/main/resources/checkstyle/checkstyle.license"/>-->
+        <!--<property name="fileExtensions" value="java"/>-->
+    <!--</module>-->
+
     <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
