@@ -15,6 +15,8 @@ import java.util.Date;
  */
 public final class CommonUtils {
 
+    public static final String UK_DATE_FORMAT = "dd-MM-yyyy";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtils.class);
 
     private static final String DATE_FORMAT_0 = "dd-MM-yy";
@@ -26,6 +28,10 @@ public final class CommonUtils {
     private static final String[] LENGTH_8_DATE_FORMATS = new String[]{DATE_FORMAT_0, DATE_FORMAT_1, DATE_FORMAT_2,
             DATE_FORMAT_3};
     private static final int LENGTH_OF_RADAR_DATES = 8;
+
+
+
+    private static final SimpleDateFormat UK_DATE_FORMATTER = new SimpleDateFormat(UK_DATE_FORMAT);
 
     private CommonUtils() {
 
@@ -65,5 +71,10 @@ public final class CommonUtils {
         }
 
         return null;
+    }
+
+    public static String formatDate(Date date) {
+
+        return UK_DATE_FORMATTER.format(date);
     }
 }
