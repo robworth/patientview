@@ -161,7 +161,7 @@ public class PatientManagerImpl implements PatientManager {
                 patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
                         patient.getUnitcode()));
 
-                // TODO: dont really know bout this UktUtils ?
+                // set the transplant status on the patient
                 patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
 
                 patientDetails.add(patientDetail);
