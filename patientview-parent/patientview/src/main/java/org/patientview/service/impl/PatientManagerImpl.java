@@ -157,7 +157,7 @@ public class PatientManagerImpl implements PatientManager {
 
 
             // Should only be one NhsNo across all user mapping
-            for (Patient patient : getByNhsNo(userMapping.getNhsno()) ) {
+            for (Patient patient : getByNhsNo(userMapping.getNhsno())) {
 
                 patientDetails.add(createPatientDetails(patient, unit));
 
