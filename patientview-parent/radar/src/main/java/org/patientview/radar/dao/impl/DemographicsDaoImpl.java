@@ -316,9 +316,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         // if a range has been set limit the results
         sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
 
-        // combine the statement and return result
-        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
-                new DemographicsRowMapper());
+        // TODO Stub out this method until the model is fixed
+        return null;
     }
 
     public Sex getSex(long id) {

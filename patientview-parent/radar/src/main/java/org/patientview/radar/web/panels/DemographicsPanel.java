@@ -52,6 +52,7 @@ import org.patientview.radar.web.components.RadarTextFieldWithValidation;
 import org.patientview.radar.web.models.RadarModelFactory;
 import org.patientview.radar.web.pages.patient.srns.PatientCallBack;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +105,14 @@ public class DemographicsPanel extends Panel {
 
         // Set up model - if given radar number loadable detachable getting demographics by radar number
         final CompoundPropertyModel<Patient> model = new CompoundPropertyModel<Patient>(patientModel.getObject());
-        final IModel<Date> registrationHeaderModel = new Model<Date>(new Date());
+        final IModel<Date> registrationHeaderModel = new Model<Date>();
+
+        if (patientModel.getObject().getDateReg() != null) {
+            registrationHeaderModel.setObject(patientModel.getObject().getDateReg());
+        }   else {
+            registrationHeaderModel.setObject(new Date());
+        }
+
         final IModel<Long> radarHeaderModel = new Model<Long>(patientModel.getObject().getRadarNo());
         final IModel<String> forenameHeaderModel = new Model<String>(patientModel.getObject().getForename());
         final IModel<String> surnameHeaderModel = new Model<String>(patientModel.getObject().getSurname());
@@ -201,7 +209,7 @@ public class DemographicsPanel extends Panel {
         componentsToUpdateList.add(radarNumberField);
 
         final TextField dateRegistered = new org.apache.wicket.extensions.markup.html.form.DateTextField("dateReg",
-                registrationHeaderModel);
+                registrationHeaderModel, CommonUtils.UK_DATE_FORMAT);
 
         dateRegistered.setOutputMarkupId(true);
         dateRegistered.setOutputMarkupPlaceholderTag(true);
@@ -306,7 +314,7 @@ public class DemographicsPanel extends Panel {
         form.add(dobLabel);
 
         final TextField dateOfBirthForHeader = new org.apache.wicket.extensions.markup.html.form.DateTextField(
-                "dateOfBirthForHeader", dobHeaderModel) {
+                "dateOfBirthForHeader", dobHeaderModel, CommonUtils.UK_DATE_FORMAT) {
             @Override
             public boolean isVisible() {
                 return patientModel.getObject().getDob() != null;
