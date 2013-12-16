@@ -155,7 +155,7 @@ public class HNF1BPatientPage extends BasePage {
     }
 
     public static PageParameters getPageParameters(Patient patient) {
-        return new PageParameters().set(PARAM_ID, patient.getId());
+        return new PageParameters().set(PARAM_ID, patient.getRadarNo());
     }
 
     public Tab getCurrentTab() {

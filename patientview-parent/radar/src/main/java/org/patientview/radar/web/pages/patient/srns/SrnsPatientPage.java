@@ -214,7 +214,7 @@ public class SrnsPatientPage extends BasePage implements PatientCallBack {
     }
 
     public static PageParameters getParameters(Patient patient) {
-        return new PageParameters().set(PARAM_ID, patient.getId());
+        return new PageParameters().set(PARAM_ID, patient.getRadarNo());
     }
 
     public static PageParameters getParameters(AddPatientModel patientModel) {
