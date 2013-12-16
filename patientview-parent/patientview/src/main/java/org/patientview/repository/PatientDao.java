@@ -41,6 +41,8 @@ public interface PatientDao {
 
     Patient get(String nhsno, String unitcode);
 
+    List<Patient> getByNhsNo(String nhsNo);
+
     void save(Patient patient);
 
     void delete(String nhsno, String unitcode);

@@ -141,35 +141,24 @@ public class PatientManagerImpl implements PatientManager {
 
         List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
 
-        for (UserMapping userMapping : userMappings) {
-            String unitcode = userMapping.getUnitcode();
-            //todo so by the fact that in the past the original patient record will have a unitcode
-            //todo stamped with a mapping that is in the usermapping table when this approach should
-            //todo work. However the exists statement needs to be used on the Patient get method
+        //todo This is a 'fix' to get try pateints by just nhs number if the Patient no longer has the mapping
+        //todo on the patient table 'unitcode' column which would be the case with some radar patients.
+        if (CollectionUtils.isEmpty(patientDetails) && !CollectionUtils.isEmpty(userMappings)) {
 
-            Patient patient = get(userMapping.getNhsno(), unitcode);
+            UserMapping userMapping = userMappings.get(0);
+            Unit unit = unitManager.get(userMapping.getUnitcode());
 
-            Unit unit = unitManager.get(unitcode);
 
-            if (patient != null && unit != null) {
-                PatientDetails patientDetail = new PatientDetails();
+            // Should only be one NhsNo across all user mapping
+            for (Patient patient : getByNhsNo(userMapping.getNhsno()) ) {
 
-                patientDetail.setPatient(patient);
-                patientDetail.setUnit(unit);
-                patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
-                patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
-                patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                        patient.getUnitcode()));
-
-                // set the transplant status on the patient
-                patientDetail.setUktStatus(UktUtils.retreiveUktStatus(userMapping.getNhsno()));
-
-                patientDetails.add(patientDetail);
+                patientDetails.add(createPatientDetails(patient, unit));
 
                 AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
                         AddLog.PATIENT_VIEW, "", patient.getNhsno(),
                         patient.getUnitcode(), "");
             }
+
         }
 
         return patientDetails;
