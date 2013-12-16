@@ -60,6 +60,26 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
+    public Patient get(Long id) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.id), id));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+
+    @Override
     public Patient get(String nhsno, String unitcode) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -206,7 +226,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (!showgps) {
             query.append("AND usr.name NOT LIKE '%-GP' ");
         }
-        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC  LIMIT 0, 20");
+        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC ");
 
         List<Object> params = new ArrayList<Object>();
 
