@@ -38,13 +38,13 @@ import java.util.List;
 @Service(value = "adminNotificationManager")
 public class AdminNotificationManagerImpl implements AdminNotificationManager {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(AdminNotificationManagerImpl.class);
-
     @Inject
     private AdminNotificationDao adminNotificationDao;
 
     @Value("${support.email}")
     private String supportEmail;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminNotificationManagerImpl.class);
 
     @Override
     public List<String> getEmailAddresses(XmlImportNotification xmlImportNotification) {
