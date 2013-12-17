@@ -147,7 +147,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
-    //todo refactor into one query
+    //todo refactor into one query with the one below
+    //todo PERFORMANCE FIX: commented out the emailverification table to improve query speed.
     @Override
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
@@ -206,7 +207,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         return jdbcTemplate.query(query.toString(), params.toArray(), new PatientLogonWithTreatmentExtendMapper());
     }
 
-
+    //todo refactor into one query with the one above
+    //todo PERFORMANCE FIX: commented out the emailverification table to improve query speed.
     @Override
     public List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps,
                                                    Specialty specialty) {
