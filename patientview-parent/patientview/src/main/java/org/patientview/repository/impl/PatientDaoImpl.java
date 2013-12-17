@@ -147,6 +147,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
+    //todo refactor into one query
     @Override
     public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
                                                 Specialty specialty) {
@@ -159,7 +160,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",         usr.accountlocked ");
         query.append(",         usm.nhsno ");
         query.append(",         usm.unitcode ");
-        query.append(",         emv.lastverificationdate ");
+        query.append(",         null lastverificationdate ");
         query.append(",         usr.firstlogon ");
         query.append(",         usr.lastlogon ");
         query.append(",         ptt.treatment ");
@@ -167,10 +168,10 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",         ptt.rrtModality ");
         query.append(",         psl.lastdatadate ");
         query.append("FROM USER usr ");
-        query.append("LEFT JOIN emailverification emv ON usr.username = emv.username ");
-        query.append("LEFT JOIN specialtyuserrole str ON str.user_id = usr.id ");
-        query.append("LEFT JOIN usermapping usm ON usm.username = usr.username ");
-        query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
+        query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
+        query.append("INNER JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
+        query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
+    //    query.append("LEFT JOIN emailverification emv ON usr.username = emv.username ");
         query.append("LEFT JOIN pv_user_log psl ON usm.nhsno = psl.nhsno ");
         query.append("WHERE     str.role = 'patient' ");
         query.append("AND       usr.username = usm.username ");
@@ -220,7 +221,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",      usr.accountlocked ");
         query.append(",      ptt.nhsno ");
         query.append(",      ptt.unitcode ");
-        query.append(",      em.lastverificationdate ");
+        query.append(",      null lastverificationdate ");
         query.append(",      usr.firstlogon ");
         query.append(",      usr.lastlogon ");
         query.append(",      ptt.treatment ");
@@ -230,7 +231,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append("FROM user usr ");
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("INNER JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
-        query.append("LEFT  JOIN emailverification em ON usr.username = em.username ");
+     //   query.append("LEFT  JOIN emailverification em ON usr.username = em.username ");
         query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
         query.append("LEFT  JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
