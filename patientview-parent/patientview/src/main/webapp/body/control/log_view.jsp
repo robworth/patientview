@@ -108,6 +108,12 @@
   </logic:empty>
 
   <logic:notEmpty name="log">
+    <bean:size id="logsize" name="log"/>
+    <thead>
+        <tr>
+          <th class="tablecellbold" colspan="7">There are <bean:write name="logsize" /> results from this query.</th>
+        </tr>
+    </thead>
     <thead>
         <tr>
           <th class="tablecellbold">Date and time</th>
