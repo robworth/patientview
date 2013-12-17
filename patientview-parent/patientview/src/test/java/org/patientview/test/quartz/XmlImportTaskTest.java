@@ -33,14 +33,14 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.FindXmlFiles;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.model.Unit;
 import org.patientview.quartz.XmlImportTask;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.repository.PatientDao;
@@ -53,7 +53,6 @@ import org.patientview.service.MedicineManager;
 import org.patientview.service.TestResultManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +79,7 @@ import static org.junit.Assert.assertTrue;
 @Transactional
 public class XmlImportTaskTest extends BaseTestPvDbSchema {
 
-    @Autowired
+    @Inject
     private XmlImportTask xmlImport;
 
     private String xmlDirectory;
