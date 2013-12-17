@@ -28,6 +28,7 @@ import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
+import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Consultant;
 import org.patientview.radar.model.DiagnosisCode;
@@ -246,14 +247,19 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public int getPatientCountByUnit(Centre centre) {
         try {
-
             StringBuilder query = new StringBuilder();
-            query.append("SELECT  COUNT(DISTINCT nhsno) ");
-            query.append("FROM    usermapping usm ");
-            query.append("WHERE   EXISTS (SELECT  1 ");
-            query.append("                FROM    patient ptt ");
-            query.append("                WHERE   ptt.nhsno = usm.nhsno) ");
-            query.append("AND     usm.unitCode = ? ");
+            query.append("SELECT  COUNT(DISTINCT p.nhsno) ");
+            query.append("FROM    user u ");
+            query.append("INNER JOIN patient p ");
+            query.append("INNER JOIN usermapping m ");
+            query.append("WHERE  m.nhsno = p.nhsno ");
+            query.append("AND    u.username NOT LIKE '%-GP%' ");
+            query.append("AND    u.username = m.username ");
+            query.append("AND    m.unitcode <> 'PATIENT' ");
+            query.append("AND    m.unitcode = ? ");
+            query.append("AND    p.sourceType = '");
+            query.append(SourceType.RADAR.getName());
+            query.append("'");
 
             return jdbcTemplate.queryForObject(query.toString(), new Object[]{centre.getUnitCode()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
