@@ -359,7 +359,6 @@ public class DemographicsPanel extends Panel {
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
-        nonEditableComponents.add(sex);
 
         // Address fields
         TextField address1 = new TextField("address1");

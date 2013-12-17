@@ -221,8 +221,6 @@ public class GenericDemographicsPanel extends Panel {
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
 
-        nonEditableComponents.add(ethnicity);
-
         // Address fields
         TextField address1 = new TextField("address1");
         TextField address2 = new TextField("address2");
