@@ -21,19 +21,26 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service;
+package org.patientview.quartz.handler;
 
-import org.patientview.model.enums.XmlImportNotification;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.patientview.patientview.parser.ResultParser;
+import org.patientview.quartz.exception.ResultParserException;
 
-import java.util.List;
+import java.io.File;
 
-@Transactional(propagation = Propagation.REQUIRED)
-public interface AdminNotificationManager {
+/**
+ * User: james@solidstategroup.com
+ * Date: 17/12/13
+ * Time: 11:56
+ */
+public interface ErrorHandler {
+    void processingException(File xmlFile, Exception e);
 
-    List<String> getEmailAddresses(XmlImportNotification xmlImportNotification);
+    void parserException(File xmlFile, ResultParserException e);
 
-    String getSupportEmailAddress();
+    void emptyFile(File xmlFile);
 
+    void corruptNodes(File xmlFile, ResultParser resultParser);
+
+    void createLogEntry(File xmlFile, String action, String extraInfoExplanation);
 }

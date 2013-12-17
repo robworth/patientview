@@ -29,7 +29,6 @@ import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
 import org.patientview.model.Unit;
 import org.patientview.model.enums.SourceType;
-import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
@@ -37,7 +36,6 @@ import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.LogEntry;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.UserLog;
@@ -46,6 +44,7 @@ import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.quartz.exception.ResultParserException;
+import org.patientview.quartz.handler.ErrorHandler;
 import org.patientview.repository.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
@@ -90,6 +89,9 @@ public class ImportManagerImpl implements ImportManager {
     @Inject
     private LogEntryManager logEntryManager;
 
+    @Inject
+    private ErrorHandler errorHandler;
+
 
     @Override
     public Unit retrieveUnit(String unitCode) {
@@ -97,42 +99,6 @@ public class ImportManagerImpl implements ImportManager {
         return unitDao.get(unitCode, null);
     }
 
-    private void handleProcessError(File xmlFile, Exception e) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, e.getMessage());
-        try {
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
-
-    private void handleParserError(File xmlFile, ResultParserException e) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, EmailUtils.extractErrorsFromException(e));
-        try {
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
-
-    private void handleEmptyFile(File xmlFile) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, "Empty file");
-        try {
-            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
-
-    private void handleCorruptNodes(File xmlFile, ResultParser resultParser) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL,
-                EmailUtils.createCorruptNodeEmailTest(resultParser.getCorruptNodes()));
-        try {
-            xmlImportUtils.sendCorruptDataEmail(resultParser);
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
 
 
     public void process(File xmlFile) throws ProcessException {
@@ -140,7 +106,7 @@ public class ImportManagerImpl implements ImportManager {
         LOGGER.debug("Processing file {}.", xmlFile.getName());
 
         if (xmlFile.length() == 0) {
-            handleEmptyFile(xmlFile);
+            errorHandler.emptyFile(xmlFile);
             throw new ProcessException("The file is empty");
         }
 
@@ -149,7 +115,7 @@ public class ImportManagerImpl implements ImportManager {
         try {
             resultParser = new ResultParser(xmlFile);
         } catch (ResultParserException pe) {
-            handleParserError(xmlFile, pe);
+            errorHandler.parserException(xmlFile, pe);
             throw new ProcessException("Could not create the parser for the file", pe);
         }
 
@@ -161,17 +127,17 @@ public class ImportManagerImpl implements ImportManager {
             try {
                 action = processPatientData(resultParser);
             } catch (ProcessException pe) {
-                handleProcessError(xmlFile, pe);
+                errorHandler.processingException(xmlFile, pe);
                 throw pe;
             } catch (Exception e) {
-                handleProcessError(xmlFile, e);
+                errorHandler.processingException(xmlFile, e);
                 throw new ProcessException("There has been an error processing the data", e);
             }
 
-            createLogEntry(xmlFile, action);
+            log(xmlFile, action);
 
         } else {
-            handleCorruptNodes(xmlFile, resultParser);
+            errorHandler.corruptNodes(xmlFile, resultParser);
             throw new ProcessException("There are file corruptions");
         }
     }
@@ -400,23 +366,9 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void createLogEntry(File xmlFile, String action) {
-        createLogEntry(xmlFile, action, "");
+    private void log(File xmlFile, String action) {
+        errorHandler.createLogEntry(xmlFile, action, "");
     }
 
-    private void createLogEntry(File xmlFile, String action, String extraInfoExplanation) {
-        LogEntry logEntry = new LogEntry();
-        logEntry.setActor(AddLog.ACTOR_SYSTEM);
-        logEntry.setDate(Calendar.getInstance());
-        logEntry.setNhsno(xmlImportUtils.getNhsNumber(xmlFile.getName()));
-        logEntry.setUnitcode(xmlImportUtils.getUnitCode(xmlFile.getName()));
-        logEntry.setUser("");
-        logEntry.setAction(action);
-        if (null != extraInfoExplanation && !"".equals(extraInfoExplanation)) {
-            logEntry.setExtrainfo(xmlFile.getName() + " : " + extraInfoExplanation);
-        } else {
-            logEntry.setExtrainfo(xmlFile.getName());
-        }
-        logEntryManager.save(logEntry);
-    }
+
 }

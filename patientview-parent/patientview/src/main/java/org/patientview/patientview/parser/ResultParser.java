@@ -249,15 +249,27 @@ public class ResultParser {
             letter.setUnitcode(getData("centrecode"));
             NodeList letterDetailNodes = letterNode.getChildNodes();
             for (int j = 0; j < letterDetailNodes.getLength(); j++) {
+
                 Node letterDetailNode = letterDetailNodes.item(j);
+
+                // Avoid the npe when the node has no children
+                if (letterDetailNode.getFirstChild() == null) {
+                    continue;
+                }
+
                 if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE)
                         && (letterDetailNode.getNodeName().equals("letterdate"))) {
+
                     letter.setStringDate(letterDetailNode.getFirstChild().getNodeValue());
+
                 } else if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE)
                         && (letterDetailNode.getNodeName().equals("lettertype"))) {
+
                     letter.setType(letterDetailNode.getFirstChild().getNodeValue());
+
                 } else if ((letterDetailNode.getNodeType() == Node.ELEMENT_NODE)
                         && (letterDetailNode.getNodeName().equals("lettercontent"))) {
+
                     NodeList nodes = letterDetailNode.getChildNodes();
                     for (int k = 0; k < nodes.getLength(); k++) {
                         Node node = nodes.item(k);
@@ -268,6 +280,7 @@ public class ResultParser {
                     }
                 }
             }
+
             letters.add(letter);
         }
     }

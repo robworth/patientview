@@ -165,7 +165,13 @@ public final class XmlImportUtils {
         String fileName = xmlFile.getName();
         String unitCode = fileName.substring(0, fileName.indexOf("_"));
 
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        Unit unit = null;
+        try {
+             unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        } catch (Exception ee) {
+            LOGGER.debug("Cannot find unit, using default support email address");
+        }
+
         String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
