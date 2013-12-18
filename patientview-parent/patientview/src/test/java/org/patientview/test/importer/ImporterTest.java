@@ -29,6 +29,8 @@ import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
@@ -36,9 +38,7 @@ import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.service.CentreManager;
@@ -67,6 +67,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * The importer is kicked off from Quartz.
@@ -200,6 +201,36 @@ public class ImporterTest extends BaseServiceTest {
         assertEquals("Incorrect number of letters", 2, letters.size());
     }
 
+
+    /**
+     * RPV - 138 Update the same patient twice and see if the gender gets changed as the
+     * second XML uses a different gender.
+     *
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testXmlParserUpdatesPatientRecord() throws Exception {
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890.gpg.xml");
+
+        importManager.process(xmlFileResource.getFile());
+        List<Patient> patients = patientManager.getByNhsNo("1234567890");
+        assertTrue("The first patient record is female", patients.get(0).getSex().equals("Female"));
+
+
+        xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890_duplicate.gpg.xml");
+        importManager.process(xmlFileResource.getFile());
+        patients = patientManager.getByNhsNo("1234567890");
+        assertTrue("The updated patient record is male", patients.get(0).getSex().equals("Male"));
+
+
+
+
+    }
+
     /**
      * Test to see if an exception is thrown when an update is being carried out on a radar patient
      *
@@ -250,6 +281,9 @@ public class ImporterTest extends BaseServiceTest {
         checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
+
+
+
 
     /**
      * Test if importer handles empty test file. This probably means that the encryption did not work.
