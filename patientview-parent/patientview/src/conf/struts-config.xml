@@ -1016,12 +1016,13 @@
         </action>
 
         <action path="/control/feedbackUnitSelect"
-                type="org.patientview.patientview.logon.LogonAddInputAction"
+                type="org.patientview.patientview.feedback.FeedbackInputAction"
                 name="unitForm"
                 scope="request"
                 validate="false">
             <forward name="success" path="/control/feedback_unit_select.jsp"/>
         </action>
+
 
         <action path="/control/feedbackView"
                 type="org.patientview.patientview.feedback.FeedbackViewAction"
