@@ -77,6 +77,8 @@ public interface UnitManager {
 
     List<Unit> getLoggedInUsersUnits();
 
+    List<Unit> getLoggedInUsersRenalUnits();
+
     List<Unit> getUsersUnits(User user);
 
     List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes);

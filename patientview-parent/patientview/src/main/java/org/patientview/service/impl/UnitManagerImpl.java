@@ -127,6 +127,17 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getLoggedInUsersRenalUnits() {
+        List<Unit> renalUnits = new ArrayList<Unit>();
+        for (Unit unit : getUsersUnits(userManager.getLoggedInUser())) {
+            if (unit.getSourceType().equalsIgnoreCase("renalunit")) {
+                renalUnits.add(unit);
+            }
+        }
+        return renalUnits;
+    }
+
+    @Override
     public List<Unit> getUsersUnits(User user) {
         List<String> usersUnitCodes = getUsersUnitCodes(user);
         return unitDao.get(usersUnitCodes, securityUserManager.getLoggedInSpecialty());

@@ -124,17 +124,19 @@ public class AddPatientPage extends BasePage {
                 demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
                         model.getPatientId());
 
+                List<String> radarUnits = userManager.getPatientRadarMappings(model.getPatientId());
+
                 // check nhs number is valid
                 if (!RadarUtility.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
 
-                } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
+                } else if (CollectionUtils.isNotEmpty(radarUnits)) {
                     // check that this nhsno has a mapping in the radar system
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
-                    error("A patient with this NHS or CHI number already exists");
+                    error("The patient is currently a member of the " + radarUnits.get(0) + " Registry");
                 }
 
                 if (!hasError()) {
