@@ -329,11 +329,18 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void deleteLetters(Collection letters) {
+
+
         for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
             Letter letter = (Letter) iterator.next();
 
+            // Avoiding NPE in RPV-126. Although this will leave the letter in the DB.
+            if (letter.getDate() != null) {
             LegacySpringUtils.getLetterManager().delete(letter.getNhsno(), letter.getUnitcode(),
                     letter.getDate().getTime());
+            } else {
+                LOGGER.warn("The letter does not come with a date so skipping deletion");
+            }
         }
     }
 
