@@ -312,7 +312,13 @@ public class Patient extends BaseModel {
     }
 
     public String getFormatedDateOfBirth() {
-         return UK_DATE_FORMAT.format(CommonUtils.parseDate(dateofbirth));
+
+        Date date =  CommonUtils.parseDate(dateofbirth);
+        if (date != null) {
+            return UK_DATE_FORMAT.format(CommonUtils.parseDate(dateofbirth));
+        } else {
+            return null;
+        }
     }
 
     public void setDateofbirth(String dateofbirth) {
