@@ -60,7 +60,7 @@ public class FeedbackInputAction extends Action {
         } else if (role.equals("unitadmin") || role.equals("unitstaff")) {
             items = unitManager.getLoggedInUsersRenalUnits();
         } else {
-            items = new ArrayList();
+            items = new ArrayList<Unit>();
         }
 
         request.setAttribute("units", items);
