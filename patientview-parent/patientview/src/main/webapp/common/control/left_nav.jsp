@@ -98,10 +98,6 @@
                         <li class="divider"></li>
                         <li><html:link action="/control/splashPageList">Splash Pages</html:link></li>
                     </logic:present>
-                    <logic:present role="superadmin">
-                        <li class="divider"></li>
-                        <li><html:link action="/control/version">RPV Version</html:link></li>
-                    </logic:present>
                 </logic:present>
             </logic:present>
 
