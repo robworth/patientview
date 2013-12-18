@@ -142,9 +142,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         Patient patient = null;
 
         try {
-
-
-
             StringBuilder query = new StringBuilder();
             query.append("SELECT  * ");
             query.append("FROM    patient ");
@@ -377,6 +374,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         query.append("WHERE  m.nhsno = p.nhsno ");
         query.append("AND    u.username NOT LIKE '%-GP%' ");
         query.append("AND    u.username = m.username ");
+        query.append("AND    m.unitcode <> 'PATIENT' ");
         query.append("AND    m.unitcode IN (");
         query.append(unitCodeValues);
         query.append(")");
