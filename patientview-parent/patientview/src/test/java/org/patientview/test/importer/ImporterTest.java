@@ -224,6 +224,7 @@ public class ImporterTest extends BaseServiceTest {
                 .getResource("classpath:A_00794_1234567890_duplicate.gpg.xml");
         importManager.process(xmlFileResource.getFile());
         patients = patientManager.getByNhsNo("1234567890");
+        assertTrue("There is still only one patient record for this NHS Number", patients.size() == 1);
         assertTrue("The updated patient record is male", patients.get(0).getSex().equals("Male"));
 
 
