@@ -45,7 +45,10 @@ import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service(value = "patientManager")
 public class PatientManagerImpl implements PatientManager {
@@ -216,4 +219,48 @@ public class PatientManagerImpl implements PatientManager {
         return patientDetails;
 
     }
+
+
+    /**
+     * This is to get the date by unit of the test results loaded into the system
+     *
+     *
+     * @param nhsNo
+     * @return
+     */
+    public Map.Entry<String, Date> getLatestTestResultUnit(String nhsNo) {
+
+        Map.Entry<String, Date> maxTestRange = null;
+
+        for (Map.Entry<String, Date> testDateRange : getMostRecentTestResultDateByNhsNo(nhsNo).entrySet()) {
+
+            if (maxTestRange == null) {
+                maxTestRange = testDateRange;
+            } else {
+                // Check which entry is the latest
+                if (maxTestRange.getValue().before(testDateRange.getValue())) {
+                    maxTestRange = testDateRange;
+                }
+            }
+
+        }
+
+        return maxTestRange;
+    }
+
+    private Map<String, Date> getMostRecentTestResultDateByNhsNo(String nhsNo) {
+
+        Map<String, Date> maxDataRangeDate = new HashMap<String, Date>();
+        for (Patient patient : patientDao.getByNhsNo(nhsNo)) {
+
+            if (patient.getMostRecentTestResultDateRangeStopDate() != null) {
+                maxDataRangeDate.put(patient.getUnitcode(), patient.getMostRecentTestResultDateRangeStopDate());
+            }
+
+        }
+        return maxDataRangeDate;
+    }
+
+
+
 }

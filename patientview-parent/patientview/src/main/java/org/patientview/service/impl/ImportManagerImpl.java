@@ -38,7 +38,6 @@ import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
@@ -48,7 +47,6 @@ import org.patientview.quartz.handler.ErrorHandler;
 import org.patientview.repository.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
-import org.patientview.service.UserLogManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,9 +80,6 @@ public class ImportManagerImpl implements ImportManager {
 
     @Inject
     private ApplicationContext applicationContext;
-
-    @Inject
-    private UserLogManager userLogManager;
 
     @Inject
     private LogEntryManager logEntryManager;
@@ -142,19 +137,6 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void createUserLog(ResultParser parser) {
-
-        UserLog userLog = userLogManager.getUserLog(parser.getPatient().getNhsno());
-        if (userLog == null) {
-            userLog = new UserLog();
-            userLog.setNhsno(parser.getPatient().getNhsno());
-        }
-        userLog.setUnitcode(parser.getPatient().getUnitcode());
-        userLog.setLastdatadate(Calendar.getInstance());
-
-        userLogManager.save(userLog);
-    }
-
     private boolean hasPatientLeft(ResultParser parser) {
         return ("Remove".equalsIgnoreCase(parser.getFlag()) || "Dead".equalsIgnoreCase(parser.getFlag())
                 || "Died".equalsIgnoreCase(parser.getFlag()) || "Lost".equalsIgnoreCase(parser.getFlag())
@@ -191,9 +173,6 @@ public class ImportManagerImpl implements ImportManager {
             // todo improvement: we should build a set of all units updated, then mark them at the end of the job
             markLastImportDateOnUnit(resultParser.getCentre());
 
-            // Insert or update record in pv_user_log table,
-            // with current import date which is used in patient login
-            createUserLog(resultParser);
             return AddLog.PATIENT_DATA_FOLLOWUP;
         }
     }
@@ -250,7 +229,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     /**
-     *  Delete and re-add an updated patient record.
+     *
      *  If we have test results that are later than any seen before,
      *  update the patient mostRecentTestResultDateRangeStopDate.
      *
@@ -278,6 +257,8 @@ public class ImportManagerImpl implements ImportManager {
 
         patient.setMostRecentTestResultDateRangeStopDate(
                 getMostRecentTestResultDateRangeStopDate(dateRanges, existingTestResultDateRangeStopDate));
+
+
         // Have to do it like this because Radar uses JDBC only
         patient.setSourceType(SourceType.PATIENT_VIEW.getName());
 

@@ -41,10 +41,6 @@ import java.util.Date;
 @Entity
 public class Patient extends BaseModel {
 
-
-    @Transient
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
     @Transient
     private static final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -844,6 +840,7 @@ public class Patient extends BaseModel {
     public void setPatientLinkUnitCode(String patientLinkUnitCode) {
         this.patientLinkUnitCode = patientLinkUnitCode;
     }
+
 }
 
 
