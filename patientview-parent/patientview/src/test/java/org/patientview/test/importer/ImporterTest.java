@@ -226,10 +226,6 @@ public class ImporterTest extends BaseServiceTest {
         patients = patientManager.getByNhsNo("1234567890");
         assertTrue("There is still only one patient record for this NHS Number", patients.size() == 1);
         assertTrue("The updated patient record is male", patients.get(0).getSex().equals("Male"));
-
-
-
-
     }
 
     /**
@@ -259,6 +255,57 @@ public class ImporterTest extends BaseServiceTest {
 
         importManager.process(xmlFileResource.getFile());
 
+    }
+
+    /**
+     * Create a patient in PV and Radar, 2 rows in patient table.
+     *
+     * Then create an update XML for the PV patient.  Code should update cleanly and not through an exception
+     *
+     * @throws IOException
+     * @throws ProcessException
+     */
+    @Test
+    public void testImportPatientUpdateOKWhenPatientIsInPVAndRadar() throws IOException, ProcessException {
+
+        final String nhsNumber = "1234567890";
+
+        System.out.println("1");
+
+        // Create the Radar patient to match the patient in the XML file
+        Patient patient = new Patient();
+        patient.setNhsno(nhsNumber);
+        patient.setSurname("Test");
+        patient.setForename("Radar");
+        patient.setUnitcode("A");
+        patient.setDob(new Date());
+        patient.setNhsNoType("1");
+        patient.setSourceType(SourceType.RADAR.getName());
+
+        patientManager.save(patient);
+
+        // import results from same unit, should import cleanly sourceType = 'PatientView'
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890.gpg.xml");
+        importManager.process(xmlFileResource.getFile());
+        System.out.println("2");
+
+        List<Patient> patients = patientManager.getByNhsNo(nhsNumber);
+        System.out.println("3");
+        assertEquals("Should now be 2 patient records", 2, patients.size());
+        assertEquals(SourceType.PATIENT_VIEW.getName(), patients.get(0).getSourceType());
+        assertEquals(SourceType.RADAR.getName(), patients.get(1).getSourceType());
+
+        System.out.println("4");
+
+        // now update the patient, this should cleanly update with no errors, or duplicates
+        importManager.process(xmlFileResource.getFile());
+
+        System.out.println("5");
+
+        patients = patientManager.getByNhsNo(nhsNumber);
+        assertEquals("Should still be 2 patient records", 2, patients.size());
+        System.out.println("6");
     }
 
     @Test

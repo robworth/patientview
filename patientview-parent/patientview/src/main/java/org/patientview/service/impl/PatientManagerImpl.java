@@ -45,7 +45,9 @@ import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service(value = "patientManager")
 public class PatientManagerImpl implements PatientManager {
@@ -142,30 +144,34 @@ public class PatientManagerImpl implements PatientManager {
         return patientDao.getUktPatients();
     }
 
+    /**
+     * Get all patient records that are associated with this user
+     * @param username of user
+     * @return a list of 'mini' objects based on patient records
+     */
     @Override
     public List<PatientDetails> getPatientDetails(String username) {
-        List<UserMapping> userMappings = userManager.getUserMappings(username);
 
+        // our results list
         List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
 
-        //todo This is a 'fix' to get try pateints by just nhs number if the Patient no longer has the mapping
-        //todo on the patient table 'unitcode' column which would be the case with some radar patients.
-        if (CollectionUtils.isEmpty(patientDetails) && !CollectionUtils.isEmpty(userMappings)) {
+        // Get a set of nhs numbers associated with this user via the user mappings table
+        Set<String> nhsNumbersAssociatedWithUser = new HashSet<String>();
+        List<UserMapping> userMappings = userManager.getUserMappings(username);
+        if (!CollectionUtils.isEmpty(userMappings)) {
+            for (UserMapping userMapping : userMappings) {
+                nhsNumbersAssociatedWithUser.add(userMapping.getNhsno());
+            }
+        }
 
-            UserMapping userMapping = userMappings.get(0);
-            Unit unit = unitManager.get(userMapping.getUnitcode());
-
-
-            // Should only be one NhsNo across all user mapping
-            for (Patient patient : getByNhsNo(userMapping.getNhsno())) {
-
-                patientDetails.add(createPatientDetails(patient, unit));
-
+        // get a set of patient records for these nhs numbers, including patients added by Radar
+        for (String nhsNumber : nhsNumbersAssociatedWithUser) {
+            for (Patient patient : getByNhsNo(nhsNumber)) {
+                patientDetails.add(createPatientDetails(patient, unitManager.get(patient.getUnitcode())));
                 AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
                         AddLog.PATIENT_VIEW, "", patient.getNhsno(),
                         patient.getUnitcode(), "");
             }
-
         }
 
         return patientDetails;
@@ -181,7 +187,7 @@ public class PatientManagerImpl implements PatientManager {
         patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
                 patient.getUnitcode()));
 
-        // TODO: dont really know bout this UktUtils ?
+        // get the transplant status for the patient
         patientDetail.setUktStatus(UktUtils.retreiveUktStatus(patient.getNhsno()));
 
         return patientDetail;

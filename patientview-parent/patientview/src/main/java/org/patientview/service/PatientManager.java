@@ -62,6 +62,11 @@ public interface PatientManager {
 
     List<Patient> getUktPatients();
 
+    /**
+     * Get all patient records that are associated with this user
+     * @param username of user
+     * @return a list of 'mini' objects based on patient records
+     */
     List<PatientDetails> getPatientDetails(String username);
 
     List<PatientDetails> getPatientDetails(Long id);

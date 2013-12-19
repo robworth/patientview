@@ -26,6 +26,7 @@ package org.patientview.repository.impl;
 import org.patientview.model.Patient;
 import org.patientview.model.Patient_;
 import org.patientview.model.Specialty;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.PatientDao;
@@ -44,6 +45,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository(value = "patientDao")
@@ -89,6 +91,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
         wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsno));
         wherePredicates.add(builder.equal(from.get(Patient_.unitcode), unitcode));
+        wherePredicates.add(builder.equal(from.get(Patient_.sourceType), SourceType.PATIENT_VIEW.getName()));
 
         buildWhereClause(criteria, wherePredicates);
 
@@ -114,7 +117,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         try {
             return getEntityManager().createQuery(criteria).getResultList();
         } catch (Exception e) {
-            return null;
+            return Collections.emptyList();
         }
 
     }
