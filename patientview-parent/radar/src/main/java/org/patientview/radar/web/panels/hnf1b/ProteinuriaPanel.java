@@ -69,7 +69,7 @@ public class ProteinuriaPanel extends Panel {
 
         if (deafness == null) {
             deafness = new Deafness();
-            deafness.setRadarNo(patient.getId());
+            deafness.setRadarNo(patient.getRadarNo());
         }
 
         // main model for this tab
@@ -94,7 +94,7 @@ public class ProteinuriaPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    deafness.setRadarNo(patient.getId());
+                    deafness.setRadarNo(patient.getRadarNo());
                     deafnessManager.save(deafness);
                 }
             }
