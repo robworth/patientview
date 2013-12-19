@@ -180,6 +180,7 @@ public class PatientManagerImpl implements PatientManager {
         return patientDetails;
     }
 
+
     private PatientDetails createPatientDetails(Patient patient, Unit unit) {
         PatientDetails patientDetail = new PatientDetails();
 

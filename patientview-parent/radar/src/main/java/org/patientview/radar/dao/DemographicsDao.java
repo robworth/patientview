@@ -33,10 +33,6 @@ import java.util.List;
 
 public interface DemographicsDao {
 
-    void saveDemographics(Patient patient);
-
-    Patient getDemographicsByRadarNumber(long radarNumber);
-
     List<Patient> getDemographics(DemographicsFilter filter, int page, int numberPerPage);
 
     Sex getSex(long id);

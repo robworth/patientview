@@ -48,12 +48,6 @@ public class DemographicsManagerImpl implements DemographicsManager {
 
     private PatientManager patientManager;
 
-
-    public void saveDemographics(Patient patient) {
-        // Save or update the demographics object
-        demographicsDao.saveDemographics(patient);
-    }
-
     public Patient get(Long id) {
         return demographicsDao.get(id);
     }
