@@ -37,7 +37,7 @@
 
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/ibd/js/raphael-min.js"></script>
+
 <script type="text/javascript" src="/ibd/js/ico.min.js"></script>
 <script type="text/javascript" src="/ibd/js/ibd.js"></script>
 <script type="text/javascript" src="/js/pwdmeter.js"></script>
@@ -70,6 +70,7 @@
         })();
 
     </script>
+    <script type="text/javascript" src="/ibd/js/raphael-min.js"></script>
 </logic:present>
 
 </body>

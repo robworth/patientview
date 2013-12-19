@@ -23,12 +23,12 @@
 
 package org.patientview.patientview.feedback;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.PatientUtils;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.Feedback;
-import org.patientview.patientview.model.Patient;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
@@ -68,7 +68,7 @@ public class FeedbackFormAction extends Action {
             if (patient != null) {
                 request.setAttribute("patient", patient);
 
-                Unit unit = LegacySpringUtils.getUnitManager().get(patient.getCentreCode());
+                Unit unit = LegacySpringUtils.getUnitManager().get(patient.getUnitcode());
                 request.setAttribute("unit", unit);
             } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
                 return LogonUtils.logonChecks(mapping, request, "control");
@@ -85,7 +85,7 @@ public class FeedbackFormAction extends Action {
 
     private void emailUnitAdminFeedbackNotification(HttpServletRequest request, Feedback feedback) {
         ServletContext context = request.getSession().getServletContext();
-        String fromAddress = context.getInitParameter("noreply.email");
+        String fromAddress = LegacySpringUtils.getContextProperties().getProperty("noreply.email");
         Unit unit = UnitUtils.retrieveUnit(feedback.getUnitcode());
         String toAddress = unit.getRenaladminemail();
         String subject = "[Renal PatientView] New feedback for your unit - " + unit.getShortname();

@@ -39,7 +39,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -135,8 +134,7 @@ public class TestResultsAction extends Action {
     }
 
     private int resultsPerPage(HttpServletRequest request) {
-        ServletContext servletContext = request.getSession().getServletContext();
-        String resultsPerPageString = servletContext.getInitParameter("default.results.per.page");
+        String resultsPerPageString = LegacySpringUtils.getContextProperties().getProperty("default.results.per.page");
         return Integer.parseInt(resultsPerPageString);
     }
 

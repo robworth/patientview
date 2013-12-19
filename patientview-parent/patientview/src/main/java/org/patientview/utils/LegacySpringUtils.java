@@ -53,6 +53,8 @@ import org.patientview.service.UserManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
 
+import java.util.Properties;
+
 /**
  * Used to connect up the methods in the old model classes that do service layer operations to the newer service
  * managers. We can move stuff out of this when the service/DAO code gets moved out from the model classes.
@@ -117,6 +119,8 @@ public final class LegacySpringUtils {
     private static JoinRequestManager joinRequestManager;
 
     private static AdminNotificationManager adminNotificationManager;
+
+    private static Properties contextProperties;
 
     private LegacySpringUtils() {
 
@@ -352,5 +356,13 @@ public final class LegacySpringUtils {
 
     public static void setAdminNotificationManager(AdminNotificationManager adminNotificationManager) {
         LegacySpringUtils.adminNotificationManager = adminNotificationManager;
+    }
+
+    public static Properties getContextProperties() {
+        return contextProperties;
+    }
+
+    public static void setContextProperties(Properties contextProperties) {
+        LegacySpringUtils.contextProperties = contextProperties;
     }
 }

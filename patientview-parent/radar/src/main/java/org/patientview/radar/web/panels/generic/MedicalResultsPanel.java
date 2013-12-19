@@ -1,7 +1,48 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels.generic;
 
-import org.patientview.radar.model.Demographics;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.generic.MedicalResult;
+import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.MedicalResultManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -9,21 +50,6 @@ import org.patientview.radar.web.components.RadarComponentFactory;
 import org.patientview.radar.web.components.RadarDateTextField;
 import org.patientview.radar.web.components.RadarTextFieldWithValidation;
 import org.patientview.radar.web.panels.PatientDetailPanel;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,24 +72,33 @@ public class MedicalResultsPanel extends Panel {
     @SpringBean
     private MedicalResultManager medicalResultManager;
 
-    public MedicalResultsPanel(String id, final Demographics demographics) {
-        super(id);
+    @SpringBean
+    private UtilityManager utilityManager;
 
+    public MedicalResultsPanel(String id, final Patient patient) {
+        super(id);
+        final boolean hasResult;
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
         MedicalResult medicalResult = null;
 
-        if (demographics.hasValidId()) {
-            medicalResult = medicalResultManager.getMedicalResult(demographics.getId(),
-                    demographics.getDiseaseGroup().getId());
+        if (patient.hasValidId()) {
+            medicalResult = medicalResultManager.getMedicalResult(patient.getId(),
+                    patient.getDiseaseGroup().getId());
+        }
+
+        if (patient.hasValidId() && medicalResult != null) {
+            hasResult = true;
+        } else {
+            hasResult = false;
         }
 
         if (medicalResult == null) {
             medicalResult = new MedicalResult();
-            medicalResult.setRadarNo(demographics.getId());
-            medicalResult.setDiseaseGroup(demographics.getDiseaseGroup());
-            medicalResult.setNhsNo(demographics.getNhsNumber());
+            medicalResult.setRadarNo(patient.getRadarNo());
+            medicalResult.setDiseaseGroup(patient.getDiseaseGroup());
+            medicalResult.setNhsNo(patient.getNhsno());
         }
 
         // general feedback for messages that are not to do with a certain component in the form
@@ -74,6 +109,17 @@ public class MedicalResultsPanel extends Panel {
         // components to update on ajax refresh
         final List<Component> componentsToUpdateList = new ArrayList<Component>();
         IModel<MedicalResult> model = new Model<MedicalResult>(medicalResult);
+
+        ExternalLink rpvResultLink = new ExternalLink("rpvResultLink",
+                utilityManager.getPatientViewSiteResultsUrl());
+        WebMarkupContainer rpvResultLinkContainer = new WebMarkupContainer("rpvResultLinkContainer") {
+            @Override
+            public boolean isVisible() {
+                return hasResult;
+            }
+        };
+        rpvResultLinkContainer.add(rpvResultLink);
+
 
         // create form and components
 
@@ -200,8 +246,8 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (medicalResult.isToBeValidated() && !hasError()) {
-                    medicalResult.setRadarNo(demographics.getId());
-                    medicalResult.setNhsNo(demographics.getNhsNumber());
+                    medicalResult.setRadarNo(patient.getRadarNo());
+                    medicalResult.setNhsNo(patient.getNhsno());
                     medicalResultManager.save(medicalResult);
                 }
             }
@@ -213,7 +259,7 @@ public class MedicalResultsPanel extends Panel {
         formFeedback.setFilter(filter);
         form.add(formFeedback);
 
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "Medical Results");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "Medical Results");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);
@@ -324,6 +370,9 @@ public class MedicalResultsPanel extends Panel {
                 target.add(formFeedback);
             }
         });
+
+        form.add(rpvResultLinkContainer);
+
     }
 
 }

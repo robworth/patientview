@@ -23,14 +23,16 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.user.NhsnoUnitcode;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.springframework.beans.support.PagedListHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +79,8 @@ public class PatientEditAction extends Action {
         if (!duplicateUsers.isEmpty() && !overrideDuplicateNhsno.equals("on")) {
             request.setAttribute(LogonUtils.NHSNO_ALREADY_EXISTS, nhsno);
             mappingToFind = "input";
+            NhsnoUnitcode nhsnoThing = new NhsnoUnitcode(nhsno, unitcode);
+            request.setAttribute("nhsnot", nhsnoThing);
         } else {
 
             PatientLogon patient =
@@ -98,7 +102,8 @@ public class PatientEditAction extends Action {
             }
 
             List patients = LegacySpringUtils.getPatientManager().getUnitPatientsAllWithTreatmentDao(unitcode);
-            request.setAttribute("patients", patients);
+            PagedListHolder pagedListHolder = new PagedListHolder(patients);
+            request.getSession().setAttribute("patients", pagedListHolder);
             mappingToFind = "success";
         }
 

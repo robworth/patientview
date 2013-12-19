@@ -1,6 +1,29 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels.hnf1b;
 
-import org.patientview.radar.model.Demographics;
+import org.patientview.model.Patient;
 import org.patientview.radar.model.enums.YesNo;
 import org.patientview.radar.model.hnf1b.HNF1BMisc;
 import org.patientview.radar.service.hnf1b.HNF1BMiscManager;
@@ -35,7 +58,7 @@ public class HNF1BMiscPanel extends Panel {
     @SpringBean
     private HNF1BMiscManager hnf1BMiscManager;
 
-    public HNF1BMiscPanel(final String id, final Demographics demographics) {
+    public HNF1BMiscPanel(final String id, final Patient patient) {
         super(id);
 
         setOutputMarkupId(true);
@@ -43,13 +66,13 @@ public class HNF1BMiscPanel extends Panel {
 
         HNF1BMisc hnf1BMisc = null;
 
-        if (demographics.hasValidId()) {
-            hnf1BMisc = hnf1BMiscManager.get(demographics.getId());
+        if (patient.hasValidId()) {
+            hnf1BMisc = hnf1BMiscManager.get(patient.getId());
         }
 
         if (hnf1BMisc == null) {
             hnf1BMisc = new HNF1BMisc();
-            hnf1BMisc.setRadarNo(demographics.getId());
+            hnf1BMisc.setRadarNo(patient.getRadarNo());
         }
 
         // main model for this tab
@@ -92,7 +115,7 @@ public class HNF1BMiscPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    hnf1BMisc.setRadarNo(demographics.getId());
+                    hnf1BMisc.setRadarNo(patient.getRadarNo());
                     hnf1BMiscManager.save(hnf1BMisc);
                 }
             }
@@ -117,7 +140,7 @@ public class HNF1BMiscPanel extends Panel {
         form.add(formFeedback);
 
         // add the patient detail bar to the tab
-        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", demographics, "HNF1B Misc");
+        PatientDetailPanel patientDetail = new PatientDetailPanel("patientDetail", patient, "HNF1B Misc");
         patientDetail.setOutputMarkupId(true);
         form.add(patientDetail);
         componentsToUpdateList.add(patientDetail);

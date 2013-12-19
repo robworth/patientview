@@ -290,4 +290,13 @@
         </property>
     </bean>
 
+    <bean id="setContextProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setContextProperties"/>
+        <property name="arguments">
+            <list>
+                <ref bean="contextProperties"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

@@ -74,4 +74,28 @@ public class JoinRequestManagerImpl implements JoinRequestManager {
 
         return joinRequests;
     }
+
+    @Override
+    public List<JoinRequest> getUsersJoinRequests(Boolean isComplete) {
+        List<JoinRequest> joinRequests = new ArrayList<JoinRequest>();
+        User user = userManager.getLoggedInUser();
+
+        String userType = LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user);
+
+        if ("superadmin".equals(userType)) {
+
+            joinRequests = joinRequestDao.getAll(isComplete);
+        } else if ("unitadmin".equals(userType) || "unitstaff".equals(userType)) {
+
+            List<String> unitCodes = unitManager.getUsersUnitCodes(user);
+            joinRequests = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes, isComplete);
+        }
+
+        return joinRequests;
+    }
+
+    @Override
+    public JoinRequest get(Long id) {
+        return joinRequestDao.get(id);
+    }
 }

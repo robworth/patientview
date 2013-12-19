@@ -1,0 +1,82 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
+package org.patientview.model;
+
+import java.util.Comparator;
+
+public class Centre extends BaseModel {
+    private String name;
+    private String abbreviation;
+    private Country country;
+    private String unitCode;
+    private String renalAdminEmail;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public String getUnitCode() {
+        return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
+    }
+
+    public String getRenalAdminEmail() {
+        return renalAdminEmail;
+    }
+
+    public void setRenalAdminEmail(String renalAdminEmail) {
+        this.renalAdminEmail = renalAdminEmail;
+    }
+
+    public static Comparator<Centre> getComparator() {
+        return new Comparator<Centre>() {
+            public int compare(Centre o1, Centre o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        };
+    }
+}

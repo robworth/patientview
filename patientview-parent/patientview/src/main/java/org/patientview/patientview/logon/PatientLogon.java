@@ -41,7 +41,7 @@ public class PatientLogon extends Logon implements Cloneable {
         setPassword(password);
         setName(name);
         setEmail(email);
-        setEmailverfied(emailverified);
+        setEmailverified(emailverified);
         setRole("patient");
         setFirstlogon(firstlogon);
         setDummypatient(dummypatient);

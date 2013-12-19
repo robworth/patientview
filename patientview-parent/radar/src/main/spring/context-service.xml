@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -31,6 +54,9 @@
 
     <bean id="demographicsManager" class="org.patientview.radar.service.impl.DemographicsManagerImpl">
         <property name="demographicsDao" ref="demographicsDao"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="unitDao" ref="unitDao"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="diagnosisManager" class="org.patientview.radar.service.impl.DiagnosisManagerImpl">
@@ -43,12 +69,17 @@
 
     <bean id="immunosuppressionManager" class="org.patientview.radar.service.impl.ImmunosuppressionManagerImpl">
         <property name="immunosuppressionDao" ref="immunosuppressionDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="labDataManager" class="org.patientview.radar.service.impl.LabDataManagerImpl">
         <property name="labDataDao" ref="labDataDao"/>
     </bean>
+
+    <bean id="patientManager" class="org.patientview.radar.service.impl.PatientManagerImpl">
+        <property name="patientDao" ref="patientDao"/>
+    </bean>
+
 
     <bean id="pathologyManager" class="org.patientview.radar.service.impl.PathologyManagerImpl">
         <property name="pathologyDao" ref="pathologyDao"/>
@@ -56,7 +87,7 @@
 
     <bean id="plasmapheresisManager" class="org.patientview.radar.service.impl.PlasmapheresisManagerImpl">
         <property name="plasmapheresisDao" ref="plasmapheresisDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="relapseManager" class="org.patientview.radar.service.impl.RelapseManagerImpl">
@@ -69,18 +100,21 @@
 
     <bean id="transplantManager" class="org.patientview.radar.service.impl.TransplantManagerImpl">
         <property name="transplantDao" ref="transplantDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="treatmentManager" class="org.patientview.radar.service.impl.TreatmentManagerImpl">
         <property name="treatmentDao" ref="treatmentDao"/>
-        <property name="demographicsManager" ref="demographicsManager"/>
+        <property name="patientManager" ref="patientManager"/>
     </bean>
 
     <bean id="utilityManager" class="org.patientview.radar.service.impl.UtilityManagerImpl">
         <property name="utilityDao" ref="utilityDao"/>
         <property name="siteUrl" value="${config.site.url}"/>
         <property name="patientViewSiteUrl" value="${config.patientview.site.url}"/>
+        <property name="patientViewSiteResultsUrl" value="${config.patientview.site.results.url}"/>
+        <property name="filePathAndName" value="${config.file.pathAndName}"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="emailManager" class="org.patientview.radar.service.impl.EmailManagerImpl">
@@ -94,9 +128,14 @@
 
     <bean id="userManager" class="org.patientview.radar.service.impl.UserManagerImpl">
         <property name="emailManager" ref="emailManager"/>
-        <property name="demographicsDao" ref="demographicsDao"/>
+        <property name="joinRequestDao" ref="joinRequestDao"/>
         <property name="userDao" ref="userDao"/>
+        <property name="patientManager" ref="patientManager"/>
         <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+
+    <bean id="unitManager" class="org.patientview.radar.service.impl.UnitManagerImpl">
+        <property name="unitDao" ref="unitDao"/>
     </bean>
 
     <bean id="exportManager" class="org.patientview.radar.service.impl.ExportManagerImpl">

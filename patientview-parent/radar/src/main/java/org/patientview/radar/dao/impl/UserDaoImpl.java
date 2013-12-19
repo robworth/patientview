@@ -1,8 +1,35 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.patientview.model.Centre;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.Centre;
+import org.patientview.radar.exception.UserCreationException;
+import org.patientview.radar.exception.UserMappingException;
+import org.patientview.radar.exception.UserRoleException;
 import org.patientview.radar.model.filter.PatientUserFilter;
 import org.patientview.radar.model.filter.ProfessionalUserFilter;
 import org.patientview.radar.model.user.AdminUser;
@@ -10,7 +37,6 @@ import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.model.user.UserMapping;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -62,6 +88,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     private static final String USER_EMAIL_FIELD_NAME = "email";
     private static final String USER_NAME_FIELD_NAME = "name";
     private static final String USER_DUMMY_PATIENT_FIELD_NAME = "dummypatient";
+    private static final String USER_IS_CLINICIAN_FIELD_NAME = "isClinician";
+    private static final String USER_ACCOUNT_LOCKED_FIELD_NAME = "accountlocked";
 
     // admin user fields
     private static final String ADMIN_USER_ID_FIELD_NAME = "uID";
@@ -93,6 +121,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     private UtilityDao utilityDao;
 
+
+
     @Override
     public void setDataSource(DataSource dataSource) {
         super.setDataSource(dataSource);
@@ -100,7 +130,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME);
+                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
+                        USER_ACCOUNT_LOCKED_FIELD_NAME,
+                        USER_IS_CLINICIAN_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
@@ -232,6 +264,32 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return null;
     }
 
+
+    public ProfessionalUser getProfessionalUserByUsername(String username) {
+
+        try {
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  prf.* ");
+            query.append(",       usr.* ");
+            query.append("FROM    rdr_user_mapping rmp ");
+            query.append(",       user usr ");
+            query.append(",       tbl_users prf ");
+            query.append("WHERE   rmp.userId = usr.id ");
+            query.append("AND     prf.uId = rmp.radarUserId ");
+            query.append("AND     usr.username = ?");
+
+            return jdbcTemplate.queryForObject(query.toString(), new Object[]{username},
+                    new ProfessionalUserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not find professional user with username {}", username);
+        }
+
+        return null;
+
+    }
+
+
+    // TODO no idea why this is using email and getting passed a username but it's used in a few places
     public ProfessionalUser getProfessionalUser(String email) {
         try {
             return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
@@ -247,17 +305,26 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     public ProfessionalUser getProfessionalUserWithUsername(String username) {
+
+        ProfessionalUser professionalUser = null;
+
         try {
-            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
-                    + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
-                    PROFESSIONAL_USER_ID_FIELD_NAME,
-                    true),
-                    new Object[]{username, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
+            professionalUser = jdbcTemplate
+                    .queryForObject(buildBaseUserSelectFromStatement(PROFESSIONAL_USER_TABLE_NAME)
+                            + buildUserWhereEmailStatement(PROFESSIONAL_USER_TABLE_NAME, USER_USERNAME_FIELD_NAME,
+                            PROFESSIONAL_USER_ID_FIELD_NAME,
+                            true),
+                            new Object[]{username, User.ROLE_PROFESSIONAL}, new ProfessionalUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not professional user with " + USER_USERNAME_FIELD_NAME + " {}", username);
         }
 
-        return null;
+        if (professionalUser != null) {
+            professionalUser.setGroupAdmin(utilityDao.isGroupAdmin(username));
+        }
+
+
+        return professionalUser;
     }
 
     public User getSuperUserWithUsername(String username) {
@@ -389,9 +456,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     public PatientUser getPatientUser(String email) {
         try {
-            return jdbcTemplate.queryForObject(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME)
+            String query =  buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME)
                     + buildUserWhereEmailStatement(PATIENT_USER_TABLE_NAME, USER_EMAIL_FIELD_NAME,
-                    PATIENT_USER_ID_FIELD_NAME, true),
+                    PATIENT_USER_ID_FIELD_NAME, true);
+
+            return jdbcTemplate.queryForObject(query,
                     new Object[]{email, User.ROLE_PATIENT}, new PatientUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not patient user with " + USER_EMAIL_FIELD_NAME + " {}", email);
@@ -407,47 +476,82 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                     PATIENT_USER_ID_FIELD_NAME, true),
                     new Object[]{username, User.ROLE_PATIENT}, new PatientUserRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("Could not patient user with " + USER_USERNAME_FIELD_NAME + " {}", username);
+            LOGGER.debug("Could not patient find user with " + USER_USERNAME_FIELD_NAME + " {}", username);
         }
 
         return null;
     }
 
-    // simulate how patient view creates a user
-    public void createRawUser(String username, String password, String name, String email, String unitcode,
-                              String nhsno) {
+    public PatientUser getPatientUserByRadarNo(Long radarNo) {
+        try {
+            List<PatientUser> patients = jdbcTemplate.query(buildSelectFromStatement(PATIENT_USER_TABLE_NAME)
+                    + " where radar_no = ?",
+                    new Object[]{radarNo}, new BasicPatientUserRowMapper());
+
+            if (patients != null && patients.size() > 1) {
+                LOGGER.error("Duplicate patient users found for radarno {}, taking first", radarNo);
+            }
+
+            return patients != null && patients.size() > 0 ? patients.get(0) : null;
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not patient user with " + PATIENT_USER_RADAR_NO_FIELD_NAME + " {}", radarNo);
+        }
+
+        return null;
+    }
+
+    public User createUser(User user) {
+        Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
+        userMap.put(USER_PASSWORD_FIELD_NAME, user.getPassword());
+        userMap.put(USER_NAME_FIELD_NAME, user.getName());
+        userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
+        userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_ACCOUNT_LOCKED_FIELD_NAME, false);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, false);
+
+        Number id = userInsert.executeAndReturnKey(userMap);
+        user.setId(id.longValue());
+        return user;
+
+    }
+
+    public Long createLockedPVUser(String username, String password, String name, String email) throws Exception {
+
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, username);
         userMap.put(USER_PASSWORD_FIELD_NAME, password);
         userMap.put(USER_NAME_FIELD_NAME, name);
         userMap.put(USER_EMAIL_FIELD_NAME, email);
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_ACCOUNT_LOCKED_FIELD_NAME, true);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, false);
 
-        userInsert.executeAndReturnKey(userMap);
+        Number id = userInsert.executeAndReturnKey(userMap);
 
-        // we only ever want one user mapping per user so just delete any existing and re add
-        userMap = new HashMap<String, Object>();
-        userMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
-        userMap.put(PV_USER_MAPPING_UNITCODE_FIELD_NAME, unitcode);
-        userMap.put(PV_USER_MAPPING_NHSNO_FIELD_NAME, nhsno);
-        userMap.put(PV_USER_MAPPING_SPECIALITY_ID_FIELD_NAME, 1);
+        createRoleInPatientView(id.longValue(), "patient");
 
-        // add mapping
-        pvUserMappingInsert.execute(userMap);
+        return id.longValue();
     }
 
     // users are created in Patient View without our radar mappings
-    public PatientUser getExternallyCreatedPatientUser(String nhsno) {
+    public PatientUser getPatientViewUser(String nhsno) {
         try {
 
             String sql = "SELECT DISTINCT u.* FROM USER u, usermapping m WHERE u.username = m.username AND nhsno = ? " +
                     "AND u.name NOT LIKE '%-GP%'";
 
 
-            return jdbcTemplate.queryForObject(sql,
+            List<PatientUser> patients = jdbcTemplate.query(sql,
                     new Object[]{nhsno}, new ExternallyCreatedPatientUserRowMapper());
 
-        } catch (EmptyResultDataAccessException e) {
+            if (patients != null && patients.size() > 1) {
+                LOGGER.error("Duplicate patient user found for nhsno {}, taking first", nhsno);
+            }
+
+            return patients != null && patients.size() > 0 ? patients.get(0) : null;
+
+        } catch (Exception e) {
             LOGGER.debug("Could not patient user with nhsno {}", nhsno);
         }
 
@@ -463,14 +567,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         List<Object> params = new ArrayList<Object>();
 
         // normal sql query without any filter options
-        sqlQueries.add(buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME) +
+        String query =  buildBaseUserSelectFromStatement(PATIENT_USER_TABLE_NAME) +
                 " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME
                 + " = '" + User.ROLE_PATIENT + "'" + " " +
                 " AND " + PATIENT_USER_TABLE_NAME + "." + PATIENT_USER_ID_FIELD_NAME
                 + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME +
                 " AND " + USER_TABLE_NAME + "." + ID_FIELD_NAME
-                + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME
-        );
+                + " = " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME;
+
+        sqlQueries.add(query);
 
         // if there are search queries then build the where
         if (filter.hasSearchCriteria()) {
@@ -490,27 +595,31 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 new PatientUserRowMapper());
     }
 
-    public void savePatientUser(final PatientUser patientUser) throws Exception {
+    public void savePatientUser(final PatientUser patientUser) throws UserCreationException {
         // save details of the user into the radar tables
-        Map<String, Object> patientUserMap = new HashMap<String, Object>() {
-            {
-                put(PATIENT_USER_ID_FIELD_NAME, patientUser.getId());
-                put(PATIENT_USER_RADAR_NO_FIELD_NAME, patientUser.getRadarNumber());
-                put(PATIENT_USER_DOB_FIELD_NAME, patientUser.getDateOfBirth());
-                put(PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME, patientUser.getDateRegistered());
-            }
-        };
+        try {
+            Map<String, Object> patientUserMap = new HashMap<String, Object>() {
+                {
+                    put(PATIENT_USER_ID_FIELD_NAME, patientUser.getId());
+                    put(PATIENT_USER_RADAR_NO_FIELD_NAME, patientUser.getRadarNumber());
+                    put(PATIENT_USER_DOB_FIELD_NAME, patientUser.getDateOfBirth());
+                    put(PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME, patientUser.getDateRegistered());
+                }
+            };
 
-        if (patientUser.hasValidId()) {
-            String updateSql = buildUpdateQuery(PATIENT_USER_TABLE_NAME, PATIENT_USER_ID_FIELD_NAME, patientUserMap);
-            namedParameterJdbcTemplate.update(updateSql, patientUserMap);
-        } else {
-            Number id = patientUsersInsert.executeAndReturnKey(patientUserMap);
-            patientUser.setId(id.longValue());
+            if (patientUser.hasValidId()) {
+                String updateSql = buildUpdateQuery(PATIENT_USER_TABLE_NAME, PATIENT_USER_ID_FIELD_NAME,
+                        patientUserMap);
+                namedParameterJdbcTemplate.update(updateSql, patientUserMap);
+            } else {
+                Number id = patientUsersInsert.executeAndReturnKey(patientUserMap);
+                patientUser.setId(id.longValue());
+            }
+        } catch (Exception e) {
+            LOGGER.error("There has been an exception creating the radar user");
+            throw new UserCreationException("Error creating the radar user", e);
         }
 
-        // save main user login into the shared rpv table
-        saveUser(patientUser);
     }
 
     public void deletePatientUser(PatientUser patientUser) throws Exception {
@@ -535,6 +644,53 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return jdbcTemplate.queryForInt(sql, nhsno) > 0;
     }
 
+    public boolean usernameExistsInPatientView(String username) {
+
+
+        if (username == null || username.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: username");
+        }
+
+        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+        return jdbcTemplate.queryForInt(sql, username) > 0;
+    }
+
+    public boolean userExistsInPatientView(String nhsno, String unitcode) {
+
+        if (nhsno == null || nhsno.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: nhsno");
+        }
+
+        if (unitcode == null || unitcode.length() == 0) {
+            throw new IllegalArgumentException("Missing required param: unitcode");
+        }
+
+        String sql = "SELECT COUNT(*) FROM usermapping WHERE nhsno = ? AND unitcode = ?";
+        return jdbcTemplate.queryForInt(sql, nhsno, unitcode) > 0;
+    }
+
+    /**
+     * TODO UserMapping object already exists but for Radar. Change this to return a object!
+     *
+     * @param nhsNo
+     * @return
+     */
+    public List<String> getPatientRadarMappings(String nhsNo) {
+
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT un.unitcode ");
+        query.append("FROM   usermapping mp ");
+        query.append(",      unit un ");
+        query.append("WHERE  un.unitcode = mp.unitcode ");
+        query.append("AND    mp.nhsno = '");
+        query.append(nhsNo);
+        query.append("' ");
+        query.append("AND    un.sourceType = 'radargroup' ");
+
+        return jdbcTemplate.queryForList(query.toString(), String.class) ;
+
+    }
+
     public void createUserMappingAndRoleInPatientView(Long userId, String username, String nhsno, String unitcode,
                                                       String rpvRole) throws Exception {
         createUserMappingInPatientView(username, nhsno, unitcode);
@@ -542,6 +698,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     public void createUserMappingInPatientView(String username, String nhsno, String unitcode) throws Exception {
+
         // also need to create a usermapping so this user can also log into rpv to add users
         Map<String, Object> userMappingMap = new HashMap<String, Object>();
         userMappingMap.put(PV_USER_MAPPING_USERNAME_FIELD_NAME, username);
@@ -564,13 +721,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 userMappingMap);
     }
 
-    public void createRoleInPatientView(Long userId, String rpvRole) throws Exception {
-        Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
-        specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
+    public void createRoleInPatientView(Long userId, String rpvRole) throws UserRoleException {
+        try {
+            Map<String, Object> specialtyUserRoleMap = new HashMap<String, Object>();
+            specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_ROLE_FIELD_NAME, rpvRole);
+            specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_SPECIALTY_ID_FIELD_NAME, 1);
+            specialtyUserRoleMap.put(PV_SPECIALTY_USER_ROLE_USER_ID_FIELD_NAME, userId);
 
-        pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
+            pvSpecialtyUserRoleInsert.execute(specialtyUserRoleMap);
+        } catch (Exception e) {
+            LOGGER.error("The has been an error creating the user specialty role", e);
+            new UserRoleException("Error creating the specialty user role", e);
+
+        }
     }
 
     public void deleteRoleInPatientView(Long userId) throws Exception {
@@ -613,6 +776,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userMap.put(USER_NAME_FIELD_NAME, user.getName());
         userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
+        userMap.put(USER_IS_CLINICIAN_FIELD_NAME, user.isClinician());
 
         if (user.hasValidUserId()) {
             namedParameterJdbcTemplate.update(buildUpdateQuery(USER_TABLE_NAME, ID_FIELD_NAME, userMap), userMap);
@@ -631,7 +795,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Remove a user from radar - this will delete the record in the shared RPV table and the radar user mapping
      * @param user User
      */
-    private void deleteUser(User user) throws Exception {
+    public void deleteUser(User user) throws Exception {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(ID_FIELD_NAME, user.getUserId());
 
@@ -648,18 +812,24 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * Radar has different roles to RPV and has its own user mapping table that has the role the user has been assigned
      * @param user User
      */
-    public void saveUserMapping(User user) throws Exception {
+    public void saveUserMapping(User user) throws UserMappingException {
+
         // we only ever want one user mapping per user so just delete any existing and re add
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_MAPPING_USER_ID_FIELD_NAME, user.getUserId());
         userMap.put(USER_MAPPING_ROLE_FIELD_NAME, user.getSecurityRole());
         userMap.put(USER_MAPPING_RADAR_USER_ID_FIELD_NAME, user.getId());
 
-        // delete any mappings already so we dont end up with two
-        deleteUserMapping(user);
+        try {
+            // delete any mappings already so we dont end up with two
+            deleteUserMapping(user);
 
-        // add mapping
-        userMappingInsert.execute(userMap);
+            // add mapping
+            userMappingInsert.execute(userMap);
+        } catch (Exception e) {
+            LOGGER.error("Error creating a user mapping in radar", e);
+            throw new UserMappingException("Could not create radar mapping", e);
+        }
     }
 
     /**
@@ -673,6 +843,22 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         namedParameterJdbcTemplate.update("DELETE FROM " + USER_MAPPING_TABLE_NAME + " WHERE "
                 + USER_MAPPING_USER_ID_FIELD_NAME + " = :" + USER_MAPPING_USER_ID_FIELD_NAME, userMap);
     }
+
+    public UserMapping getUserMapping(Long userId, Long radarUserId, String role) {
+        try {
+            String sql = buildSelectFromStatement(USER_MAPPING_TABLE_NAME) +
+                    " WHERE " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_USER_ID_FIELD_NAME + " = ? "  +
+                    " AND " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_RADAR_USER_ID_FIELD_NAME + " = ? "  +
+                    " AND " + USER_MAPPING_TABLE_NAME + "." + USER_MAPPING_ROLE_FIELD_NAME + " = ? ";
+            return jdbcTemplate.queryForObject(sql,
+                    new Object[]{userId, radarUserId, role}, new UserMappingRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not getUserMapping " + USER_MAPPING_USER_ID_FIELD_NAME + " {}", userId);
+        }
+
+        return null;
+    }
+
 
     private UserMapping getUserMapping(String email) {
         try {
@@ -796,6 +982,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 professionalUser.setCentre(utilityDao.getCentre(centreId));
             }
 
+
+
             return professionalUser;
         }
     }
@@ -829,6 +1017,21 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         }
     }
 
+    private class BasicPatientUserRowMapper implements RowMapper<PatientUser> {
+        public PatientUser mapRow(ResultSet resultSet, int i) throws SQLException {
+            // map the base user properties
+            PatientUser patientUser = new PatientUser();
+
+            // map radar specific ones
+            patientUser.setId(resultSet.getLong(PATIENT_USER_ID_FIELD_NAME));
+            patientUser.setDateOfBirth(resultSet.getDate(PATIENT_USER_DOB_FIELD_NAME));
+            patientUser.setDateRegistered(resultSet.getDate(PATIENT_USER_DATE_OF_REGISTRATION_FIELD_NAME));
+            patientUser.setRadarNumber(resultSet.getLong(PATIENT_USER_RADAR_NO_FIELD_NAME));
+
+            return patientUser;
+        }
+    }
+
     private class ExternallyCreatedPatientUserRowMapper implements RowMapper<PatientUser> {
         public PatientUser mapRow(ResultSet resultSet, int i) throws SQLException {
             // map the base user properties
@@ -847,7 +1050,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             return userMapping;
         }
     }
-
 
     public void setUtilityDao(UtilityDao utilityDao) {
         this.utilityDao = utilityDao;

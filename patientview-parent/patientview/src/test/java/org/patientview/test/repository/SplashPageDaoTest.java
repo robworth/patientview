@@ -25,7 +25,7 @@ package org.patientview.test.repository;
 
 import org.patientview.patientview.model.SplashPage;
 import org.patientview.patientview.model.SplashPageUserSeen;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.SplashPageDao;
 import org.patientview.repository.SplashPageUserSeenDao;

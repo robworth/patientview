@@ -25,7 +25,7 @@ package org.patientview.ibd.model;
 
 import org.patientview.ibd.model.enums.Confidence;
 import org.patientview.ibd.model.enums.Importance;
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

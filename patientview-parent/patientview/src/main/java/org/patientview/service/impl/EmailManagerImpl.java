@@ -27,6 +27,7 @@ import org.patientview.patientview.messaging.Messaging;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.service.EmailManager;
 import org.patientview.service.UserManager;
+import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,7 +78,8 @@ public class EmailManagerImpl implements EmailManager {
             }
         }
 
-        String messageUrl = context.getInitParameter("config.site.url") + (isAdminOrStaff ? "control" : "patient")
+        String messageUrl = LegacySpringUtils.getContextProperties().getProperty("config.site.url")
+                + (isAdminOrStaff ? "control" : "patient")
                 + "/conversation.do?" + Messaging.CONVERSATION_ID_PARAM + "=" + message.getConversation().getId()
                 + "#message-" + message.getId();
 

@@ -20,6 +20,7 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+
 package org.patientview.job;
 
 import org.patientview.service.JobManager;
@@ -34,6 +35,7 @@ import org.springframework.batch.core.annotation.OnSkipInWrite;
 import org.slf4j.Logger;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -52,18 +54,26 @@ public abstract class BatchJob {
     @Autowired
     private JobManager jobManager;
 
+    @Value("${config.environment}")
+    private String configEnvironment;
+
     /**
      * Run the batch job
      */
     public void run() {
 
-        Map<String, JobParameter> map = new HashMap<String, JobParameter>();
-        map.put("key", new JobParameter(new Date()));
-        try {
-            JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
-        } catch (Exception e) {
-            LOGGER.debug(e.getStackTrace().toString());
-            onRunError(e);
+        if (configEnvironment != null && !configEnvironment.equalsIgnoreCase("localhost")
+                && !configEnvironment.equalsIgnoreCase("test")
+                && !configEnvironment.equalsIgnoreCase("localhost-test")) {
+
+            Map<String, JobParameter> map = new HashMap<String, JobParameter>();
+            map.put("key", new JobParameter(new Date()));
+            try {
+                JobExecution result = jobLauncher.run(getBatchJob(), new JobParameters(map));
+            } catch (Exception e) {
+                LOGGER.error("Exception: ", e);
+                onRunError(e);
+            }
         }
     }
 
@@ -114,6 +124,7 @@ public abstract class BatchJob {
 
     /**
      * Get the runnable org.springframework.batch.core.Job instance
+     *
      * @return Job
      */
     protected abstract org.springframework.batch.core.Job getBatchJob();
@@ -128,12 +139,12 @@ public abstract class BatchJob {
 
     /**
      * Do something after job
+     *
      * @param result
      */
     protected abstract void afterBatchJob(JobExecution result);
 
     /**
-     *
      * @param e
      */
     protected abstract void onRunError(Exception e);

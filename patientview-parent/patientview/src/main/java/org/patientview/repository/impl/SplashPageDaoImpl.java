@@ -23,7 +23,7 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SplashPage;
 import org.patientview.patientview.model.SplashPage_;
 import org.patientview.repository.AbstractHibernateDAO;

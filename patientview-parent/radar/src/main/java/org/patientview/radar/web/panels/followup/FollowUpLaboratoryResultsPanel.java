@@ -1,14 +1,28 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels.followup;
 
-import org.patientview.radar.model.sequenced.LabData;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.LabDataManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.panels.FollowUpPanel;
-import org.patientview.radar.web.panels.subtabs.LaboratoryResultsPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -23,6 +37,15 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.sequenced.LabData;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.LabDataManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.panels.FollowUpPanel;
+import org.patientview.radar.web.panels.subtabs.LaboratoryResultsPanel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,11 +54,11 @@ import java.util.List;
 
 public class FollowUpLaboratoryResultsPanel extends Panel {
     @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
     private DiagnosisManager diagnosisManager;
     @SpringBean
     private LabDataManager labDataManager;
+    @SpringBean
+    private PatientManager patientManager;
 
     public FollowUpLaboratoryResultsPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -53,17 +76,17 @@ public class FollowUpLaboratoryResultsPanel extends Panel {
         labResultsContainer.add(radarNumber);
 
         labResultsContainer.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(
-                radarNumberModel, demographicsManager)));
+                radarNumberModel, patientManager)));
 
         labResultsContainer.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.
                 getDiagnosisCodeModel(radarNumberModel, diagnosisManager), "abbreviation")));
 
         labResultsContainer.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
         labResultsContainer.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
         labResultsContainer.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel,
-                demographicsManager), RadarApplication.DATE_PATTERN));
+                patientManager), RadarApplication.DATE_PATTERN));
 
         final IModel<LabData> followUpModel = new Model<LabData>(new LabData());
 

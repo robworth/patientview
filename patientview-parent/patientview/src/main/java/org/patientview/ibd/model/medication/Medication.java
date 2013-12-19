@@ -23,7 +23,7 @@
 
 package org.patientview.ibd.model.medication;
 
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

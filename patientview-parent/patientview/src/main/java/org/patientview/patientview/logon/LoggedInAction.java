@@ -23,23 +23,21 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.logging.AddLog;
-import org.patientview.patientview.model.LogEntry;
-import org.patientview.patientview.news.NewsUtils;
-import org.patientview.patientview.model.Unit;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.news.NewsUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class LoggedInAction extends Action {
 
@@ -47,6 +45,11 @@ public class LoggedInAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
+
+        if ("/back_to_admin.do".equals(request.getRequestURI())) {
+            request.getSession().setAttribute("userBeingViewedUsername", null);
+        }
+
         String forward = "";
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
         NewsUtils.putAppropriateNewsForViewingInRequest(request);
@@ -71,23 +74,10 @@ public class LoggedInAction extends Action {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 
-                if (nhsno != null && !nhsno.equals("")) {
-                    LogEntry log = LegacySpringUtils.getLogEntryManager().getLatestLogEntry(nhsno,
-                            AddLog.PATIENT_DATA_FOLLOWUP);
-                    if (log != null) {
-                        request.setAttribute("lastDataDate", format.format(log.getDate().getTime()));
-                        // Get the unit from the unitcode
-                        String unitcode = log.getUnitcode();
-                        if (unitcode != null) {
-                            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-                            if (null == unit) {
-                                request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
-                            } else {
-                                request.setAttribute("lastDataFrom", unit.getName());
-                            }
-                        }
-                    }
-                }
+                Map.Entry<String, Date> testTestRange = LegacySpringUtils.getPatientManager().getLatestTestResultUnit(
+                        nhsno);
+                request.setAttribute("lastDataDate", format.format(testTestRange.getValue().getTime()));
+                request.setAttribute("lastDataFrom", testTestRange.getKey());
                 forward = "patient";
             } else {
                 forward = "admin";
@@ -95,5 +85,8 @@ public class LoggedInAction extends Action {
         }
         return LogonUtils.logonChecks(mapping, request, forward);
     }
+
+
+
 
 }

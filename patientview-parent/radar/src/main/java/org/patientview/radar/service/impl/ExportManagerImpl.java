@@ -1,7 +1,30 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.service.impl;
 
+import org.patientview.model.Patient;
 import org.patientview.radar.model.Consultant;
-import org.patientview.radar.model.Demographics;
 import org.patientview.radar.model.DocumentData;
 import org.patientview.radar.model.enums.ExportType;
 import org.patientview.radar.model.user.PatientUser;
@@ -68,25 +91,25 @@ public class ExportManagerImpl implements ExportManager {
     }
 
     public byte[] getDemographicsExportData(ExportType exportType) {
-        List<Demographics> demographicsList = demographicsManager.getDemographics();
+        List<Patient> patientList = demographicsManager.getDemographics();
         DocumentData documentData = new DocumentData();
         documentData.setHeaders(Arrays.asList("RADAR No", "Date Reg", "First Name", "Surname", "Address", "Diagnosis",
                 "Consultant", "", "Centre"));
 
-        for (Demographics demographics : demographicsList) {
-            String diagnosisCodeAbbr = diagnosisManager.getDiagnosisName(demographics);
+        for (Patient patient : patientList) {
+            String diagnosisCodeAbbr = diagnosisManager.getDiagnosisName(patient);
 
             String dateRegistered = "";
-            dateRegistered = demographics.getDateRegistered() != null ? new SimpleDateFormat(DATE_PATTERN).
-                    format(demographics.getDateRegistered()) : "";
+            dateRegistered = patient.getDateReg() != null ? new SimpleDateFormat(DATE_PATTERN).
+                    format(patient.getDateReg()) : "";
 
-            documentData.addRow(Arrays.asList(demographics.getId().toString(), dateRegistered,
-                    demographics.getForename(), demographics.getSurname(),
-                    demographics.getAddress1() + ", " + demographics.getAddress2() + ", " +
-                            demographics.getAddress3() + ". " + demographics.getAddress4(), diagnosisCodeAbbr,
-                    demographics.getClinician() != null ? demographics.getClinician().getForename() : "",
-                    demographics.getClinician() != null ? demographics.getClinician().getSurname() : "",
-                    demographics.getRenalUnit() != null ? demographics.getRenalUnit().getAbbreviation() : ""));
+            documentData.addRow(Arrays.asList(patient.getId().toString(), dateRegistered,
+                    patient.getForename(), patient.getSurname(),
+                    patient.getAddress1() + ", " + patient.getAddress2() + ", " +
+                            patient.getAddress3() + ". " + patient.getAddress4(), diagnosisCodeAbbr,
+                    patient.getClinician() != null ? patient.getClinician().getForename() : "",
+                    patient.getClinician() != null ? patient.getClinician().getSurname() : "",
+                    patient.getRenalUnit() != null ? patient.getRenalUnit().getAbbreviation() : ""));
         }
 
         return getExportData(exportType, documentData);

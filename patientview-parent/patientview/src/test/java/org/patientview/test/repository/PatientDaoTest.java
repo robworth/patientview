@@ -23,10 +23,10 @@
 
 package org.patientview.test.repository;
 
+import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.PatientCount;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.PatientCountDao;
@@ -67,7 +67,8 @@ public class PatientDaoTest extends BaseDaoTest {
     private static String CENTRE_1 = "centre1";
 
     @Before
-    public void setupSystem() {
+    public void setupSystem() throws Exception {
+
         specialty = repositoryHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
 
         user = repositoryHelpers.createUserWithMapping("username1", "test@test.com", "password", NAME_OF_USER,
@@ -86,7 +87,7 @@ public class PatientDaoTest extends BaseDaoTest {
         // create a patient
         Patient patient = new Patient();
         patient.setNhsno(NHS_NO_1);
-        patient.setCentreCode(CENTRE_1);
+        patient.setUnitcode(CENTRE_1);
         patient.setSurname("surname1");
 
         // save it
@@ -96,7 +97,7 @@ public class PatientDaoTest extends BaseDaoTest {
         // create another patient
         patient = new Patient();
         patient.setNhsno("nhsno2");
-        patient.setCentreCode(CENTRE_1);
+        patient.setUnitcode(CENTRE_1);
         patient.setSurname("surname2");
 
         // save it too
@@ -106,7 +107,7 @@ public class PatientDaoTest extends BaseDaoTest {
         /**
          * get
          */
-        List<Patient> patients = patientDao.get(patient.getCentreCode());
+        List<Patient> patients = patientDao.get(patient.getUnitcode());
 
         assertEquals("Incorrect number of patients found", 2, patients.size());
         assertEquals("Incorrect first patient surname", "surname1", patients.get(0).getSurname());
