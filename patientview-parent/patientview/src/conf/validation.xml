@@ -228,6 +228,21 @@
             <field property="name" depends="required">
                 <msg key="name.required" name="required"/>
             </field>
+            <field property="shortname" depends="required">
+                <msg key="shortname.required" name="required"/>
+            </field>
+            <field property="renaladminname" depends="required">
+                <msg key="adminname.required" name="required"/>
+            </field>
+            <field property="renaladminphone" depends="required">
+                <msg key="adminphone.required" name="required"/>
+            </field>
+            <field property="renaladminemail" depends="required">
+                <msg key="adminemail.required" name="required"/>
+            </field>
+            <field property="renaladminemail" depends="email">
+                <msg key="email.valid" name="email"/>
+            </field>
         </form>
         <form name="/control/radarGroupUpdate">
             <field property="unitcode" depends="required">
@@ -235,6 +250,21 @@
             </field>
             <field property="name" depends="required">
                 <msg key="name.required" name="required"/>
+            </field>
+            <field property="shortname" depends="required">
+                <msg key="shortname.required" name="required"/>
+            </field>
+            <field property="renaladminname" depends="required">
+                <msg key="adminname.required" name="required"/>
+            </field>
+            <field property="renaladminphone" depends="required">
+                <msg key="adminphone.required" name="required"/>
+            </field>
+            <field property="renaladminemail" depends="required">
+                <msg key="adminemail.required" name="required"/>
+            </field>
+            <field property="renaladminemail" depends="email">
+                <msg key="email.valid" name="email"/>
             </field>
         </form>
         <form name="/control/patientAdd">

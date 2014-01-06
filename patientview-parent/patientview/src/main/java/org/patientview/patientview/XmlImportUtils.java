@@ -23,29 +23,21 @@
 
 package org.patientview.patientview;
 
+import org.patientview.model.BaseModel;
+import org.patientview.model.Unit;
 import org.patientview.model.enums.XmlImportNotification;
-import org.patientview.patientview.exception.XmlImportException;
-import org.patientview.patientview.model.CorruptNode;
-import org.patientview.patientview.model.Unit;
+import org.patientview.patientview.parser.ResultParser;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Collections;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 @Component(value = "xmlImportUtils")
@@ -66,18 +58,13 @@ public final class XmlImportUtils {
 
     }
 
-    private static final int MAX_NUM_ERRORS_TO_LIST = 20;
 
     public void sendEmptyFileEmailToUnitAdmin(File file, ServletContext context) {
 
         String fileName = file.getName();
-
-        String unitcode = fileName.substring(0, fileName.indexOf("_"));
-
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
-
-        String emailBody = createEmailBodyForEmptyXML(fileName);
-
+        String unitCode = fileName.substring(0, fileName.indexOf("_"));
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        String emailBody = EmailUtils.createEmailBodyForEmptyXML(fileName);
         String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
@@ -88,16 +75,11 @@ public final class XmlImportUtils {
                 "[PatientView] File import failed: " + fileName, emailBody);
     }
 
-    public void sendEmptyFileEmailToUnitAdmin(File file) {
+    public void sendEmptyFileEmailToUnitAdmin(String filename) {
 
-        String fileName = file.getName();
-
-        String unitcode = fileName.substring(0, fileName.indexOf("_"));
-
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
-
-        String emailBody = createEmailBodyForEmptyXML(fileName);
-
+        String unitCode = getUnitCode(filename);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        String emailBody = EmailUtils.createEmailBodyForEmptyXML(filename);
         String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
@@ -105,16 +87,15 @@ public final class XmlImportUtils {
 
         EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
                 ccAddresses.toArray(new String[ccAddresses.size()]),
-                "[PatientView] File import failed: " + fileName, emailBody);
+                "[PatientView] File import failed: " + filename, emailBody);
     }
 
     public void sendXMLValidationErrors(File xmlFile, File xsdFile, List<SAXParseException> exceptions,
                                                ServletContext context) {
         String xmlFileName = xmlFile.getName();
         String xsdFileName = xsdFile.getName();
-
-        String unitcode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
+        String unitCode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
         String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(context, unit);
 
         String[] toAddresses = new String[]{LegacySpringUtils.getContextProperties().getProperty("warning.email"),
@@ -123,7 +104,8 @@ public final class XmlImportUtils {
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName, context);
+        String emailBody = EmailUtils.createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName,
+                context);
 
         for (String toAddress : toAddresses) {
             EmailUtils.sendEmail(LegacySpringUtils.getContextProperties().getProperty("noreply.email"),
@@ -137,8 +119,8 @@ public final class XmlImportUtils {
         String xmlFileName = xmlFile.getName();
         String xsdFileName = xsdFile.getName();
 
-        String unitcode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
+        String unitCode = xmlFileName.substring(0, xmlFileName.indexOf("_"));
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
         String rpvAdminEmailAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         String[] toAddresses = new String[]{warningEmail, rpvAdminEmailAddress};
@@ -146,7 +128,8 @@ public final class XmlImportUtils {
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        String emailBody = createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName);
+        String emailBody = EmailUtils.createEmailBodyForXMLValidationErrors(exceptions, xmlFileName, xsdFileName,
+                supportEmail);
 
         for (String toAddress : toAddresses) {
             EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
@@ -155,116 +138,45 @@ public final class XmlImportUtils {
         }
     }
 
-    private String createEmailBodyForEmptyXML(String xmlFileName) {
-        String newLine = System.getProperty("line.separator");
 
-        String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
-        emailBody += newLine;
-        emailBody += newLine + "The file <" + xmlFileName + "> has not imported to RPV correctly. ";
-        emailBody += "This is because the file was empty. The most likely cause of that is "
-                + "that it has not been encrypted properly at the unit before sending. ";
-        emailBody += newLine;
-        emailBody += newLine + "Please contact your IT department to ask them to check the encryption.";
-        emailBody += newLine;
 
-        return emailBody;
-    }
+    public void sendCorruptDataEmail(ResultParser resultParser) {
+        String stackTrace = EmailUtils.createCorruptNodeEmailTest(resultParser.getCorruptNodes());
+        String fileName = resultParser.getFilename();
+        String unitCode = fileName.substring(0, fileName.indexOf("_"));
 
-    private String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
-                                                                String xsdFileName, ServletContext context) {
-        String newLine = System.getProperty("line.separator");
-
-        String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
-        emailBody += newLine;
-        emailBody += newLine + "The file <" + xmlFileName + "> has failed to import.";
-        emailBody += newLine;
-        emailBody += newLine + "It did not match the schema file named: ";
-        emailBody += newLine;
-        emailBody += newLine + xsdFileName;
-        emailBody += newLine;
-        emailBody += newLine + "Before contacting the email address below please ensure that:";
-        emailBody += newLine + " - The file is not empty.";
-        emailBody += newLine + " - The file is well formed XML.";
-        emailBody += newLine + " - The file matches the RPV XML schema.";
-        emailBody += newLine + " - There are no missing values.";
-        emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine;
-        emailBody += newLine
-                + "Please carefully read the stack trace below, there is often a good hint in there as to why your "
-                + "file failed:";
-        emailBody += newLine;
-        emailBody += newLine + "Validation errors:";
-        emailBody += newLine;
-
-        for (SAXParseException exception : exceptions) {
-            emailBody += newLine + exception.getLocalizedMessage();
-            emailBody += newLine;
-        }
-
-        emailBody += newLine;
-        emailBody += newLine;
-        emailBody += newLine + "For further help, please contact "
-                + LegacySpringUtils.getContextProperties().getProperty("support.email");
-        emailBody += newLine;
-
-        return emailBody;
-    }
-
-    private String createEmailBodyForXMLValidationErrors(List<SAXParseException> exceptions, String xmlFileName,
-                                                                String xsdFileName) {
-        String newLine = System.getProperty("line.separator");
-
-        String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
-        emailBody += newLine;
-        emailBody += newLine + "The file <" + xmlFileName + "> has failed to import.";
-        emailBody += newLine;
-        emailBody += newLine + "It did not match the schema file named: ";
-        emailBody += newLine;
-        emailBody += newLine + xsdFileName;
-        emailBody += newLine;
-        emailBody += newLine + "Before contacting the email address below please ensure that:";
-        emailBody += newLine + " - The file is not empty.";
-        emailBody += newLine + " - The file is well formed XML.";
-        emailBody += newLine + " - The file matches the RPV XML schema.";
-        emailBody += newLine + " - There are no missing values.";
-        emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine;
-        emailBody += newLine
-                + "Please carefully read the stack trace below, there is often a good hint in there as to why your "
-                + "file failed:";
-        emailBody += newLine;
-        emailBody += newLine + "Validation errors:";
-        emailBody += newLine;
-
-        for (SAXParseException exception : exceptions) {
-            emailBody += newLine + exception.getLocalizedMessage();
-            emailBody += newLine;
-        }
-
-        emailBody += newLine;
-        emailBody += newLine;
-        emailBody += newLine + "For further help, please contact " + supportEmail;
-        emailBody += newLine;
-
-        return emailBody;
-    }
-
-    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) {
-        String stacktrace = extractErrorsFromException(e);
-
-        String fileName = xmlFile.getName();
-        String unitcode = fileName.substring(0, fileName.indexOf("_"));
-
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitcode);
+        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
         String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
                 XmlImportNotification.FAILED_IMPORT);
 
-        String emailBody = createEmailBody(stacktrace, fileName);
+        String emailBody = EmailUtils.createEmailBody(stackTrace, fileName, supportEmail);
+
+        EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
+                ccAddresses.toArray(new String[ccAddresses.size()]),
+                "[PatientView] File import failed: " + fileName, emailBody);
+    }
+
+    public void sendEmailOfExpectionStackTraceToUnitAdmin(Exception e, File xmlFile) {
+
+        String stackTrace = EmailUtils.extractErrorsFromException(e);
+        String fileName = xmlFile.getName();
+        String unitCode = fileName.substring(0, fileName.indexOf("_"));
+
+        Unit unit = null;
+        try {
+             unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        } catch (Exception ee) {
+            LOGGER.debug("Cannot find unit, using default support email address");
+        }
+
+        String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
+
+        List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
+                XmlImportNotification.FAILED_IMPORT);
+
+        String emailBody = EmailUtils.createEmailBody(stackTrace, fileName, supportEmail);
 
         EmailUtils.sendEmail(noReplyEmail, new String[]{toAddress},
                 ccAddresses.toArray(new String[ccAddresses.size()]),
@@ -272,133 +184,7 @@ public final class XmlImportUtils {
 
     }
 
-    private String createEmailBody(String errors, String fileName) {
-        String newLine = System.getProperty("line.separator");
-
-        String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
-        emailBody += newLine;
-        emailBody += newLine + "The file <" + fileName + "> has failed to import.";
-        emailBody += newLine;
-        emailBody += newLine
-                + "This means that the file has been received by RPV but there is something wrong with the file that "
-                + "prevents it being imported properly.";
-        emailBody += newLine;
-        emailBody += newLine
-                + "You will most likely need to correct the data in your local system before the file is resent to "
-                + "PatientView.";
-        emailBody += newLine;
-        emailBody += newLine + errors;
-        emailBody += newLine;
-        emailBody += newLine
-                + "Otherwise, it might be that there is an XML tag missing or an empty result value or something "
-                + "similar.";
-        emailBody += newLine;
-        emailBody += newLine + "Before contacting the email address below please ensure that:";
-        emailBody += newLine + " - The file is not empty.";
-        emailBody += newLine + " - The file is well formed XML.";
-        emailBody += newLine + " - The file matches the RPV XML schema.";
-        emailBody += newLine + " - There are no missing values.";
-        emailBody += newLine + " - There are no empty tags in letters, medicines, results etc.";
-        emailBody += newLine + "For further help, please contact " + supportEmail;
-        emailBody += newLine;
-        return emailBody;
-    }
-
-    public String extractErrorsFromException(Exception e) {
-        String errors = "";
-        String newLine = System.getProperty("line.separator");
-
-        if (e instanceof XmlImportException) {
-
-            Collections.sort(((XmlImportException) e).getNodeList());
-
-            errors += newLine + "These are the error(s) that have been found in this xml:";
-            errors += newLine;
-
-            int numberOfErrors = 0;
-
-            for (CorruptNode corruptNode : ((XmlImportException) e).getNodeList()) {
-                numberOfErrors++;
-
-                if (numberOfErrors > MAX_NUM_ERRORS_TO_LIST) {
-                    // truncate this information
-                    errors += newLine + "There are further errors.  Truncating email!";
-                    break;
-                }
-
-                switch (corruptNode.getError()) {
-                    case FUTURE_RESULT:
-                        errors += newLine + "This result has a date in the future:";
-                        errors += newLine;
-                        errors += getNodeAsString(corruptNode.getNode());
-                        errors += newLine;
-
-                        break;
-                    case MISSING_VALUE:
-                        errors += newLine + "This result has an empty value:";
-                        errors += newLine;
-                        errors += getNodeAsString(corruptNode.getNode());
-                        errors += newLine;
-
-                        break;
-                    case WRONG_DATE_RANGE:
-                        errors += newLine + "This result has a date that's not within the date range specified:";
-                        errors += newLine;
-                        errors += getNodeAsString(corruptNode.getNode());
-                        errors += newLine;
-
-                        break;
-                    default:
-                        errors += newLine + "Found an unknown error:";
-                        errors += newLine;
-
-                        break;
-                }
-            }
-        } else {
-            errors += newLine
-                    + "Please carefully read the stack trace below, there is often a good hint in there as to why "
-                    + "your file failed:";
-            errors += newLine;
-            errors += newLine + "Stack Trace:";
-            errors += newLine;
-
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            errors += sw.toString();
-        }
-
-        return errors;
-    }
-
-    private String getNodeAsString(Node node) {
-        String nodeAsString = "";
-        try {
-            // Set up the output transformer
-            TransformerFactory transfac = TransformerFactory.newInstance();
-            Transformer trans = transfac.newTransformer();
-            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-            // Print the DOM node
-
-            StringWriter sw = new StringWriter();
-            StreamResult result = new StreamResult(sw);
-            DOMSource source = new DOMSource(node);
-            trans.transform(source, result);
-            String xmlString = sw.toString();
-
-            nodeAsString += xmlString;
-        } catch (TransformerException e) {
-            LOGGER.error(e.getMessage());
-            LOGGER.debug(e.getMessage(), e);
-        }
-
-        return nodeAsString;
-    }
-
-    public String extractFromXMLFileNameNhsno(String filename) {
+    public String getNhsNumber(String filename) {
         try {
             int firstUnderscore = filename.indexOf("_");
             int secondUnderscore = filename.indexOf("_", firstUnderscore + 1);
@@ -410,11 +196,51 @@ public final class XmlImportUtils {
         }
     }
 
-    public String extractFromXMLFileNameUnitcode(String filename) {
+    public String getUnitCode(String filename) {
         try {
             return filename.substring(0, filename.indexOf("_")).toUpperCase();
         } catch (Exception e) {
             return "";
         }
+    }
+
+    /**
+     * Copy all the fields from one source object to another original object
+     *
+     * @param target
+     * @param source
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseModel> T copyObject(T target, T source) {
+
+        Long id = target.getId();
+
+        Class clazz = target.getClass();
+        for (Method setterMethod : clazz.getDeclaredMethods()) {
+
+            if (setterMethod.getName().startsWith("set") && !setterMethod.getName().equals("setId")) {
+
+                try {
+                    Method getterMethod = null;
+
+                    getterMethod = source.getClass().getMethod(setterMethod.getName().replace("set", "get"));
+
+                    setterMethod.invoke(target, getterMethod.invoke(source));
+
+                } catch (NoSuchMethodException msh) {
+                    LOGGER.debug("NoSuchMethodException thrown");
+                } catch (InvocationTargetException ete) {
+                    LOGGER.debug("InvocationTargetException thrown");
+                } catch (IllegalAccessException ie) {
+                    LOGGER.debug("IllegalAccessException thrown");
+                }
+            }
+        }
+
+        target.setId(id);
+
+
+        return target;
     }
 }

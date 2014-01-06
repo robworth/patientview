@@ -10,7 +10,6 @@
         <property name="locations">
             <list>
                 <value>classpath:web-test.properties</value>
-                <value>classpath:radar-login-web-test.properties</value>
             </list>
         </property>
     </bean>

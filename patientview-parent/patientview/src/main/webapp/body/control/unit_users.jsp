@@ -4,6 +4,7 @@
 <%@ taglib uri="http://jakarta.apache.org/taglibs/datetime-1.0" prefix="dt" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
 <%--
   ~ PatientView
   ~
@@ -39,11 +40,11 @@
     <div class="span10" style="margin-left: 10px;margin-bottom:5px;">
         <div class="row" style="float: right;">
             <logic:equal value="false" name="unitUsers" property="firstPage">
-                <a href="./unitUsers?page=prev">Prev</a>&nbsp;
+                <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers?page=prev">Prev</a>&nbsp;
             </logic:equal>
             &nbsp;
             <logic:equal value="false" name="unitUsers" property="lastPage">
-                <a href="./unitUsers?page=next">Next</a>
+                <a href="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers?page=next">Next</a>
             </logic:equal>
         </div>
     </div>
@@ -56,7 +57,7 @@
           <th class="tableheader" onclick="sort('email')"><a href="#">Email</a></th>
           <th class="tableheader" onclick="sort('emailverified')"><a href="#">Email Verified</a></th>
           <th class="tableheader" onclick="sort('lastlogon')"><a href="#">Last Login</a></th>
-          <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password Locked</a></th>
+          <th class="tableheader" onclick="sort('accountlocked')"><a href="#">Password</a></th>
           <th class="tableheader" onclick="sort('isrecipient')"><a href="#">Message Recipient</a></th>
           <th class="tableheader" onclick="sort('isclinician')"><a href="#">Clinician</a></th>
 
@@ -70,7 +71,7 @@
         %>
       <tr>
         <td class="tablecell">
-            <logic:present role="superadmin,unitadmin,radaradmin">
+            <logic:present role="superadmin,unitadmin">
                 <html:link action="/control/unitUserEditInput" name="patientKeyParams">
                     <bean:write name="unitUser" property="name"/>
                 </html:link>

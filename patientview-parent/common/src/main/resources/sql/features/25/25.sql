@@ -49,4 +49,7 @@ SET temp = CASE
      ELSE NULL END;
 
 ALTER TABLE patient DROP COLUMN dateofbirth;
-ALTER TABLE patient CHANGE temp dateofbirth DATETIME NULL ;
+ALTER TABLE patient CHANGE temp dateofbirth DATETIME NULL ;    Add a user id column in patient table.
+ */
+ ALTER TABLE patient ADD COLUMN `radarConsentConfirmedByUserId` int(11) DEFAULT NULL;
+

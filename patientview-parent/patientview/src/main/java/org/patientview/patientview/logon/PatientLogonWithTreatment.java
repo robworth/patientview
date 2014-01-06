@@ -25,6 +25,7 @@ package org.patientview.patientview.logon;
 
 import org.apache.commons.lang.StringUtils;
 import org.patientview.ibd.Ibd;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,10 @@ public class PatientLogonWithTreatment extends PatientLogon {
     public Date getDateofbirth() {
         return dateofbirth;
     }
+
+    public void setDateofbirth(String dateofbirth) {
+
+       this.dateofbirth = CommonUtils.parseDate(dateofbirth);
 
     public void setDateofbirth(Date dateofbirth) {
         this.dateofbirth = dateofbirth;

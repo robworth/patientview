@@ -28,21 +28,18 @@ import org.joda.time.Years;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import javax.persistence.Column;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 public class Patient extends BaseModel {
-
-
-    @Transient
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Transient
     private static final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
@@ -129,7 +126,7 @@ public class Patient extends BaseModel {
     @Column
     private String surnameAlias;
 
-    @Column
+    @Column(nullable = true)
     private Integer age;
 
     @Column
@@ -153,7 +150,7 @@ public class Patient extends BaseModel {
     @Column
     private String emailAddress;
 
-    @Column
+    @Column(nullable = true)
     private Integer rrtModality;
 
     @Column
@@ -182,6 +179,21 @@ public class Patient extends BaseModel {
 
     @Column
     private Date dateOfGenericDiagnosis;
+
+    @Column(nullable = true)
+    private Long radarConsentConfirmedByUserId;
+
+    @Column
+    private Date mostRecentTestResultDateRangeStopDate;
+
+    @Column
+    private String sourceType;
+
+    @Column(nullable = true)
+    private Long patientLinkId;
+
+    @Transient
+    private String patientLinkUnitCode;
 
     @Transient
     private Clinician clinician;
@@ -215,6 +227,9 @@ public class Patient extends BaseModel {
 
     @Transient
     private Boolean diagnosisDateSelect;
+
+    @Transient
+    private boolean linked;
 
     public enum RRTModality {
         HD(1),
@@ -290,6 +305,13 @@ public class Patient extends BaseModel {
     }
 
     public String getFormatedDateOfBirth() {
+
+        Date date =  CommonUtils.parseDate(dateofbirth);
+        if (date != null) {
+            return UK_DATE_FORMAT.format(CommonUtils.parseDate(dateofbirth));
+        } else {
+            return null;
+        }
         return UK_DATE_FORMAT.format(dateofbirth);
     }
 
@@ -776,5 +798,52 @@ public class Patient extends BaseModel {
     public void setDiagnosisDateSelect(Boolean diagnosisDateSelect) {
         this.diagnosisDateSelect = diagnosisDateSelect;
     }
+
+    public Long getRadarConsentConfirmedByUserId() {
+        return radarConsentConfirmedByUserId;
+    }
+
+    public void setRadarConsentConfirmedByUserId(Long radarConsentConfirmedByUserId) {
+        this.radarConsentConfirmedByUserId = radarConsentConfirmedByUserId;
+    }
+
+    public Date getMostRecentTestResultDateRangeStopDate() {
+        return mostRecentTestResultDateRangeStopDate;
+    }
+
+    public void setMostRecentTestResultDateRangeStopDate(Date mostRecentTestResultDateRangeStopDate) {
+        this.mostRecentTestResultDateRangeStopDate = mostRecentTestResultDateRangeStopDate;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public Long getPatientLinkId() {
+        return patientLinkId;
+    }
+
+    public void setPatientLinkId(Long patientLinkId) {
+        this.patientLinkId = patientLinkId;
+    }
+
+    public boolean isLinked() {
+        return patientLinkId != null && patientLinkId > 0;
+    }
+
+    public String getPatientLinkUnitCode() {
+        return patientLinkUnitCode;
+    }
+
+    public void setPatientLinkUnitCode(String patientLinkUnitCode) {
+        this.patientLinkUnitCode = patientLinkUnitCode;
+    }
+
 }
+
+
 

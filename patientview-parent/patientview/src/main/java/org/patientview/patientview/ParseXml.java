@@ -41,7 +41,7 @@ public class ParseXml extends Action {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String xmlFileName = BeanUtils.getProperty(form, "src");
-        LegacySpringUtils.getImportManager().update(new File(xmlFileName));
+        LegacySpringUtils.getImportManager().process(new File(xmlFileName));
         FindXmlFiles.putXmlFilesInRequest(request);
         return LogonUtils.logonChecks(mapping, request);
     }

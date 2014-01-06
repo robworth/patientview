@@ -29,7 +29,7 @@ import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.UktStatus;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.repository.UktStatusDao;

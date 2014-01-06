@@ -24,6 +24,7 @@
 package org.patientview.patientview.model;
 
 import org.patientview.model.Patient;
+import org.patientview.model.Unit;
 
 public class Contact {
 
