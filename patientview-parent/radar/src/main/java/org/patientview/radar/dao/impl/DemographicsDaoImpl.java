@@ -250,37 +250,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
     }
 
-
-    public Patient getDemographicsByRadarNumber(long radarNumber) {
-
-        Patient patient = null;
-
-        try {
-
-            try {
-                patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE radarNo = ?",
-                    new Object[]{radarNumber}, new DemographicsRowMapper());
-            } catch (EmptyResultDataAccessException e) {
-                // Can't find the patient by radar number try the normal key
-                if (patient == null) {
-                    patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE id = ?",
-                            new Object[]{radarNumber}, new DemographicsRowMapper());
-                }
-            }
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("No demographic record found for radar number {}", radarNumber);
-            return null;
-        }
-
-        return patient;
-    }
-
-
-    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     public Patient get(Long id) {
 
         try {

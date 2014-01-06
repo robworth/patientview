@@ -104,7 +104,7 @@ public class DemographicDaoTest extends BaseDaoTest {
     @Test
     public void testGetDemographic() throws Exception {
         Patient patient = createDemographics("Test", "User");
-        Patient check = demographicDao.getDemographicsByRadarNumber(patient.getId());
+        Patient check = patientDao.getById(patient.getId());
 
         // Check it's not null
         assertNotNull("Demographics was null", check);

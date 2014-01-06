@@ -29,7 +29,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -70,4 +72,8 @@ public interface PatientManager {
     List<PatientDetails> getPatientDetails(String username);
 
     List<PatientDetails> getPatientDetails(Long id);
+
+    Map.Entry<String, Date> getLatestTestResultUnit(String nhsNo);
+
+
 }

@@ -301,7 +301,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     patient.getIndiaId(),
                     patient.getRadarConsentConfirmedByUserId(),
                     patient.isGeneric(),
-                    patient.getPatientLinkId(),
+                    patient.getPatientLinkId() == null ? null : patient.getPatientLinkId(),
                     patient.getId());
         } else {
             Number id = patientInsert.executeAndReturnKey(new HashMap<String, Object>() {
@@ -350,7 +350,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("generic", patient.isGeneric());
                     put("radarConsentConfirmedByUserId", patient.getRadarConsentConfirmedByUserId());
                     put("sourceType", SourceType.RADAR.getName());
-                    put("patientLinkId", patient.getPatientLinkId());
+                    put("patientLinkId", patient.getPatientLinkId() == null ? null : patient.getPatientLinkId());
                 }
             });
             patient.setId(id.longValue());
@@ -448,6 +448,9 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             // Needs fixing into getting a Enum
             patient.setSourceType(resultSet.getString("sourceType"));
             patient.setPatientLinkId(resultSet.getLong("patientLinkId"));
+            if (patient.getPatientLinkId() == 0) {
+                patient.setPatientLinkId(null);
+            }
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
             patient.setGenericDiagnosisModel(getGenericDiagnosis(resultSet.getString("genericDiagnosis"),
                     patient.getDiseaseGroup()));

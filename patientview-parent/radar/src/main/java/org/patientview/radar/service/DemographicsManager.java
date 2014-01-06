@@ -34,8 +34,6 @@ import java.util.List;
 
 public interface DemographicsManager {
 
-    void saveDemographics(Patient patient);
-
     List<Patient> getDemographics();
 
     List<Patient> getDemographics(DemographicsFilter filter);

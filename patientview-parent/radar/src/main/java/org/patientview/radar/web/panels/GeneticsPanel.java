@@ -68,7 +68,7 @@ public class GeneticsPanel extends Panel {
 
         if (genetics == null) {
             genetics = new Genetics();
-            genetics.setRadarNo(patient.getId());
+            genetics.setRadarNo(patient.getRadarNo());
         }
 
         // main model for this tab

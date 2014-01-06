@@ -72,7 +72,7 @@ public class HNF1BMiscPanel extends Panel {
 
         if (hnf1BMisc == null) {
             hnf1BMisc = new HNF1BMisc();
-            hnf1BMisc.setRadarNo(patient.getId());
+            hnf1BMisc.setRadarNo(patient.getRadarNo());
         }
 
         // main model for this tab
@@ -115,7 +115,7 @@ public class HNF1BMiscPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    hnf1BMisc.setRadarNo(patient.getId());
+                    hnf1BMisc.setRadarNo(patient.getRadarNo());
                     hnf1BMiscManager.save(hnf1BMisc);
                 }
             }

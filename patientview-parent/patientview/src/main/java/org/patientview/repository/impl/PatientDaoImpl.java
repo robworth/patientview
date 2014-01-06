@@ -171,13 +171,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",         ptt.treatment ");
         query.append(",         ptt.dateofbirth ");
         query.append(",         ptt.rrtModality ");
-//        query.append(",         psl.lastdatadate ");
+        query.append(",         ptt.mostRecentTestResultDateRangeStopDate ");
         query.append("FROM USER usr ");
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
         query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
     //    query.append("LEFT JOIN emailverification emv ON usr.username = emv.username ");
-//        query.append("LEFT JOIN pv_user_log psl ON usm.nhsno = psl.nhsno ");
         query.append("WHERE     str.role = 'patient' ");
         query.append("AND       usr.username = usm.username ");
         query.append("AND       usr.id = str.user_id ");
@@ -234,13 +233,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",      ptt.treatment ");
         query.append(",      ptt.dateofbirth ");
         query.append(",      ptt.rrtModality ");
-//        query.append(",      pvl.lastdatadate ");
+        query.append(",      ptt.mostRecentTestResultDateRangeStopDate ");
         query.append("FROM user usr ");
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
      //   query.append("LEFT  JOIN emailverification em ON usr.username = em.username ");
         query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
-//        query.append("LEFT  JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
         query.append("AND    usr.id = str.user_id ");
         query.append("AND    usm.unitcode <> 'PATIENT' ");
@@ -372,7 +370,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
             patientLogonWithTreatment.setLastverificationdate(resultSet.getDate("lastverificationdate"));
             patientLogonWithTreatment.setRrtModality(resultSet.getInt("rrtModality"));
-//            patientLogonWithTreatment.setLastdatadate(resultSet.getDate("lastdatadate"));
+            patientLogonWithTreatment.setLastdatadate(resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
             return patientLogonWithTreatment;
         }
     }

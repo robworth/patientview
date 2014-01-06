@@ -305,7 +305,12 @@ public class ImporterTest extends BaseServiceTest {
 
         patients = patientManager.getByNhsNo(nhsNumber);
         assertEquals("Should still be 2 patient records", 2, patients.size());
+
         System.out.println("6");
+
+        // RPV 141 - Assert that the patient link id is not updated to 0
+        assertEquals("The patient link id should not be 0", patient.getPatientLinkId(), null);
+
     }
 
     @Test

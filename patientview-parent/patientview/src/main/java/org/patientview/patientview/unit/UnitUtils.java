@@ -70,7 +70,7 @@ public final class UnitUtils {
             items = new ArrayList();
         }
 
-        request.setAttribute("units", items);
+        request.getSession().setAttribute("units", items);
     }
 
     /**
