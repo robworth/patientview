@@ -229,8 +229,11 @@ public final class XmlImportUtils {
                     setterMethod.invoke(target, getterMethod.invoke(source));
 
                 } catch (NoSuchMethodException msh) {
+                    LOGGER.debug("NoSuchMethodException thrown");
                 } catch (InvocationTargetException ete) {
+                    LOGGER.debug("InvocationTargetException thrown");
                 } catch (IllegalAccessException ie) {
+                    LOGGER.debug("IllegalAccessException thrown");
                 }
             }
         }
