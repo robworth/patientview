@@ -28,7 +28,6 @@ import org.joda.time.Years;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
-import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -306,17 +305,16 @@ public class Patient extends BaseModel {
 
     public String getFormatedDateOfBirth() {
 
-        Date date =  CommonUtils.parseDate(dateofbirth);
-        if (date != null) {
-            return UK_DATE_FORMAT.format(CommonUtils.parseDate(dateofbirth));
+        if (dateofbirth != null) {
+            return UK_DATE_FORMAT.format(dateofbirth);
         } else {
             return null;
         }
-        return UK_DATE_FORMAT.format(dateofbirth);
+
     }
 
     public String getDateOfBirthStr() {
-        return DATE_FORMAT.format(dateofbirth);
+        return UK_DATE_FORMAT.format(dateofbirth);
     }
 
     public void setDateofbirth(Date dateofbirth) {
