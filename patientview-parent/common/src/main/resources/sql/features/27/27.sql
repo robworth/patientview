@@ -19,3 +19,38 @@ ALTER TABLE patient ENGINE=InnoDB;
 
 
 
+UPDATE   tbl_diagnosis dig
+SET      radar_no = (SELECT radarno FROM patient ptt WHERE  ptt.id = dig.radar_no)
+WHERE    dig.radar_no > 900;
+
+UPDATE  rdc_genetic_test  dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+UPDATE  rdr_hnf1b_misc dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+UPDATE  tbl_clinicalData dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+UPDATE  tbl_diagnosis dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+UPDATE    tbl_pathology dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+UPDATE tbl_relapse  dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+UPDATE tbl_hospitalisation dig
+SET radar_no = (SELECT radarno FROM patient ptt WHERE ptt.id = dig.radar_no)
+WHERE dig.radar_no > 900;
+
+
+
+

@@ -51,7 +51,7 @@ import org.patientview.radar.web.panels.hnf1b.HNF1BMiscPanel;
 import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
-public class HNF1BPatientPage extends BasePage {
+public class  HNF1BPatientPage extends BasePage {
 
     public enum Tab {
         // Used for storing the current tab
