@@ -168,10 +168,10 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",         null lastverificationdate ");
         query.append(",         usr.firstlogon ");
         query.append(",         usr.lastlogon ");
-        query.append(",         ptt.treatment ");
-        query.append(",         ptt.dateofbirth ");
-        query.append(",         ptt.rrtModality ");
-        query.append(",         ptt.mostRecentTestResultDateRangeStopDate ");
+        query.append(",         MAX(ptt.treatment) treatment ");
+        query.append(",         MAX(ptt.dateofbirth) dateofbirth ");
+        query.append(",         MAX(ptt.rrtModality) rrtModality ");
+        query.append(",         MAX(ptt.mostRecentTestResultDateRangeStopDate) mostRecentTestResultDateRangeStopDate ");
         query.append("FROM USER usr ");
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
@@ -192,7 +192,20 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (!showgps) {
             query.append("AND   usr.name NOT LIKE '%-GP' ");
         }
-        query.append("AND       str.specialty_id = ? ORDER BY usr.name ASC ");
+        query.append("AND       str.specialty_id = ? ");
+        query.append("GROUP BY  usr.username ");
+        query.append(",         usr.password ");
+        query.append(",         usr.name ");
+        query.append(",         usr.email ");
+        query.append(",         usr.emailverified ");
+        query.append(",         usr.accountlocked ");
+        query.append(",         usm.nhsno ");
+        query.append(",         usm.unitcode ");
+        query.append(",         lastverificationdate ");
+        query.append(",         usr.firstlogon ");
+        query.append(",         usr.lastlogon  ");
+        query.append(" ORDER BY usr.name ASC ");
+
 
         List<Object> params = new ArrayList<Object>();
 
