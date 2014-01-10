@@ -82,7 +82,6 @@ public class PatientManagerImpl implements PatientManager {
     @Inject
     private MedicineManager medicineManager;
 
-
     @Override
     public Patient get(String nhsno, String unitcode) {
         return patientDao.get(nhsno, unitcode);
@@ -180,6 +179,14 @@ public class PatientManagerImpl implements PatientManager {
         return patientDetails;
     }
 
+    @Override
+    public List<PatientDetails> getPatientDetails(Long id) {
+        Patient patient = get(id);
+        List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
+        patientDetails.add(createPatientDetails(patient, unitManager.get(patient.getUnitcode())));
+        return patientDetails;
+
+    }
 
     private PatientDetails createPatientDetails(Patient patient, Unit unit) {
         PatientDetails patientDetail = new PatientDetails();
@@ -199,32 +206,33 @@ public class PatientManagerImpl implements PatientManager {
     }
 
     @Override
-    public List<PatientDetails> getPatientDetails(Long id) {
-
-        Patient patient = get(id);
-        List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
-
-        PatientDetails patientDetail = new PatientDetails();
-
-        patientDetail.setPatient(patient);
-        patientDetail.setUnit(unitManager.get(patient.getUnitcode()));
-        patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
-        patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
-        patientDetail.setOtherDiagnoses(diagnosisManager.getOtherDiagnoses(patient.getNhsno(),
-                patient.getUnitcode()));
-
-        // TODO: dont really know bout this UktUtils ?
-        patientDetail.setUktStatus(UktUtils.retreiveUktStatus(patient.getNhsno()));
-
-        patientDetails.add(patientDetail);
-
-        AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
-                AddLog.PATIENT_VIEW, "", patient.getNhsno(),
-                patient.getUnitcode(), "");
+    public Patient getPatient(String username) {
+        List<UserMapping> userMappings = userManager.getUserMappings(username);
 
 
-        return patientDetails;
+        for (UserMapping userMapping : userMappings) {
+            String unitcode = userMapping.getUnitcode();
+            //check user's permission
+            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
+                continue;
+            }
+            Unit unit = unitManager.get(unitcode);
+            if (!"radargroup".equalsIgnoreCase(unit.getSourceType())) {
+                continue;
+            }
 
+            Patient patient = get(userMapping.getNhsno(), unitcode);
+            if (patient == null) {
+                continue;
+            }
+
+            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                    AddLog.PATIENT_VIEW, "", patient.getNhsno(),
+                    patient.getUnitcode(), "");
+            return patient;
+        }
+
+        return null;
     }
 
 

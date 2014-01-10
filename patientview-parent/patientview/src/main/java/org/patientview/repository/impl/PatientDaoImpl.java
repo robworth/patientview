@@ -380,7 +380,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         @Override
         public PatientLogonWithTreatment mapRow(ResultSet resultSet, int i) throws SQLException {
             PatientLogonWithTreatment patientLogonWithTreatment = super.mapRow(resultSet, i);
-
+            patientLogonWithTreatment.setPatientId(resultSet.getLong("id"));
             patientLogonWithTreatment.setLastverificationdate(resultSet.getDate("lastverificationdate"));
             patientLogonWithTreatment.setRrtModality(resultSet.getInt("rrtModality"));
             patientLogonWithTreatment.setLastdatadate(resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
