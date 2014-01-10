@@ -67,7 +67,7 @@ public class HNF1BMiscPanel extends Panel {
         HNF1BMisc hnf1BMisc = null;
 
         if (patient.hasValidId()) {
-            hnf1BMisc = hnf1BMiscManager.get(patient.getId());
+            hnf1BMisc = hnf1BMiscManager.get(patient.getRadarNo());
         }
 
         if (hnf1BMisc == null) {

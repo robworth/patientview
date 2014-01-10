@@ -68,7 +68,7 @@ public class NonAlportGeneticsPanel extends Panel {
         Genetics genetics = null;
 
         if (patient.hasValidId()) {
-            genetics = geneticsManager.get(patient.getId());
+            genetics = geneticsManager.get(patient.getRadarNo());
         }
 
         if (genetics == null) {
