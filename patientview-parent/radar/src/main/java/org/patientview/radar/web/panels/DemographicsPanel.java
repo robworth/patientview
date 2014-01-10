@@ -178,10 +178,10 @@ public class DemographicsPanel extends Panel {
 
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
                 if (patient.hasValidId()) {
-                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getId());
+                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getRadarNo());
                     if (diagnosis == null) {
                         Diagnosis diagnosisNew = new Diagnosis();
-                        diagnosisNew.setRadarNumber(patient.getId());
+                        diagnosisNew.setRadarNumber(patient.getRadarNo());
                         DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis"))
                                 .getModelObject();
                         diagnosisNew.setDiagnosisCode(diagnosisCode);
@@ -242,7 +242,7 @@ public class DemographicsPanel extends Panel {
 
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(
-                        new Model<Long>(patientModel.getObject().getId()),
+                        new Model<Long>(patientModel.getObject().getRadarNo()),
                         diagnosisManager),
                         diagnosisManager.getDiagnosisCodes(),
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
