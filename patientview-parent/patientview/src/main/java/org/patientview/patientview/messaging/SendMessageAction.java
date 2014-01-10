@@ -25,7 +25,7 @@ package org.patientview.patientview.messaging;
 
 import org.patientview.ibd.action.BaseAction;
 import org.patientview.patientview.model.Message;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;

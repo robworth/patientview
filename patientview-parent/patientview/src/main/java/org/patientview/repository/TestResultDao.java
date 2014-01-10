@@ -26,7 +26,7 @@ package org.patientview.repository;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
 import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

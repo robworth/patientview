@@ -29,7 +29,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -51,6 +53,8 @@ public interface PatientManager {
 
     List<Patient> get(String unitCode);
 
+    List<Patient> getByNhsNo(String nhsNo);
+
     // Note: generics not used as the result is half user, half patient
     List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps);
 
@@ -62,7 +66,18 @@ public interface PatientManager {
 
     List<Patient> getUktPatients();
 
+    /**
+     * Get all patient records that are associated with this user
+     * @param username of user
+     * @return a list of 'mini' objects based on patient records
+     */
     List<PatientDetails> getPatientDetails(String username);
+
+    List<PatientDetails> getPatientDetails(Long id);
+
+    Map.Entry<String, Date> getLatestTestResultUnit(String nhsNo);
+
+
 
     List<PatientDetails> getPatientDetails(String username, boolean isRadarGroup);
 }

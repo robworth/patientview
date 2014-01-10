@@ -23,17 +23,24 @@
 
 package org.patientview.test.service;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.patientview.model.Patient;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.model.User;
 import org.patientview.service.PatientManager;
+import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
-import org.junit.Before;
-import org.junit.Test;
 
 import javax.inject.Inject;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 /**
  *      Note: this is tested at a service level to allow legacy and hibernate dao to work together,
@@ -52,6 +59,9 @@ public class PatientManagerTest extends BaseServiceTest {
 
     @Inject
     private UserManager userManager;
+
+    @Inject
+    private UnitManager unitManager;
 
     private User user;
     private Specialty specialty1, specialty2;
@@ -100,4 +110,70 @@ public class PatientManagerTest extends BaseServiceTest {
 //
 //        assertTrue("Incorrect results", results != null && results.size() == 1);
     }
+
+
+    /**
+     * This is to test that the PatientManager can get the latest test results with unit code;
+     *
+     * Create 3 patient record all with different dates and get the latest one.
+     *
+     */
+    @Test
+    public void testGetPatientTestRecentTestDataWithUnitCode(){
+
+        final String testNhsNo = "7865675675";
+        final Unit unit1 = createUnit("unitCode1");
+        final Unit unit2 = createUnit("unitCode2");
+        final Unit unit3 = createUnit("unitCode3");
+
+        Patient testPatient1 = createPatient(unit1.getUnitcode(), testNhsNo);
+        Patient testPatient2 = createPatient(unit2.getUnitcode(), testNhsNo);
+        Patient testPatient3 = createPatient(unit3.getUnitcode(), testNhsNo);
+
+        Calendar calendar = Calendar.getInstance();
+
+        // Set the date to the current date
+        testPatient2.setMostRecentTestResultDateRangeStopDate(calendar.getTime());
+        patientManager.save(testPatient2);
+
+        //Set the clock back and then set the date again. Therefore making unit2 the unit which should be returned
+        calendar.add(Calendar.MONTH, -1);
+        testPatient3.setMostRecentTestResultDateRangeStopDate(calendar.getTime());
+        patientManager.save(testPatient3);
+
+
+        Map.Entry<String, Date> dateEntry =  patientManager.getLatestTestResultUnit(testNhsNo);
+
+        Assert.assertEquals("Unit 2 should be the unit entry returned", dateEntry.getKey(), unit2.getUnitcode());
+
+
+
+    }
+
+    private Unit createUnit(String unitCode) {
+        Unit unit = new Unit();
+        unit.setUnitcode(unitCode);
+        unit.setName(unitCode);
+        unit.setSourceType("renalunit");
+        unit.setShortname(unitCode);
+
+        unitManager.save(unit);
+
+        return unit;
+    }
+
+    private Patient createPatient(String unitCode, String nshNo) {
+        Patient testPatient = new Patient();
+        testPatient.setForename("Test");
+        testPatient.setSurname("Patient");
+        testPatient.setNhsno(nshNo);
+        testPatient.setUnitcode(SourceType.PATIENT_VIEW.getName());
+        testPatient.setUnitcode(unitCode);
+
+        patientManager.save(testPatient);
+
+        return testPatient;
+    }
+
+
 }

@@ -23,16 +23,16 @@
 
 package org.patientview.patientview.unit;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.patientview.model.Unit;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.model.Unit;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class UnitAddAction extends Action {
@@ -53,12 +53,14 @@ public class UnitAddAction extends Action {
         }
         LegacySpringUtils.getUnitManager().save(unit);
 
-        boolean isRadarGroup = false;
-        if ("radargroup".equals(unit.getSourceType())) {
-            isRadarGroup = true;
-        }
+        boolean isRadarGroup = "radargroup".equalsIgnoreCase(mapping.getParameter());
+
         List items = LegacySpringUtils.getUnitManager().getAdminsUnits(isRadarGroup);
         request.setAttribute("units", items);
+
+        if (isRadarGroup) {
+            request.setAttribute("isRadarGroup", isRadarGroup);
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

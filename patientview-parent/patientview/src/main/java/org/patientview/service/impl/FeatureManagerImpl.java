@@ -23,7 +23,7 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.repository.FeatureDao;
 import org.patientview.service.FeatureManager;
 import org.springframework.stereotype.Service;

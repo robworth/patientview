@@ -502,10 +502,10 @@
 </html:form>
 <p>
 <logic:present specialty="renal">
-    <a class="btn" href="mailto:admin@renalpatientview.org?subject=[Renal Patient View Enquiry]">Email Renal PatientView Administrator</a>
+    <a class="btn" href="mailto:admin@patientview.org?subject=[Renal Patient View Enquiry]">Email Renal PatientView Administrator</a>
 </logic:present>
 <logic:present specialty="ibd">
-    <a class="btn" href="mailto:admin-ibd@renalpatientview.org?subject=[IBD Patient View Enquiry]">Email IBD PatientView Administrator</a>
+    <a class="btn" href="mailto:admin-ibd@patientview.org?subject=[IBD Patient View Enquiry]">Email IBD PatientView Administrator</a>
 </logic:present>
 
 </p>

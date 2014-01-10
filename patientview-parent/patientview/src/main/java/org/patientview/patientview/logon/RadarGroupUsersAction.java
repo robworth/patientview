@@ -45,6 +45,7 @@ public class RadarGroupUsersAction extends Action {
         } else {
             UnitUtils.putRelevantUnitsInRequest(request);
         }
+
         request.setAttribute("isRadarGroup", true);
         return LogonUtils.logonChecks(mapping, request);
     }

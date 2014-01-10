@@ -1,5 +1,29 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.dao.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +35,7 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +161,7 @@ public abstract class BaseDaoImpl {
      * @return String
      */
     public String buildOrderQuery(String sortField, boolean reverse) {
-        return "ORDER BY " + sortField + " " + (reverse ? "ASC" : "DESC");       
+        return "ORDER BY " + sortField + " " + (reverse ? "ASC" : "DESC");
     }
 
     /**
@@ -158,6 +183,35 @@ public abstract class BaseDaoImpl {
         }
 
         return "";
+    }
+
+    /**
+     * Build a list of values for use in an IN clause in SQL
+     *
+     * @param values
+     * @return
+     */
+    public String buildValueList(Collection<String> values) {
+        StringBuilder result = new StringBuilder();
+        boolean firstValue = true;
+        if (CollectionUtils.isNotEmpty(values)) {
+
+            for (String s : values) {
+
+                if (firstValue) {
+                    firstValue = false;
+                } else {
+                    result.append(",");
+                }
+
+                result.append("'");
+                result.append(s);
+                result.append("'");
+
+            }
+        }
+
+        return result.toString();
     }
 
     public String buildWhereQuery(Map<String, String> searchMap, boolean and, List<Object> paramList) {
@@ -186,7 +240,7 @@ public abstract class BaseDaoImpl {
 
             // parse the search map as one key can be multiple fields in a table
             searchMap = parseSearchMap(searchMap);
-            
+
             int count = 1;
             for (Map.Entry<String, String> entry : searchMap.entrySet()) {
                 // converting the field values to uppercase so I dont have to faff around
@@ -237,3 +291,4 @@ public abstract class BaseDaoImpl {
         return newSearchMap;
     }
 }
+

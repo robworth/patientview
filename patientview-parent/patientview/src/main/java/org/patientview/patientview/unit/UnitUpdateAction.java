@@ -26,7 +26,7 @@ package org.patientview.patientview.unit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -48,10 +48,7 @@ public class UnitUpdateAction extends Action {
         UnitUtils.buildUnit(unit, form);
         LegacySpringUtils.getUnitManager().save(unit);
 
-        boolean isRadarGroup = false;
-        if ("radargroup".equals(unit.getSourceType())) {
-            isRadarGroup = true;
-        }
+        boolean isRadarGroup = "radargroup".equalsIgnoreCase(mapping.getParameter());
 
         List items;
         User user = LegacySpringUtils.getUserManager().getLoggedInUser();
@@ -62,6 +59,9 @@ public class UnitUpdateAction extends Action {
         }
 
         request.setAttribute("units", items);
+        if (isRadarGroup) {
+            request.setAttribute("isRadarGroup", isRadarGroup);
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }
