@@ -24,15 +24,16 @@
 package org.patientview.repository.impl;
 
 import org.patientview.model.Patient;
-import org.patientview.patientview.logon.PatientLogonWithTreatment;
 import org.patientview.model.Patient_;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.model.Specialty;
+import org.patientview.model.enums.SourceType;
+import org.patientview.patientview.logon.PatientLogonWithTreatment;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.PatientDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -44,6 +45,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository(value = "patientDao")
