@@ -57,7 +57,7 @@
             <id>dev</id>
             <properties>
                 <env>dev</env>
-                <tomcatmanagerurl>https://radar.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
+                <tomcatmanagerurl>http://radar.dev.solidstategroup.com/manager/text</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}</profile.build.output-webapp-dir>
             </properties>
