@@ -179,6 +179,15 @@ public class PatientManagerImpl implements PatientManager {
         return patientDetails;
     }
 
+    @Override
+    public List<PatientDetails> getPatientDetails(Long id) {
+        Patient patient = get(id);
+        List<PatientDetails> patientDetails = new ArrayList<PatientDetails>();
+        patientDetails.add(createPatientDetails(patient, unitManager.get(patient.getUnitcode())));
+        return patientDetails;
+
+    }
+
     private PatientDetails createPatientDetails(Patient patient, Unit unit) {
         PatientDetails patientDetail = new PatientDetails();
 
@@ -194,8 +203,38 @@ public class PatientManagerImpl implements PatientManager {
 
         return patientDetail;
 
-    }    
-    
+    }
+
+    @Override
+    public Patient getPatient(String username) {
+        List<UserMapping> userMappings = userManager.getUserMappings(username);
+
+
+        for (UserMapping userMapping : userMappings) {
+            String unitcode = userMapping.getUnitcode();
+            //check user's permission
+            if (!securityUserManager.userHasReadAccessToUnit(unitcode)) {
+                continue;
+            }
+            Unit unit = unitManager.get(unitcode);
+            if (!"radargroup".equalsIgnoreCase(unit.getSourceType())) {
+                continue;
+            }
+
+            Patient patient = get(userMapping.getNhsno(), unitcode);
+            if (patient == null) {
+                continue;
+            }
+
+            AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(),
+                    AddLog.PATIENT_VIEW, "", patient.getNhsno(),
+                    patient.getUnitcode(), "");
+            return patient;
+        }
+
+        return null;
+    }
+
 
     /**
      * This is to get the date by unit of the test results loaded into the system
@@ -222,9 +261,8 @@ public class PatientManagerImpl implements PatientManager {
         }
 
         return maxTestRange;
-    }    
-    
-    
+    }
+
     private Map<String, Date> getMostRecentTestResultDateByNhsNo(String nhsNo) {
 
         Map<String, Date> maxDataRangeDate = new HashMap<String, Date>();

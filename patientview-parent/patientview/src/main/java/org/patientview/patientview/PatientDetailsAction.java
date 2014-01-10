@@ -63,7 +63,7 @@ public class PatientDetailsAction extends Action {
 
 
         List<PatientDetails> patientDetails =
-                LegacySpringUtils.getPatientManager().getPatientDetails(user.getUsername(), isRadarGroup);
+                LegacySpringUtils.getPatientManager().getPatientDetails(user.getUsername());
 
         request.setAttribute("patientDetails", patientDetails);
 

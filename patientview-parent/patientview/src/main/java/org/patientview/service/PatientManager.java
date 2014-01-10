@@ -78,6 +78,4 @@ public interface PatientManager {
     Map.Entry<String, Date> getLatestTestResultUnit(String nhsNo);
 
 
-
-    List<PatientDetails> getPatientDetails(String username, boolean isRadarGroup);
 }
