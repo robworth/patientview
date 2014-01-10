@@ -30,13 +30,13 @@
     <parent>
         <groupId>org.patientview</groupId>
         <artifactId>patientview-parent</artifactId>
-        <version>1.1.1-RELEASE</version>
+        <version>1.1.1-SNAPSHOT</version>
     </parent>
 
     <groupId>org.patientview</groupId>
     <artifactId>monitoring</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.1-RELEASE</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <name>PatientView Monitoring</name>
     <url>https://www.patientview.org</url>
