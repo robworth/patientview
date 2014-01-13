@@ -77,7 +77,7 @@ public class RoleHelper {
             patient.setUnitcode(unitName);
             patient.setForename("Unit");
             patient.setSurname("Tester");
-            patient.setDateofbirth("21-01-2013");
+            patient.setDateofbirth(new Date());
             patient.setDob(new Date());
             patient.setNhsno("1000000" + i);
             patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
@@ -131,7 +131,7 @@ public class RoleHelper {
         patient.setUnitcode(unitName);
         patient.setForename("Unit");
         patient.setSurname("Tester");
-        patient.setDateofbirth("21-01-2013");
+        patient.setDateofbirth(new Date());
         patient.setDob(new Date());
         patient.setHospitalnumber("90789");
         patient.setAddress1("87 hgyt roda");
