@@ -94,6 +94,7 @@
             <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
             <form-property name="isrecipient" type="java.lang.String"/>
             <form-property name="isclinician" type="java.lang.String"/>
+            <form-property name="patientId" type="java.lang.String"/>
         </form-bean>
         <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="unitcode" type="java.lang.String"/>
@@ -421,6 +422,46 @@
         <action path="/patient/contact"
                 type="org.patientview.patientview.ContactAction" parameter="contact" name="feedbackForm">
             <forward name="success" path="/patient/contact.jsp"/>
+        </action>
+
+        <action path="/patient/demographics"
+                type="org.patientview.patientview.PatientDetailsAction" parameter="demographics"  name="ibdPatientDetailsForm">
+            <forward name="success" path="/patient/patient_details.jsp"/>
+        </action>
+
+        <action path="/patient/medicalResults"
+                type="org.patientview.patientview.TestResultsAction" parameter="medicalResults">
+            <forward name="success" path="/patient/results.jsp"/>
+        </action>
+
+        <action path="/patient/genetics"
+                type="org.patientview.patientview.PatientGeneticsAction" parameter="genetics">
+            <forward name="success" path="/patient/genetics.jsp"/>
+        </action>
+
+        <action path="/patient/medication"
+                type="org.patientview.patientview.medicine.MedicineDisplayAction" parameter="medication">
+            <forward name="success" path="/patient/medicines.jsp"/>
+        </action>
+
+        <action path="/control/demographics"
+                type="org.patientview.patientview.PatientDetailsAction" parameter="controlDemographics"  name="ibdPatientDetailsForm">
+            <forward name="success" path="/patient/patient_details.jsp"/>
+        </action>
+
+        <action path="/control/medicalResults"
+                type="org.patientview.patientview.TestResultsAction" parameter="controlMedicalResults">
+            <forward name="success" path="/patient/results.jsp"/>
+        </action>
+
+        <action path="/control/genetics"
+                type="org.patientview.patientview.PatientGeneticsAction" parameter="genetics">
+            <forward name="success" path="/patient/genetics.jsp"/>
+        </action>
+
+        <action path="/control/medication"
+                type="org.patientview.patientview.medicine.MedicineDisplayAction" parameter="controlMedication">
+            <forward name="success" path="/patient/medicines.jsp"/>
         </action>
 
         <action path="/patient/education"

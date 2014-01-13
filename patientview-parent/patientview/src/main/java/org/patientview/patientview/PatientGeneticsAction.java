@@ -21,44 +21,46 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.logon;
+package org.patientview.patientview;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.model.Patient;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Genetics;
 import org.patientview.patientview.model.User;
-import org.patientview.service.UnitManager;
-import org.patientview.service.UserManager;
+import org.patientview.patientview.news.NewsUtils;
+import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.List;
 
-public class PatientAddInputAction extends Action {
+public class PatientGeneticsAction extends Action {
 
-    public ActionForward execute(
-        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+        NewsUtils.putAppropriateNewsForViewingInRequest(request);
 
+        // allow the logged in user to be overridden when viewing the site as a patient using an admin account
+        User user = UserUtils.retrieveUser(request);
 
-        UserManager userManager = LegacySpringUtils.getUserManager();
-        UnitManager unitManager = LegacySpringUtils.getUnitManager();
-        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
-        List items = unitManager.getAll(null, new String[]{"renalunit"});
-
-        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
-            request.getSession().setAttribute("units", items);
-        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
-            List userUnits = unitManager.getLoggedInUsersUnits();
-            Collection units = CollectionUtils.intersection(userUnits, items);
-            request.getSession().setAttribute("units", units);
+        Patient patient = LegacySpringUtils.getPatientManager().getPatient(user.getUsername());
+        Genetics genetics = null;
+        if (patient != null) {
+            genetics = LegacySpringUtils.getGeneticsManager().get(patient.getId());
         }
+        if (genetics == null) {
+            genetics = new Genetics();
+        }
+
+        request.setAttribute("genetics", genetics);
+
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
         return LogonUtils.logonChecks(mapping, request);
     }
-
 }

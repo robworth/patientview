@@ -64,7 +64,7 @@ public class ProteinuriaPanel extends Panel {
         Deafness deafness = null;
 
         if (patient.hasValidId()) {
-            deafness = deafnessManager.get(patient.getId());
+            deafness = deafnessManager.get(patient.getRadarNo());
         }
 
         if (deafness == null) {

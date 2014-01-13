@@ -43,6 +43,8 @@ public interface PatientManager {
 
     Patient get(String nhsno, String unitcode);
 
+    Patient getPatient(String username);
+
     void save(Patient patient);
 
     void delete(String nhsno, String unitcode);

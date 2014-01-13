@@ -17,6 +17,8 @@
 
  ALTER TABLE patient ADD COLUMN (patientLinkId BIGINT(11));
 
+ DROP INDEX nhsno ON patient;
+
  ALTER TABLE patient ADD UNIQUE KEY `nhsno-unitcode-sourceType` (`nhsno`,`unitcode`, `sourceType`);
 
  CREATE TABLE rdr_radar_number (id BIGINT NOT NULL AUTO_INCREMENT, creationDate TIMESTAMP, PRIMARY KEY (id) );
