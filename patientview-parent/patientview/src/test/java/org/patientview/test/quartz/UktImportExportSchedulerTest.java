@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -89,7 +90,7 @@ public class UktImportExportSchedulerTest {
         patient.setSurname("surname");
         patient.setForename("forname");
         patient.setPostcode("postcode");
-        patient.setDateofbirth("2013/03/04");
+        patient.setDateofbirth(new Date());
 
         patientDao.save(patient);
 
