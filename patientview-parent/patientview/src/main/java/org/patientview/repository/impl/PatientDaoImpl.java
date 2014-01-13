@@ -243,6 +243,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",      null lastverificationdate ");
         query.append(",      usr.firstlogon ");
         query.append(",      usr.lastlogon ");
+        query.append(",      ptt.id ");
         query.append(",      ptt.treatment ");
         query.append(",      ptt.dateofbirth ");
         query.append(",      ptt.rrtModality ");

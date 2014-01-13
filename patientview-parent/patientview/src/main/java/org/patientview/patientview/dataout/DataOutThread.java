@@ -28,6 +28,7 @@ import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.util.CommonUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,7 +137,8 @@ public class DataOutThread implements Runnable {
             Element nhsno = addChildElement(doc, personalDetails, "nhsno", patient.getNhsno());
             Element surname = addChildElement(doc, personalDetails, "surname", patient.getSurname());
             Element forename = addChildElement(doc, personalDetails, "forename", patient.getForename());
-            Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", patient.getDateofbirth());
+            Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", CommonUtils.formatDate(
+                    patient.getDateofbirth()));
 
             Element testDetails = addChildElement(doc, rootElement, "testDetails");
 

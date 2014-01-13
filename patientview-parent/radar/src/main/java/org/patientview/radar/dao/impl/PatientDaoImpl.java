@@ -191,7 +191,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                 patient.setNhsno(resultSet.getString("nhsno"));
                 patient.setSurname(resultSet.getString("surname"));
                 patient.setForename(resultSet.getString("forename"));
-                patient.setDateofbirth(resultSet.getString("dateofbirth"));
+                patient.setDateofbirth(resultSet.getDate("dateofbirth"));
                 patient.setUnitcode(resultSet.getString("unitcode"));
                 patient.setMostRecentTestResultDateRangeStopDate(
                         resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
@@ -207,7 +207,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setNhsno(resultSet.getString("nhsno"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setForename(resultSet.getString("forename"));
-            patient.setDateofbirth(resultSet.getString("dateofbirth"));
+            patient.setDateofbirth(resultSet.getDate("dateofbirth"));
             patient.setUnitcode(resultSet.getString("unitcode"));
             patient.setMostRecentTestResultDateRangeStopDate(
                     resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
