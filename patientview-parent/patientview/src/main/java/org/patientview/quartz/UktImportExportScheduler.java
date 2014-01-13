@@ -132,7 +132,7 @@ public class UktImportExportScheduler {
             patientArray[i][0] = (patient.getNhsno() == null) ? "" : patient.getNhsno();
             patientArray[i][1] = cleanName(patient.getSurname());
             patientArray[i][2] = cleanName(patient.getForename());
-            patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateofbirth();
+            patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateOfBirthStr();
             patientArray[i][FOUR] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
         }
         return patientArray;

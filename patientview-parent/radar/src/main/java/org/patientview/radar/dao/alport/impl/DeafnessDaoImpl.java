@@ -46,8 +46,8 @@ public class DeafnessDaoImpl extends BaseDaoImpl implements DeafnessDao {
     private static final String ID_FIELD_NAME = "id";
     private static final String RADAR_NO_FIELD_NAME = "radar_no";
     private static final String EVIDENCE_OF_DEAFNESS_FIELD_NAME = "evidenceOfDeafness";
-    private static final String AGE_PROBLEM_FIRST_NOTICED_FIELD_NAME = "ageProblemFirstNoticed";
-    private static final String AGE_STARTED_USING_HEARING_AID_FIELD_NAME = "ageStartedUsingHearingAid";
+    private static final String DATE_PROBLEM_FIRST_NOTICED_FIELD_NAME = "dateProblemFirstNoticed";
+    private static final String DATE_STARTED_USING_HEARING_AID_FIELD_NAME = "dateStartedUsingHearingAid";
 
     private SimpleJdbcInsert deafnessInsert;
 
@@ -60,7 +60,7 @@ public class DeafnessDaoImpl extends BaseDaoImpl implements DeafnessDao {
         deafnessInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(RADAR_NO_FIELD_NAME, EVIDENCE_OF_DEAFNESS_FIELD_NAME,
-                        AGE_PROBLEM_FIRST_NOTICED_FIELD_NAME, AGE_STARTED_USING_HEARING_AID_FIELD_NAME);
+                        DATE_PROBLEM_FIRST_NOTICED_FIELD_NAME, DATE_STARTED_USING_HEARING_AID_FIELD_NAME);
     }
 
     public void save(Deafness deafness) {
@@ -68,8 +68,8 @@ public class DeafnessDaoImpl extends BaseDaoImpl implements DeafnessDao {
         geneticsMap.put(ID_FIELD_NAME, deafness.getId());
         geneticsMap.put(RADAR_NO_FIELD_NAME, deafness.getRadarNo());
         geneticsMap.put(EVIDENCE_OF_DEAFNESS_FIELD_NAME, deafness.getEvidenceOfDeafness().getId());
-        geneticsMap.put(AGE_PROBLEM_FIRST_NOTICED_FIELD_NAME, deafness.getAgeProblemFirstNoticed());
-        geneticsMap.put(AGE_STARTED_USING_HEARING_AID_FIELD_NAME, deafness.getAgeStartedUsingHearingAid());
+        geneticsMap.put(DATE_PROBLEM_FIRST_NOTICED_FIELD_NAME, deafness.getDateProblemFirstNoticed());
+        geneticsMap.put(DATE_STARTED_USING_HEARING_AID_FIELD_NAME, deafness.getDateStartedUsingHearingAid());
 
         if (deafness.hasValidId()) {
             namedParameterJdbcTemplate.update(buildUpdateQuery(TABLE_NAME, ID_FIELD_NAME, geneticsMap), geneticsMap);
@@ -97,8 +97,8 @@ public class DeafnessDaoImpl extends BaseDaoImpl implements DeafnessDao {
             deafness.setRadarNo(rs.getLong(RADAR_NO_FIELD_NAME));
             deafness.setEvidenceOfDeafness(Deafness.EvidenceOfDeafness.getEvidenceOfDeafness(
                     rs.getInt(EVIDENCE_OF_DEAFNESS_FIELD_NAME)));
-            deafness.setAgeProblemFirstNoticed(rs.getInt(AGE_PROBLEM_FIRST_NOTICED_FIELD_NAME));
-            deafness.setAgeStartedUsingHearingAid(rs.getInt(AGE_STARTED_USING_HEARING_AID_FIELD_NAME));
+            deafness.setDateProblemFirstNoticed(rs.getDate(DATE_PROBLEM_FIRST_NOTICED_FIELD_NAME));
+            deafness.setDateStartedUsingHearingAid(rs.getDate(DATE_STARTED_USING_HEARING_AID_FIELD_NAME));
 
             return deafness;
         }

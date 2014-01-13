@@ -23,19 +23,20 @@
 
 package org.patientview.radar.web.panels.hnf1b;
 
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.alport.Deafness;
 import org.patientview.radar.service.alport.DeafnessManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.components.ComponentHelper;
 import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
 import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -44,7 +45,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -102,26 +102,11 @@ public class ProteinuriaPanel extends Panel {
 
         add(form);
 
-        int maxAge = 90;
-        int minAge = 1;
-
-        // the list has to be strings so we can have the first one as N/A
-        List<String> ages = new ArrayList<String>();
-        ages.add("N/A");
-
-        for (int x = minAge; x <= maxAge; x++) {
-            ages.add(Integer.toString(x));
-        }
-
-        DropDownChoice<String> ageProblemFirstNoticedDropDown =
-                new DropDownChoice<String>("ageProblemFirstNoticed",
-                        new PropertyModel<String>(model, "ageProblemFirstNoticedAsString"), ages);
-        form.add(ageProblemFirstNoticedDropDown);
-
-        DropDownChoice<String> ageStartedUsingHearingAidDropDown =
-                new DropDownChoice<String>("ageStartedUsingHearingAid",
-                        new PropertyModel<String>(model, "ageStartedUsingHearingAidAsString"), ages);
-        form.add(ageStartedUsingHearingAidDropDown);
+        // Date picker
+        DateTextField dateProblemFirstNoticed = new RadarRequiredDateTextField("dateProblemFirstNoticed",
+                form, componentsToUpdateList);
+        DateTextField dateStartedUsingHearingAid = new RadarRequiredDateTextField("dateStartedUsingHearingAid",
+                form, componentsToUpdateList);
 
         // have to set the generic feedback panel to only pick up msgs for them form
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(form);

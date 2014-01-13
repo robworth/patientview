@@ -483,7 +483,14 @@ public class ResultParser {
         patient.setNhsno((String) xmlData.get("nhsno"));
         patient.setSurname((String) xmlData.get("surname"));
         patient.setForename((String) xmlData.get("forename"));
-        patient.setDateofbirth((String) xmlData.get("dateofbirth"));
+        String dateofbirth = (String) xmlData.get("dateofbirth");
+        if (dateofbirth != null) {
+            try {
+                patient.setDateofbirth(IMPORT_DATE_FORMAT.parse(dateofbirth));
+            } catch (ParseException e) {
+                LOGGER.error("Could not parse diagnosisDate {} {}", dateofbirth, e);
+            }
+        }
         patient.setSex((String) xmlData.get("sex"));
         patient.setAddress1((String) xmlData.get("address1"));
         patient.setAddress2((String) xmlData.get("address2"));

@@ -23,6 +23,7 @@
 
 package org.patientview.radar.web.panels.hnf1b;
 
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.enums.YesNo;
 import org.patientview.radar.model.hnf1b.HNF1BMisc;
@@ -30,13 +31,13 @@ import org.patientview.radar.service.hnf1b.HNF1BMiscManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.components.ComponentHelper;
 import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
 import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -46,7 +47,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.util.StringUtils;
 
@@ -123,17 +123,6 @@ public class HNF1BMiscPanel extends Panel {
 
         add(form);
 
-        int maxAge = 90;
-        int minAge = 1;
-
-        // the list has to be strings so we can have the first one as N/A
-        List<String> ages = new ArrayList<String>();
-        ages.add("N/A");
-
-        for (int x = minAge; x <= maxAge; x++) {
-            ages.add(Integer.toString(x));
-        }
-
         // have to set the generic feedback panel to only pick up msgs for them form
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(form);
         formFeedback.setFilter(filter);
@@ -170,20 +159,20 @@ public class HNF1BMiscPanel extends Panel {
         diabetesRadioGroup.add(new Radio<YesNo>("diabetesNo", new Model<YesNo>(YesNo.NO)));
         diabetesRadioGroup.add(new Radio<YesNo>("diabetesYes", new Model<YesNo>(YesNo.YES)));
 
-        DropDownChoice<String> ageAtDiabetesDiagnosisDropDown =
-                new DropDownChoice<String>("ageAtDiabetesDiagnosis",
-                        new PropertyModel<String>(model, "ageAtDiabetesDiagnosisAsString"), ages);
-        form.add(ageAtDiabetesDiagnosisDropDown);
+        // Date picker
+        DateTextField dateAtDiabetesDiagnosis = new RadarRequiredDateTextField("dateAtDiabetesDiagnosis",
+                form, componentsToUpdateList);
+        dateAtDiabetesDiagnosis.setRequired(false);
+        form.add(dateAtDiabetesDiagnosis);
+        DateTextField dateAtGoutDiagnosis = new RadarRequiredDateTextField("dateAtGoutDiagnosis",
+                form, componentsToUpdateList);
+        dateAtGoutDiagnosis.setRequired(false);
+        form.add(dateAtGoutDiagnosis);
 
         RadioGroup<YesNo> goutRadioGroup = new RadioGroup<YesNo>("gout");
         form.add(goutRadioGroup);
         goutRadioGroup.add(new Radio<YesNo>("goutNo", new Model<YesNo>(YesNo.NO)));
         goutRadioGroup.add(new Radio<YesNo>("goutYes", new Model<YesNo>(YesNo.YES)));
-
-        DropDownChoice<String> ageAtGoutDiagnosisDropDown =
-                new DropDownChoice<String>("ageAtGoutDiagnosis",
-                        new PropertyModel<String>(model, "ageAtGoutDiagnosisAsString"), ages);
-        form.add(ageAtGoutDiagnosisDropDown);
 
         RadioGroup<YesNo> genitalMalformationRadioGroup = new RadioGroup<YesNo>("genitalMalformation");
         form.add(genitalMalformationRadioGroup);

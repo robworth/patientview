@@ -50,6 +50,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -149,6 +151,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getSurnameAlias(),
                     patient.getForename(),
                     patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()) : null,
+                    patient.getDateofbirth(),
                     patient.getAge(),
                     patient.getSexModel() != null ? patient.getSexModel().getType() : null,
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
@@ -196,9 +199,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("surname", patient.getSurname());
                     put("surnameAlias", patient.getSurnameAlias());
                     put("forename", patient.getForename());
-                    put("dateofbirth", patient.getDob() != null ?
-                            new SimpleDateFormat(DATE_FORMAT).format(
-                                    patient.getDob()) : null);
+                    put("dateofbirth", patient.getDateofbirth());
                     put("AGE", patient.getAge());
                     put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
                     put("ethnicGp",
@@ -399,6 +400,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             dateOfBirthString);
                 }
             }
+            Date dateOfBirth = resultSet.getDate("dateofbirth");
+            patient.setDateofbirth(dateOfBirth);
+            patient.setDob(dateOfBirth);
 
             // Addresses
             patient.setAddress1(resultSet.getString("address1"));

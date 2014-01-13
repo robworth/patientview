@@ -28,7 +28,6 @@ import org.joda.time.Years;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
-import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +50,7 @@ public class Patient extends BaseModel {
     @Column
     private String forename;
     @Column
-    private String dateofbirth;
+    private Date dateofbirth;
     @Column
     private String sex;
     @Column
@@ -223,9 +222,6 @@ public class Patient extends BaseModel {
     private RRTModality rrtModalityEunm;
 
     @Transient
-    private Date dob;
-
-    @Transient
     private Status statusModel;
 
     @Transient
@@ -303,21 +299,25 @@ public class Patient extends BaseModel {
         this.unitcode = (unitCode != null) ? unitCode.toUpperCase() : unitCode;
     }
 
-    public String getDateofbirth() {
+    public Date getDateofbirth() {
         return dateofbirth;
     }
 
     public String getFormatedDateOfBirth() {
 
-        Date date =  CommonUtils.parseDate(dateofbirth);
-        if (date != null) {
-            return UK_DATE_FORMAT.format(CommonUtils.parseDate(dateofbirth));
+        if (dateofbirth != null) {
+            return UK_DATE_FORMAT.format(dateofbirth);
         } else {
             return null;
         }
+
     }
 
-    public void setDateofbirth(String dateofbirth) {
+    public String getDateOfBirthStr() {
+        return UK_DATE_FORMAT.format(dateofbirth);
+    }
+
+    public void setDateofbirth(Date dateofbirth) {
         this.dateofbirth = dateofbirth;
     }
 
@@ -507,8 +507,8 @@ public class Patient extends BaseModel {
 
     public Integer getAge() {
         // Return the difference between now and the date of birth
-        if (dob != null) {
-            return Years.yearsBetween(new DateTime(dob), new DateTime(new Date())).getYears();
+        if (dateofbirth != null) {
+            return Years.yearsBetween(new DateTime(dateofbirth), new DateTime(new Date())).getYears();
         }
         return null;
     }
@@ -782,11 +782,11 @@ public class Patient extends BaseModel {
     }
 
     public Date getDob() {
-        return dob;
+        return getDateofbirth();
     }
 
     public void setDob(Date dob) {
-        this.dob = dob;
+        setDateofbirth(dob);
     }
 
     public Boolean getDiagnosisDateSelect() {
