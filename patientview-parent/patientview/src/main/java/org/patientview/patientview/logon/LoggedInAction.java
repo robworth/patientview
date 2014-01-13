@@ -76,8 +76,18 @@ public class LoggedInAction extends Action {
 
                 Map.Entry<String, Date> testTestRange = LegacySpringUtils.getPatientManager().getLatestTestResultUnit(
                         nhsno);
-                request.setAttribute("lastDataDate", format.format(testTestRange.getValue().getTime()));
-                request.setAttribute("lastDataFrom", testTestRange.getKey());
+
+                String lastDataDate = null;
+                String testTestRangeKey = null;
+
+                if (testTestRange != null) {
+                    lastDataDate = format.format(testTestRange.getValue().getTime());
+                    testTestRangeKey = testTestRange.getKey();
+                }
+
+                request.setAttribute("lastDataDate", lastDataDate);
+                request.setAttribute("lastDataFrom", testTestRangeKey);
+
                 forward = "patient";
             } else {
                 forward = "admin";

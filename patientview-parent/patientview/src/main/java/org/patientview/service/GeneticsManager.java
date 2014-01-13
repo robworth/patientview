@@ -23,33 +23,16 @@
 
 package org.patientview.service;
 
-import org.patientview.patientview.model.Panel;
-import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.Genetics;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  *
  */
 @Transactional(propagation = Propagation.REQUIRED)
-public interface TestResultManager {
+public interface GeneticsManager {
 
-    List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel);
+    Genetics get(Long radarId);
 
-    List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel, boolean isRadarGroup);
-
-    void save(TestResult testResult);
-
-    List<TestResult> get(String nhsno, String unitcode);
-
-    String getLatestWeightFromResults(User user);
-
-    void deleteTestResultsWithinTimeRange(String nhsno, String unitcode, String testcode, Date startDate, Date endDate);
-
-    void deleteTestResults(String nhsno, String unitcode);
 }

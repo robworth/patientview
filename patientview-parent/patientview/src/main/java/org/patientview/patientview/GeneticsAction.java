@@ -21,42 +21,35 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.logon;
+package org.patientview.patientview;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.model.User;
-import org.patientview.service.UnitManager;
-import org.patientview.service.UserManager;
+import org.apache.struts.action.ActionForm;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Genetics;
 import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.List;
 
-public class PatientAddInputAction extends Action {
+public class GeneticsAction extends Action {
 
     public ActionForward execute(
-        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        // set current nav
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
+        Long patientId = (Long) request.getSession().getAttribute("userBeingViewedPatientId");
 
-        UserManager userManager = LegacySpringUtils.getUserManager();
-        UnitManager unitManager = LegacySpringUtils.getUnitManager();
-        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
-        List items = unitManager.getAll(null, new String[]{"renalunit"});
+        Genetics genetics = LegacySpringUtils.getGeneticsManager().get(patientId);
 
-        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
-            request.getSession().setAttribute("units", items);
-        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
-            List userUnits = unitManager.getLoggedInUsersUnits();
-            Collection units = CollectionUtils.intersection(userUnits, items);
-            request.getSession().setAttribute("units", units);
-        }
+        genetics = genetics == null ? new Genetics() : genetics;
+
+        request.setAttribute("genetics", genetics);
 
         return LogonUtils.logonChecks(mapping, request);
     }
