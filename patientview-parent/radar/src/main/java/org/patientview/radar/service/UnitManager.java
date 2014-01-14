@@ -21,31 +21,27 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service.impl;
+package org.patientview.radar.service;
 
-import org.patientview.patientview.model.UserLog;
-import org.patientview.repository.UserLogDao;
-import org.patientview.service.UserLogManager;
-import org.springframework.stereotype.Service;
+import org.patientview.model.Unit;
+import org.patientview.radar.model.user.User;
 
-import javax.inject.Inject;
+import java.util.List;
 
 /**
+ * This is replicated from Radar but instead of creating the class the functionality was put in the user Dao/Manager
+ * Now this has become to large and needed separating out;
  *
+ * User: james@solidstategroup.com
+ * Date: 04/12/13
+ * Time: 17:40
  */
-@Service(value = "userLogManager")
-public class UserLogManagerImpl implements UserLogManager {
+public interface UnitManager {
 
-    @Inject
-    private UserLogDao userLogDao;
+    List<String> getUnitCodes(User user);
 
-    @Override
-    public UserLog getUserLog(String nhsNo) {
-        return userLogDao.get(nhsNo);
-    }
+    List<Unit> getDiseaseUnits(User user);
 
-    @Override
-    public void save(UserLog userLog) {
-        userLogDao.save(userLog);
-    }
+    List<Unit> getRenalUnits(User user);
+
 }

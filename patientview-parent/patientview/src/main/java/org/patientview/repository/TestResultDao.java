@@ -47,6 +47,9 @@ public interface TestResultDao {
      */
     List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units);
 
+    List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units,
+                                                              boolean isRadarGroup);
+
     /**
      * Get the test results for the patient for the units they belong to.
      * The unit list is per Specialty.

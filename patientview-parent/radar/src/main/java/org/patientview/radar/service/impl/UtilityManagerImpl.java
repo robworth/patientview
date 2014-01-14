@@ -1,7 +1,28 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.service.impl;
 
-import com.Ostermiller.util.RandPass;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -23,7 +44,6 @@ import org.patientview.radar.model.Consultant;
 import org.patientview.radar.model.DiagnosisCode;
 import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.UtilityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +108,10 @@ public class UtilityManagerImpl implements UtilityManager {
 
     public Centre getCentre(long id) {
         return utilityDao.getCentre(id);
+    }
+
+    public Centre getCentre(String unitcode) {
+        return utilityDao.getCentre(unitcode);
     }
 
     public List<Centre> getCentres() {
@@ -252,24 +276,6 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getUserName(nhsNo);
     }
 
-    // todo this method should remove after running once
-    public void generateUserWithUsermapping() {
-        List<Consultant> consultants = utilityDao.getConsultants(null, -1, -1);
-        for (Consultant consultant : consultants) {
-            String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
-            password = DigestUtils.sha256Hex(password);
-
-            PatientUser patientUser = new PatientUser();
-            patientUser.setName(consultant.getFullName());
-            patientUser.setPassword(password);
-
-            /// TODO -- This is originally a test method being used in the code
-            //  TODO -- Mappings need to be added perhaps use the correct registration method
-            userDao.createUser(patientUser);
-        }
-
-        writeConsultantToFile(consultants);
-    }
 
     public String getUserName(Long id) {
         return utilityDao.getUserName(id);

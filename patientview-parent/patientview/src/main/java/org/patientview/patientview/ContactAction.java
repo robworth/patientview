@@ -23,20 +23,21 @@
 
 package org.patientview.patientview;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.model.Patient;
-import org.patientview.patientview.model.Contact;
-import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.unit.UnitUtils;
-import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.model.Patient;
+import org.patientview.model.Unit;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Contact;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.model.UserMapping;
+import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.patientview.user.UserUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,13 +58,19 @@ public class ContactAction extends Action {
         List<Contact> contacts = new ArrayList<Contact>();
 
         for (UserMapping userMapping : userMappings) {
-            if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
-                Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode());
 
-                Unit unit = UnitUtils.retrieveUnit(userMapping.getUnitcode());
-                Contact contact = new Contact(patient, unit, userMapping);
+            Unit unit = LegacySpringUtils.getUnitManager().get(userMapping.getUnitcode());
 
-                contacts.add(contact);
+            // We don't want see the details from the disease group
+            if (unit != null && !unit.getSourceType().equalsIgnoreCase("radargroup")) {
+
+                if (!UnitUtils.PATIENT_ENTERS_UNITCODE.equalsIgnoreCase(userMapping.getUnitcode())) {
+                    Patient patient = PatientUtils.retrievePatient(userMapping.getNhsno(), userMapping.getUnitcode());
+
+                    Contact contact = new Contact(patient, unit, userMapping);
+
+                    contacts.add(contact);
+                }
             }
         }
 

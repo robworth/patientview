@@ -26,7 +26,7 @@ package org.patientview.repository.impl;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.TestResultDao;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -63,10 +63,17 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
 
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units) {
+        return getTestResultForPatient(username, panel, units, false);
+    }
+
+    @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(String username, Panel panel, List<Unit> units,
+                                                                     boolean isRadarGroup) {
 
         String sql = " SELECT DISTINCT testresult.*, unit.shortname "
                 + " FROM testresult "
                 + " LEFT JOIN unit ON unit.unitcode = testresult.unitcode "
+                + (isRadarGroup ? "unit.sourceType = 'radargroup'" : "")
                 + " JOIN user, usermapping, result_heading "
                 + " WHERE user.username = ? "
                 + " AND user.username = usermapping.username "

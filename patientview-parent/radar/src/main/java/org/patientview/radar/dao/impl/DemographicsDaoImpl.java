@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.dao.impl;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -5,19 +28,17 @@ import org.apache.commons.lang.StringUtils;
 import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Patient;
-import org.patientview.model.PatientLink;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.DemographicsDao;
-import org.patientview.radar.dao.PatientLinkDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.dao.generic.DiseaseGroupDao;
 import org.patientview.radar.dao.generic.GenericDiagnosisDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
-import org.patientview.radar.util.RadarUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -29,11 +50,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -49,8 +69,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
     private UtilityDao utilityDao;
     private DiseaseGroupDao diseaseGroupDao;
     private GenericDiagnosisDao genericDiagnosisDao;
-    private PatientLinkDao patientLinkDao;
     private UserDao userDao;
+
 
     @Override
     public void setDataSource(DataSource dataSource) {
@@ -67,15 +87,10 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                         "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
                         "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
                         "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-                        "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic");
+                        "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType");
     }
 
     public void saveDemographics(final Patient patient) {
-
-        // If this is a link record then we need to start any duplicated data being saved
-        if (patientLinkDao.getSourcePatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
-            RadarUtility.cleanLinkRecord(patient);
-        }
 
         // If we have an ID then update, otherwise insert new and set the ID
         if (patient.hasValidId()) {
@@ -122,6 +137,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             "indiaId = ?, " +
                             "radarConsentConfirmedByUserId = ?, " +
                             "generic = ? " +
+                            "patientLinkId = ? " +
                             " WHERE radarNo = ?",
                     patient.getRrNo(),
                     patient.getDateReg(),
@@ -133,6 +149,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getSurnameAlias(),
                     patient.getForename(),
                     patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()) : null,
+                    patient.getDateofbirth(),
                     patient.getAge(),
                     patient.getSexModel() != null ? patient.getSexModel().getType() : null,
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
@@ -166,6 +183,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getIndiaId(),
                     patient.getRadarConsentConfirmedByUserId(),
                     patient.isGeneric(),
+                    patient.getPatientLinkId(),
                     patient.getId());
         } else {
             Number id = demographicsInsert.executeAndReturnKey(new HashMap<String, Object>() {
@@ -179,9 +197,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("surname", patient.getSurname());
                     put("surnameAlias", patient.getSurnameAlias());
                     put("forename", patient.getForename());
-                    put("dateofbirth", patient.getDob() != null ?
-                            new SimpleDateFormat(DATE_FORMAT).format(
-                                    patient.getDob()) : null);
+                    put("dateofbirth", patient.getDateofbirth());
                     put("AGE", patient.getAge());
                     put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
                     put("ethnicGp",
@@ -219,151 +235,19 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("indiaId", patient.getIndiaId());
                     put("generic", patient.isGeneric());
                     put("radarConsentConfirmedByUserId", patient.getRadarConsentConfirmedByUserId());
+                    put("sourceType", SourceType.RADAR.getName());
+                    put("patientLinkId", patient.getPatientLinkId());
                 }
             });
             patient.setId(id.longValue());
 
+            //The id of the patient record is now the new radar number
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", id.longValue(), id.longValue());
-
-        }
-    }
-
-
-    public Patient getDemographicsByRadarNumber(long radarNumber) {
-
-        Patient patient = null;
-
-        try {
-
-            try {
-                patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE radarNo = ?",
-                    new Object[]{radarNumber}, new DemographicsRowMapper());
-            } catch (EmptyResultDataAccessException e) {
-                // Can't find the patient by radar number try the normal key
-                if (patient == null) {
-                    patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE id = ?",
-                            new Object[]{radarNumber}, new DemographicsRowMapper());
-                }
-            }
-
-            patient = resolveLinkRecord(patient);
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("No demographic record found for radar number {}", radarNumber);
-            return null;
-        }
-
-        return patient;
-    }
-
-    /**
-     * Resolve a two way link.
-     *
-     * 1) If it's a source record them merge the link record on top of it
-     * 2) If it's a link record over write the standard demographic fields.
-     *
-     * @param patient
-     * @return
-     */
-    private Patient resolveLinkRecord(Patient patient){
-        PatientLink patientLink = patient.getPatientLink();
-
-        if (patientLink == null) {
-
-            PatientLink sourcePatientLink = patientLinkDao.getSourcePatientLink(patient.getNhsno(),
-                    patient.getUnitcode());
-            if (sourcePatientLink != null) {
-                Patient source = getDemographicsByNhsNoAndUnitCode(sourcePatientLink.getSourceNhsNO(),
-                        sourcePatientLink.getSourceUnit());
-                return RadarUtility.overRideLinkRecord(source, patient);
-            } else {
-                return patient;
-            }
-        } else {
-
-            Patient linkPatient = getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
-                    patientLink.getDestinationUnit());
-
-            return RadarUtility.mergePatientRecords(patient, linkPatient);
-        }
-
-    }
-
-    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
-        try {
-            return jdbcTemplate.queryForObject("SELECT * FROM patient WHERE nhsno = ? AND unitcode = ? ",
-                    new Object[]{nhsNo, unitCode}, new DemographicsRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("No demographic record found for radar number {}", nhsNo);
-            return null;
-        }
-    }
-
-
-    public List<Patient> getDemographicsByUnitCode(List<String> unitCodes) {
-        String unitCodeValues = buildValueList(unitCodes);
-        List<Patient> patients = null;
-
-        if (StringUtils.isNotEmpty(unitCodeValues)) {
-             patients =  jdbcTemplate.query("SELECT  DISTINCT p.* "
-                     + "FROM    user u "
-                     + "INNER JOIN patient p "
-                     + "INNER JOIN usermapping m "
-                     + "WHERE  m.nhsno = p.nhsno "
-                     + "AND    u.username NOT LIKE '%-GP%' "
-                     + "AND    u.username = m.username "
-                     + "AND    m.unitcode IN (" + unitCodeValues + ")", new DemographicsRowMapper());
-
-
-            List<Patient> linkedPatients = new ArrayList<Patient>();
-
-            for (Patient patient : patients)  {
-
-                PatientLink patientLink = patient.getPatientLink();
-
-                if (patientLink != null) {
-                    Patient linkedPatient = RadarUtility.overRideLinkRecord(patient,
-                            this.getDemographicsByNhsNoAndUnitCode(patientLink.getDestinationNhsNo(),
-                            patientLink.getDestinationUnit()));
-                    linkedPatient.setSurname("(LINKED) " + linkedPatient.getSurname());
-                    linkedPatients.add(linkedPatient);
-                }
-            }
-
-            replaceLinkedPatientsRecords(patients, linkedPatients);
-
-        } else {
-            return null;
-        }
-
-
-        return patients;
-    }
-
-
-    private void replaceLinkedPatientsRecords(List<Patient> patients, List<Patient> linkedPatients) {
-
-        for (Patient linkedPatient : linkedPatients) {
-
-            Iterator<Patient> iterator = patients.iterator();
-            while (iterator.hasNext()) {
-                Patient patient = iterator.next();
-                if (patient.getNhsno().equals(linkedPatient.getNhsno())
-                        && patient.getUnitcode().equals(linkedPatient.getUnitcode())) {
-                    iterator.remove();
-                }
-            }
+            patient.setRadarNo(patient.getId());
 
         }
 
-        patients.addAll(linkedPatients);
-
     }
-
 
     public Patient get(Long id) {
 
@@ -423,9 +307,8 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         // if a range has been set limit the results
         sqlQueries.add(buildLimitQuery(page, numberPerPage, params));
 
-        // combine the statement and return result
-        return jdbcTemplate.query(StringUtils.join(sqlQueries.toArray(), " "), params.toArray(),
-                new DemographicsRowMapper());
+        // TODO Stub out this method until the model is fixed
+        return null;
     }
 
     public Sex getSex(long id) {
@@ -494,10 +377,14 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             if (StringUtils.isNotBlank(dateOfBirthString)) {
                 Date dateOfBirth = null;
 
+                // TODO This needs fixing if it already hasn't been
+                // TODO Store the format with the date if you do it like this
+
                 // It seems that the encrypted strings in the DB have different date formats, nice.
                 for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_1, DATE_FORMAT_2, DATE_FORMAT_3}) {
                     try {
-                        dateOfBirth = new SimpleDateFormat(dateFormat).parse(dateOfBirthString);
+                        dateOfBirth = new SimpleDateFormat(dateFormat).  parse(dateOfBirthString);
+                        break;
                     } catch (ParseException e) {
                         LOGGER.debug("Could not parse date of birth {}", dateOfBirthString);
                     }
@@ -509,9 +396,11 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                 } else {
                     LOGGER.error("Could not parse date of birth from any format for dob {}",
                             dateOfBirthString);
-                    String a = "";
                 }
             }
+            Date dateOfBirth = resultSet.getDate("dateofbirth");
+            patient.setDateofbirth(dateOfBirth);
+            patient.setDob(dateOfBirth);
 
             // Addresses
             patient.setAddress1(resultSet.getString("address1"));
@@ -607,9 +496,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             patient.setIndiaId(resultSet.getString("indiaId"));
             patient.setGeneric(resultSet.getBoolean("generic"));
             patient.setEthnicGp(resultSet.getString("ethnicGp"));
-
-            patient.setPatientLink(patientLinkDao.getPatientLink(patient.getNhsno(), patient.getUnitcode()));
-            patient.setEditableDemographics(false);
+            patient.setSourceType(resultSet.getString("sourceType"));
+            patient.setPatientLinkId(resultSet.getLong("patientLinkId"));
+            patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
 
             return patient;
         }
@@ -669,8 +558,13 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         List<Object> params = new ArrayList<Object>();
         params.add(nhsno);
         try {
-            return jdbcTemplate.queryForObject(sql, params.toArray(), new DemographicsUserDetailMapper());
-        } catch (EmptyResultDataAccessException e) {
+            List<DemographicsUserDetail> results
+                    = jdbcTemplate.query(sql, params.toArray(), new DemographicsUserDetailMapper());
+            if (results != null && results.size() > 1) {
+                LOGGER.error("Found duplicate results for nhsno {}, taking first", nhsno);
+            }
+            return results != null && results.size() > 0 ? results.get(0) : new DemographicsUserDetail();
+        } catch (Exception e) {
             LOGGER.debug("No DemographicsUserDetail found for nhsno:"+nhsno);
             return new DemographicsUserDetail();
         }
@@ -694,7 +588,4 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
         this.userDao = userDao;
     }
 
-    public void setPatientLinkDao(PatientLinkDao patientLinkDao) {
-        this.patientLinkDao = patientLinkDao;
-    }
 }

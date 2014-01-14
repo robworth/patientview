@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
@@ -5,6 +28,7 @@ import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
+import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Consultant;
 import org.patientview.radar.model.DiagnosisCode;
@@ -181,6 +205,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+
     public List<Ethnicity> getEthnicities() {
         return jdbcTemplate.query("SELECT * FROM tbl_Ethnicity", new EthnicityRowMapper());
     }
@@ -202,13 +227,13 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     public Map<Long, Integer> getPatientCountPerUnitByDiagnosisCode(DiagnosisCode diagnosisCode) {
         List<PatientCountItem> patientCountList = jdbcTemplate.query(
                 "SELECT COUNT(*) as \"count\", u.id as \"unitcode\" " +
-                "FROM patient p " +
+                "FROM   patient p " +
                 "INNER JOIN tbl_diagnosis diagnosis ON p.radarNo = diagnosis.RADAR_NO " +
                 "INNER JOIN usermapping um on p.nhsno = um.nhsno " +
                 "INNER JOIN unit u ON um.unitcode = u.unitcode " +
                 "WHERE diag = ? " +
-                "   AND u.sourceType = ? " +
-                "   AND um.username NOT LIKE '%-GP%' " +
+                "AND    u.sourceType = ? " +
+                "AND   um.username NOT LIKE '%-GP%' " +
                 "GROUP BY u.id;", new Object[]{diagnosisCode.getId(), "renalunit"},
                 new PatientCountByUnitRowMapper());
 
@@ -222,12 +247,21 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public int getPatientCountByUnit(Centre centre) {
         try {
-            return jdbcTemplate.queryForObject("SELECT COUNT(1) " +
-                                                "FROM    patient " +
-                                                "WHERE   nhsno IN (SELECT nhsNo " +
-                                                "                  FROM   usermapping " +
-                                                "                  WHERE  unitCode = ?);",
-                    new Object[]{centre.getId()}, Integer.class);
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT  COUNT(DISTINCT p.nhsno) ");
+            query.append("FROM    user u ");
+            query.append("INNER JOIN patient p ");
+            query.append("INNER JOIN usermapping m ");
+            query.append("WHERE  m.nhsno = p.nhsno ");
+            query.append("AND    u.username NOT LIKE '%-GP%' ");
+            query.append("AND    u.username = m.username ");
+            query.append("AND    m.unitcode <> 'PATIENT' ");
+            query.append("AND    m.unitcode = ? ");
+            query.append("AND    p.sourceType = '");
+            query.append(SourceType.RADAR.getName());
+            query.append("'");
+
+            return jdbcTemplate.queryForObject(query.toString(), new Object[]{centre.getUnitCode()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return 0;
         }
@@ -336,6 +370,8 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
                 "FROM user u, usermapping um " +
                 "WHERE " +
                 "    u.username = um.username " +
+                "  AND um.username NOT LIKE '%-GP%' " +
+                "  AND um.unitcode != 'PATIENT' " +
                 "AND u.id = ? ", new Long[]{id}, new ClinicianRowMapper());
 
         if (clinicians != null && !clinicians.isEmpty()) {
@@ -356,8 +392,14 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
     }
 
     public Centre getCentre(String unitCode) {
-        return jdbcTemplate
-                .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode}, new CentreRowMapper());
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT * FROM unit WHERE unitcode = ?", new Object[]{unitCode},
+                            new CentreRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.error("Could not get unit with unitcode {}", unitCode);
+            return null;
+        }
     }
 
     public List<Centre> getRenalUnitCentre(String nhsNo) {

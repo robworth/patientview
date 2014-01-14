@@ -1,5 +1,29 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels.generic;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -20,6 +44,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.parse.metapattern.MetaPattern;
 import org.apache.wicket.validation.validator.PatternValidator;
@@ -30,16 +55,18 @@ import org.patientview.model.Sex;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.service.generic.GenericDiagnosisManager;
 import org.patientview.radar.util.RadarUtility;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.CentreDropDown;
 import org.patientview.radar.web.components.ClinicianDropDown;
 import org.patientview.radar.web.components.ComponentHelper;
+import org.patientview.radar.web.components.LabelMessage;
+import org.patientview.radar.web.components.PatientCentreDropDown;
 import org.patientview.radar.web.components.RadarComponentFactory;
 import org.patientview.radar.web.components.RadarRequiredCheckBox;
 import org.patientview.radar.web.components.RadarRequiredDateTextField;
@@ -59,19 +86,25 @@ import java.util.List;
 public class GenericDemographicsPanel extends Panel {
 
     @SpringBean
-    private DemographicsManager demographicsManager;
-
-    @SpringBean
     private UtilityManager utilityManager;
 
     @SpringBean
     private GenericDiagnosisManager genericDiagnosisManager;
 
     @SpringBean
+    PatientManager patientManager;
+
+    @SpringBean
     private UserManager userManager;
 
+    @SpringBean
+    private UnitManager unitManager;
+
+    private MarkupContainer dateOfGenericDiagnosisContainer;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDemographicsPanel.class);
+
+
 
     public GenericDemographicsPanel(String id, Patient patient) {
         super(id);
@@ -98,9 +131,9 @@ public class GenericDemographicsPanel extends Panel {
 
         //Error Message
         String message = "Please complete all mandatory fields";
-        final Model<String> messageModel =
-                new Model<String>();
-
+        final LabelMessage labelMessage = new LabelMessage();
+        labelMessage.setMessage(message);
+        final PropertyModel<LabelMessage> messageModel = new PropertyModel<LabelMessage>(labelMessage, "message");
 
         // no exist data in patient table, then use the user name to populate.
         if (patient.getSurname() == null || patient.getForename() == null) {
@@ -124,11 +157,9 @@ public class GenericDemographicsPanel extends Panel {
         Form<Patient> form = new Form<Patient>("form", new CompoundPropertyModel(model)) {
             @Override
             protected void onSubmit() {
+
                 Patient patient = getModel().getObject();
 
-                if (patient.getDiagnosisDateSelect()) {
-                    patient.setDateOfGenericDiagnosis(null);
-                }
                 // make sure diagnosis date is after dob
                 if (patient.getDateOfGenericDiagnosis() != null
                         && patient.getDateOfGenericDiagnosis().compareTo(patient.getDob()) < 0) {
@@ -136,19 +167,25 @@ public class GenericDemographicsPanel extends Panel {
                             .error("Your diagnosis date cannot be before your date of birth");
                 }
 
+                // Leaving this in, saved to the DB table
                 patient.setGeneric(true);
-                patient.setRadarConsentConfirmedByUserId(user.getUserId());
 
                 try {
-
-                     userManager.savePatientUser(patient);
+                     /** At this point we either have
+                      1) A new patient we would like to register
+                      2) A link patient we would like to register
+                      3) An existing linked patient we would like to update changes to the Patient table
+                      4) An existing patient we would like to update changes to the Patient table **/
+                     userManager.addPatientUserOrUpdatePatient(patient);
 
                 } catch (RegisterException re) {
                     LOGGER.error("Registration Exception", re);
-                    messageModel.setObject("Failed to register patient: " + re.getMessage());
+                    String message = "Failed to register patient: " + re.getMessage();
+                    labelMessage.setMessage(message);
+                    error(message);
                 } catch (Exception e) {
                     String message = "Error registering new patient to accompany this demographic";
-                    LOGGER.error("{}, message {}", message, e.getMessage());
+                    LOGGER.error("Unknown error", e);
                     error(message);
                 }
             }
@@ -174,7 +211,7 @@ public class GenericDemographicsPanel extends Panel {
         nonEditableComponents.add(dateOfBirth);
         // Sex
         RadarRequiredDropdownChoice sex =
-                new RadarRequiredDropdownChoice("sexModel", demographicsManager.getSexes(),
+                new RadarRequiredDropdownChoice("sexModel", patientManager.getSexes(),
                         new ChoiceRenderer<Sex>("type", "id"), form, componentsToUpdateList);
 
         nonEditableComponents.add(sex);
@@ -183,8 +220,6 @@ public class GenericDemographicsPanel extends Panel {
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
-
-        nonEditableComponents.add(ethnicity);
 
         // Address fields
         TextField address1 = new TextField("address1");
@@ -239,6 +274,7 @@ public class GenericDemographicsPanel extends Panel {
                     }
                 }
             }
+
         };
 
         AjaxSubmitLink addIdSubmit = new AjaxSubmitLink("addIdSubmit") {
@@ -254,10 +290,21 @@ public class GenericDemographicsPanel extends Panel {
         };
 
         TextField addIdValue = new TextField("id");
-        DropDownChoice addIdType =
+
+        DropDownChoice addIdType = null;
+
+        // Link patients should not be able to add hospital numbers
+        if (patient.isLinked()) {
+            addIdType =
                 new DropDownChoice("idType", Arrays.asList(IdType.HOSPITAL_NUMBER,
                         IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
                         IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
+        } else {
+            addIdType =
+                    new DropDownChoice("idType", Arrays.asList(
+                            IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
+                            IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
+        }
 
         addIdForm.add(addIdValue, addIdType, addIdSubmit);
         form.add(addIdForm);
@@ -387,72 +434,92 @@ public class GenericDemographicsPanel extends Panel {
                 ukTransplantNumberContainer);
         form.add(republicOfIrelandIdContainer, isleOfManIdContainer, channelIslandsIdContainer, indiaIdContainer);
 
-
         // Consultant and renal unit
-        final IModel<String> centreNumber = new Model<String>();
-        Centre renalUnitSelected = form.getModelObject().getRenalUnit();
-        centreNumber.setObject(renalUnitSelected != null ? renalUnitSelected.getUnitCode() : null);
-
-        final ClinicianDropDown clinician = new ClinicianDropDown("clinician", centreNumber);
+        final ClinicianDropDown clinician = new ClinicianDropDown("clinician", user, form.getModelObject());
         form.add(clinician);
 
-        DropDownChoice<Centre> renalUnit;
+        Label sourceUnitCodeLabel = new Label("sourceUnitCodeLabel", "Linked to") {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().isLinked();
+
+            }
+        };
+
+        String sourceUnitNameLabelValue = model.getObject().getPatientLinkUnitCode() != null
+                ? utilityManager.getCentre(model.getObject().getPatientLinkUnitCode()).getName() : "";
+
+        Label sourceUnitCode = new Label("sourceUnitCode", sourceUnitNameLabelValue) {
+            @Override
+            public boolean isVisible() {
+                return model.getObject().isLinked();
+
+            }
+        };
+        form.add(sourceUnitCodeLabel, sourceUnitCode);
 
         // if its a super user then the drop down will let them change renal units
         // if its a normal user they can only add to their own renal unit
-        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit = new CentreDropDown("renalUnit", patient.getNhsno());
+        DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
 
+        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
             renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
                     Patient patient = model.getObject();
                     if (patient != null) {
-                        centreNumber.setObject(patient.getRenalUnit() != null ?
+                        clinician.updateCentre(patient.getRenalUnit() != null ?
                                 patient.getRenalUnit().getUnitCode() :
                                 null);
                     }
 
+                    // re-render the component
                     clinician.clearInput();
                     target.add(clinician);
                 }
             });
-        } else if (user.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
-
-            List<Centre> centres = new ArrayList<Centre>();
-            for (String unitCode : userManager.getUnitCodes(user)) {
-                Centre centre = new Centre();
-                centre.setUnitCode(unitCode);
-                centre.setName(unitCode);
-                centres.add(centre);
-            }
-            renalUnit = new CentreDropDown("renalUnit", centres);
-
-        } else {
-            List<Centre> centres = new ArrayList<Centre>();
-            centres.add(form.getModelObject().getRenalUnit());
-
-            renalUnit = new CentreDropDown("renalUnit", centres);
         }
 
         form.add(renalUnit);
-        nonEditableComponents.add(renalUnit);
 
-        RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
-        form.add(consent);
+        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
+                patient.getRadarConsentConfirmedByUserId()));
 
-        form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
-
-        Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
-                utilityManager.getUserName(patient.getRadarConsentConfirmedByUserId())) {
+        final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",
+                consentUserModel) {
             @Override
             public boolean isVisible() {
-                return true;
+                return StringUtils.isNotEmpty(consentUserModel.getObject());
             }
         };
         tickConsentUser.setOutputMarkupId(true);
         tickConsentUser.setOutputMarkupPlaceholderTag(true);
         form.add(tickConsentUser);
+
+        final RadarRequiredCheckBox consent = new RadarRequiredCheckBox("consent", form, componentsToUpdateList);
+
+        consent.add(new AjaxFormComponentUpdatingBehavior("onclick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+
+                target.add(tickConsentUser);
+
+                if (consent.getModel().getObject().equals(Boolean.TRUE)) {
+                    model.getObject().setRadarConsentConfirmedByUserId(RadarSecuredSession.get().getUser().getUserId());
+                    consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
+                    tickConsentUser.setVisible(true);
+
+                } else {
+                    tickConsentUser.setVisible(false);
+                }
+            }
+        });
+
+        form.add(consent);
+
+        form.add(new ExternalLink("consentFormsLink", "http://www.rarerenal.org/join/criteria-and-consent/"));
+
+
 
         // add generic fields
         TextField emailAddress = new TextField("emailAddress");
@@ -471,19 +538,15 @@ public class GenericDemographicsPanel extends Panel {
                         componentsToUpdateList);
 
         final IModel<Boolean> diagnosisDateVisibility =
-                new Model<Boolean>(form.getModelObject().getDateOfGenericDiagnosis() == null);
+                new Model<Boolean>(Boolean.FALSE);
 
-        CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect");
-        model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect()==Boolean.TRUE);
-        if (form.getModelObject().getId() == null) {
-            diagnosisDateVisibility.setObject(false);
-        } else {
-            model.getObject().setDiagnosisDateSelect(form.getModelObject().getDateOfGenericDiagnosis() == null);
-        }
+        final CheckBox diagnosisDateSelect = new CheckBox("diagnosisDateSelect", new Model<Boolean>(Boolean.FALSE));
+        model.getObject().setDiagnosisDateSelect(model.getObject().getDiagnosisDateSelect() == Boolean.TRUE);
+
         diagnosisDateSelect.add(new AjaxFormComponentUpdatingBehavior("onClick") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                diagnosisDateVisibility.setObject(model.getObject().getDiagnosisDateSelect());
+                diagnosisDateVisibility.setObject(diagnosisDateSelect.getModel().getObject());
                 target.add(componentsToUpdateList.toArray(new Component[componentsToUpdateList.size()]));
             }
         });
@@ -507,6 +570,8 @@ public class GenericDemographicsPanel extends Panel {
         componentsToUpdateList.add(dateOfGenericDiagnosisContainer);
         dateOfGenericDiagnosisContainer.setOutputMarkupId(true);
         dateOfGenericDiagnosisContainer.setOutputMarkupPlaceholderTag(true);
+
+        this.dateOfGenericDiagnosisContainer = dateOfGenericDiagnosisContainer;
 
         TextArea otherClinicianAndContactInfo = new TextArea("otherClinicianAndContactInfo");
         TextArea comments = new TextArea("comments");
@@ -565,11 +630,12 @@ public class GenericDemographicsPanel extends Panel {
         form.add(ajaxSubmitLinkTop);
         form.add(ajaxSubmitLinkBottom);
 
-        if (!patient.isEditableDemographics()) {
+        if (patient.isLinked()) {
             for (Component component : nonEditableComponents) {
                 component.setEnabled(false);
             }
         }
+
     }
 
     private static class AddIdModel implements Serializable {

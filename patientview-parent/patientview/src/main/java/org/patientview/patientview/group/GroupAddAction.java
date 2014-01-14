@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionForm;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;

@@ -20,13 +20,15 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+
 package org.patientview.service.impl;
 
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
 import org.patientview.model.Patient;
-import org.patientview.patientview.EmailUtils;
+import org.patientview.model.Unit;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.TestResultDateRange;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
@@ -34,20 +36,17 @@ import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnosis;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.LogEntry;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.UserLog;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.quartz.exception.ProcessException;
 import org.patientview.quartz.exception.ResultParserException;
+import org.patientview.quartz.handler.ErrorHandler;
 import org.patientview.repository.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
-import org.patientview.service.UserLogManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,10 +82,10 @@ public class ImportManagerImpl implements ImportManager {
     private ApplicationContext applicationContext;
 
     @Inject
-    private UserLogManager userLogManager;
+    private LogEntryManager logEntryManager;
 
     @Inject
-    private LogEntryManager logEntryManager;
+    private ErrorHandler errorHandler;
 
 
     @Override
@@ -95,42 +94,6 @@ public class ImportManagerImpl implements ImportManager {
         return unitDao.get(unitCode, null);
     }
 
-    private void handleProcessError(File xmlFile, Exception e) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, e.getMessage());
-        try {
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
-
-    private void handleParserError(File xmlFile, ResultParserException e) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, EmailUtils.extractErrorsFromException(e));
-        try {
-            xmlImportUtils.sendEmailOfExpectionStackTraceToUnitAdmin(e, xmlFile);
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
-
-    private void handleEmptyFile(File xmlFile) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL, "Empty file");
-        try {
-            xmlImportUtils.sendEmptyFileEmailToUnitAdmin(xmlFile.getName());
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
-
-    private void handleCorruptNodes(File xmlFile, ResultParser resultParser) {
-        createLogEntry(xmlFile, AddLog.PATIENT_DATA_FAIL,
-                EmailUtils.createCorruptNodeEmailTest(resultParser.getCorruptNodes()));
-        try {
-            xmlImportUtils.sendCorruptDataEmail(resultParser);
-        } catch (Exception me) {
-            LOGGER.error("Unable to send email {}", me.getMessage());
-        }
-    }
 
 
     public void process(File xmlFile) throws ProcessException {
@@ -138,7 +101,7 @@ public class ImportManagerImpl implements ImportManager {
         LOGGER.debug("Processing file {}.", xmlFile.getName());
 
         if (xmlFile.length() == 0) {
-            handleEmptyFile(xmlFile);
+            errorHandler.emptyFile(xmlFile);
             throw new ProcessException("The file is empty");
         }
 
@@ -147,37 +110,31 @@ public class ImportManagerImpl implements ImportManager {
         try {
             resultParser = new ResultParser(xmlFile);
         } catch (ResultParserException pe) {
-            handleParserError(xmlFile, pe);
+            errorHandler.parserException(xmlFile, pe);
             throw new ProcessException("Could not create the parser for the file", pe);
         }
 
         // If the file parse process otherwise email the corruptions
         if (resultParser.parse()) {
+
             String action = null;
+
             try {
                 action = processPatientData(resultParser);
+            } catch (ProcessException pe) {
+                errorHandler.processingException(xmlFile, pe);
+                throw pe;
             } catch (Exception e) {
-                handleProcessError(xmlFile, e);
+                errorHandler.processingException(xmlFile, e);
                 throw new ProcessException("There has been an error processing the data", e);
             }
-            createLogEntry(xmlFile, action);
+
+            log(xmlFile, action);
+
         } else {
-            handleCorruptNodes(xmlFile, resultParser);
+            errorHandler.corruptNodes(xmlFile, resultParser);
             throw new ProcessException("There are file corruptions");
         }
-    }
-
-    private void createUserLog(ResultParser parser) {
-
-        UserLog userLog = userLogManager.getUserLog(parser.getPatient().getNhsno());
-        if (userLog == null) {
-            userLog = new UserLog();
-            userLog.setNhsno(parser.getPatient().getNhsno());
-        }
-        userLog.setUnitcode(parser.getPatient().getUnitcode());
-        userLog.setLastdatadate(Calendar.getInstance());
-
-        userLogManager.save(userLog);
     }
 
     private boolean hasPatientLeft(ResultParser parser) {
@@ -190,7 +147,7 @@ public class ImportManagerImpl implements ImportManager {
         UserUtils.removePatientFromSystem(parser.getData("nhsno"), parser.getData("centrecode"));
     }
 
-    private String processPatientData(ResultParser resultParser) {
+    private String processPatientData(ResultParser resultParser) throws ProcessException {
         if (hasPatientLeft(resultParser)) {
             removePatientFromSystem(resultParser);
             return AddLog.PATIENT_DATA_REMOVE;
@@ -216,9 +173,6 @@ public class ImportManagerImpl implements ImportManager {
             // todo improvement: we should build a set of all units updated, then mark them at the end of the job
             markLastImportDateOnUnit(resultParser.getCentre());
 
-            // Insert or update record in pv_user_log table,
-            // with current import date which is used in patient login
-            createUserLog(resultParser);
             return AddLog.PATIENT_DATA_FOLLOWUP;
         }
     }
@@ -275,7 +229,7 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     /**
-     *  Delete and re-add an updated patient record.
+     *
      *  If we have test results that are later than any seen before,
      *  update the patient mostRecentTestResultDateRangeStopDate.
      *
@@ -285,10 +239,17 @@ public class ImportManagerImpl implements ImportManager {
      * @param patient new patient details
      * @param dateRanges the date ranges for test results found in this import
      */
-    private void updatePatientDetails(Patient patient, List<TestResultDateRange> dateRanges) {
+    private void updatePatientDetails(Patient patient, List<TestResultDateRange> dateRanges) throws ProcessException {
 
         Patient existingPatientRecord
                 = LegacySpringUtils.getPatientManager().get(patient.getNhsno(), patient.getUnitcode());
+
+        // This field should be not nullable.
+        if (existingPatientRecord != null && existingPatientRecord.getSourceType() != null
+                && existingPatientRecord.getSourceType().equals(SourceType.RADAR.getName())) {
+            throw new ProcessException("Cannot update an existing Radar patient record");
+        }
+
         Date existingTestResultDateRangeStopDate = null;
         if (existingPatientRecord != null && existingPatientRecord.hasValidId()) {
             existingTestResultDateRangeStopDate = existingPatientRecord.getMostRecentTestResultDateRangeStopDate();
@@ -297,8 +258,15 @@ public class ImportManagerImpl implements ImportManager {
         patient.setMostRecentTestResultDateRangeStopDate(
                 getMostRecentTestResultDateRangeStopDate(dateRanges, existingTestResultDateRangeStopDate));
 
-        LegacySpringUtils.getPatientManager().delete(patient.getNhsno(), patient.getUnitcode());
-        LegacySpringUtils.getPatientManager().save(patient);
+
+        // Have to do it like this because Radar uses JDBC only
+        patient.setSourceType(SourceType.PATIENT_VIEW.getName());
+
+        if (existingPatientRecord != null) {
+            LegacySpringUtils.getPatientManager().save(XmlImportUtils.copyObject(existingPatientRecord, patient));
+        } else {
+            LegacySpringUtils.getPatientManager().save(patient);
+        }
     }
 
     private Date getMostRecentTestResultDateRangeStopDate(List<TestResultDateRange> dateRanges,
@@ -342,11 +310,18 @@ public class ImportManagerImpl implements ImportManager {
     }
 
     private void deleteLetters(Collection letters) {
+
+
         for (Iterator iterator = letters.iterator(); iterator.hasNext();) {
             Letter letter = (Letter) iterator.next();
 
+            // Avoiding NPE in RPV-126. Although this will leave the letter in the DB.
+            if (letter.getDate() != null) {
             LegacySpringUtils.getLetterManager().delete(letter.getNhsno(), letter.getUnitcode(),
                     letter.getDate().getTime());
+            } else {
+                LOGGER.warn("The letter does not come with a date so skipping deletion");
+            }
         }
     }
 
@@ -379,23 +354,9 @@ public class ImportManagerImpl implements ImportManager {
         }
     }
 
-    private void createLogEntry(File xmlFile, String action) {
-        createLogEntry(xmlFile, action, "");
+    private void log(File xmlFile, String action) {
+        errorHandler.createLogEntry(xmlFile, action, "");
     }
 
-    private void createLogEntry(File xmlFile, String action, String extraInfoExplanation) {
-        LogEntry logEntry = new LogEntry();
-        logEntry.setActor(AddLog.ACTOR_SYSTEM);
-        logEntry.setDate(Calendar.getInstance());
-        logEntry.setNhsno(xmlImportUtils.getNhsNumber(xmlFile.getName()));
-        logEntry.setUnitcode(xmlImportUtils.getUnitCode(xmlFile.getName()));
-        logEntry.setUser("");
-        logEntry.setAction(action);
-        if (null != extraInfoExplanation && !"".equals(extraInfoExplanation)) {
-            logEntry.setExtrainfo(xmlFile.getName() + " : " + extraInfoExplanation);
-        } else {
-            logEntry.setExtrainfo(xmlFile.getName());
-        }
-        logEntryManager.save(logEntry);
-    }
+
 }

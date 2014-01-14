@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.pages.patient;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -29,6 +52,7 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.RadarUtility;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -100,17 +124,19 @@ public class AddPatientPage extends BasePage {
                 demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
                         model.getPatientId());
 
+                List<String> radarUnits = userManager.getPatientRadarMappings(model.getPatientId());
+
                 // check nhs number is valid
-                if (!demographicsManager.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
+                if (!RadarUtility.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
 
-                } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
+                } else if (CollectionUtils.isNotEmpty(radarUnits)) {
                     // check that this nhsno has a mapping in the radar system
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
-                    error("A patient with this NHS or CHI number already exists");
+                    error("The patient is currently a member of the " + radarUnits.get(0) + " Registry");
                 }
 
                 if (!hasError()) {
@@ -185,11 +211,11 @@ public class AddPatientPage extends BasePage {
 
         guidanceContainer.add(
                 new ExternalLink("consentFormsAndDiseaseGroupsCriteriaLink",
-                        "http://www.rarerenal.org/join/criteria-and-consent/"));
+                        "http://rarerenal.org/radar-registry/criteria-and-consent/"));
 
         guidanceContainer.add(
                 new ExternalLink("enrollingAPatientGuideLink", "http://rarerenal.org/radar-registry/" +
-                        "radar-registry-background-information/radar-recruitment-guide/"));
+                        "radar-recruitment-guide/"));
 
         // add the components
         form.add(id, idType, diseaseGroup, submit, feedbackPanel, guidanceContainer);

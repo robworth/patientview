@@ -1,7 +1,31 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.util;
 
 import com.Ostermiller.util.RandPass;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.patientview.model.Patient;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.web.pages.BasePage;
@@ -9,6 +33,9 @@ import org.patientview.radar.web.pages.patient.GenericPatientPage;
 import org.patientview.radar.web.pages.patient.alport.AlportPatientPage;
 import org.patientview.radar.web.pages.patient.hnf1b.HNF1BPatientPage;
 import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -17,6 +44,8 @@ import java.util.Date;
  * Radar Utility - miscellaneous utility methods go here
  */
 public class RadarUtility {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
 
     /**
      * @param event1Start cannot be null
@@ -77,74 +106,57 @@ public class RadarUtility {
         return new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
     }
 
-    // Make sure the link record displays data from the
-    public static Patient overRideLinkRecord(Patient source, Patient link) {
-
-
-        link.setForename(source.getForename());
-        link.setSurname(source.getSurname());
-        link.setDob(source.getDob());
-        link.setAddress1(source.getAddress1());
-        link.setAddress2(source.getAddress2());
-        link.setAddress3(source.getAddress3());
-        link.setAddress4(source.getAddress4());
-        link.setPostcode(source.getPostcode());
-        link.setSex(source.getSex());
-        link.setTelephone1(source.getTelephone1());
-        link.setHospitalnumber(source.getHospitalnumber());
-        link.setRenalUnit(source.getRenalUnit());
-
-        return link;
-
-    }
-
     // Merge the two records together, source record taking priority on certain fields.
     // Done by getting the source record and just adding any radar stuff in it if it's found
     public static Patient mergePatientRecords(Patient source, Patient link) {
 
+        Patient mergedPatient = new Patient();
+
+        BeanUtils.copyProperties(source, mergedPatient);
+
         // Properties to mock the source object into the linked one
-        source.setId(link.getId());
-        source.setUnitcode(link.getUnitcode());
-        source.setNhsno(link.getNhsno());
+        mergedPatient.setId(link.getId());
+        mergedPatient.setUnitcode(link.getUnitcode());
+        mergedPatient.setNhsno(link.getNhsno());
 
         // Properties overridden has radar data
         if (StringUtils.hasText(link.getSurnameAlias())) {
-            source.setSurnameAlias(link.getSurnameAlias());
+            mergedPatient.setSurnameAlias(link.getSurnameAlias());
         }
 
         if (StringUtils.hasText(link.getEthnicGp())) {
-            source.setEthnicGp(link.getEthnicGp());
+            mergedPatient.setEthnicGp(link.getEthnicGp());
         }
 
         if (StringUtils.hasText(link.getTelephone2())){
-            source.setTelephone2(link.getTelephone2());
+            mergedPatient.setTelephone2(link.getTelephone2());
         }
 
         if (StringUtils.hasText(link.getMobile())) {
-            source.setMobile(link.getMobile());
+            mergedPatient.setMobile(link.getMobile());
         }
 
         if (link.getRrtModality() != null) {
-            source.setRrtModality(link.getRrtModality());
+            mergedPatient.setRrtModality(link.getRrtModality());
         }
 
         if (StringUtils.hasText(link.getDiagnosis())) {
-            source.setDiagnosis(link.getDiagnosis());
+            mergedPatient.setDiagnosis(link.getDiagnosis());
         }
 
         if (link.getDiagnosisDate() != null) {
-            source.setDiagnosisDate(link.getDiagnosisDate());
+            mergedPatient.setDiagnosisDate(link.getDiagnosisDate());
         }
 
         if (link.getOtherClinicianAndContactInfo() != null) {
-            source.setOtherClinicianAndContactInfo(link.getOtherClinicianAndContactInfo());
+            mergedPatient.setOtherClinicianAndContactInfo(link.getOtherClinicianAndContactInfo());
         }
 
         if (StringUtils.hasText(link.getComments())) {
-            source.setComments(link.getComments());
+            mergedPatient.setComments(link.getComments());
         }
 
-        return source;
+        return mergedPatient;
     }
 
 
@@ -152,6 +164,7 @@ public class RadarUtility {
         patient.setSurname(null);
         patient.setForename(null);
         patient.setDob(null);
+        patient.setDateofbirth(null);
         patient.setAddress1(null);
         patient.setAddress2(null);
         patient.setAddress3(null);
@@ -160,32 +173,88 @@ public class RadarUtility {
         patient.setSex(null);
         patient.setTelephone1(null);
         patient.setHospitalnumber(null);
-        patient.setRenalUnit(null);
     }
 
 
-    public static BasePage getDiseasePage(DiseaseGroup diseaseGroup, Patient patient){
-        if (diseaseGroup != null) {
+    public static BasePage getDiseasePage(Patient patient, PageParameters pageParameters){
 
-            if (patient.getDiseaseGroup() == null) {
-                patient.setDiseaseGroup(diseaseGroup);
-            }
+        if (patient.getDiseaseGroup() != null) {
 
-            if (diseaseGroup.getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
-                    diseaseGroup.getId().
+            if (patient.getDiseaseGroup().getId().equals(DiseaseGroup.SRNS_DISEASE_GROUP_ID) ||
+                    patient.getDiseaseGroup().getId().
                             equals(DiseaseGroup.MPGN_DISEASEGROUP_ID)) {
                 return new SrnsPatientPage(patient);
-            } else if (diseaseGroup.getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
-                return new AlportPatientPage(patient);
-            } else if (diseaseGroup.getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
-                return new HNF1BPatientPage(patient);
+            } else if (patient.getDiseaseGroup().getId().equals(DiseaseGroup.ALPORT_DISEASEGROUP_ID)) {
+                return new AlportPatientPage(patient, pageParameters);
+            } else if (patient.getDiseaseGroup().getId().equals(DiseaseGroup.HNF1B_DISEASEGROUP_ID)) {
+                return new HNF1BPatientPage(patient, pageParameters);
             } else {
-                return new GenericPatientPage(patient);
+                return new GenericPatientPage(patient, pageParameters);
             }
         }  else {
-            return new GenericPatientPage(patient);
+            return new GenericPatientPage(patient, pageParameters);
         }
 
     }
+
+    public static boolean isNhsNumberValid(String nhsNumber) {
+        return isNhsNumberValid(nhsNumber, false);
+    }
+
+    public static boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
+        return isNhsNumberValid(nhsNumber, true);
+    }
+
+    private static boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
+
+        // Remove all whitespace and non-visible characters such as tab, new line etc
+        nhsNumber = nhsNumber.replaceAll("\\s", "");
+
+        // Only permit 10 characters
+        if (nhsNumber.length() != 10) {
+            return false;
+        }
+
+        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
+        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
+
+        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
+            return true;
+        }
+
+        return isNhsChecksumValid(nhsNumber);
+    }
+
+    private static boolean isNhsChecksumValid(String nhsNumber) {
+        /**
+         * Generate the checksum using modulus 11 algorithm
+         */
+        int checksum = 0;
+
+        try {
+            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
+            for (int i = 0; i <= 8; i++) {
+                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
+                checksum += value;
+            }
+
+            //(modulus 11)
+            checksum = 11 - checksum % 11;
+
+            if (checksum == 11) {
+                checksum = 0;
+            }
+
+            // Does checksum match the 10th digit?
+            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false; // nhsNumber contains letters
+        }
+    }
+
 
 }

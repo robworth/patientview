@@ -23,7 +23,7 @@
 
 package org.patientview.test.helpers.impl;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;

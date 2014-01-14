@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -14,12 +37,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
-import org.patientview.model.generic.DiseaseGroup;
+import org.patientview.radar.exception.PatientLinkException;
 import org.patientview.radar.model.generic.AddPatientModel;
 import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.PatientLinkManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.util.RadarUtility;
+import org.patientview.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -31,6 +58,8 @@ import java.util.List;
 public class SelectPatientPanel extends Panel {
 
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(SelectPatientPanel.class);
+
     @SpringBean
     private DemographicsManager demographicsManager;
 
@@ -38,7 +67,10 @@ public class SelectPatientPanel extends Panel {
     private UserManager userManager;
 
     @SpringBean
-    private PatientLinkManager patientLinkManager;
+    private PatientManager patientManager;
+
+    @SpringBean
+    private UtilityManager utilityManager;
 
     private IModel<List<Patient>> model;
     private AddPatientModel patientModel;
@@ -59,32 +91,34 @@ public class SelectPatientPanel extends Panel {
     }
 
 
-    private Form createSelectionForm()  {
+    private Form createSelectionForm() {
 
         // Form that displays the potential patient records to link with from the Patient table
 
-        IModel<Patient> selected = new Model<Patient>();
+        final IModel<Patient> selected = new Model<Patient>();
+
+
         final RadioGroup group = new RadioGroup("group", selected);
 
 
         Form<?> form = new Form<Patient>("patientSelectionForm") {
             @Override
-            protected void onSubmit() {
+            protected void onSubmit()  {
 
-                Patient patient = (Patient) group.getDefaultModelObject();
-                patient = demographicsManager.get(patient.getId());
-
+                Patient sourcePatient = (Patient) group.getDefaultModelObject();
+                // Requery the patient object to include all the fields from the patient table
                 try {
-                    if (patientLinkManager.getPatientLink(patient.getNhsno(), patient.getUnitcode()) != null) {
-                        patient = patientLinkManager.getMergePatient(patient);
-                    }
-                } catch (Exception e) {
-                    //TODO Refactor to feed back to main page
-                    e.printStackTrace();
+                    Patient linkedPatient = patientManager.createLinkPatient(
+                            patientManager.getById(sourcePatient.getId()));
+
+                    linkedPatient.setDiseaseGroup(patientModel.getDiseaseGroup());
+
+                    setResponsePage(RadarUtility.getDiseasePage(linkedPatient, this.getPage().getPageParameters()));
+
+                } catch (PatientLinkException ple)  {
+                    LOGGER.error("Error creating a link patient", ple);
                 }
 
-                DiseaseGroup diseaseGroup = patientModel.getDiseaseGroup();
-                setResponsePage(RadarUtility.getDiseasePage(diseaseGroup, patient));
 
             }
         };
@@ -103,23 +137,37 @@ public class SelectPatientPanel extends Panel {
         };
 
 
-        // Construct a radio button and label for each company.
+        // Construct a radio button and patient record with the nhs number
         group.add(new ListView<Patient>("choice", model) {
+
+            private boolean setSelected = false;
+
             protected void populateItem(ListItem<Patient> it) {
 
+
+                Patient patient = it.getModelObject();
+
+                if (setSelected == false) {
+                    selected.setObject(patient);
+                    setSelected = true;
+                }
+
+
                 it.add(new Radio("radio", it.getModel()));
-                it.add(new Label("id", Long.toString(it.getModelObject().getId())));
-                it.add(new Label("nhsNo", it.getModelObject().getNhsno()));
-                it.add(new Label("forename", it.getModelObject().getForename()));
-                it.add(new Label("surname", it.getModelObject().getSurname()));
-                it.add(new Label("dateOfBirth", it.getModelObject().getDateofbirth()));
-                it.add(new Label("unitCode", it.getModelObject().getUnitcode()));
+                it.add(new Label("id", Long.toString(patient.getId())));
+                it.add(new Label("nhsNo", patient.getNhsno()));
+                it.add(new Label("forename", patient.getForename()));
+                it.add(new Label("surname", patient.getSurname()));
+                it.add(new Label("dateOfBirth", CommonUtils.formatDate(patient.getDateofbirth())));
+                it.add(new Label("unitCode", utilityManager.getCentre(patient.getUnitcode()).getAbbreviation()));
                 String dateResultsLastReceivedLabel = "";
                 if (it.getModelObject().getMostRecentTestResultDateRangeStopDate() != null) {
                     dateResultsLastReceivedLabel
                             = it.getModelObject().getMostRecentTestResultDateRangeStopDate().toString();
                 }
                 it.add(new Label("dateResultsLastReceived", dateResultsLastReceivedLabel));
+
+                this.setStartIndex(0);
             }
         });
 

@@ -25,7 +25,7 @@ package org.patientview.patientview.join;
 
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

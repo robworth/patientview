@@ -26,10 +26,9 @@ package org.patientview.patientview;
 import org.patientview.model.Patient;
 import org.patientview.patientview.model.EdtaCode;
 import org.patientview.patientview.uktransplant.UktStatusForPatient;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 
 import java.util.List;
-
 
 public class PatientDetails {
 

@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.pages.patient.alport;
 
 import org.apache.wicket.AttributeModifier;
@@ -16,7 +39,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.panels.GeneticsPanel;
@@ -51,7 +74,7 @@ public class AlportPatientPage extends BasePage {
     protected static final String PARAM_ID = "id";
 
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
 
     private Patient patient;
     private MarkupContainer linksContainer;
@@ -65,14 +88,15 @@ public class AlportPatientPage extends BasePage {
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
-    public AlportPatientPage(Patient patient) {
+    public AlportPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
+        this.patient = patient;
         init(patient);
     }
 
     public AlportPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
-        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
-
+        patient = patientManager.getPatientByRadarNumber(pageParameters.get("id").toLong());
         init(patient);
     }
 
@@ -146,7 +170,7 @@ public class AlportPatientPage extends BasePage {
     }
 
     public static PageParameters getPageParameters(Patient patient) {
-        return new PageParameters().set(PARAM_ID, patient.getId());
+        return new PageParameters().set(PARAM_ID, patient.getRadarNo());
     }
 
     public Tab getCurrentTab() {

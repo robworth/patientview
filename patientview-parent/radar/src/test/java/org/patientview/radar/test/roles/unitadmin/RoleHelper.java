@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.test.roles.unitadmin;
 
 import org.patientview.model.Centre;
@@ -54,7 +77,7 @@ public class RoleHelper {
             patient.setUnitcode(unitName);
             patient.setForename("Unit");
             patient.setSurname("Tester");
-            patient.setDateofbirth("21-01-2013");
+            patient.setDateofbirth(new Date());
             patient.setDob(new Date());
             patient.setNhsno("1000000" + i);
             patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
@@ -69,7 +92,7 @@ public class RoleHelper {
             centre.setUnitCode(unitName);
             patient.setRenalUnit(centre);
 
-            patientUsers.add(userManager.savePatientUser(patient));
+            patientUsers.add(userManager.addPatientUserOrUpdatePatient(patient));
         }
         return patientUsers;
     }
@@ -108,7 +131,7 @@ public class RoleHelper {
         patient.setUnitcode(unitName);
         patient.setForename("Unit");
         patient.setSurname("Tester");
-        patient.setDateofbirth("21-01-2013");
+        patient.setDateofbirth(new Date());
         patient.setDob(new Date());
         patient.setHospitalnumber("90789");
         patient.setAddress1("87 hgyt roda");
@@ -119,7 +142,6 @@ public class RoleHelper {
         patient.setEmailAddress("test@test.com");
         patient.setSex("Male");
 
-
         DiseaseGroup diseaseGroup = new DiseaseGroup();
         diseaseGroup.setId(diseaseName);
         patient.setDiseaseGroup(diseaseGroup);
@@ -128,7 +150,7 @@ public class RoleHelper {
         centre.setUnitCode(unitName);
         patient.setRenalUnit(centre);
 
-        //userManager.savePatientUser(patient);
+        //userManager.addPatientUserOrUpdatePatient(patient);
 
         return patient;
 

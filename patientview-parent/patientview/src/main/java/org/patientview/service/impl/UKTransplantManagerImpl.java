@@ -29,7 +29,7 @@ import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Comment;
 import org.patientview.patientview.model.TestResult;
 import org.patientview.patientview.model.UktStatus;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.utils.TimestampUtils;
 import org.patientview.repository.UktStatusDao;
@@ -191,7 +191,7 @@ public class UKTransplantManagerImpl implements UKTransplantManager {
         Element nhsno = addChildElement(doc, personalDetails, "nhsno", patient.getNhsno());
         Element surname = addChildElement(doc, personalDetails, "surname", patient.getSurname());
         Element forename = addChildElement(doc, personalDetails, "forename", patient.getForename());
-        Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", patient.getDateofbirth());
+        Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", patient.getDateOfBirthStr());
 
         Element testDetails = addChildElement(doc, rootElement, "testDetails");
 

@@ -47,7 +47,7 @@ public class PatientEditInputAction extends Action {
         // String nhsno = UserUtils.retrieveUsersRealNhsnoBestGuess(username);
         NhsnoUnitcode nhsnoThing = new NhsnoUnitcode(nhsno, unitcode);
         request.getSession().setAttribute("patient", user);
-        request.setAttribute("nhsnot", nhsnoThing);
+        request.getSession().setAttribute("nhsnot", nhsnoThing);
         return LogonUtils.logonChecks(mapping, request);
     }
 }

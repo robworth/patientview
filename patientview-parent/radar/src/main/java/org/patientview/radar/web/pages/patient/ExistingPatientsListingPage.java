@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.pages.patient;
 
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -68,13 +91,20 @@ public class ExistingPatientsListingPage extends BasePage {
 
                 item.add(new Label("surname"), new Label("forename"));
                 item.add(DateLabel.forDatePattern("dob", RadarApplication.DATE_PATTERN2));
-                item.add(new Label("id"));
-                item.add(new Label("diagnosis", diagnosisManager.getDiagnosisName(patient)));
+                item.add(new Label("id", Long.toString(patient.getRadarNo())));
 
-                item.add(new Label("nhsNumber", patient.getNhsno()));
+                String diseaseGroup = "";
+                if (patient.getDiseaseGroup() != null) {
+                    diseaseGroup = patient.getDiseaseGroup().getId();
+                }
+
+                item.add(new Label("diagnosis", diseaseGroup));
+
+                item.add(new Label("nhsNumber", patient.getNhsno()).setEscapeModelStrings(false));
                 item.add(new Label("hospitalnumber"));
                 item.add(DateLabel.forDatePattern("dateReg", RadarApplication.DATE_PATTERN2));
-                item.add(new Label("status.abbreviation"));
+                item.add(new Label("status.abbreviation", patient.getStatusModel() != null
+                        ? patient.getStatusModel().getAbbreviation() : ""));
                 item.add(new Label("renalUnit.name"));
 
                 item.add(new Label("rrtModalityEunm"));
@@ -83,13 +113,10 @@ public class ExistingPatientsListingPage extends BasePage {
 
                 item.add(new Label("lastverificationdate",
                         formatDate(demographicsUserDetail.getLastverificationdate())));
-                item.add(new Label("email", demographicsUserDetail.getEmail()));
+                item.add(new Label("email", patient.getEmailAddress()));
 
                 item.add(new Label("lastlogon", formatDate(demographicsUserDetail.getLastlogon())));
                 item.add(new Label("accountlocked", "" + (demographicsUserDetail.isAccountlocked() ? "Yes" : "No")));
-
-                item.add(new Label("lastdatadate", formatDate(demographicsUserDetail.getLastdatadate())));
-
             }
 
             private String formatDate(Date date){

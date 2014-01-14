@@ -1,18 +1,41 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.models;
 
 
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.DiagnosisCode;
-import org.patientview.radar.model.sequenced.ClinicalData;
-import org.patientview.radar.service.ClinicalDataManager;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.web.panels.DiagnosisPanel;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.sequenced.ClinicalData;
+import org.patientview.radar.service.ClinicalDataManager;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.panels.DiagnosisPanel;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -123,51 +146,51 @@ public class RadarModelFactory {
         };
     }
 
-    public static IModel getFirstNameModel(final IModel<Long> radarNumberModel, final DemographicsManager
-            demographicsManager) {
+    public static IModel getFirstNameModel(final IModel<Long> radarNumberModel, final PatientManager
+            patientManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
                             radarNumberModel.getObject()).getForename() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
                             getForename() : null;
                 }
             }
         };
     }
 
-    public static IModel getSurnameModel(final IModel<Long> radarNumberModel, final DemographicsManager
-            demographicsManager) {
+    public static IModel getSurnameModel(final IModel<Long> radarNumberModel, final PatientManager
+            patientManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
                             radarNumberModel.getObject()).getSurname() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
                             getSurname() : null;
                 }
             }
         };
     }
 
-    public static IModel getDobModel(final IModel<Long> radarNumberModel, final DemographicsManager
-            demographicsManager) {
+    public static IModel getDobModel(final IModel<Long> radarNumberModel, final PatientManager
+            patientManager) {
         return new Model() {
             @Override
             public Serializable getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
                             radarNumberModel.getObject()).getDob() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
                             getDob() : null;
                 }
             }
@@ -176,16 +199,17 @@ public class RadarModelFactory {
     }
 
     public static IModel<String> getHospitalNumberModel(final IModel<Long> radarNumberModel,
-                                                        final DemographicsManager demographicsManager) {
+                                                        final PatientManager
+                                                                patientManager) {
         return new Model<String>() {
             @Override
             public String getObject() {
                 try {
-                    return radarNumberModel.getObject() != null ? demographicsManager.getDemographicsByRadarNumber(
+                    return radarNumberModel.getObject() != null ? patientManager.getPatientByRadarNumber(
                             radarNumberModel.getObject()).getHospitalnumber() : null;
                 } catch (ClassCastException e) {
                     Object obj = radarNumberModel.getObject();
-                    return obj != null ? demographicsManager.getDemographicsByRadarNumber(Long.parseLong((String) obj)).
+                    return obj != null ? patientManager.getPatientByRadarNumber(Long.parseLong((String) obj)).
                             getHospitalnumber() : null;
                 }
             }

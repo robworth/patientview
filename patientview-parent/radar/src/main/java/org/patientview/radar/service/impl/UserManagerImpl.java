@@ -1,8 +1,30 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.service.impl;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.patientview.model.Patient;
-import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.JoinRequestDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.exception.JoinCreationException;
@@ -25,7 +47,7 @@ import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.EmailManager;
-import org.patientview.radar.service.PatientLinkManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,16 +67,17 @@ import java.util.List;
 public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerImpl.class);
-    private static final String PATIENT_GROUP = "PATIENT";
-    private static final String PATIENT_VIEW_GROUP = "patient";
+
+
+    private static final String PATIENT_GROUP = "PATIENT"; // Radar patient mapping
+    private static final String PATIENT_VIEW_GROUP = "patient"; // Patient view mapping
 
     private EmailManager emailManager;
     private ProviderManager authenticationManager;
 
     private UserDao userDao;
     private JoinRequestDao joinRequestDao;
-    private DemographicsDao demographicsDao;
-    private PatientLinkManager patientLinkManager;
+    private PatientManager patientManager;
 
 
     public AdminUser getAdminUser(String email) {
@@ -87,7 +110,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public PatientUser getPatientUserWithUsername(String username, Date dateOfBirth) {
         PatientUser user = userDao.getPatientUserWithUsername(username);
-        if (user != null) {
+        if (user != null && user.getDateOfBirth() != null) {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
         return null;
@@ -114,41 +137,61 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userDao.deletePatientUser(patientUser);
     }
 
-    private PatientUser registerPatientUser(Patient patient) throws UserCreationException, UserMappingException,
-            UserRoleException, PatientLinkException, JoinCreationException {
 
-        PatientUser patientUser = null;
-        boolean generateJoinRequest = false;
+    /**
+     * Create a PV user for this patient.
+     * Create Radar user access for this patient
+     * Create PV join request for this patient
+     * @param patient patient that is being added in Radar
+     * @return the combined patient - user object
+     * @throws UserCreationException
+     * @throws UserMappingException
+     * @throws UserRoleException
+     * @throws PatientLinkException
+     * @throws JoinCreationException
+     */
+    private PatientUser createUserInPatientViewAndRadar(Patient patient) throws UserCreationException,
+            UserMappingException, UserRoleException, PatientLinkException, JoinCreationException {
 
-        // If the patient is new then we save the patient record otherwise we have to link it
-        if (!patient.hasValidId()) {
-            generateJoinRequest = true;
-            demographicsDao.saveDemographics(patient);
-        } else {
-            patientLinkManager.linkPatientRecord(patient);
-        }
-
-        //-- Patient View Tables
+        //-------- Patient View Tables ------//
         // Create the user record
-        patientUser = createPatientViewUser(patient);
+        PatientUser patientUser = createPatientViewUser(patient);
+
         // Create the patient mapping in patient view so patient view knows the user is a patient
         userDao.createRoleInPatientView(patientUser.getId(), PATIENT_VIEW_GROUP);
-        createPatientMappings(patient, patientUser);
 
         // Switch from patient view to Radar
         patientUser.setUserId(patientUser.getId());
 
-        //-- Radar Tables
+        //---------- Radar Tables -----------//
         patientUser = createRadarUser(patientUser, patient);
         userDao.saveUserMapping(patientUser);
 
+        // We've created a new user so we need to create a join request
+        createJoinRequest(patient);
 
-        if (generateJoinRequest) {
-            createJoinRequest(patient);
-        }
 
         return patientUser;
 
+    }
+
+    /**
+     * Ensure that this newly added Radar patient/patientUser has the correct permissions.
+     * This means, a usermapping to the selected renal unit on the demographic panel,
+     * and a usermapping for the disease group they have been added to
+     * @param patient the patient record for the patient added
+     * @param patientUser the patientUser for the patient added (yes this is confusing)
+     */
+    private void createPermissionsForNewPatientUser(Patient patient, PatientUser patientUser)
+            throws UserMappingException {
+        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), getUnitCode(patient));
+        // Map the Disease Group
+        if (patient.getDiseaseGroup() != null) {
+            createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), patient.getDiseaseGroup()
+                    .getId());
+        }
+        // Map the Patient Group
+        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), PATIENT_GROUP);
     }
 
     private PatientUser createRadarUser(PatientUser patientUser, Patient patient) throws UserCreationException {
@@ -157,24 +200,43 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser.setId(0L);
         // now fill in the radar patient stuff
         // and invalidate the id and this will create a record in tbl_patient_users
-        patientUser.setRadarNumber(patient.getId());
+        patientUser.setRadarNumber(patient.getRadarNo());
         patientUser.setDateOfBirth(patient.getDob());
         userDao.savePatientUser(patientUser);
 
         return patientUser;
     }
 
-
-    public PatientUser savePatientUser(Patient patient) throws RegisterException, Exception {
+    /**
+     * Entry point to update or add a patient from the Demographics screen.
+     *
+     * This is responsible for:
+     *  - creating the patient record and linking if necessary.
+     *  - create user records and user mappings in radar and patientview
+     *  - send a join request for new patients
+     *
+     * @param patient
+     * @return
+     * @throws RegisterException
+     * @throws Exception
+     */
+    public PatientUser addPatientUserOrUpdatePatient(Patient patient) throws Exception {
 
         try {
+            final boolean isNewPatient = !patient.hasValidId();
 
-            // Check of the patient needs registering first otherwise just save the patient record
-            if (patient.isEditableDemographics() || !userExistsInPatientView(patient.getNhsno())) {
-                return registerPatientUser(patient);
-            }  else {
-                demographicsDao.saveDemographics(patient);
-                return null;
+            patientManager.save(patient);
+
+            if (isNewPatient) {
+                PatientUser patientUser;
+
+                if (!userExistsInPatientView(patient.getNhsno())) {
+                    patientUser = createUserInPatientViewAndRadar(patient);
+                } else {
+                    patientUser = userDao.getPatientViewUser(patient.getNhsno());
+                }
+
+                createPermissionsForNewPatientUser(patient, patientUser);
             }
 
         }  catch (UserCreationException  uce) {
@@ -188,6 +250,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }  catch (PatientLinkException ple) {
             throw new RegisterException("Could not create role", ple);
         }
+
+        return null;
     }
 
     public void createUserMappingInPatientView(String username, String nhsNo, String unitCode)
@@ -201,17 +265,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new UserMappingException("Error creating mapping", e);
         }
 
-    }
-
-
-    private void createPatientMappings(Patient patient, PatientUser patientUser) throws UserMappingException {
-        // Map the Renal Unit
-        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), getUnitCode(patient));
-        // Map the Disease Group
-        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), patient.getDiseaseGroup()
-                .getId());
-        // Map the Patient Group
-        createUserMappingInPatientView(patientUser.getUsername(), patient.getNhsno(), PATIENT_GROUP);
     }
 
     private void createJoinRequest(Patient patient) throws JoinCreationException {
@@ -244,6 +297,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
 
     }
+
 
     private PatientUser createPatientViewUser(Patient patient) throws UserCreationException {
 
@@ -339,7 +393,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
     public boolean authenticateProfessionalUser(String username, String password) throws AuthenticationException {
-        ProfessionalUser professionalUser = userDao.getProfessionalUser(username);
+        ProfessionalUser professionalUser = userDao.getProfessionalUserByUsername(username);
         if (professionalUser != null) {
             try {
                 Authentication authentication = authenticationManager.
@@ -430,10 +484,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return userDao.getPatientViewUser(nshNo);
     }
 
-    public List<String> getUnitCodes(User user) {
-        return userDao.getUnitCodes(user);
-    }
-
     public void setEmailManager(EmailManager emailManager) {
         this.emailManager = emailManager;
     }
@@ -455,8 +505,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         username = username.toLowerCase();
 
         int i = 1;
-        while (userDao.usernameExistsInPatientView(username + i) &&
-                userDao.getPatientUserWithUsername(username + 1) == null) {
+        while (userDao.usernameExistsInPatientView(username + i) ||
+                userDao.getPatientUserWithUsername(username + i) != null) {
             ++i;
         }
         return username + i;
@@ -482,12 +532,9 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         this.joinRequestDao = joinRequestDao;
     }
 
-    public void setDemographicsDao(DemographicsDao demographicsDao) {
-        this.demographicsDao = demographicsDao;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 
-    public void setPatientLinkManager(PatientLinkManager patientLinkManager) {
-        this.patientLinkManager = patientLinkManager;
-    }
 }
 

@@ -26,7 +26,7 @@ package org.patientview.repository.impl;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.model.ResultHeading_;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ResultHeadingDao;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -53,14 +53,28 @@ public class TestResultsAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        User user = UserUtils.retrieveUser(request);
+
+        User user = null;
+        String param = mapping.getParameter();
+        boolean isRadarGroup = false;
+        if ("medicalResults".equals(param)) {
+            isRadarGroup = true;
+            user = UserUtils.retrieveUser(request);
+        } else  if ("controlMedicalResults".equals(param)) {
+            isRadarGroup = true;
+            String username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+            user = LegacySpringUtils.getUserManager().get(username);
+        } else {
+            user = UserUtils.retrieveUser(request);
+        }
 
         if (user != null) {
             request.setAttribute("user", user);
 
             Panel currentPanel = managePanels(request);
 
-                List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
+
+            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
 
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
 
