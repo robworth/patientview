@@ -96,7 +96,7 @@ public class UnitPatientsControlller extends BaseController {
 
         if (!"".equals(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-            request.setAttribute("unit", unit);
+            request.getSession().setAttribute("unit", unit);
         }
 
         return forwardTo(request, Routes.UNIT_PATIENTS_LIST_PAGE);
