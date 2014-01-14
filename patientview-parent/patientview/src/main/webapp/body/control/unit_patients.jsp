@@ -90,7 +90,7 @@
                     patientKeyParams.put("nhsno", patient.getNhsno() );
                     patientKeyParams.put("unitcode", patient.getUnitcode());
                     patientKeyParams.put("username", patient.getUsername());
-                    patientKeyParams.put("patientId", patient.getPatientId().toString());
+                    //patientKeyParams.put("patientId", patient.getPatientId().toString());
                     request.setAttribute("patientKeyParams", patientKeyParams);
                 %>
 
