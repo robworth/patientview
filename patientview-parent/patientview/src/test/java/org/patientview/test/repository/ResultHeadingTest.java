@@ -23,6 +23,7 @@
 
 package org.patientview.test.repository;
 
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.ResultHeading;
 import org.patientview.model.Specialty;
