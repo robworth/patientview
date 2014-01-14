@@ -110,7 +110,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public PatientUser getPatientUserWithUsername(String username, Date dateOfBirth) {
         PatientUser user = userDao.getPatientUserWithUsername(username);
-        if (user != null) {
+        if (user != null && user.getDateOfBirth() != null) {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
         return null;
@@ -200,7 +200,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser.setId(0L);
         // now fill in the radar patient stuff
         // and invalidate the id and this will create a record in tbl_patient_users
-        patientUser.setRadarNumber(patient.getId());
+        patientUser.setRadarNumber(patient.getRadarNo());
         patientUser.setDateOfBirth(patient.getDob());
         userDao.savePatientUser(patientUser);
 
