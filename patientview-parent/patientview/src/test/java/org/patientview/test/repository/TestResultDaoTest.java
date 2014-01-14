@@ -23,10 +23,15 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.*;
+import org.junit.Test;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
+import org.patientview.patientview.model.ResultHeading;
+import org.patientview.patientview.model.TestResult;
+import org.patientview.patientview.model.TestResultWithUnitShortname;
+import org.patientview.patientview.model.User;
 import org.patientview.repository.ResultHeadingDao;
 import org.patientview.repository.TestResultDao;
-import org.junit.Test;
 import org.patientview.repository.UnitDao;
 import org.patientview.test.helpers.RepositoryHelpers;
 
