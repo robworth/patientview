@@ -124,6 +124,11 @@ public class PatientManagerImpl implements PatientManager {
         return patientDao.getByNhsNo(nhsNo);
     }
 
+
+    public Patient getRadarPatient(String nhsNo) {
+        return patientDao.getRadarPatient(nhsNo);
+    }
+
     @Override
     public List getUnitPatientsWithTreatment(String unitcode, String nhsno, String name, boolean showgps) {
         return patientDao.getUnitPatientsWithTreatmentDao(unitcode, nhsno, name, showgps,

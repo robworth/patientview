@@ -48,10 +48,14 @@ public class PatientGeneticsAction extends Action {
         // allow the logged in user to be overridden when viewing the site as a patient using an admin account
         User user = UserUtils.retrieveUser(request);
 
-        Patient patient = LegacySpringUtils.getPatientManager().getPatient(user.getUsername());
+
+
+        Patient patient = LegacySpringUtils.getPatientManager().getRadarPatient(
+                String.valueOf(request.getSession().getAttribute("userBeingViewedNhsno")));
+
         Genetics genetics = null;
         if (patient != null) {
-            genetics = LegacySpringUtils.getGeneticsManager().get(patient.getId());
+            genetics = LegacySpringUtils.getGeneticsManager().get(patient.getRadarNo());
         }
         if (genetics == null) {
             genetics = new Genetics();
