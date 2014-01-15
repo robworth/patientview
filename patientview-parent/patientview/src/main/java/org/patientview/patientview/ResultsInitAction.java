@@ -33,7 +33,6 @@ import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,21 +44,18 @@ public class ResultsInitAction extends Action {
                                  HttpServletResponse response)
             throws Exception {
 
+        final String defaultTestCode = "creatinine";
+
         User user = UserUtils.retrieveUser(request);
-        String testCode1 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode");
 
         if (user != null) {
             request.setAttribute("user", user);
-
-            if (StringUtils.isEmpty(testCode1)) {
-                testCode1 = "creatinine";
-            }
 
             List<ResultHeading> resultsHeadingsList
                     = LegacySpringUtils.getResultHeadingManager().getAll(user.getUsername());
 
             request.setAttribute("resultsHeadings", resultsHeadingsList);
-            ResultHeading heading = LegacySpringUtils.getResultHeadingManager().get(testCode1);
+            ResultHeading heading = LegacySpringUtils.getResultHeadingManager().get(defaultTestCode);
             request.setAttribute("resultTypeHeading", heading);
             request.setAttribute("period", "24");
         } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
