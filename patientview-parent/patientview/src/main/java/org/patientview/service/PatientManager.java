@@ -45,6 +45,8 @@ public interface PatientManager {
 
     Patient getPatient(String username);
 
+    Patient getRadarPatient(String nhsNo);
+
     void save(Patient patient);
 
     void delete(String nhsno, String unitcode);

@@ -103,6 +103,25 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     }
 
     @Override
+    public Patient getRadarPatient(String nhsNo) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsNo));
+        wherePredicates.add(builder.equal(from.get(Patient_.sourceType), SourceType.RADAR.getName()));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
     public List<Patient> getByNhsNo(String nhsNo) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
