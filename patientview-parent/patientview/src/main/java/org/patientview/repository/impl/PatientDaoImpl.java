@@ -298,7 +298,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "   user.firstlogon, "
                 + "   user.accountlocked, "
                 + "   patient.treatment, "
-                + "   patient.dateofbirth "
+                + "   patient.dateofbirth, "
+                + "   patient.id "
                 + "FROM "
                 + "   user, "
                 + "   specialtyuserrole, "
@@ -332,7 +333,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     public List<Patient> getUktPatients() {
 
         String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, "
-                + " patient.dateofbirth, patient.postcode FROM patient, user, usermapping "
+                + " patient.dateofbirth, patient.postcode, patient.id FROM patient, user, usermapping "
                 + " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno "
                 + "AND user.username = usermapping.username "
                 + " AND usermapping.username NOT LIKE '%-GP' AND user.dummypatient = 0";
@@ -351,7 +352,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patient.setForename(resultSet.getString("forename"));
             patient.setDateofbirth(resultSet.getDate("dateofbirth"));
             patient.setPostcode(resultSet.getString("postcode"));
-
+            patient.setId(resultSet.getLong("id"));
             return patient;
         }
     }
@@ -373,7 +374,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
             patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
-
+            patientLogonWithTreatment.setPatientId(resultSet.getLong("id"));
             return patientLogonWithTreatment;
         }
     }
