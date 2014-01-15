@@ -73,8 +73,8 @@ public class TestResultsAction extends Action {
 
             Panel currentPanel = managePanels(request);
 
-            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user,
-                    isRadarGroup);
+
+            List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
 
             Collection<Result> resultsInRecords = turnResultsListIntoRecords(results);
 
@@ -94,8 +94,7 @@ public class TestResultsAction extends Action {
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    private List<TestResultWithUnitShortname> extractTestResultsWithComments(Panel currentPanel, User user,
-                                                                             boolean isRadarGroup) {
+    private List<TestResultWithUnitShortname> extractTestResultsWithComments(Panel currentPanel, User user) {
         List<TestResultWithUnitShortname> results
                 = LegacySpringUtils.getTestResultManager().getTestResultForPatient(user, currentPanel);
 

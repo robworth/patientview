@@ -67,6 +67,12 @@ public class TestResultManagerImpl implements TestResultManager {
     }
 
     @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(User user, List<String> resultCodes,
+                                                                     String monthBeforeNow) {
+        return testResultDao.getTestResultForPatient(user.getUsername(), resultCodes, monthBeforeNow);
+    }
+
+    @Override
     public void save(TestResult testResult) {
         testResultDao.save(testResult);
     }

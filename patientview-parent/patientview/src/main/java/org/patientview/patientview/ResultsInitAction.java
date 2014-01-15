@@ -28,42 +28,48 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.edtacode.EdtaCodeUtils;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class PatientDetailsAdminViewAction extends Action {
+public class ResultsInitAction extends Action {
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
-        String username = ActionUtils.retrieveStringPropertyValue("username", form, request);
-        String nhsno = ActionUtils.retrieveStringPropertyValue("nhsno", form, request);
-        String unitcode = ActionUtils.retrieveStringPropertyValue("unitcode", form, request);
-        String patientId = ActionUtils.retrieveStringPropertyValue("patientId", form, request);
+                                 HttpServletResponse response)
+            throws Exception {
 
-        request.getSession().setAttribute("userBeingViewedUsername", username);
-        request.getSession().setAttribute("userBeingViewedNhsno", nhsno);
-        request.getSession().setAttribute("userBeingViewedUnitcode", unitcode);
-        request.getSession().setAttribute("userBeingViewedPatientId", Long.parseLong(patientId));
-
-        // allow the logged in user to be overridden when viewing the site as a patient using an admin account
         User user = UserUtils.retrieveUser(request);
+        String testCode1 = LegacySpringUtils.getContextProperties().getProperty("test.result.testCode");
 
-        List<PatientDetails> patientDetails = LegacySpringUtils.getPatientManager().getPatientDetails(
-                user.getUsername());
+        if (user != null) {
+            request.setAttribute("user", user);
 
-        request.setAttribute("patientDetails", patientDetails);
+            if (StringUtils.isEmpty(testCode1)) {
+                testCode1 = "creatinine";
+            }
 
-        EdtaCodeUtils.addEdtaCodeToRequest("static", "staticLinks", request);
+            List<ResultHeading> resultsHeadingsList
+                    = LegacySpringUtils.getResultHeadingManager().getAll(user.getUsername());
+
+            request.setAttribute("resultsHeadings", resultsHeadingsList);
+            ResultHeading heading = LegacySpringUtils.getResultHeadingManager().get(testCode1);
+            request.setAttribute("resultTypeHeading", heading);
+            request.setAttribute("period", "24");
+        } else if (!LegacySpringUtils.getSecurityUserManager().isRolePresent("patient")) {
+            return LogonUtils.logonChecks(mapping, request, "control");
+        }
 
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
         return LogonUtils.logonChecks(mapping, request);
     }
+
 }
+

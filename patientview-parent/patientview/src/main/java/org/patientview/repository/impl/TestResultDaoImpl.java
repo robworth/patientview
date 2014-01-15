@@ -32,6 +32,7 @@ import org.patientview.repository.TestResultDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -84,6 +85,46 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         List<Object> params = new ArrayList<Object>();
         params.add(username);
         params.add(panel.getPanel());
+
+        return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
+    }
+
+    @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(String username, List<String> resultCodes,
+                                                                     String monthBeforeNow) {
+        List<Object> params = new ArrayList<Object>();
+        params.add(username);
+        String sql = " SELECT DISTINCT testresult.*, unit.shortname "
+                + " FROM testresult "
+                + " LEFT JOIN unit ON unit.unitcode = testresult.unitcode "
+                + " JOIN user, usermapping, result_heading "
+                + " WHERE user.username = ? "
+                + " AND user.username = usermapping.username "
+                + " AND usermapping.nhsno = testresult.nhsno "
+                + " AND testresult.testcode = result_heading.headingcode "
+                + " AND result_heading.headingcode IN (";
+
+        for (int x = 0; x < resultCodes.size(); x++) {
+            if (StringUtils.isEmpty(resultCodes.get(x))) {
+                continue;
+            }
+            sql += " ? ";
+
+            params.add(resultCodes.get(x));
+
+            if (x != resultCodes.size() - 1 && !StringUtils.isEmpty(resultCodes.get(x + 1))) {
+                sql += ",";
+            }
+        }
+        if (!monthBeforeNow.equals("0")) {
+            sql += " ) AND datestamp BETWEEN date_sub"
+                    + "(curdate(), INTERVAL " + monthBeforeNow + " MONTH ) AND curdate()";
+        } else {
+            sql += " ) ";
+        }
+        sql += " ORDER BY testresult.datestamp desc ";
+
+
 
         return jdbcTemplate.query(sql, params.toArray(), new TestResultWithUnitShortnameMapper());
     }
