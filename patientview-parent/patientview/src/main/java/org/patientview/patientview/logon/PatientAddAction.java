@@ -28,6 +28,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.model.Patient;
 import org.patientview.model.Unit;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.User;
@@ -127,6 +128,13 @@ public class PatientAddAction extends Action {
             LegacySpringUtils.getUserManager().save(userMappingPatientEnters);
             LegacySpringUtils.getUserManager().save(userMappingGp);
 
+            if (LegacySpringUtils.getPatientManager().get(nhsno, unitcode) != null) {
+                Patient patient = new Patient();
+                patient.setNhsno(nhsno);
+                patient.setUnitcode(unitcode);
+                patient.setEmailAddress(email);
+                LegacySpringUtils.getPatientManager().save(patient);
+            }
 
 
             AddLog.addLog(LegacySpringUtils.getSecurityUserManager().getLoggedInUsername(), AddLog.PATIENT_ADD,
@@ -134,6 +142,8 @@ public class PatientAddAction extends Action {
                     userMapping.getNhsno(), userMapping.getUnitcode(), "");
             mappingToFind = "success";
         }
+
+
 
         List<Unit> units = LegacySpringUtils.getUnitManager().getAll(false);
 
