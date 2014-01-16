@@ -95,7 +95,6 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
         buildWhereClause(criteria, wherePredicates);
 
-
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
         } catch (Exception e) {

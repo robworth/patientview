@@ -504,12 +504,16 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         username = username.toLowerCase();
 
-        int i = 1;
-        while (userDao.usernameExistsInPatientView(username + i) ||
-                userDao.getPatientUserWithUsername(username + i) != null) {
-            ++i;
+        if (userDao.usernameExistsInPatientView(username)) {
+            int i = 1;
+            while (userDao.usernameExistsInPatientView(username + i) ||
+                    userDao.getPatientUserWithUsername(username + i) != null) {
+                ++i;
+            }
+            username += i;
         }
-        return username + i;
+
+        return username;
     }
 
 
