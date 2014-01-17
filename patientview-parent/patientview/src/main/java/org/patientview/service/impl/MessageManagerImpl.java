@@ -27,7 +27,7 @@ import org.patientview.patientview.logon.UnitAdmin;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.Message;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.Job;
 import org.patientview.patientview.model.MessageRecipient;
 import org.patientview.patientview.model.enums.GroupEnum;

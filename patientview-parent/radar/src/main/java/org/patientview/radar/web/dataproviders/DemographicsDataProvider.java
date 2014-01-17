@@ -1,26 +1,48 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.dataproviders;
 
-import org.patientview.model.Centre;
-import org.patientview.model.Patient;
-import org.patientview.radar.model.filter.DemographicsFilter;
-import org.patientview.radar.service.DemographicsManager;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.filter.DemographicsFilter;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DemographicsManager;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class DemographicsDataProvider implements IDataProvider<Patient>, SortableDataProvider {
 
-    private Centre centre;
+    private User user;
     private DemographicsManager demographicsManager;
     private DemographicsFilter demographicsFilter;
 
-    public DemographicsDataProvider(DemographicsManager demographicsManager, Centre centre) {
+    public DemographicsDataProvider(DemographicsManager demographicsManager, User user) {
         this(demographicsManager);
-
-        this.centre = centre;
+        this.user = user;
     }
 
     public DemographicsDataProvider(DemographicsManager demographicsManager) {
@@ -70,8 +92,8 @@ public class DemographicsDataProvider implements IDataProvider<Patient>, Sortabl
     }
 
     private List<Patient> getResults(int page, int resultsPerPage) {
-        if (centre != null) {
-            return demographicsManager.getDemographicsByRenalUnit(centre);
+        if (user != null) {
+            return demographicsManager.getDemographicsByUser(user);
         } else {
             return demographicsManager.getDemographics(demographicsFilter, page, resultsPerPage);
         }

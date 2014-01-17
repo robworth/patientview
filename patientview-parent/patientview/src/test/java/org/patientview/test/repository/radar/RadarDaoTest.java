@@ -23,7 +23,7 @@
 
 package org.patientview.test.repository.radar;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.RadarDao;
 import org.patientview.repository.UnitDao;

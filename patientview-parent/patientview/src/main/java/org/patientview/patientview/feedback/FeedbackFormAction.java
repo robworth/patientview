@@ -28,7 +28,7 @@ import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.PatientUtils;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.Feedback;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;

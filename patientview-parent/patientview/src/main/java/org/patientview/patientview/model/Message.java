@@ -24,6 +24,7 @@
 package org.patientview.patientview.model;
 
 import org.patientview.model.BaseModel;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.enums.GroupEnum;
 import org.apache.commons.lang.StringUtils;
 import org.patientview.utils.XssUtils;

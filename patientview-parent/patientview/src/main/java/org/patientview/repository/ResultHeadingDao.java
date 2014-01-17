@@ -25,7 +25,7 @@ package org.patientview.repository;
 
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.ResultHeading;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +40,8 @@ public interface ResultHeadingDao {
     ResultHeading get(String headingcode, Specialty specialty);
 
     List<ResultHeading> getAll(Specialty specialty);
+
+    List<ResultHeading> getAll(Specialty specialty, String username);
 
     List<ResultHeading> get(int panel, Specialty specialty);
 

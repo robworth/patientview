@@ -62,7 +62,7 @@
             <div class="control-group">
                 <label class="control-label">NHS Number</label>
                 <div class="controls">
-                    <html:text property="nhsno" name="nhsnot"/>
+                    <html:text property="nhsno" name="nhsnot" readonly="true"/>
                     <html:hidden property="unitcode" name="nhsnot"/>
                 </div>
                 <logic:present name="nhsnoAlreadyExists">

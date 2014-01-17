@@ -69,12 +69,24 @@ h1, h2{
 	border-bottom: 5px solid #ddd;
 }
 
+.nav-pills-no-border{
+    border-bottom: 0px solid #ddd;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+.seperatingLine{
+    border-bottom: 5px solid #ddd;
+    margin: 0px 0px 18px 0px;
+}
+
 .nav-pills > li > a{
 	color: #333;
 	font-size: 13px;
 	font-weight: bold;
-	padding-right: 7px;
-	padding-left: 7px;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
 .nav-pills > li:first-child > a{

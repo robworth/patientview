@@ -23,8 +23,8 @@
 
 package org.patientview.test.repository;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.unit.UnitUtils;

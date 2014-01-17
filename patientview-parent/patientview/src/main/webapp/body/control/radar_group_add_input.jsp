@@ -1,5 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
 <%--
   ~ PatientView
   ~
@@ -32,6 +34,11 @@
 <html:errors />
 
 <html:form action="/control/radarGroupAdd">
+
+    <logic:present name="UnitExisted">
+        <bean:message key="errors.header"/><bean:message key="errors.prefix"/><bean:message
+            key="unitcode.duplicated"/><bean:message key="errors.suffix"/><bean:message key="errors.footer"/>
+    </logic:present>
 
   <table cellpadding="3" >
 

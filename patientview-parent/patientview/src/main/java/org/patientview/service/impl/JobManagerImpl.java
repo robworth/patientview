@@ -25,8 +25,8 @@ package org.patientview.service.impl;
 
 import org.patientview.patientview.model.Job;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Unit;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.enums.SendEmailEnum;
 import org.patientview.repository.UserDao;
 import org.patientview.repository.job.JobDao;

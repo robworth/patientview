@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.service.impl;
 
 import org.patientview.model.Patient;
@@ -5,7 +28,7 @@ import org.patientview.radar.dao.PlasmapheresisDao;
 import org.patientview.radar.model.Plasmapheresis;
 import org.patientview.radar.model.PlasmapheresisExchangeUnit;
 import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.PlasmapheresisManager;
 import org.patientview.radar.service.TreatmentManager;
 import org.patientview.radar.util.RadarUtility;
@@ -19,7 +42,7 @@ import java.util.List;
 public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
 
     private PlasmapheresisDao plasmapheresisDao;
-    DemographicsManager demographicsManager;
+    PatientManager patientManager;
 
     public void savePlasmapheresis(Plasmapheresis plasmapheresis) throws InvalidModelException {
         // validation
@@ -55,7 +78,7 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
         List<Date> datesToCheck = Arrays.asList(plasmapheresis.getStartDate(), plasmapheresis.getEndDate());
 
         // cannot be before date of birth
-        Patient patient = demographicsManager.getDemographicsByRadarNumber(plasmapheresis.getRadarNumber());
+        Patient patient = patientManager.getPatientByRadarNumber(plasmapheresis.getRadarNumber());
         if (patient != null) {
             Date dob = patient.getDob();
             if (dob != null) {
@@ -118,7 +141,7 @@ public class PlasmapheresisManagerImpl implements PlasmapheresisManager {
         this.plasmapheresisDao = plasmapheresisDao;
     }
 
-    public void setDemographicsManager(DemographicsManager demographicsManager) {
-        this.demographicsManager = demographicsManager;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 }

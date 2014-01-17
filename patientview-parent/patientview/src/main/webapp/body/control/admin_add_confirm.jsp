@@ -45,7 +45,7 @@ On <dt:format
     <logic:notEqual value="" name="adminuser" property="password">
       <tr>
           <td><b>Password</b></td>
-          <td><bean:write name="adminuser" property="password"/></td>
+          <td><h3><bean:write name="adminuser" property="password"/></h3></td>
       </tr>
     </logic:notEqual>
     <tr>

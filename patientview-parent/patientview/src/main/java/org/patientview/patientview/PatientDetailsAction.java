@@ -24,6 +24,7 @@
 package org.patientview.patientview;
 
 import org.patientview.actionutils.ActionUtils;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.edtacode.EdtaCodeUtils;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.User;
@@ -47,20 +48,35 @@ public class PatientDetailsAction extends Action {
         NewsUtils.putAppropriateNewsForViewingInRequest(request);
 
         // allow the logged in user to be overridden when viewing the site as a patient using an admin account
-        User user = UserUtils.retrieveUser(request);
+        User user = null;
+        String param = mapping.getParameter();
+        boolean isRadarGroup = false;
+        if ("demographics".equals(param)) {
+            isRadarGroup = true;
+            user = UserUtils.retrieveUser(request);
+        } else  if ("controlDemographics".equals(param)) {
+            isRadarGroup = true;
+            String username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+            user = LegacySpringUtils.getUserManager().get(username);
+        } else {
+            user = UserUtils.retrieveUser(request);
+        }
 
         List<PatientDetails> patientDetails = LegacySpringUtils.getPatientManager().getPatientDetails(
                 user.getUsername());
+        PatientDetails patientDetail = getRadarPatientDetails(patientDetails);
 
         request.setAttribute("patientDetails", patientDetails);
 
+
+
         // this form is only used for ibd for now, so just check it exist before trying to use it
-        if (form != null && form instanceof DynaActionForm && patientDetails != null && patientDetails.size() > 0) {
+        if (form != null && form instanceof DynaActionForm && patientDetail != null) {
             // add the editable ibd only patient details
             DynaActionForm dynaForm = (DynaActionForm) form;
             // let's just store this info against the first patient object if there are many for this nhsno
-            dynaForm.set("patientId", patientDetails.get(0).getPatient().getId());
-            dynaForm.set("otherConditions", patientDetails.get(0).getPatient().getOtherConditions());
+            dynaForm.set("patientId", patientDetail.getPatient().getId());
+            dynaForm.set("otherConditions", patientDetail.getPatient().getOtherConditions());
             dynaForm.set("email", LegacySpringUtils.getUserManager().getLoggedInUser().getEmail());
         }
 
@@ -69,5 +85,16 @@ public class PatientDetailsAction extends Action {
         ActionUtils.setUpNavLink(mapping.getParameter(), request);
 
         return LogonUtils.logonChecks(mapping, request);
+    }
+
+
+    private PatientDetails getRadarPatientDetails(List<PatientDetails> patientDetails) {
+        for (PatientDetails patientDetail : patientDetails) {
+            if (patientDetail.getPatient().getSourceType().equalsIgnoreCase(SourceType.RADAR.getName())) {
+                return patientDetail;
+            }
+        }
+
+        return null;
     }
 }

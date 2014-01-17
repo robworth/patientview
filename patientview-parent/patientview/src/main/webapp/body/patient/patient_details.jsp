@@ -120,6 +120,8 @@
     <bean:write name="patientDetail" property="patient.address2"/>
     <br/>
     <bean:write name="patientDetail" property="patient.address3"/>
+    <br/>
+    <bean:write name="patientDetail" property="patient.address4"/>
   </td>
 </tr>
 

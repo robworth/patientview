@@ -1,0 +1,105 @@
+
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<wicket:panel>
+
+    <div id="tabsC">
+    </div>
+    <div wicket:id="patientSelection"></div>
+    <div>
+        <p>
+            There are record(s) in PatientView with this NHS number. Please select a patient record to link to, otherwise click 'create new patient'
+        </p>
+
+
+        <form wicket:id="patientSelectionForm">
+
+
+            <wicket:container wicket:id="group">
+                <table border="1" cellspacing="0" cellpadding="3"
+                       style="font-size:85%;width:100%;border-collapse:collapse;"
+                       id="ctl00_ContentPlaceHolder1_GridView2" rules="all">
+                    <tr>
+                        <th>
+                            &nbsp;
+                        </th>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            NHS Number
+                        </th>
+                        <th>
+                            Forename
+                        </th>
+                        <th>
+                            Surname
+                        </th>
+                        <th>
+                            Date of Birth
+                        </th>
+                        <th>
+                            Unit Code
+                        </th>
+                        <th>
+                            Results Last Received
+                        </th>
+                    </tr>
+
+                    <label wicket:id="choice">
+                        <tr>
+                            <td>
+                                <input wicket:id="radio" type="radio" name="ticket"/>
+                            </td>
+                            <td>
+                                 <wicket:container wicket:id="id"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="nhsNo"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="forename"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="surname"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="dateOfBirth"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="unitCode"/>
+                            </td>
+                            <td>
+                                <wicket:container wicket:id="dateResultsLastReceived"/>
+                            </td>
+                        </tr>
+                    </label>
+                </table>
+            </wicket:container>
+
+            <input class="saveBtn link-patient" type="button" wicket:id="submit" value="Link Patient"/>
+
+        </form>
+    </div>
+</wicket:panel>

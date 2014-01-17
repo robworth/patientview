@@ -49,7 +49,7 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
       <td><b>Password</b></td>
       <td class="password">
         <logic:notEmpty name="gp">
-          <bean:write name="gp" property="password" />
+          <h3><bean:write name="gp" property="password" /></h3>
         </logic:notEmpty>
     </td>
     </tr>

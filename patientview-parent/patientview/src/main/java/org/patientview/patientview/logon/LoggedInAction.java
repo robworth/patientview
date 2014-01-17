@@ -23,22 +23,21 @@
 
 package org.patientview.patientview.logon;
 
-import org.patientview.actionutils.ActionUtils;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.UserLog;
-import org.patientview.patientview.news.NewsUtils;
-import org.patientview.patientview.model.Unit;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.actionutils.ActionUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.patientview.news.NewsUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class LoggedInAction extends Action {
 
@@ -75,25 +74,20 @@ public class LoggedInAction extends Action {
 
                 String nhsno = LegacySpringUtils.getUserManager().getUsersRealNhsNoBestGuess(user.getUsername());
 
+                Map.Entry<String, Date> testTestRange = LegacySpringUtils.getPatientManager().getLatestTestResultUnit(
+                        nhsno);
 
-                if (nhsno != null && !nhsno.equals("")) {
-                    UserLog userLog = LegacySpringUtils.getUserLogManager().getUserLog(nhsno);
-                    if (userLog != null) {
-                        if (userLog.getLastdatadate() != null && userLog.getUnitcode() != null) {
-                            request.setAttribute("lastDataDate", format.format(userLog.getLastdatadate().getTime()));
-                            // Get the unit from the unitcode
-                            String unitcode = userLog.getUnitcode();
-                            if (unitcode != null) {
-                                Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-                                if (null == unit) {
-                                    request.setAttribute("lastDataFrom", "Unit with code: " + unitcode);
-                                } else {
-                                    request.setAttribute("lastDataFrom", unit.getName());
-                                }
-                            }
-                        }
-                    }
+                String lastDataDate = null;
+                String testTestRangeKey = null;
+
+                if (testTestRange != null) {
+                    lastDataDate = format.format(testTestRange.getValue().getTime());
+                    testTestRangeKey = testTestRange.getKey();
                 }
+
+                request.setAttribute("lastDataDate", lastDataDate);
+                request.setAttribute("lastDataFrom", testTestRangeKey);
+
                 forward = "patient";
             } else {
                 forward = "admin";
@@ -101,5 +95,8 @@ public class LoggedInAction extends Action {
         }
         return LogonUtils.logonChecks(mapping, request, forward);
     }
+
+
+
 
 }

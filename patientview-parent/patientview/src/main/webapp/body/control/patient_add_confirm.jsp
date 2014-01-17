@@ -45,7 +45,7 @@ On <dt:format pattern="d MMM yyyy"><dt:currentTime/></dt:format> you successfull
     </tr>
     <tr>
       <td><b>Password</b></td>
-      <td class="password"><bean:write name="patient" property="password" /></td>
+      <td class="password"><h3><bean:write name="patient" property="password" /></h3></td>
     </tr>
     <tr>
       <td><b>Name</b></td>

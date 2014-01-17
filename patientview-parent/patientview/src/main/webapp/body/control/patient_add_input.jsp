@@ -49,6 +49,11 @@
   <p><font color="red">The patient with NHS number <b><bean:write name="patientAlreadyInUnit" /></b> already exists in your unit. You can't add another patient with the same NHS no to your unit. Please check the NHS number.</font></p>
 </logic:present>
 
+<logic:present name="radarGroupPatient" >
+    <p><font color="red">Can't add a patient to <b><bean:write name="radarGroupPatient" /></b> unit.</font></p>
+</logic:present>
+
+
 <html:form action="/control/patientAdd">
 <table cellpadding="3" >
     <tr>

@@ -24,7 +24,7 @@
 package org.patientview.test.repository;
 
 import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.repository.LetterDao;
 import org.patientview.repository.UserMappingDao;

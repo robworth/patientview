@@ -24,6 +24,7 @@
 package org.patientview.patientview.model;
 
 import org.patientview.model.BaseModel;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.utils.TimestampUtils;
 
 import javax.persistence.Column;
