@@ -306,7 +306,12 @@ public class GenericDemographicsPanel extends Panel {
                             IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
         }
 
+        nonEditableComponents.add(addIdValue);
+        nonEditableComponents.add(addIdType);
+        nonEditableComponents.add(addIdSubmit);
         addIdForm.add(addIdValue, addIdType, addIdSubmit);
+
+
         form.add(addIdForm);
 
         TextField hospitalNumber = new TextField("hospitalnumber");
@@ -444,6 +449,7 @@ public class GenericDemographicsPanel extends Panel {
                 return model.getObject().isLinked();
 
             }
+
         };
 
         String sourceUnitNameLabelValue = model.getObject().getPatientLinkUnitCode() != null
