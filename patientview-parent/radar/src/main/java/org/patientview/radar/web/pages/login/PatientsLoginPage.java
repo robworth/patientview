@@ -23,18 +23,9 @@
 
 package org.patientview.radar.web.pages.login;
 
-import org.patientview.radar.model.user.PatientUser;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
@@ -43,6 +34,13 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.user.PatientUser;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +65,7 @@ public class PatientsLoginPage extends BasePage {
                 RadarSecuredSession session = RadarSecuredSession.get();
                 PatientUser user = getModelObject();
                 boolean loginFailed = false;
-                PatientUser patientUser = userManager.getPatientUserWithUsername(user.getUsername(),
-                        user.getDateOfBirth());
+                PatientUser patientUser = userManager.getPatientUserWithUsername(user.getUsername());
 
                 if (patientUser != null) {
                     if (session.signIn(user.getUsername(), passwordModel.getObject())) {
@@ -99,11 +96,6 @@ public class PatientsLoginPage extends BasePage {
                 componentsToUpdateList);
         form.add(password);
         password.setModel(passwordModel);
-
-        // Date of birth with picker
-        DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth",
-                form, componentsToUpdateList);
-        form.add(dateOfBirth);
 
         // Construct feedback panel
         final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback", new IFeedbackMessageFilter() {
