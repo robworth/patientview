@@ -293,7 +293,7 @@ public class GenericDemographicsPanel extends Panel {
         DropDownChoice addIdType = null;
 
         // Link patients should not be able to add hospital numbers
-        if (patient.isLinked()) {
+        if (!patient.isLinked()) {
             addIdType =
                 new DropDownChoice("idType", Arrays.asList(IdType.HOSPITAL_NUMBER,
                         IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
