@@ -54,7 +54,6 @@ import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.service.UserManager;
@@ -306,12 +305,7 @@ public class GenericDemographicsPanel extends Panel {
                             IdType.CHANNELS_ISLANDS, IdType.INDIA), new ChoiceRenderer());
         }
 
-        nonEditableComponents.add(addIdValue);
-        nonEditableComponents.add(addIdType);
-        nonEditableComponents.add(addIdSubmit);
         addIdForm.add(addIdValue, addIdType, addIdSubmit);
-
-
         form.add(addIdForm);
 
         TextField hospitalNumber = new TextField("hospitalnumber");
@@ -464,27 +458,24 @@ public class GenericDemographicsPanel extends Panel {
         };
         form.add(sourceUnitCodeLabel, sourceUnitCode);
 
-        // if its a super user then the drop down will let them change renal units
-        // if its a normal user they can only add to their own renal unit
         DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
 
-        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    Patient patient = model.getObject();
-                    if (patient != null) {
-                        clinician.updateCentre(patient.getRenalUnit() != null ?
-                                patient.getRenalUnit().getUnitCode() :
-                                null);
-                    }
-
-                    // re-render the component
-                    clinician.clearInput();
-                    target.add(clinician);
+        renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Patient patient = model.getObject();
+                if (patient != null) {
+                    clinician.updateCentre(patient.getRenalUnit() != null ?
+                            patient.getRenalUnit().getUnitCode() :
+                            null);
                 }
-            });
-        }
+
+                // re-render the component
+                clinician.clearInput();
+                target.add(clinician);
+            }
+        });
+
 
         form.add(renalUnit);
 

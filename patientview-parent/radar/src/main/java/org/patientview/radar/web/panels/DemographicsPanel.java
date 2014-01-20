@@ -420,24 +420,21 @@ public class DemographicsPanel extends Panel {
 
         DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, form.getModelObject());
 
-        // if its a super user then the drop down will let them change renal units
-        // if its a normal user they can only add to their own renal unit
-        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    Patient patient = model.getObject();
-                    if (patient != null) {
-                        clinician.updateCentre(patient.getRenalUnit() != null ?
-                                patient.getRenalUnit().getUnitCode() :
-                                null);
-                    }
-
-                    clinician.clearInput();
-                    target.add(clinician);
+        renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Patient patient = model.getObject();
+                if (patient != null) {
+                    clinician.updateCentre(patient.getRenalUnit() != null ?
+                            patient.getRenalUnit().getUnitCode() :
+                            null);
                 }
-            });
-        }
+
+                clinician.clearInput();
+                target.add(clinician);
+            }
+        });
+
 
         form.add(renalUnit);
 
