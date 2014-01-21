@@ -229,6 +229,20 @@ public class ImporterTest extends BaseServiceTest {
     }
 
     /**
+     * Test for a Process Exception with a invalid
+     *
+     * @throws Exception
+     */
+    @Test(expected = ProcessException.class)
+    public void testXmlParserChecksInvalidUnitCode() throws Exception {
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890-InvalidUnitCode.gpg.xml");
+
+        importManager.process(xmlFileResource.getFile());
+    }
+
+    /**
      * Test to see if an exception is thrown when an update is being carried out on a radar patient
      *
      *

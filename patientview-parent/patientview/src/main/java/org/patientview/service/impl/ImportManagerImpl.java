@@ -47,6 +47,7 @@ import org.patientview.quartz.handler.ErrorHandler;
 import org.patientview.repository.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
+import org.patientview.service.UnitManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +72,9 @@ import java.util.List;
 public class ImportManagerImpl implements ImportManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
+
+    @Inject
+    private UnitManager unitManager;
 
     @Inject
     private XmlImportUtils xmlImportUtils;
@@ -152,8 +156,8 @@ public class ImportManagerImpl implements ImportManager {
             removePatientFromSystem(resultParser);
             return AddLog.PATIENT_DATA_REMOVE;
         } else {
+            validateUnitCode(resultParser.getCentre());
             updatePatientDetails(resultParser.getPatient(), resultParser.getDateRanges());
-            updateCentreDetails(resultParser.getCentre());
             deleteDateRanges(resultParser.getDateRanges());
             insertResults(resultParser.getTestResults());
             deleteLetters(resultParser.getLetters());
@@ -284,9 +288,12 @@ public class ImportManagerImpl implements ImportManager {
         return mostRecentTestResultDateRangeStopDate;
     }
 
-    private void updateCentreDetails(Centre centre) {
-        LegacySpringUtils.getCentreManager().delete(centre.getCentreCode());
-        LegacySpringUtils.getCentreManager().save(centre);
+    private void validateUnitCode(Centre centre) throws ProcessException {
+
+        if (unitManager.get(centre.getCentreCode()) == null) {
+            throw new ProcessException("The unit code supplied by the file does not exist in the database");
+        }
+
     }
 
     private void deleteDateRanges(Collection dateRanges) {
