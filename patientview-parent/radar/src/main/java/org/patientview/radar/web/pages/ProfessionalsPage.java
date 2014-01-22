@@ -23,19 +23,18 @@
 
 package org.patientview.radar.web.pages;
 
-import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.UtilityManager;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.JFreeChartImage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jfree.chart.JFreeChart;
+import org.patientview.radar.model.user.ProfessionalUser;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.UtilityManager;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.JFreeChartImage;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
 public class ProfessionalsPage extends BasePage {
@@ -63,9 +62,9 @@ public class ProfessionalsPage extends BasePage {
             }
         }
 
-        final Label countLabel = new Label("count", new Model<Integer>(patientCount));
-        countLabel.setOutputMarkupPlaceholderTag(true);
-        add(countLabel);
+       // final Label countLabel = new Label("count", new Model<Integer>(patientCount));
+        //countLabel.setOutputMarkupPlaceholderTag(true);
+        //add(countLabel);
 
         String renalUnit = "";
         if (session.isSignedIn()) {
@@ -83,7 +82,7 @@ public class ProfessionalsPage extends BasePage {
             public void onClick(AjaxRequestTarget target) {
                 graph.setVisible(true);
                 target.add(graph);
-                target.add(countLabel);
+                //target.add(countLabel);
             }
         });
 
