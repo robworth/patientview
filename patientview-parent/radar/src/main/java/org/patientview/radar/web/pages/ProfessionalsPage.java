@@ -53,14 +53,6 @@ public class ProfessionalsPage extends BasePage {
         add(graph);
 
         final AuthenticatedWebSession session = RadarSecuredSession.get();
-        int patientCount = 0;
-        if (session.isSignedIn()) {
-            if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles().
-                    hasRole(User.ROLE_SUPER_USER)) {
-                ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
-                patientCount = utilityManager.getPatientCountByUnit(user.getCentre());
-            }
-        }
 
        // final Label countLabel = new Label("count", new Model<Integer>(patientCount));
         //countLabel.setOutputMarkupPlaceholderTag(true);
