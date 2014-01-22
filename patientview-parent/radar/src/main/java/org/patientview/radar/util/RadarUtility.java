@@ -226,13 +226,13 @@ public class RadarUtility {
 
     private static boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
 
-        // Remove all whitespace and non-visible characters such as tab, new line etc
-        nhsNumber = nhsNumber.replaceAll("\\s", "");
-
         // Only permit 10 characters
         if (nhsNumber.length() != 10) {
             return false;
         }
+
+        // Remove all whitespace and non-visible characters such as tab, new line etc
+        nhsNumber = nhsNumber.replaceAll("\\s", "");
 
         boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
         boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
