@@ -29,7 +29,6 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -45,7 +44,6 @@ import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
 import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.pages.ProfessionalsPage;
-import org.patientview.radar.web.pages.regisration.ChangeRegistrationDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +136,5 @@ public class ProfessionalsLoginPage extends BasePage {
         add(form);
         String patientViewUrl = RadarUtility.getProperty("config.patientview.site.url");
         add(new ExternalLink("forgotPasswordLink", patientViewUrl + "forgotten-password.do"));
-        add(new BookmarkablePageLink("changeDetailsLink", ChangeRegistrationDetails.class));
     }
 }
