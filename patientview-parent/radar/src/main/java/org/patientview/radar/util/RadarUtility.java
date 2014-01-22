@@ -38,7 +38,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * Radar Utility - miscellaneous utility methods go here
@@ -46,6 +49,22 @@ import java.util.Date;
 public class RadarUtility {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
+    private static Properties properties;
+
+    static {
+        properties = new Properties();
+        InputStream inputStream = RadarUtility.class.getClassLoader().getResourceAsStream("radar.properties");
+        try {
+            properties.load(inputStream);
+            inputStream.close();
+        } catch (IOException io) {
+            LOGGER.error("Properties not loaded");
+        }
+    }
+
+    public static String getProperty(String name) {
+        return properties.getProperty(name);
+    }
 
     /**
      * @param event1Start cannot be null
@@ -255,6 +274,8 @@ public class RadarUtility {
             return false; // nhsNumber contains letters
         }
     }
+
+
 
 
 }

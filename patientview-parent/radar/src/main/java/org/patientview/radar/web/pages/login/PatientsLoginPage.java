@@ -29,13 +29,14 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.RadarUtility;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
 import org.patientview.radar.web.components.RadarRequiredTextField;
@@ -120,9 +121,10 @@ public class PatientsLoginPage extends BasePage {
             }
         });
 
-
         // Add links for forgotten password and register
-        add(new BookmarkablePageLink<PatientForgottenPasswordPage>("forgottenPasswordLink",
-                PatientForgottenPasswordPage.class));
+        String patientViewUrl = RadarUtility.getProperty("config.patientview.site.url");
+        add(new ExternalLink("forgottenPasswordLink", patientViewUrl + "forgotten-password.do"));
+
+
     }
 }
