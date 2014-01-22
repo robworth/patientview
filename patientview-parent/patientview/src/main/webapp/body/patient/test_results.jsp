@@ -33,8 +33,7 @@
 </div>
 <div>
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#">Graphic</a></li>
-        <li><html:link action="/patient/results">Tabular</html:link></li>
+        <li class="active"><html:link action="/patient/results">Tabular</html:link></li>
     </ul>
 </div>
 
@@ -55,7 +54,7 @@
             <li><a id="btn_2_none" href="#" onclick='changeChart(this, "","")'>&nbsp;</a></li>
             <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
                 <li><a id="btn_2" href="#" onclick='changeChart(this, "<bean:write name="heading" property="headingcode"/>", "<bean:write name="heading" property="heading"/>")'><bean:write name="heading" property="heading"/> </a></li>
-    </logic:iterate>
+            </logic:iterate>
         </ul>
     </div>
 

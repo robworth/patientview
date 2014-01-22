@@ -407,16 +407,6 @@
             <forward name="success" path="/patient/diagnostics.jsp"/>
         </action>
 
-        <action path="/patient/graphic_testresult"
-                type="org.patientview.patientview.ResultsAction"
-                name="resultForm">
-        </action>
-
-        <action path="/patient/testresults"
-                type="org.patientview.patientview.ResultsInitAction">
-            <forward name="success" path="/patient/test_results.jsp"/>
-        </action>
-
         <action path="/patient/results"
                 type="org.patientview.patientview.TestResultsAction" parameter="results">
             <forward name="success" path="/patient/results.jsp"/>
