@@ -54,9 +54,6 @@ public class ProfessionalsPage extends BasePage {
 
         final AuthenticatedWebSession session = RadarSecuredSession.get();
 
-       // final Label countLabel = new Label("count", new Model<Integer>(patientCount));
-        //countLabel.setOutputMarkupPlaceholderTag(true);
-        //add(countLabel);
 
         String renalUnit = "";
         if (session.isSignedIn()) {

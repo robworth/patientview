@@ -206,11 +206,16 @@ public class UtilityManagerImpl implements UtilityManager {
 
             Integer srnsCount = srnsPatientCountMap.containsKey(centre.getId()) ?
                     srnsPatientCountMap.get(centre.getId()) : null;
-            dataset.addValue(srnsCount, srnsSeries, centreCategory);
+            if (srnsCount != null && srnsCount > 0) {
+                dataset.addValue(srnsCount, srnsSeries, centreCategory);
+            }
 
             Integer mpgnCount = mpgnPatientCountMap.containsKey(centre.getId()) ?
                     mpgnPatientCountMap.get(centre.getId()) : null;
-            dataset.addValue(mpgnCount, mpgnSeries, centreCategory);
+
+            if (mpgnCount != null && mpgnCount > 0) {
+                dataset.addValue(mpgnCount, mpgnSeries, centreCategory);
+            }
         }
 
         // create chart
