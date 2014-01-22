@@ -27,10 +27,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jfree.chart.JFreeChart;
-import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.web.RadarSecuredSession;
@@ -53,18 +51,6 @@ public class ProfessionalsPage extends BasePage {
         add(graph);
 
         final AuthenticatedWebSession session = RadarSecuredSession.get();
-
-
-        String renalUnit = "";
-        if (session.isSignedIn()) {
-            if (session.getRoles().hasRole(User.ROLE_PROFESSIONAL) || session.getRoles()
-                    .hasRole(User.ROLE_SUPER_USER)) {
-                ProfessionalUser user = (ProfessionalUser) RadarSecuredSession.get().getUser();
-                renalUnit = user.getCentre() != null ? user.getCentre().getName() : "";
-            }
-        }
-
-        add(new Label("renalUnit", renalUnit));
 
         add(new AjaxLink("showGraph") {
             @Override
