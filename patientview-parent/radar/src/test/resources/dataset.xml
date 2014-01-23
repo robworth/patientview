@@ -1,4 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
 <dataset>
     <table name="sysdiagrams">
         <column>name</column>
@@ -19366,6 +19389,80 @@ AFAFHDAH]]></value>
             <value>1</value>
             <value>1</value>
         </row>
+        <row>
+            <value>5</value>
+            <value>5</value>
+            <value>group5</value>
+            <value>group5</value>
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <null />
+            <value>renalunit</value>
+            <value>1</value>
+            <value>1</value>
+        </row>
     </table>
     <table name="rdr_diagnosis_mapping">
         <column>workingGroup</column>
@@ -19501,8 +19598,8 @@ AFAFHDAH]]></value>
         <column>id</column>
         <column>radar_no</column>
         <column>evidenceOfDeafness</column>
-        <column>ageProblemFirstNoticed</column>
-        <column>ageStartedUsingHearingAid</column>
+        <column>dateStartedUsingHearingAid</column>
+        <column>dateProblemFirstNoticed</column>
     </table>
 
     <table name="medicine">
@@ -19513,5 +19610,17 @@ AFAFHDAH]]></value>
         <column>dose</column>
         <column>startdate</column>
         <column>enddate</column>
+    </table>
+    <table name="specialty">
+        <column>id</column>
+        <column>context</column>
+        <column>description</column>
+        <column>name</column>
+        <row>
+            <value>1</value>
+            <value>testcontext</value>
+            <value>testcontext</value>
+            <value>test</value>
+        </row>
     </table>
 </dataset>

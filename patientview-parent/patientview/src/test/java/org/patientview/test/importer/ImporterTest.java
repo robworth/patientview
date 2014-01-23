@@ -28,17 +28,19 @@ import org.junit.Test;
 import org.patientview.ibd.model.Allergy;
 import org.patientview.ibd.model.MyIbd;
 import org.patientview.ibd.model.Procedure;
+import org.patientview.model.Patient;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.XmlImportUtils;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.Centre;
 import org.patientview.patientview.model.Diagnostic;
 import org.patientview.patientview.model.Letter;
 import org.patientview.patientview.model.Medicine;
-import org.patientview.patientview.model.Patient;
-import org.patientview.patientview.model.Specialty;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.parser.XmlParserUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.quartz.exception.ProcessException;
 import org.patientview.service.CentreManager;
 import org.patientview.service.DiagnosticManager;
 import org.patientview.service.ImportManager;
@@ -51,11 +53,11 @@ import org.patientview.service.TimeManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
+import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
 import org.patientview.test.service.BaseServiceTest;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.core.io.Resource;
-import org.springframework.mock.web.MockHttpSession;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -65,9 +67,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * The importer is kicked off from ParserMonitorServlet.
+ * The importer is kicked off from Quartz.
  *
  * There are 3 threads - XmlParserThread, UktParserThread & UktExportThread.
  *
@@ -114,6 +117,12 @@ public class ImporterTest extends BaseServiceTest {
     @Inject
     private LogEntryManager logEntryManager;
 
+    @Inject
+    private XmlImportUtils xmlImportUtils;
+
+    @Inject
+    private SecurityHelpers securityHelpers;
+
     @Before
     public void setupSystem() {
         Unit mockUnit = new Unit();
@@ -128,8 +137,14 @@ public class ImporterTest extends BaseServiceTest {
         mockSpecialty.setDescription("Renal Patient View");
 
         mockSpecialty = serviceHelpers.createSpecialty("Specialty1", "ten1", "A test specialty");
-
         mockUnit.setSpecialty(mockSpecialty);
+
+        User mockUser = serviceHelpers.createUserWithMapping("testname1", "test1@admin.com", "p", "test1", "UNITA",
+                "nhstest1", mockSpecialty);
+
+        serviceHelpers.createSpecialtyUserRole(mockSpecialty, mockUser, "patient");
+
+        securityHelpers.loginAsUser("testname1");
 
         unitManager.save(mockUnit);
     }
@@ -158,12 +173,10 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:A_00794_1234567890.gpg.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
+        importManager.process(xmlFileResource.getFile());
 
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
-
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FOLLOWUP);
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FOLLOWUP);
 
         List<Centre> centres = centreManager.getAll();
 
@@ -188,29 +201,156 @@ public class ImporterTest extends BaseServiceTest {
         assertEquals("Incorrect number of letters", 2, letters.size());
     }
 
+
+    /**
+     * RPV - 138 Update the same patient twice and see if the gender gets changed as the
+     * second XML uses a different gender.
+     *
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testXmlParserUpdatesPatientRecord() throws Exception {
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890.gpg.xml");
+
+        importManager.process(xmlFileResource.getFile());
+        List<Patient> patients = patientManager.getByNhsNo("1234567890");
+        assertTrue("The first patient record is female", patients.get(0).getSex().equals("Female"));
+
+
+        xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890_duplicate.gpg.xml");
+        importManager.process(xmlFileResource.getFile());
+        patients = patientManager.getByNhsNo("1234567890");
+        assertTrue("There is still only one patient record for this NHS Number", patients.size() == 1);
+        assertTrue("The updated patient record is male", patients.get(0).getSex().equals("Male"));
+    }
+
+    /**
+     * Test for a Process Exception with a invalid
+     *
+     * @throws Exception
+     */
+    @Test(expected = ProcessException.class)
+    public void testXmlParserChecksInvalidUnitCode() throws Exception {
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890-InvalidUnitCode.gpg.xml");
+
+        importManager.process(xmlFileResource.getFile());
+    }
+
+    /**
+     * Test to see if an exception is thrown when an update is being carried out on a radar patient
+     *
+     *
+     * @throws IOException
+     * @throws ProcessException
+     */
+    @Test(expected = ProcessException.class)
+    public void testFileImportUpdatingRadarPatient() throws IOException, ProcessException {
+
+        // Create the Radar patient to map the patient in the XML file
+        Patient patient = new Patient();
+        patient.setNhsno("1234567890");
+        patient.setSurname("Test");
+        patient.setForename("Radar");
+        patient.setUnitcode("A");
+        patient.setDob(new Date());
+        patient.setNhsNoType("1");
+        patient.setSourceType(SourceType.RADAR.getName());
+
+        patientManager.save(patient);
+
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890.gpg.xml");
+
+        importManager.process(xmlFileResource.getFile());
+
+    }
+
+    /**
+     * Create a patient in PV and Radar, 2 rows in patient table.
+     *
+     * Then create an update XML for the PV patient.  Code should update cleanly and not through an exception
+     *
+     * @throws IOException
+     * @throws ProcessException
+     */
+    @Test
+    public void testImportPatientUpdateOKWhenPatientIsInPVAndRadar() throws IOException, ProcessException {
+
+        final String nhsNumber = "1234567890";
+
+        System.out.println("1");
+
+        // Create the Radar patient to match the patient in the XML file
+        Patient patient = new Patient();
+        patient.setNhsno(nhsNumber);
+        patient.setSurname("Test");
+        patient.setForename("Radar");
+        patient.setUnitcode("A");
+        patient.setDob(new Date());
+        patient.setNhsNoType("1");
+        patient.setSourceType(SourceType.RADAR.getName());
+
+        patientManager.save(patient);
+
+        // import results from same unit, should import cleanly sourceType = 'PatientView'
+        Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
+                .getResource("classpath:A_00794_1234567890.gpg.xml");
+        importManager.process(xmlFileResource.getFile());
+        System.out.println("2");
+
+        List<Patient> patients = patientManager.getByNhsNo(nhsNumber);
+        System.out.println("3");
+        assertEquals("Should now be 2 patient records", 2, patients.size());
+        assertEquals(SourceType.PATIENT_VIEW.getName(), patients.get(0).getSourceType());
+        assertEquals(SourceType.RADAR.getName(), patients.get(1).getSourceType());
+
+        System.out.println("4");
+
+        // now update the patient, this should cleanly update with no errors, or duplicates
+        importManager.process(xmlFileResource.getFile());
+
+        System.out.println("5");
+
+        patients = patientManager.getByNhsNo(nhsNumber);
+        assertEquals("Should still be 2 patient records", 2, patients.size());
+
+        System.out.println("6");
+
+        // RPV 141 - Assert that the patient link id is not updated to 0
+        assertEquals("The patient link id should not be 0", patient.getPatientLinkId(), null);
+
+    }
+
     @Test
     public void testTestResultIsNotDuplicatedIfDoubleRun() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:DUMMY_000002_9999999995.gpg.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         List<TestResult> results = testResultManager.get("9999999995", "DUMMY");
 
         assertEquals("Incorrect number of results after first import", 1, results.size());
 
         // double run
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
         results = testResultManager.get("9999999995", "DUMMY");
 
         assertEquals("Incorrect number of results after double run import", 1, results.size());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
+
+
+
 
     /**
      * Test if importer handles empty test file. This probably means that the encryption did not work.
@@ -223,11 +363,16 @@ public class ImporterTest extends BaseServiceTest {
     public void testXmlParserUsingEmptyIBDFile() throws Exception {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_empty_9876543210.xml");
-        MockHttpSession mockHttpSession = new MockHttpSession();
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -268,14 +413,16 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithFutureDate_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FAIL);
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
+                        AddLog.PATIENT_DATA_FAIL);
     }
 
     /**
@@ -290,13 +437,15 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithOutsideDaterange_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -326,11 +475,9 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithValidDates_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
+        importManager.process(xmlFileResource.getFile());
 
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
-
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FOLLOWUP);
     }
 
@@ -346,13 +493,15 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_resultWithEmptyValue_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        try {
+            importManager.process(xmlFileResource.getFile());
+        } catch (Exception e) {
+            assertEquals("Exception is not expected", true, e instanceof ProcessException);
+        }
 
         checkNoDataHasBeenImportedFromIBDImportFile();
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
                 AddLog.PATIENT_DATA_FAIL);
     }
 
@@ -366,12 +515,10 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
+        importManager.process(xmlFileResource.getFile());
 
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
-
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FOLLOWUP);
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
+                                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 
@@ -388,14 +535,12 @@ public class ImporterTest extends BaseServiceTest {
         Resource xmlFileResource = springApplicationContextBean.getApplicationContext()
                 .getResource("classpath:rm301_1244_9876543210.xml");
 
-        MockHttpSession mockHttpSession = new MockHttpSession();
-
         // run twice
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
-        XmlParserUtils.updateXmlData(mockHttpSession.getServletContext(), xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
+        importManager.process(xmlFileResource.getFile());
 
-        checkLogEntry(XmlImportUtils.extractFromXMLFileNameNhsno(xmlFileResource.getFile().getName()),
-                AddLog.PATIENT_DATA_FOLLOWUP);
+        checkLogEntry(xmlImportUtils.getNhsNumber(xmlFileResource.getFile().getName()),
+                                AddLog.PATIENT_DATA_FOLLOWUP);
 
         checkIbdImportedData();
 

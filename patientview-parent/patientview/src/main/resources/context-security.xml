@@ -75,6 +75,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern="/renal/patient/**" access="ROLE_RENAL_DEMO"/>
         <intercept-url pattern="/renal/posts/**" access="ROLE_RENAL_DEMO"/>
         <intercept-url pattern="/renal/**" access="ROLE_ANY_USER"/>
+        <intercept-url pattern="/web/**" access="ROLE_RENAL_UNITADMIN"/>
 
         <!-- IBD specialty config -->
         <intercept-url pattern="/ibd/logged_in.do" access="ROLE_IBD_DEMO"/>
@@ -86,6 +87,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <!-- messages -->
         <intercept-url pattern="/control/messaging/message_confirm.jsp" access="ROLE_RENAL_UNITADMIN"/>
         <intercept-url pattern="/patient/conversation**" access="ROLE_RENAL_DEMO"/>
+        <intercept-url pattern="/patient/graphic_testresult**" access="ROLE_RENAL_DEMO"/>
         <intercept-url pattern="/control/conversation**" access="ROLE_RENAL_UNITSTAFF"/>
         <intercept-url pattern="/send-message**" access="ROLE_RENAL_DEMO"/>
         <intercept-url pattern="/unit-recipients**" access="ROLE_RENAL_UNITADMIN"/>

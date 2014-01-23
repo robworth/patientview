@@ -1,5 +1,30 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.test.dao;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.radar.dao.IssueDao;
 import org.patientview.radar.model.Issue;
 import org.patientview.radar.model.enums.IssuePriority;
@@ -7,10 +32,12 @@ import org.patientview.radar.model.enums.IssueStatus;
 import org.patientview.radar.model.enums.IssueType;
 import org.patientview.radar.model.filter.IssueFilter;
 import org.junit.Test;
+import org.patientview.radar.test.TestDataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -21,10 +48,20 @@ public class IssueDaoTest extends BaseDaoTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IssueDaoTest.class);
 
+    @Inject
+    private TestDataHelper testDataHelper;
+
     @Autowired
     private IssueDao issueDao;
 
-        @Test
+
+
+    @Before
+    public void setUp() {
+        testDataHelper.createIssue();
+    }
+
+    @Test
     public void testGetIssue() {
         Issue issue = issueDao.getIssue(1L);
         assertNotNull(issue);

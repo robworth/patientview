@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
+import org.patientview.utils.LegacySpringUtils;
 
 public class AboutmeImageUploadAction extends Action {
 
@@ -53,7 +54,7 @@ public class AboutmeImageUploadAction extends Action {
         String fileName = myFile.getFileName();
 
         ServletContext context = request.getSession().getServletContext();
-        String aboutmeImageDirPath = context.getInitParameter("aboutme.image.directory");
+        String aboutmeImageDirPath = LegacySpringUtils.getContextProperties().getProperty("aboutme.image.directory");
 
         if (!fileName.equals("")) {
             File fileToCreate = new File(aboutmeImageDirPath, nhsno);

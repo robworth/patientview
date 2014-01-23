@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.util;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -5,12 +28,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +46,7 @@ import java.util.List;
  * 3. mapping between prd codes and working groups
  */
 public class RadarPhase2ExcelDataToSqlMapper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadarPhase2ExcelDataToSqlMapper.class);
     private static final String BASE_PATH = "/radarphase2dataimport/";
     public static final int FIRST_DATA_ROW = 2;
     public static final int LAST_DATA_ROW = 287;
@@ -191,14 +215,11 @@ public class RadarPhase2ExcelDataToSqlMapper {
             bufferedWriter.write(outputText.toString());
             //Close the output stream
             bufferedWriter.close();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+
         }
 
     }

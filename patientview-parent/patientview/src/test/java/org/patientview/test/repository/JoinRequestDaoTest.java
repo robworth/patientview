@@ -29,8 +29,12 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class JoinRequestDaoTest extends BaseDaoTest {
@@ -58,8 +62,75 @@ public class JoinRequestDaoTest extends BaseDaoTest {
         joinRequest.setEmail("jack@london.com");
         joinRequest.setNhsNo("9434765919");
         joinRequest.setUnitcode("SNC01");
+        joinRequest.setDateOfRequest(new Date());
 
         return joinRequest;
+    }
+
+    @Test
+    public void testGetJoinRequestList() throws Exception {
+        JoinRequest joinRequest = new JoinRequest();
+        JoinRequest joinRequest2 = getTestObject();
+
+        joinRequest.setFirstName("testName");
+        joinRequest.setLastName("London");
+        joinRequest.setDateOfBirth(new Date());
+        joinRequest.setEmail("test@london.com");
+        joinRequest.setNhsNo("9876543210");
+        joinRequest.setUnitcode("SNC01");
+        joinRequest.setComplete(true);
+        joinRequest.setNotes("test notes");
+        joinRequest.setDateOfRequest(new Date());
+
+        joinRequestDao.save(joinRequest);
+        joinRequestDao.save(joinRequest2);
+
+        List<String> unitCodes = new ArrayList<String>();
+        unitCodes.add("SNC01");
+
+        List<JoinRequest> allList = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes);
+        assertTrue("Can't save joinRequest", allList.size() == 2);
+
+        List<JoinRequest> inCompleteList = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes, false);
+        assertTrue("Can't get the incomplete joinRequest list", inCompleteList.size() == 1);
+        assertEquals("Get wrong incomplete joinRequest", "Jack", inCompleteList.get(0).getFirstName());
+
+        List<JoinRequest> completeList = joinRequestDao.getJoinRequestsForUnitCodes(unitCodes, true);
+        assertTrue("Can't get the complete joinRequest list", completeList.size() == 1);
+        assertEquals("Get wrong complete joinRequest", "testName", completeList.get(0).getFirstName());
+
+    }
+
+    @Test
+    public void testGetAllJoinRequestList() throws Exception {
+        JoinRequest joinRequest = new JoinRequest();
+        JoinRequest joinRequest2 = getTestObject();
+
+        joinRequest.setFirstName("testName");
+        joinRequest.setLastName("London");
+        joinRequest.setDateOfBirth(new Date());
+        joinRequest.setEmail("test@london.com");
+        joinRequest.setNhsNo("9876543210");
+        joinRequest.setUnitcode("SNC01");
+        joinRequest.setComplete(true);
+        joinRequest.setNotes("test notes");
+        joinRequest.setDateOfRequest(new Date());
+
+        joinRequestDao.save(joinRequest);
+        joinRequestDao.save(joinRequest2);
+
+        List<JoinRequest> allList = joinRequestDao.getAll();
+        assertNotNull("Couldn't get the joinRequests", allList);
+        assertTrue("Can't save joinRequest", allList.size() == 2);
+
+        List<JoinRequest> inCompleteList = joinRequestDao.getAll(false);
+        assertTrue("Can't get the incomplete joinRequest list", inCompleteList.size() == 1);
+        assertEquals("Get wrong incomplete joinRequest", "Jack", inCompleteList.get(0).getFirstName());
+
+        List<JoinRequest> completeList = joinRequestDao.getAll(true);
+        assertTrue("Can't get the complete joinRequest list", completeList.size() == 1);
+        assertEquals("Get wrong complete joinRequest", "testName", completeList.get(0).getFirstName());
+
     }
 
 }

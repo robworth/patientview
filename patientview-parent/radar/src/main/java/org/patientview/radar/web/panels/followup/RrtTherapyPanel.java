@@ -1,23 +1,28 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels.followup;
 
-import org.patientview.radar.model.Diagnosis;
-import org.patientview.radar.model.Transplant;
-import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.TransplantManager;
-import org.patientview.radar.service.TreatmentManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.components.RadarDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
-import org.patientview.radar.web.components.YesNoRadioGroup;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.panels.FollowUpPanel;
-import org.patientview.radar.web.panels.tables.DialysisTablePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -45,6 +50,24 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.Transplant;
+import org.patientview.radar.model.exception.InvalidModelException;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.service.TransplantManager;
+import org.patientview.radar.service.TreatmentManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.components.RadarDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDropdownChoice;
+import org.patientview.radar.web.components.YesNoRadioGroup;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.panels.FollowUpPanel;
+import org.patientview.radar.web.panels.tables.DialysisTablePanel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,11 +76,11 @@ import java.util.List;
 
 public class RrtTherapyPanel extends Panel {
     @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
     private DiagnosisManager diagnosisManager;
     @SpringBean
     private TransplantManager transplantManager;
+    @SpringBean
+    private PatientManager patientManager;
 
     public RrtTherapyPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -70,14 +93,14 @@ public class RrtTherapyPanel extends Panel {
         add(radarNumber);
 
         add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
 
         add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisManager), "abbreviation")));
 
-        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, demographicsManager)));
-        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+        add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel, patientManager)));
+        add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, patientManager)));
+        add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, patientManager),
                 RadarApplication.DATE_PATTERN));
 
         final IModel<Date> esrfDateModel = new LoadableDetachableModel<Date>() {

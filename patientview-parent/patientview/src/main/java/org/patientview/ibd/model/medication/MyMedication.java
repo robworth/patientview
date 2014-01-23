@@ -25,7 +25,7 @@ package org.patientview.ibd.model.medication;
 
 import org.patientview.ibd.Ibd;
 import org.patientview.ibd.model.medication.enums.MedicationFrequency;
-import org.patientview.patientview.model.BaseModel;
+import org.patientview.model.BaseModel;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;

@@ -1,16 +1,28 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels;
 
-import org.patientview.radar.model.Hospitalisation;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.service.DiagnosisManager;
-import org.patientview.radar.service.HospitalisationManager;
-import org.patientview.radar.web.RadarApplication;
-import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
-import org.patientview.radar.web.components.RadarComponentFactory;
-import org.patientview.radar.web.components.RadarDateTextField;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.models.RadarModelFactory;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -31,6 +43,17 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.Hospitalisation;
+import org.patientview.radar.service.DiagnosisManager;
+import org.patientview.radar.service.HospitalisationManager;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.choiceRenderers.DateChoiceRenderer;
+import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarDateTextField;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
+import org.patientview.radar.web.models.RadarModelFactory;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,10 +65,9 @@ public class HospitalisationPanel extends Panel {
     @SpringBean
     private HospitalisationManager hospitalisationManager;
     @SpringBean
-    private DemographicsManager demographicsManager;
-    @SpringBean
     private DiagnosisManager diagnosisManager;
-
+    @SpringBean
+    private PatientManager patientManager;
 
     public HospitalisationPanel(String id, final IModel<Long> radarNumberModel) {
         super(id);
@@ -143,15 +165,15 @@ public class HospitalisationPanel extends Panel {
         form.add(radarNumber);
 
         form.add(new TextField("hospitalNumber", RadarModelFactory.getHospitalNumberModel(radarNumberModel,
-                demographicsManager)));
+                patientManager)));
 
         form.add(new TextField("diagnosis", new PropertyModel(RadarModelFactory.getDiagnosisCodeModel(radarNumberModel,
                 diagnosisManager), "abbreviation")));
 
         form.add(new TextField("firstName", RadarModelFactory.getFirstNameModel(radarNumberModel,
-                demographicsManager)));
-        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, demographicsManager)));
-        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, demographicsManager),
+                patientManager)));
+        form.add(new TextField("surname", RadarModelFactory.getSurnameModel(radarNumberModel, patientManager)));
+        form.add(new DateTextField("dob", RadarModelFactory.getDobModel(radarNumberModel, patientManager),
                 RadarApplication.DATE_PATTERN));
 
         form.add(new RadarRequiredDateTextField("dateOfAdmission", form, componentsToUpdate));

@@ -25,6 +25,7 @@ package org.patientview.patientview.messaging;
 
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.ibd.action.BaseAction;
+import org.patientview.patientview.exception.MessagingException;
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.enums.GroupEnum;
@@ -32,11 +33,15 @@ import org.patientview.patientview.user.UserUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ConversationAction extends BaseAction {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConversationAction.class);
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -50,6 +55,9 @@ public class ConversationAction extends BaseAction {
         User user = UserUtils.retrieveUser(request);
         User loggedInUser = getUserManager().getLoggedInUser();
 
+        if (user == null) {
+            return mapping.findForward(ERROR);
+        }
         // add the conversation and messages to the page
         Conversation conversation = getMessageManager().getConversationForUser(getConversationId(request),
                 user.getId());
@@ -64,8 +72,13 @@ public class ConversationAction extends BaseAction {
         // single message the type is null
         if (conversation.getType() == null) {
             getMessageManager().markMessagesAsReadForConversation(loggedInUser.getId(), conversation.getId());
+
         } else {
-            getGroupMessageManager().markGroupMessageAsReadForConversation(loggedInUser, conversation);
+            try {
+                getGroupMessageManager().markGroupMessageAsReadForConversation(loggedInUser, conversation);
+            } catch (MessagingException e) {
+                LOGGER.error("Failed to mark group message as read for conversation: {}", e.getMessage());
+            }
             request.setAttribute(Messaging.IS_BULK_MESSAGE_PARAM, true);
             String userType = "";
             if (GroupEnum.ALL_ADMINS.equals(conversation.getGroupEnum())) {

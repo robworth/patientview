@@ -23,13 +23,15 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.model.UserMapping_;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UserMappingDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -45,6 +47,8 @@ import java.util.List;
 @Repository(value = "userMappingDao")
 public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implements UserMappingDao {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserMappingDaoImpl.class);
+
     @Override
     public void deleteUserMappings(String username, String unitcode, Specialty specialty) {
 
@@ -55,7 +59,8 @@ public class UserMappingDaoImpl extends AbstractHibernateDAO<UserMapping> implem
                 delete(userMapping);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 

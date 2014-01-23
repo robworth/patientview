@@ -1,50 +1,39 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.test;
 
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseDataSourceConnection;
-import org.dbunit.dataset.xml.XmlDataSet;
-import org.dbunit.ext.mysql.MySqlDataTypeFactory;
-import org.dbunit.operation.DatabaseOperation;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.patientview.common.test.BaseTestPvDbSchema;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
+@Ignore
 public class TestPvDbSchema extends BaseTestPvDbSchema {
 
-    @Inject
-    private DataSource dataSource;
-
-    @Before
-    public void testDbCreate() throws Exception {
-        super.testDbCreate();
-
-        // populate database with xml
-        populateData();
-    }
-
-    private void populateData() throws Exception {
-
-        // skip db stuff of
-        if (!isLocalTestEnvironment()) {
-            // Once we've got the tables created populate them with data - clean insert will delete all data first
-            DatabaseDataSourceConnection databaseDataSourceConnection = new DatabaseDataSourceConnection(dataSource);
-
-            // Set the database factory as in http://www.dbunit.org/faq.html#DefaultDataTypeFactory
-            DatabaseConfig config = databaseDataSourceConnection.getConfig();
-
-            config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
-            config.setProperty(DatabaseConfig.PROPERTY_ESCAPE_PATTERN, "`?`");
-
-            // Construct dataset
-            XmlDataSet dataSet = new XmlDataSet(readFileFromClasspath("dataset.xml"));
-
-            // Insert, cleanly (remove everything first)
-            DatabaseOperation.CLEAN_INSERT.execute(databaseDataSourceConnection, dataSet);
-
-            // Have to close the database connection
-            databaseDataSourceConnection.close();
+    protected String getTestNhsNo() {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i=0; i<=9; i++) {
+            stringBuffer.append((int)(Math.random() * 10));
         }
+        return stringBuffer.toString();
     }
 }

@@ -34,6 +34,7 @@ import org.patientview.service.EmailManager;
 import org.patientview.service.EmailVerificationManager;
 import org.patientview.service.FeatureManager;
 import org.patientview.service.FeedbackManager;
+import org.patientview.service.GeneticsManager;
 import org.patientview.service.ImportManager;
 import org.patientview.service.JoinRequestManager;
 import org.patientview.service.LetterManager;
@@ -52,6 +53,8 @@ import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
+
+import java.util.Properties;
 
 /**
  * Used to connect up the methods in the old model classes that do service layer operations to the newer service
@@ -117,6 +120,10 @@ public final class LegacySpringUtils {
     private static JoinRequestManager joinRequestManager;
 
     private static AdminNotificationManager adminNotificationManager;
+
+    private static Properties contextProperties;
+
+    private static GeneticsManager geneticsManager;
 
     private LegacySpringUtils() {
 
@@ -352,5 +359,21 @@ public final class LegacySpringUtils {
 
     public static void setAdminNotificationManager(AdminNotificationManager adminNotificationManager) {
         LegacySpringUtils.adminNotificationManager = adminNotificationManager;
+    }
+
+    public static Properties getContextProperties() {
+        return contextProperties;
+    }
+
+    public static void setContextProperties(Properties contextProperties) {
+        LegacySpringUtils.contextProperties = contextProperties;
+    }
+
+    public static GeneticsManager getGeneticsManager() {
+        return geneticsManager;
+    }
+
+    public static void setGeneticsManager(GeneticsManager geneticsManager) {
+        LegacySpringUtils.geneticsManager = geneticsManager;
     }
 }

@@ -1,6 +1,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
+
 
 <%--
   ~ PatientView
@@ -44,6 +46,26 @@
             <div class="control-group">
                 <label class="control-label">Email Address</label>
                 <div class="controls"><html:text name="unitUser" property="email"/></div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Email Address Verified</label>
+                <div class="controls">
+                    <logic:equal name="unitUser" property="emailverified" value="true"><big><font color="green">&#10004;</font></big></logic:equal>
+                    <logic:equal name="unitUser" property="emailverified" value="false"><big><font color="red">&#10008;</font></big></logic:equal>
+
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <% String context = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
+                    request.setAttribute("context", context);%>
+                    <logic:present role="superadmin,unitadmin">
+                        <bean:define id="username" name="unitUser" property="username" />
+                        <bean:define id="email" name="unitUser" property="email" />
+                        <bean:define id="emailverified" name="unitUser" property="emailverified"/>
+
+                        <input type="button" value="Send Verification Email" class="btn formbutton"
+                            ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+
+                    </logic:present>
+                </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Role</label>
@@ -98,8 +120,20 @@
                         <html:submit value="Unlock Password" styleClass="btn"/>
                     </html:form>
                 </logic:match>
+
+                <logic:present role="superadmin,unitadmin">
+                    <html:form action="/control/activityByUser" style="float:left;margin-left:5px;">
+                        <html:hidden name="unitUser" property="username" />
+                        <html:submit value="Activity" styleClass="btn" />
+                    </html:form>
+                </logic:present>
+
+
+
             </div>
         </div>
 
     </div>
 </div>
+
+<script src="/js/emailverification.js" type="text/javascript"></script>

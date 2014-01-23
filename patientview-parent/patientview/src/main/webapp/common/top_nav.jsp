@@ -29,7 +29,8 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
-<ul class="nav nav-pills">
+<div class="span12 seperatingLine">
+<ul class="nav nav-pills nav-pills-no-border">
     <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/index">Home</html:link></li>
     <%
         if (LegacySpringUtils.getSecurityUserManager().isLoggedInToSpecialty()) {
@@ -114,6 +115,7 @@
         %>
     </logic:present>
 
+
     <logic:present specialty="renal">
         <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/contact">Contact</html:link></li>
     </logic:present>
@@ -133,16 +135,74 @@
         }
     %>
 
-    <li><html:link action="/help" styleClass="<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Help?</html:link></li>
+    <li><html:link action="/help" styleClass='<%= ("help".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>'>Help?</html:link></li>
 
     <%
         if (!LegacySpringUtils.getSecurityUserManager().isLoggedInToSpecialty()) {
     %>
 
-    <li class="pull-right"><html:link action="/forgotten-password" styleClass="<%= ("forgotten-password".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>">Forgotten password?</html:link></li>
+    <li class="pull-right"><html:link action="/forgotten-password" styleClass='<%= ("forgotten-password".equals(request.getAttribute("currentNav"))) ? "navlinkon" : "navlink" %>'>Forgotten password?</html:link></li>
 
     <%
         }
     %>
 
 </ul>
+
+
+
+
+<ul id="radarDiseaseUl" class="nav nav-pills nav-pills-no-border"
+        <logic:notEqual name="radarDisease" value="true">style="display: none"</logic:notEqual>>
+    <li class="pull-right <logic:equal name="demographics" value="true">active</logic:equal>">
+        <logic:present role="superadmin,unitadmin">
+            <html:link action="/control/demographics">Demographics</html:link>
+        </logic:present>
+        <logic:present role="patient">
+            <html:link action="/patient/demographics">Demographics</html:link>
+        </logic:present>
+    </li>
+    <li class="pull-right <logic:equal name="medicalResults" value="true">active</logic:equal>">
+        <logic:present role="superadmin,unitadmin">
+            <html:link action="/control/medicalResults">Medical Results</html:link>
+        </logic:present>
+        <logic:present role="patient">
+            <html:link action="/patient/medicalResults">Medical Results</html:link>
+        </logic:present>
+    </li>
+    <li class="pull-right <logic:equal name="genetics" value="true">active</logic:equal>">
+        <logic:present role="superadmin,unitadmin">
+            <html:link action="/control/genetics">Genetics</html:link>
+        </logic:present>
+        <logic:present role="patient">
+            <html:link action="/patient/genetics">Genetics</html:link>
+        </logic:present>
+    </li>
+    <li class="pull-right <logic:equal name="medication" value="true">active</logic:equal>">
+        <logic:present role="superadmin,unitadmin">
+            <html:link action="/control/medication">Medication</html:link>
+        </logic:present>
+        <logic:present role="patient">
+            <html:link action="/patient/medication">Medication</html:link>
+        </logic:present>
+    </li>
+</ul>
+
+</div>
+
+<script type="text/javascript">
+    function clickRadardisease(a){
+        if(document.getElementById('radarDiseaseUl').style.display!='none'){
+            return;
+        }
+        var lis = a.parentElement.parentElement.children;
+        for(var i=0; i < lis.length; i++){
+            if(i.nodeName == 'li'){
+                i.className='';
+            }
+        }
+        a.parentElement.className='active';
+        document.getElementById('radarDiseaseUl').style.display='';
+    }
+
+</script>

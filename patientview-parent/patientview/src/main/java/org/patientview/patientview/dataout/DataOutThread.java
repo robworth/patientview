@@ -23,13 +23,15 @@
 
 package org.patientview.patientview.dataout;
 
-import org.patientview.patientview.ParserThread;
+import org.patientview.model.Patient;
 import org.patientview.patientview.model.Comment;
-import org.patientview.patientview.model.Patient;
 import org.patientview.patientview.model.TestResult;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.util.CommonUtils;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,7 +53,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class DataOutThread implements Runnable, ParserThread {
+public class DataOutThread implements Runnable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataOutThread.class);
 
     private String prebit;
     private String directory;
@@ -92,14 +96,16 @@ public class DataOutThread implements Runnable, ParserThread {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage());
+                    LOGGER.debug(e.getMessage(), e);
                 }
                 Thread.sleep(MILLISECONDS * SECONDS_IN_MINUTE * minutesBetweenWait);
                 Date now = new Date(System.currentTimeMillis());
                 System.out.println("DataOutThread " + dateFormat.format(now));
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 
@@ -124,14 +130,15 @@ public class DataOutThread implements Runnable, ParserThread {
             Element dateOfReport = addChildElement(doc, rootElement, "dateofreport", getTimeStampNow());
 
             Element centreDetails = addChildElement(doc, rootElement, "centredetails");
-            Element centreCode = addChildElement(doc, centreDetails, "centrecode", patient.getCentreCode());
+            Element centreCode = addChildElement(doc, centreDetails, "centrecode", patient.getUnitcode());
 
             Element patientTag = addChildElement(doc, rootElement, "patient");
             Element personalDetails = addChildElement(doc, patientTag, "personaldetails");
             Element nhsno = addChildElement(doc, personalDetails, "nhsno", patient.getNhsno());
             Element surname = addChildElement(doc, personalDetails, "surname", patient.getSurname());
             Element forename = addChildElement(doc, personalDetails, "forename", patient.getForename());
-            Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", patient.getDateofbirth());
+            Element dateofbirth = addChildElement(doc, personalDetails, "dateofbirth", CommonUtils.formatDate(
+                    patient.getDateofbirth()));
 
             Element testDetails = addChildElement(doc, rootElement, "testDetails");
 
@@ -176,7 +183,8 @@ public class DataOutThread implements Runnable, ParserThread {
                 Element commentContent = addChildElement(doc, commentsTag, "commentbody", comment.getBody());
             }
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
         return doc;
     }
@@ -187,7 +195,8 @@ public class DataOutThread implements Runnable, ParserThread {
         try {
             comments = LegacySpringUtils.getCommentManager().get(patient.getNhsno());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
         return comments;
@@ -221,7 +230,8 @@ public class DataOutThread implements Runnable, ParserThread {
         try {
             patients = LegacySpringUtils.getPatientManager().get(unitCode);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
         return patients;
@@ -234,7 +244,8 @@ public class DataOutThread implements Runnable, ParserThread {
         try {
             units = LegacySpringUtils.getUnitManager().getUnitsWithUser();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
         return units;
@@ -244,7 +255,7 @@ public class DataOutThread implements Runnable, ParserThread {
             throws ParserConfigurationException, TransformerException {
         String directory1stPart = directory;
         String directory2ndPart = unit.getUnituser();
-        String directory3rdPart = servletContext.getInitParameter(prebit + ".directory.thirdpart");
+        String directory3rdPart = LegacySpringUtils.getContextProperties().getProperty(prebit + ".directory.thirdpart");
 
         String filePath = directory1stPart + "/" + directory2ndPart + "/" + directory3rdPart;
 

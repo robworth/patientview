@@ -74,7 +74,7 @@
 
                     <logic:present role="superadmin">
                     <td width="7%" class="tablecell" align="center"><a
-                            href="unitstatfiles/<bean:write name="stat" property="downloadFilename"/>" type="text/csv"><bean:write
+                            href="unitstatfiles/unitStatFileDownLoad.do?filename=<bean:write name="stat" property="downloadFilename"/>" type="text/csv"><bean:write
                             name="stat" property="downloadFilename"/></a>
                     </td>
                     </logic:present>

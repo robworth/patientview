@@ -23,11 +23,11 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.repository.SpecialtyDao;
 import org.patientview.repository.UserDao;
 import org.patientview.repository.SpecialtyUserRoleDao;

@@ -1,4 +1,27 @@
-﻿body, h1, h2, h3, h4, h5 {
+﻿/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
+body, h1, h2, h3, h4, h5 {
 margin:0;
 padding:0;
 border:0;
@@ -75,7 +98,7 @@ a.info:hover span {
 .dialog {
 line-height:200%;
 font-size:120%;
-} 
+}
 
 a.info2, a.info2:visited {
 	position: relative; /*this is the key*/;
@@ -142,6 +165,11 @@ vertical-align:text-top;
     padding: 2px 9px;
 }
 
+.add-patient-save{
+    float:left;
+    margin:0;
+}
+
 .infoItemHidden {
     display:none !important;
     height: 0px !important;
@@ -182,7 +210,7 @@ vertical-align:text-top;
 #pnlLogos {
     margin: 0 auto;
     text-align: center;
-    width: 90%; 
+    width: 90%;
 }
 
     #pnlLogos img { margin-right: 25px; }
@@ -212,3 +240,46 @@ vertical-align:text-top;
 
 /* Patient page */
 .style3 textarea, fieldset table.style3 { width: 100%; }
+
+
+/* Add Patient Styles */
+
+.add-patient-container{
+    margin-bottom:20px;
+}
+
+#mainBlock.short-container{
+    min-height:0;
+}
+
+.select-patient-table{
+    width:93%;
+    margin-left:50px;
+    margin-top:35px;
+}
+
+.link-patient{
+    margin:20px 0 0 10px;
+}
+
+.create-new-patient{
+    margin-right:0;
+}
+
+.patientsLisitingTable tbody td{
+    word-wrap: break-word;
+}
+
+.patientsLisitingTable thead th{
+    font-size:88%;
+    word-wrap: break-word;
+}
+
+.patientsLisitingTable td .patientLinked{
+    height:20px;
+    width:25px;
+    background:url(../images/icon-linked.png) 0 0 no-repeat;
+    display:block;
+    float:right;
+}
+

@@ -25,7 +25,7 @@ package org.patientview.test.helpers;
 
 import org.patientview.patientview.model.Conversation;
 import org.patientview.patientview.model.Message;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.springframework.transaction.annotation.Propagation;

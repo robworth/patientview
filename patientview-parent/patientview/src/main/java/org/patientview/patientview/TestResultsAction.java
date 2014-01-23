@@ -39,7 +39,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -54,12 +53,26 @@ public class TestResultsAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        User user = UserUtils.retrieveUser(request);
+
+        User user = null;
+        String param = mapping.getParameter();
+        boolean isRadarGroup = false;
+        if ("medicalResults".equals(param)) {
+            isRadarGroup = true;
+            user = UserUtils.retrieveUser(request);
+        } else  if ("controlMedicalResults".equals(param)) {
+            isRadarGroup = true;
+            String username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+            user = LegacySpringUtils.getUserManager().get(username);
+        } else {
+            user = UserUtils.retrieveUser(request);
+        }
 
         if (user != null) {
             request.setAttribute("user", user);
 
             Panel currentPanel = managePanels(request);
+
 
             List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
 
@@ -135,8 +148,7 @@ public class TestResultsAction extends Action {
     }
 
     private int resultsPerPage(HttpServletRequest request) {
-        ServletContext servletContext = request.getSession().getServletContext();
-        String resultsPerPageString = servletContext.getInitParameter("default.results.per.page");
+        String resultsPerPageString = LegacySpringUtils.getContextProperties().getProperty("default.results.per.page");
         return Integer.parseInt(resultsPerPageString);
     }
 

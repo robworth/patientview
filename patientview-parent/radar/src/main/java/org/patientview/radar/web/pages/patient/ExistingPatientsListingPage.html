@@ -1,3 +1,26 @@
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,21 +38,29 @@
 
 <div>
 <table class="tableSorter patientsLisitingTable" cellspacing="0" cellpadding="5" rules="all" border="1" id="ctl00_ContentPlaceHolder1_GridView1"
-       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;">
+       style="border-color:#A0A0A0;border-width:1px;border-style:Solid;font-size:90%;border-collapse:collapse;table-layout: fixed; width:100%">
 <thead>
 <tr style="background-color:#EEF6ED;">
     <th scope="col">View / Edit</th>
     <th scope="col"><a href="javascript:void(0)">Surname</a></th>
-    <th scope="col">First Name</th>
-    <th align="center" scope="col">DOB</th>
+    <th scope="col"><a href="javascript:void(0)">First Name</a></th>
+    <th align="center" scope="col"><a href="javascript:void(0)">DOB</a></th>
     <th scope="col"><a href="javascript:void(0)">RaDaRNo.</a></th>
     <th scope="col"><a href="javascript:void(0)">Diagnosis</a>
     </th>
-    <th scope="col">NHS Number</th>
-    <th scope="col">Hospital No</th>
+    <th scope="col" style="width:110px;"><a href="javascript:void(0)">NHS Number</a></th>
+    <th scope="col"><a href="javascript:void(0)">Hospital No</a></th>
     <th align="center" scope="col"><a href="javascript:void(0)">DateReg</a></th>
     <th scope="col"><a href="javascript:void(0)">Status</a></th>
     <th scope="col"><a href="javascript:void(0)">Centre</a></th>
+
+
+
+    <th scope="col"><a href="javascript:void(0)">Modality</a></th>
+    <th scope="col"><a href="javascript:void(0)">Last Verification Email Date</a></th>
+    <th scope="col"><a href="javascript:void(0)">Email</a></th>
+    <th scope="col"><a href="javascript:void(0)">Last Logon</a></th>
+    <th scope="col"><a href="javascript:void(0)">Password Locked</a></th>
 </tr>
 </thead>
 
@@ -38,15 +69,22 @@
     <td align="center"><a wicket:id="edit">Edit</a></td>
     <td wicket:id="surname"/>
     <td wicket:id="forename"/>
-    <td wicket:id="dateOfBirth"/>
+    <td wicket:id="dob"/>
 
     <td align="center" wicket:id="id"/>
     <td align="center" wicket:id="diagnosis"/>
     <td wicket:id="nhsNumber"/>
-    <td wicket:id="hospitalNumber"/>
-    <td wicket:id="dateRegistered"/>
+    <td wicket:id="hospitalnumber"/>
+    <td wicket:id="dateReg"/>
     <td wicket:id="status.abbreviation"/>
     <td wicket:id="renalUnit.name"/>
+
+    <td wicket:id="rrtModalityEunm"/>
+    <td wicket:id="lastverificationdate"/>
+    <td wicket:id="email" style="word-break:break-all; word-wrap:break-word; overflow:hidden;"/>
+    <td wicket:id="lastlogon"/>
+    <td wicket:id="accountlocked"/>
+
 </tr>
 </tbody>
 </table>

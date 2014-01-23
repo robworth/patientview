@@ -70,7 +70,7 @@ public class ForgottenPasswordAction extends Action {
                                 + "Enjoy the site,\n"
                                 + "\n"
                                 + "Renal Patient View";
-                        String fromAddress = request.getSession().getServletContext().getInitParameter("noreply.email");
+                        String fromAddress = LegacySpringUtils.getContextProperties().getProperty("noreply.email");
                         EmailUtils.sendEmail(request.getSession().getServletContext(), fromAddress, user.getEmail(),
                                 "[Renal PatientView] Your password has been reset", message);
                         LegacySpringUtils.getUserManager().save(user);

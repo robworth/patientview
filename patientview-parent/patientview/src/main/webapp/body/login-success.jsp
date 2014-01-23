@@ -29,7 +29,7 @@
 
 <logic:present name="splashPage">
 
-    <p class="header"><bean:write name="splashPage" property="headline"/></p>
+    <div class="page-header"><h1><bean:write name="splashPage" property="headline"/></h1></div>
 
     <p style="white-space: pre-wrap;"><bean:write filter="false" name="splashPage" property="bodyTextForHtml"/></p>
 

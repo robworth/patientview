@@ -23,14 +23,16 @@
 
 package org.patientview.service.impl;
 
-import org.patientview.patientview.model.enums.XmlImportNotification;
+import org.apache.commons.lang.StringUtils;
+import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.repository.AdminNotificationDao;
 import org.patientview.service.AdminNotificationManager;
-import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import java.util.List;
 
 @Service(value = "adminNotificationManager")
@@ -39,17 +41,29 @@ public class AdminNotificationManagerImpl implements AdminNotificationManager {
     @Inject
     private AdminNotificationDao adminNotificationDao;
 
+    @Value("${support.email}")
+    private String supportEmail;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminNotificationManagerImpl.class);
+
     @Override
     public List<String> getEmailAddresses(XmlImportNotification xmlImportNotification) {
         return adminNotificationDao.getEmailAddresses(xmlImportNotification);
     }
 
     @Override
-    public String getSupportEmailAddress(ServletContext context) {
-        String supportEmailAddress = adminNotificationDao.getSupportEmail();
+    public String getSupportEmailAddress() {
+
+        String supportEmailAddress = null;
+
+        try {
+            supportEmailAddress = adminNotificationDao.getSupportEmail();
+        } catch (Exception e) {
+            LOGGER.error("Unable to obtain email from database, default to system property file");
+        }
 
         if (StringUtils.isBlank(supportEmailAddress)) {
-            return context.getInitParameter("support.email");
+            return supportEmail;
         } else {
             return supportEmailAddress;
         }
