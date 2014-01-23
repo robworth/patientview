@@ -287,7 +287,7 @@ public class ImportManagerImpl implements ImportManager {
 
     private void validateUnitCode(Centre centre) throws ProcessException {
 
-        if (unitDao.get(centre.getCentreCode()) == null) {
+        if (unitDao.get(centre.getCentreCode(), null) == null) {
             throw new ProcessException("The unit code supplied by the file does not exist in the database");
         }
 
