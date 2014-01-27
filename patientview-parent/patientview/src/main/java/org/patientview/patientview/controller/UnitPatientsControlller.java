@@ -60,8 +60,7 @@ public class UnitPatientsControlller extends BaseController {
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
 
             // Validation
-            if (StringUtils.isEmpty(unitcode) && StringUtils.isEmpty(nhsno))
-            {
+            if (StringUtils.isEmpty(unitcode) && StringUtils.isEmpty(nhsno)) {
                 return "redirect:/renal/control/unitPatientsUnitSelect.do?validation=failed";
             }
 
