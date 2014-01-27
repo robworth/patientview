@@ -1,18 +1,42 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels.alport;
 
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.patientview.model.Patient;
 import org.patientview.radar.model.alport.Deafness;
 import org.patientview.radar.service.alport.DeafnessManager;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.components.ComponentHelper;
 import org.patientview.radar.web.components.RadarComponentFactory;
+import org.patientview.radar.web.components.RadarRequiredDateTextField;
 import org.patientview.radar.web.panels.PatientDetailPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -21,7 +45,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -41,12 +64,12 @@ public class DeafnessPanel extends Panel {
         Deafness deafness = null;
 
         if (patient.hasValidId()) {
-            deafness = deafnessManager.get(patient.getId());
+            deafness = deafnessManager.get(patient.getRadarNo());
         }
 
         if (deafness == null) {
             deafness = new Deafness();
-            deafness.setRadarNo(patient.getId());
+            deafness.setRadarNo(patient.getRadarNo());
         }
 
         // main model for this tab
@@ -71,7 +94,7 @@ public class DeafnessPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    deafness.setRadarNo(patient.getId());
+                    deafness.setRadarNo(patient.getRadarNo());
                     deafnessManager.save(deafness);
                 }
             }
@@ -79,26 +102,15 @@ public class DeafnessPanel extends Panel {
 
         add(form);
 
-        int maxAge = 90;
-        int minAge = 1;
-
-        // the list has to be strings so we can have the first one as N/A
-        List<String> ages = new ArrayList<String>();
-        ages.add("N/A");
-
-        for (int x = minAge; x <= maxAge; x++) {
-            ages.add(Integer.toString(x));
-        }
-
-        DropDownChoice<String> ageProblemFirstNoticedDropDown =
-                new DropDownChoice<String>("ageProblemFirstNoticed",
-                        new PropertyModel<String>(model, "ageProblemFirstNoticedAsString"), ages);
-        form.add(ageProblemFirstNoticedDropDown);
-
-        DropDownChoice<String> ageStartedUsingHearingAidDropDown =
-                new DropDownChoice<String>("ageStartedUsingHearingAid",
-                        new PropertyModel<String>(model, "ageStartedUsingHearingAidAsString"), ages);
-        form.add(ageStartedUsingHearingAidDropDown);
+        // Date picker
+        DateTextField dateProblemFirstNoticed = new RadarRequiredDateTextField("dateProblemFirstNoticed",
+                form, componentsToUpdateList);
+        dateProblemFirstNoticed.setRequired(false);
+        form.add(dateProblemFirstNoticed);
+        DateTextField dateStartedUsingHearingAid = new RadarRequiredDateTextField("dateStartedUsingHearingAid",
+                form, componentsToUpdateList);
+        dateStartedUsingHearingAid.setRequired(false);
+        form.add(dateStartedUsingHearingAid);
 
         // have to set the generic feedback panel to only pick up msgs for them form
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(form);

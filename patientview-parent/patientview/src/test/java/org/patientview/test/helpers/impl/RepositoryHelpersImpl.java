@@ -23,7 +23,7 @@
 
 package org.patientview.test.helpers.impl;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
@@ -69,7 +69,8 @@ public class RepositoryHelpersImpl implements RepositoryHelpers {
 
         User user = new User();
         user.setEmail(email);
-        user.setName(name);
+        user.setFirstName(name);
+        user.setLastName("");
         user.setPassword(password);
         user.setUsername(username);
         userDao.save(user);

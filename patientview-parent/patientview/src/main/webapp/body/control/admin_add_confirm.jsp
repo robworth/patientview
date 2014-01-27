@@ -45,12 +45,16 @@ On <dt:format
     <logic:notEqual value="" name="adminuser" property="password">
       <tr>
           <td><b>Password</b></td>
-          <td><bean:write name="adminuser" property="password"/></td>
+          <td><h3><bean:write name="adminuser" property="password"/></h3></td>
       </tr>
     </logic:notEqual>
     <tr>
-        <td><b>Name</b></td>
-        <td><bean:write name="adminuser" property="name"/></td>
+        <td><b>First Name</b></td>
+        <td><bean:write name="adminuser" property="firstName"/></td>
+    </tr>
+    <tr>
+        <td><b>Last Name</b></td>
+        <td><bean:write name="adminuser" property="lastName"/></td>
     </tr>
     <tr>
         <td><b>Email Address</b></td>

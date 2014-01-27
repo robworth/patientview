@@ -23,16 +23,17 @@
 
 package org.patientview.patientview.unit;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.patientview.model.Unit;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.model.Unit;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class UnitAddAction extends Action {
 
@@ -42,8 +43,24 @@ public class UnitAddAction extends Action {
 
         Unit unit = new Unit();
         UnitUtils.buildUnit(unit, form);
+        //a new unitcode doesn't exist,
+        // so any user doesn't have SecurityConfig.UNIT_ACCESS permission to check this code
+        // Unit existedUnit = LegacySpringUtils.getUnitManager().get(unit.getUnitcode());
+        boolean duplicate = LegacySpringUtils.getUnitManager().checkDuplicateUnitCode(unit.getUnitcode());
+        if (duplicate) {
+            request.setAttribute("UnitExisted", true);
+            return mapping.findForward("input");
+        }
         LegacySpringUtils.getUnitManager().save(unit);
-        request.setAttribute("unit", unit);
+
+        boolean isRadarGroup = "radargroup".equalsIgnoreCase(mapping.getParameter());
+
+        List items = LegacySpringUtils.getUnitManager().getAdminsUnits(isRadarGroup);
+        request.setAttribute("units", items);
+
+        if (isRadarGroup) {
+            request.setAttribute("isRadarGroup", isRadarGroup);
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

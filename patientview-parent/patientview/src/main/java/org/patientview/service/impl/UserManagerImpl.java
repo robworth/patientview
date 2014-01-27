@@ -25,11 +25,11 @@ package org.patientview.service.impl;
 
 import org.patientview.patientview.logon.PatientLogon;
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
 import org.patientview.patientview.model.radar.Demographics;
 import org.patientview.patientview.model.PatientUser;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.unit.UnitUtils;
@@ -162,16 +162,21 @@ public class UserManagerImpl implements UserManager {
         if (isNewUser) {
             // create a user to save based on the unitAdmin
             user = new User();
+            user.setEmailverified(unitAdmin.isEmailverified());
+        } else {
+            if (!user.getEmail().equals(unitAdmin.getEmail())) {
+                user.setEmailverified(false);
+            }
         }
 
         user.setAccountlocked(unitAdmin.isAccountlocked());
         user.setDummypatient(unitAdmin.isDummypatient());
         user.setEmail(unitAdmin.getEmail());
-        user.setEmailverified(unitAdmin.isEmailverified());
         user.setFailedlogons(unitAdmin.getFailedlogons());
         user.setFirstlogon(unitAdmin.isFirstlogon());
         user.setLastlogon(unitAdmin.getLastlogon());
-        user.setName(unitAdmin.getName());
+        user.setFirstName(unitAdmin.getFirstName());
+        user.setLastName(unitAdmin.getLastName());
         user.setPassword(unitAdmin.getPassword());
         user.setUsername(unitAdmin.getUsername());
         user.setIsrecipient(unitAdmin.isIsrecipient());
@@ -214,7 +219,8 @@ public class UserManagerImpl implements UserManager {
         user.setFailedlogons(patientLogon.getFailedlogons());
         user.setFirstlogon(patientLogon.isFirstlogon());
         user.setLastlogon(patientLogon.getLastlogon());
-        user.setName(patientLogon.getName());
+        user.setFirstName(patientLogon.getFirstName());
+        user.setLastName(patientLogon.getLastName());
         user.setPassword(patientLogon.getPassword());
         user.setUsername(patientLogon.getUsername());
 

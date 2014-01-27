@@ -43,7 +43,14 @@
                 <li><html:link action="/control/resultHeadingDisplay">Result Headings</html:link></li>
                 <li class="divider"></li>
             </logic:present>
-            <logic:present role="superadmin,unitadmin" >
+
+            <logic:present role="superadmin" >
+                <li><html:link action="/control/radarGroupDisplay">
+                    <logic:present specialty="renal">RaDaR Groups</logic:present>
+                </html:link></li>
+            </logic:present>
+
+            <logic:present role="superadmin,unitadmin" containSourceType="renalunit">
                 <li><html:link action="/control/unitDisplay">
                     <logic:present specialty="renal">Renal Units</logic:present>
                     <logic:present specialty="ibd">IBD Units</logic:present>
@@ -54,25 +61,9 @@
                 <li class="divider"></li>
             </logic:present>
 
-            <logic:present role="superadmin" >
-                <li><html:link action="/control/radarGroupDisplay">
-                    <logic:present specialty="renal">RaDaR Groups</logic:present>
-                </html:link></li>
-                <li class="divider"></li>
-            </logic:present>
-            <logic:present role="superadmin,radaradmin" >
-                <li><html:link action="/control/radarAdminAddInput">Add RaDaR User</html:link></li>
-                <li><html:link action="/control/radarGroupUsersSelect">Users In RaDaR Group</html:link></li>
-                <li class="divider"></li>
-            </logic:present>
-            <logic:notPresent role="radaradmin" >
-                <li><html:link action="/control/unitPatientsUnitSelect">Patients In Unit</html:link></li>
-            </logic:notPresent>
-            <logic:present role="radaradmin" >
-                <li><html:link action="/control/unitPatientsUnitSelect">Patients In RaDaR Group</html:link></li>
-            </logic:present>
+            <li><html:link action="/control/unitPatientsUnitSelect">Patients In Unit</html:link></li>
 
-            <logic:present role="superadmin,unitadmin,radaradmin">
+            <logic:present role="superadmin,unitadmin" containSourceType="renalunit">
                 <li><html:link action="/control/patientAddInput">Add Patient</html:link></li>
                 <li><html:link action="/control/logView">View Log</html:link></li>
                 <li class="divider"></li>
@@ -106,10 +97,6 @@
                     <logic:present role="superadmin,unitadmin">
                         <li class="divider"></li>
                         <li><html:link action="/control/splashPageList">Splash Pages</html:link></li>
-                    </logic:present>
-                    <logic:present role="superadmin">
-                        <li class="divider"></li>
-                        <li><html:link action="/control/version">RPV Version</html:link></li>
                     </logic:present>
                 </logic:present>
             </logic:present>

@@ -34,12 +34,13 @@ public class PatientLogon extends Logon implements Cloneable {
         setUsername(username);
     }
 
-    public PatientLogon(String username, String password, String name, String email, boolean emailverified,
-                        boolean firstlogon, boolean dummypatient, Date lastlogon, int failedlogons,
-                        boolean accountlocked) {
+    public PatientLogon(String username, String password, String firstName, String lastName, String email,
+                        boolean emailverified, boolean firstlogon, boolean dummypatient, Date lastlogon,
+                        int failedlogons, boolean accountlocked) {
         setUsername(username);
         setPassword(password);
-        setName(name);
+        setFirstName(firstName);
+        setLastName(lastName);
         setEmail(email);
         setEmailverified(emailverified);
         setRole("patient");

@@ -49,7 +49,7 @@ public class JoinRequest extends BaseModel {
     @Column(nullable = false)
     private String unitcode;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String email;
 
     @Column(nullable = false)

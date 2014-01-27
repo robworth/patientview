@@ -25,7 +25,7 @@ package org.patientview.repository;
 
 import org.patientview.model.Patient;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +40,10 @@ public interface PatientDao {
     Patient get(Long id);
 
     Patient get(String nhsno, String unitcode);
+
+    Patient getRadarPatient(String nhsNo);
+
+    List<Patient> getByNhsNo(String nhsNo);
 
     void save(Patient patient);
 

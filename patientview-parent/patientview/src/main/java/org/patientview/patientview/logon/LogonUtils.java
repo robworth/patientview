@@ -176,8 +176,6 @@ public final class LogonUtils {
             displayRole = "Patient";
         } else if ("superadmin".equals(role)) {
             displayRole = "Super Admin";
-        } else if ("radaradmin".equals(role)) {
-            displayRole = "Radar Admin";
         } else {
             displayRole = "Role Unknown";
         }

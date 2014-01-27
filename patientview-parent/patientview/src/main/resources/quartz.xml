@@ -71,9 +71,9 @@
 
     <!-- patient details importer -->
 
-    <bean id="xmlImportJobQuartzScheduler" class="org.patientview.quartz.XmlImportJobQuartzScheduler" />
+    <bean id="xmlImportTask" class="org.patientview.quartz.XmlImportTask" />
     <bean id="xmlImportJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="xmlImportJobQuartzScheduler"/>
+        <property name="targetObject" ref="xmlImportTask"/>
         <property name="targetMethod" value="execute"/>
         <property name="concurrent" value="false"/>
     </bean>

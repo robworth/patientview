@@ -1,36 +1,57 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.service.impl;
 
-import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.model.Status;
 import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.UnitDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.filter.DemographicsFilter;
 import org.patientview.radar.model.user.DemographicsUserDetail;
+import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 
 import java.util.List;
 
 public class DemographicsManagerImpl implements DemographicsManager {
 
+
     private DemographicsDao demographicsDao;
 
-    public void saveDemographics(Patient patient) {
-        // Save or update the demographics object
-        demographicsDao.saveDemographics(patient);
+    private UserDao userDao;
+
+    private UnitDao unitDao;
+
+    private PatientManager patientManager;
+
+    public Patient get(Long id) {
+        return demographicsDao.get(id);
     }
 
-    public Patient getDemographicsByRadarNumber(long radarNumber) {
-        return demographicsDao.getDemographicsByRadarNumber(radarNumber);
-    }
-
-    public Patient getDemographicsByNhsNoAndUnitCode(String nhsNo, String unitCode) {
-        return demographicsDao.getDemographicsByNhsNoAndUnitCode(nhsNo, unitCode);
-    }
-
-    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
-        return demographicsDao.getDemographicsByRenalUnit(centre);
-    }
 
     public List<Patient> getDemographics() {
         return getDemographics(new DemographicsFilter(), -1, -1);
@@ -56,71 +77,25 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getStatus(id);
     }
 
+    // Needs refactoring out. Patient Data Provider needs creating
+    public List<Patient> getDemographicsByUser(User user) {
+
+        List<String> unitCodes;
+        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
+            unitCodes = unitDao.getAllUnitCodes();
+        } else {
+            unitCodes = unitDao.getUnitCodes(user);
+        }
+
+        return patientManager.getPatientsByUnitCode(unitCodes);
+    }
+
     public List<Status> getStatuses() {
         return demographicsDao.getStatuses();
     }
 
     public DemographicsDao getDemographicsDao() {
         return demographicsDao;
-    }
-
-    public boolean isNhsNumberValid(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, false);
-    }
-
-    public boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, true);
-    }
-
-    private boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
-
-        // Remove all whitespace and non-visible characters such as tab, new line etc
-        nhsNumber = nhsNumber.replaceAll("\\s", "");
-
-        // Only permit 10 characters
-        if (nhsNumber.length() != 10) {
-            return false;
-        }
-
-        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
-        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
-
-        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
-            return true;
-        }
-
-        return isNhsChecksumValid(nhsNumber);
-    }
-
-    private boolean isNhsChecksumValid(String nhsNumber) {
-        /**
-         * Generate the checksum using modulus 11 algorithm
-         */
-        int checksum = 0;
-
-        try {
-            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= 8; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
-                checksum += value;
-            }
-
-            //(modulus 11)
-            checksum = 11 - checksum % 11;
-
-            if (checksum == 11) {
-                checksum = 0;
-            }
-
-            // Does checksum match the 10th digit?
-            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false; // nhsNumber contains letters
-        }
     }
 
     public void setDemographicsDao(DemographicsDao demographicsDao) {
@@ -131,4 +106,17 @@ public class DemographicsManagerImpl implements DemographicsManager {
         return demographicsDao.getDemographicsUserDetail(nhsno, unitcode);
     }
 
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setUnitDao(UnitDao unitDao) {
+        this.unitDao = unitDao;
+    }
+
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
+    }
 }
+
+

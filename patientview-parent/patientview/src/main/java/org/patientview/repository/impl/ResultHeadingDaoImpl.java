@@ -26,17 +26,24 @@ package org.patientview.repository.impl;
 import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.ResultHeading;
 import org.patientview.patientview.model.ResultHeading_;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.ResultHeadingDao;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +52,16 @@ import java.util.List;
  */
 @Repository(value = "resultHeadingDao")
 public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> implements ResultHeadingDao {
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void init() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Override
     public ResultHeading get(String headingcode, Specialty specialty) {
@@ -78,6 +95,28 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
 
         return getEntityManager().createQuery(criteria).getResultList();
     }
+
+    @Override
+    public List<ResultHeading> getAll(Specialty specialty, String username) {
+
+        List<Object> params = new ArrayList<Object>();
+
+        String sql = " SELECT DISTINCT result_heading.* "
+                + " FROM testresult "
+                + " LEFT JOIN unit ON unit.unitcode = testresult.unitcode "
+                + " JOIN user, usermapping, result_heading "
+                + " WHERE user.username = ? "
+                + " AND result_heading.specialty_id = ? "
+                + " AND user.username = usermapping.username "
+                + " AND usermapping.nhsno = testresult.nhsno "
+                + " AND testresult.testcode = result_heading.headingcode ";
+
+        params.add(username);
+        params.add(specialty.getId());
+
+        return jdbcTemplate.query(sql, params.toArray(), new ResultHeadingMapper());
+    }
+
 
     @Override
     public List<ResultHeading> get(int panel, Specialty specialty) {
@@ -117,5 +156,21 @@ public class ResultHeadingDaoImpl extends AbstractHibernateDAO<ResultHeading> im
         }
 
         return results;
+    }
+
+    private class ResultHeadingMapper implements RowMapper<ResultHeading> {
+
+        @Override
+        public ResultHeading mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            ResultHeading resultHeading = new ResultHeading();
+            resultHeading.setId(resultSet.getLong("id"));
+            resultHeading.setHeading(resultSet.getString("heading"));
+            resultHeading.setHeadingcode(resultSet.getString("headingcode"));
+            resultHeading.setLink(resultSet.getString("link"));
+            resultHeading.setRollover(resultSet.getString("rollover"));
+
+            return resultHeading;
+        }
     }
 }

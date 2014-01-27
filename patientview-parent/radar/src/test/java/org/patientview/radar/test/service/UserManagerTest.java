@@ -1,41 +1,50 @@
 package org.patientview.radar.test.service;
 
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.enums.SourceType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.user.PatientUser;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
+import org.patientview.radar.test.TestDataHelper;
 import org.patientview.radar.test.TestPvDbSchema;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.inject.Inject;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context.xml"})
+@ContextConfiguration(locations = {"classpath:test-context.xml"})
 public class UserManagerTest extends TestPvDbSchema {
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private UserManager userManager;
 
-    @Autowired
-    private DemographicsManager demographicsManager;
+    @Inject
+    private PatientManager patientManager;
+
+    @Inject
+    private TestDataHelper testDataHelper;
 
     private DiseaseGroup diseaseGroup;
 
     private Centre centre;
+
 
     @Before
     public void setUp() {
@@ -46,22 +55,51 @@ public class UserManagerTest extends TestPvDbSchema {
 
         centre = new Centre();
         centre.setUnitCode("testCodeA");
+
+        testDataHelper.createSpecialty();
     }
 
+    /**
+     * Create the unit admin who will create the user:
+     *      - user, tbl_users, specialuserrole (unitadmin) etc
+     *      - usermapping (PV) of username, unitcode e.g. ALPORTS unit, nhsno, specialty (mock this)
+     *      - usermapping (RDR) of radarUserId (tbl_users.uID), role (ROLE_PROFESSIONAL)
+     *
+     * Create a patient using this unit admin (the first patient in the system so not linking madness)
+     *      - user, tbl_patient_users, specialuserrole (patient) etc
+     *      - usermapping (PV) of username, unitcode e.g. ALPORTS unit, nhsno, specialty (mock this)
+     *      - patient record
+     */
     @Test
-    public void testPatientUserRegistration() throws Exception {
+    public void testRadarUnitAdminCanCreatePatientFromScratch() {
 
+    }
+
+    /**
+     * This is testing the creation of a record in the tbl patient users table
+     *
+     * @throws Exception
+     */
+    @Test
+    @Ignore
+    public void testPatientUserRegistration() throws Exception {
         // create a user row as per patient view
-        userDao.createRawUser("testusername", "passwordhash", "my user", "test@test.com", "unitcode1", "NHS123");
+        PatientUser patientUser = new PatientUser();
+        patientUser.setFirstName("my user");
+        patientUser.setUsername("testusername");
+        patientUser.setEmail("test@test.com");
+        patientUser.setPassword("passwordhash");
+        userDao.createUser(patientUser);
+        //userDao.createRawUser("testusername", "passwordhash", "my", "user", "test@test.com",
+        //        "unitcode1", "NHS123");
 
         // create a demographic
-        Date dob = new Date();
-        Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", dob);
+        Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", SourceType.RADAR);
 
-        userManager.registerPatient(patient);
+        userManager.addPatientUserOrUpdatePatient(patient);
 
         // Try and register - will throw an exception as no matching radar number
-        PatientUser patientUser = userManager.getPatientUser(patient.getEmailAddress());
+        patientUser = userManager.getPatientUser(patient.getEmailAddress());
 
         assertNotNull("registered user is null", patientUser);
         assertNotNull("no password generated", patientUser.getPassword());
@@ -69,19 +107,50 @@ public class UserManagerTest extends TestPvDbSchema {
         assertNotNull("Dob not set on user", patientUser.getDateOfBirth());
     }
 
+    /**
+     * Get a patient record with a patient view source type and then link a radar patient to it
+     *
+     *
+     */
+    @Test
+    public void testLinkPatientCreation() throws Exception {
+
+        // Create the link radarPatient
+        String linkNhsNo = "897897898";
+        Patient pvPatient = createDemographics("Test", "Link", centre, linkNhsNo, "890789@ajkhjk.com", SourceType.PATIENT_VIEW);
+        patientManager.save(pvPatient);
+
+        // Set the user to a Patient View user
+        testDataHelper.setPatientSource(pvPatient.getId(), SourceType.PATIENT_VIEW);
+
+
+        Patient linkPatient = patientManager.createLinkPatient(pvPatient);
+        linkPatient.setRenalUnit(centre);
+        userManager.addPatientUserOrUpdatePatient(linkPatient);
+
+        List<Patient> patients = patientManager.getPatientByNhsNumber(linkNhsNo);
+
+        // Reload the radarPatient
+        pvPatient = patientManager.getById(pvPatient.getId());
+
+        assertTrue("There should be two patients with the same nhs number", patients.size() == 2);
+
+
+    }
+
+
     private Patient createDemographics(String forename, String surname, Centre centre, String nhsno,
-                                            String email, Date dateOfBirth) {
+                                            String email, SourceType sourceType) {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
+        patient.setDob(new Date());
         patient.setNhsNumberType(NhsNumberType.NHS_NUMBER);
         patient.setNhsno(nhsno);
         patient.setRenalUnit(centre);
         patient.setEmailAddress(email);
-        patient.setDob(dateOfBirth);
         patient.setDiseaseGroup(diseaseGroup);
-        demographicsManager.saveDemographics(patient);
-        assertNotNull(patient.getId());
+        patient.setSourceType(sourceType.getName());
         return patient;
     }
 

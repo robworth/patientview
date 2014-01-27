@@ -48,15 +48,21 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Name</label>
+                <label class="control-label">First Name</label>
                 <div class="controls">
-                    <html:text name="patient" property="name"/>
+                    <html:text name="patient" property="firstName"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Last Name</label>
+                <div class="controls">
+                    <html:text name="patient" property="lastName"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">NHS Number</label>
                 <div class="controls">
-                    <html:text property="nhsno" name="nhsnot"/>
+                    <html:text property="nhsno" name="nhsnot" readonly="true"/>
                     <html:hidden property="unitcode" name="nhsnot"/>
                 </div>
                 <logic:present name="nhsnoAlreadyExists">

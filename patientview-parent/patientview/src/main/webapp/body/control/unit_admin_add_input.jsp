@@ -37,6 +37,10 @@
         <p><font color="red">The username <b><bean:write name="userAlreadyExists" /></b> you have entered is already being used by another user. Please pick another.</font></p>
     </logic:present>
 
+    <logic:present name="roleInRadargroup" >
+        <p><font color="red">Can't create a <b>Unit Staff</b> user in <b><bean:write name="roleInRadargroup" /></b></font></p>
+    </logic:present>
+
     <html:form action="/control/unitAdminAdd">
         <table cellpadding="3" >
             <tr>
@@ -47,8 +51,12 @@
                 <td><html:text property="username" /></td>
             </tr>
             <tr>
-                <td><b>Name</b></td>
-                <td><html:text property="name" /></td>
+                <td><b>First Name</b></td>
+                <td><html:text property="firstName" /></td>
+            </tr>
+            <tr>
+                <td><b>Last Name</b></td>
+                <td><html:text property="lastName" /></td>
             </tr>
             <tr>
                 <td><b>Email Address</b></td>
@@ -58,9 +66,6 @@
                 <td><b>Role</b></td>
                 <td><html:select property="role" onchange="if(document.patientForm.role.value == 'superadmin') {document.patientForm.unitcode.value = '';}">
                     <html:option value="">-- Please select an admin type --</html:option>
-                    <logic:present role="superadmin">
-                        <html:option value="superadmin">Super Admin</html:option>
-                    </logic:present>
                     <logic:present role="superadmin,unitadmin">
                         <html:option value="unitadmin">Unit Admin</html:option>
                         <html:option value="unitstaff">Unit Staff</html:option>
@@ -68,7 +73,7 @@
                 </html:select></td>
             </tr>
             <tr>
-                <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
+                <td><b><logic:present specialty="renal">Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
                 <td><html:select property="unitcode">
                     <logic:present role="superadmin">
                         <html:option value="">None</html:option>

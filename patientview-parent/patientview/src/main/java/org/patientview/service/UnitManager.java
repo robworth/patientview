@@ -24,8 +24,8 @@
 package org.patientview.service;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.patientview.model.User;
 import org.springframework.security.access.annotation.Secured;
@@ -54,6 +54,13 @@ public interface UnitManager {
      */
     Unit get(String unitCode);
 
+    /**
+     * a new unitcode doesn't exist, so any user doesn't have SecurityConfig.UNIT_ACCESS permission to check this code
+     * @param unitCode String
+     * @return true if duplicate
+     */
+    boolean checkDuplicateUnitCode(String unitCode);
+
     void save(Unit unit);
 
     List<Unit> getAllDisregardingSpeciality(boolean sortByName);
@@ -70,6 +77,8 @@ public interface UnitManager {
 
     List<Unit> getLoggedInUsersUnits();
 
+    List<Unit> getLoggedInUsersRenalUnits();
+
     List<Unit> getUsersUnits(User user);
 
     List<Unit> getLoggedInUsersUnits(String[] notTheseUnitCodes, String[] plusTheseUnitCodes);
@@ -81,9 +90,6 @@ public interface UnitManager {
     List<UnitStat> getUnitStatsForUnit(String unitCode);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
-
-    @Secured(value =  "ROLE_RENAL_SUPERADMIN")
-    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup);
 
     @Secured(value =  "ROLE_RENAL_SUPERADMIN")
     List<UnitAdmin> getAllUnitUsers();

@@ -1,9 +1,29 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.panels;
 
 
-import org.patientview.model.Patient;
-import org.patientview.model.generic.DiseaseGroup;
-import org.patientview.radar.web.RadarApplication;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -13,6 +33,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
+import org.patientview.model.Patient;
+import org.patientview.radar.web.RadarApplication;
 
 import java.util.Date;
 
@@ -34,15 +56,20 @@ public class PatientDetailPanel extends Panel {
         // title
         details.add(new Label("title", title));
 
-        // radar number
-        TextField<Long> radarNumberField = new TextField<Long>("id");
+        // radar numbediagnosisManagerr
+        TextField radarNumberField;
+        radarNumberField = new TextField<Long>("id", new PropertyModel<Long>(patient, "radarNo"));
+
+        radarNumberField.setOutputMarkupId(true);
+        radarNumberField.setOutputMarkupPlaceholderTag(true);
         details.add(radarNumberField);
 
         // disease group
-        DiseaseGroup patientDiseaseGroup = patient.getDiseaseGroup();
-        patientDiseaseGroup = patientDiseaseGroup == null ? new DiseaseGroup() : patientDiseaseGroup;
-        Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patientDiseaseGroup, "name"));
-        details.add(diseaseGroup);
+        if (patient.getDiseaseGroup() != null) {
+            Label diseaseGroup = new Label("diseaseGroup", new PropertyModel<Object>(patient.getDiseaseGroup(),
+                    "name"));
+            details.add(diseaseGroup);
+        }
 
         // forename
         Label nameLabel = new Label("nameLabel", "Patient Name") {

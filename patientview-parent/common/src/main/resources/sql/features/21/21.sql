@@ -25,14 +25,18 @@ ALTER TABLE patient ADD COLUMN   `indiaId` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `generic` tinyint(1) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `genericDiagnosis` varchar(20) DEFAULT NULL;
 ALTER TABLE patient ADD COLUMN   `dateOfGenericDiagnosis` datetime DEFAULT NULL;
-ALTER TABLE patient ADD COLUMN   `unitcode` varchar(20) NOT NULL DEFAULT '';
 
-UPDATE patient p
-SET p.unitcode = p.centreCode;
+ALTER TABLE patient CHANGE centreCode unitcode varchar(100) NOT NULL DEFAULT '';
 
-ALTER TABLE patient DROP INDEX nhsno;
-ALTER TABLE patient DROP COLUMN `centreCode`;
-
-ALTER TABLE patient ADD UNIQUE `nhsno` (`nhsno`,`unitcode`);
 ALTER TABLE patient ADD CONSTRAINT fk_unitcode Foreign Key (unitcode) References unit (unitcode);
-ALTER TABLE patient add CONSTRAINT fk_genericDiagnosis Foreign Key (genericDiagnosis) References rdr_prd_code (ERA_EDTA_PRD_code);
+
+ALTER TABLE patient ADD COLUMN sourceType VARCHAR(20);
+update patient set sourceType = 'PatientView';  -- these are all PV patients
+
+/**
+    Add a date column in unit table to store the mostRecentTestResultDateRangeStopDate to be set by the importer.
+ */
+ ALTER TABLE patient ADD COLUMN `mostRecentTestResultDateRangeStopDate` datetime DEFAULT NULL;
+
+ DROP INDEX nhsno ON patient;
+

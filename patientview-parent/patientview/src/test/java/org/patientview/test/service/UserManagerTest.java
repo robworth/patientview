@@ -24,9 +24,9 @@
 package org.patientview.test.service;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.SpecialtyUserRole;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.service.UnitManager;
@@ -83,8 +83,16 @@ public class UserManagerTest extends BaseServiceTest {
         unitManager.save(unitRm301);
 
         // a new unit staff user to create
-        unitAdmin = new UnitAdmin("unitstaff-username1", "pass", "Unit Staff Name",
-                "unitstaff-username1@patientview.org", false, "unitstaff", true);
+        unitAdmin = new UnitAdmin();
+
+        unitAdmin.setUsername("unitstaff-username1");
+        unitAdmin.setPassword("pass");
+        unitAdmin.setFirstName("Unit");
+        unitAdmin.setLastName("Staff Name");
+        unitAdmin.setEmail("unitstaff-username1@patientview.org");
+        unitAdmin.setEmailverified(false);
+        unitAdmin.setRole("unitstaff");
+        unitAdmin.setFirstlogon(true);
         unitAdmin.setIsrecipient(false);
         unitAdmin.setIsclinician(true);
     }
@@ -120,7 +128,8 @@ public class UserManagerTest extends BaseServiceTest {
         User newUser = userManager.saveUserFromUnitAdmin(unitAdmin, unitRm301.getUnitcode());
 
         // update and save
-        unitAdmin.setName("Updated name");
+        unitAdmin.setFirstName("Updated");
+        unitAdmin.setLastName("name");
         User updatedUser = userManager.saveUserFromUnitAdmin(unitAdmin, unitRm301.getUnitcode());
 
         // check the update has been made

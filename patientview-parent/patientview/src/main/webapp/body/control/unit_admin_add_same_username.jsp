@@ -28,7 +28,11 @@
 
 <html:xhtml/>
 
-<p class="header">Patient</p>
+<div class="span9">
+
+    <div class="page-header">
+        <h1>Unit User</h1>
+    </div>
 
 
 There is already a unit user registered on RPV with that user name but in another unit.
@@ -61,3 +65,5 @@ Please carefully check the details of that user, then you can choose to add the 
 
 <br />
 
+</div>
+</div>

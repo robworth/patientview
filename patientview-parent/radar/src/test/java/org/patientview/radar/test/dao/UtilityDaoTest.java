@@ -1,6 +1,30 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.test.dao;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.patientview.model.Centre;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
@@ -9,12 +33,18 @@ import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.DiagnosisDao;
+import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.*;
+import org.patientview.radar.model.Consultant;
+import org.patientview.radar.model.Diagnosis;
+import org.patientview.radar.model.DiagnosisCode;
+import org.patientview.radar.model.Relative;
 import org.patientview.radar.model.filter.ConsultantFilter;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.test.TestDataHelper;
 
+import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,23 +55,38 @@ import static org.junit.Assert.assertTrue;
 
 public class UtilityDaoTest extends BaseDaoTest {
 
-    @Autowired
+    @Inject
     private UtilityDao utilityDao;
 
-    @Autowired
+    @Inject
     private DiagnosisDao diagnosisDao;
 
-    @Autowired
+    @Inject
+    private UserDao userDao;
+
+    @Inject
     private DemographicsDao demographicDao;
+
+    @Inject
+    private TestDataHelper testDataHelper;
+
+    @Inject
+    private UserManager userManager;
 
     private DiseaseGroup diseaseGroup;
 
     private Centre centre;
 
+
     @Before
     public void setUp() {
         centre = new Centre();
         centre.setUnitCode("testCodeA");
+        testDataHelper.createUnit();
+        testDataHelper.createCountryData();
+        testDataHelper.createConsultant();
+        testDataHelper.createDiagCode();
+        testDataHelper.createSpecialty();
     }
 
     @Test
@@ -180,6 +225,12 @@ public class UtilityDaoTest extends BaseDaoTest {
         assertNotNull("Relatives list is null", relatives);
     }
 
+    /**
+     * We create 4 patients in at the same centre and disease group and then query back the patient by
+     * disease group.
+     *
+     * @throws Exception
+     */
     @Test
     public void testGetPatientCountPerUnitByDiagnosisCode() throws Exception {
         Centre centre = new Centre();
@@ -191,18 +242,26 @@ public class UtilityDaoTest extends BaseDaoTest {
         diseaseGroup.setName("testGroup");
         diseaseGroup.setShortName("shortName");
 
-        addDiagnosisForDemographic(createDemographics("Test", "User", centre, diseaseGroup)
-                , DiagnosisCode.SRNS_ID);
-        addDiagnosisForDemographic(createDemographics("Test2", "User2", centre, diseaseGroup)
-                , DiagnosisCode.MPGN_ID);
-        addDiagnosisForDemographic(createDemographics("Test3", "User3", centre, diseaseGroup)
-                , DiagnosisCode.SRNS_ID);
-        addDiagnosisForDemographic(createDemographics("Test4", "User4", centre, diseaseGroup)
-                , DiagnosisCode.MPGN_ID);
+        Patient patient = null;
+        patient = createDemographics("Test", "User", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.SRNS_ID);
+        userDao.createUserMappingInPatientView("Test User", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test2", "User2", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.MPGN_ID);
+        userDao.createUserMappingInPatientView("Test2 User2", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test3", "User3", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.SRNS_ID);
+        userDao.createUserMappingInPatientView("Test3 User3", patient.getNhsno(), patient.getDiseaseGroup().getId());
+
+        patient = createDemographics("Test4", "User4", centre, diseaseGroup);
+        addDiagnosisForDemographic(patient, DiagnosisCode.MPGN_ID);
+        userDao.createUserMappingInPatientView("Test4 User4", patient.getNhsno(), patient.getDiseaseGroup().getId());
 
         DiagnosisCode diagnosisCode = diagnosisDao.getDiagnosisCode(1L);
         Map<Long, Integer> patientCountMap = utilityDao.getPatientCountPerUnitByDiagnosisCode(diagnosisCode);
-        assertTrue(patientCountMap.get(5L).equals(2));
+        assertTrue(patientCountMap.get(5L).equals(4));
     }
 
     @Test
@@ -223,9 +282,24 @@ public class UtilityDaoTest extends BaseDaoTest {
 
         int count = utilityDao.getPatientCountByUnit(centre);
         assertEquals(4, count);
+
+
     }
 
-    private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup) {
+    @Test
+    public void testGetRenalUnitCentre() throws Exception {
+        userDao.createUserMappingInPatientView("testuser", "9876543210", "5");
+        userDao.createUserMappingInPatientView("testuser", "9876543210", "PATIENT");
+        userDao.createUserMappingInPatientView("testuser-GP", "9876543210", "6");
+
+        Centre centre1 = utilityDao.getRenalUnitCentre("9876543210").get(0);
+
+        assertNotNull("Could not get the unit", centre1);
+        assertEquals("Get the wrong unit", "5", centre1.getUnitCode());
+    }
+
+    private Patient createDemographics(String forename, String surname, Centre centre, DiseaseGroup diseaseGroup)
+            throws Exception {
         Patient patient = new Patient();
         patient.setForename(forename);
         patient.setSurname(surname);
@@ -233,7 +307,9 @@ public class UtilityDaoTest extends BaseDaoTest {
         patient.setRenalUnit(centre);
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
-        demographicDao.saveDemographics(patient);
+        patient.setUnitcode(centre.getUnitCode());
+        patient.setDob(new Date());
+        userManager.addPatientUserOrUpdatePatient(patient);
         assertNotNull(patient.getId());
         return patient;
     }
