@@ -366,7 +366,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public Clinician getClinician(Long id) {
         List<Clinician> clinicians = jdbcTemplate.query("SELECT " +
-                " u.id, u.username, u.name, um.unitcode " +
+                " u.id, u.username, u.firstname, u.lastname, um.unitcode " +
                 "FROM user u, usermapping um " +
                 "WHERE " +
                 "    u.username = um.username " +
@@ -473,9 +473,9 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
         try {
             return jdbcTemplate
-                    .queryForObject("SELECT u.name FROM user u " +
+                    .queryForObject("SELECT u.username FROM user u " +
                             "WHERE u.id = ? " +
-                            "AND u.name NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
+                            "AND u.username NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not get user with id {}", id);
             return "";
