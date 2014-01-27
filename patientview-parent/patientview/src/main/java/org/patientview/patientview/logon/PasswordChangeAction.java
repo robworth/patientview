@@ -94,7 +94,8 @@ public class PasswordChangeAction extends Action {
             LegacySpringUtils.getUserManager().save(user);
 
             // db logging
-            AddLog.addLog(user.getUsername(), AddLog.PASSWORD_CHANGE, user.getUsername(), "",
+            AddLog.addLog(user.getUsername(), AddLog.PASSWORD_CHANGE, user.getUsername(),
+                    UserUtils.retrieveUsersRealNhsnoBestGuess(user.getUsername()),
                     UserUtils.retrieveUsersRealUnitcodeBestGuess(user.getUsername()), "");
 
             // email verification - only required if the user has supplied an email address

@@ -1,15 +1,38 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.service.impl;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.patientview.model.Patient;
 import org.patientview.radar.dao.TransplantDao;
 import org.patientview.radar.dao.impl.TransplantDaoImpl;
 import org.patientview.radar.model.Transplant;
 import org.patientview.radar.model.exception.InvalidModelException;
-import org.patientview.radar.service.DemographicsManager;
+import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.TransplantManager;
 import org.patientview.radar.service.TreatmentManager;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +45,7 @@ import java.util.List;
 public class TransplantManagerImpl implements TransplantManager {
 
     TransplantDao transplantDao;
-    DemographicsManager demographicsManager;
+    PatientManager patientManager;
     private static final Logger LOGGER = LoggerFactory.getLogger(TransplantDaoImpl.class);
 
     public void saveTransplant(Transplant transplant) throws InvalidModelException {
@@ -122,7 +145,7 @@ public class TransplantManagerImpl implements TransplantManager {
                         getFailureDate() : null);
 
         // cannot be before date of birth
-        Patient patient = demographicsManager.getDemographicsByRadarNumber(transplant.getRadarNumber());
+        Patient patient =  patientManager.getPatientByRadarNumber(transplant.getRadarNumber());
         if (patient != null) {
             Date dob = patient.getDob();
             if (dob != null) {
@@ -239,7 +262,7 @@ public class TransplantManagerImpl implements TransplantManager {
         this.transplantDao = transplantDao;
     }
 
-    public void setDemographicsManager(DemographicsManager demographicsManager) {
-        this.demographicsManager = demographicsManager;
+    public void setPatientManager(PatientManager patientManager) {
+        this.patientManager = patientManager;
     }
 }

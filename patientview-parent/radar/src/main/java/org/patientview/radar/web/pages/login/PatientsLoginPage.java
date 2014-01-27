@@ -1,25 +1,47 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.pages.login;
 
-import org.patientview.radar.model.user.PatientUser;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.RadarRequiredDateTextField;
-import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.user.PatientUser;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.RadarUtility;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.pages.patient.srns.SrnsPatientPageReadOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +66,7 @@ public class PatientsLoginPage extends BasePage {
                 RadarSecuredSession session = RadarSecuredSession.get();
                 PatientUser user = getModelObject();
                 boolean loginFailed = false;
-                PatientUser patientUser = userManager.getPatientUserWithUsername(user.getUsername(),
-                        user.getDateOfBirth());
+                PatientUser patientUser = userManager.getPatientUserWithUsername(user.getUsername());
 
                 if (patientUser != null) {
                     if (session.signIn(user.getUsername(), passwordModel.getObject())) {
@@ -77,11 +98,6 @@ public class PatientsLoginPage extends BasePage {
         form.add(password);
         password.setModel(passwordModel);
 
-        // Date of birth with picker
-        DateTextField dateOfBirth = new RadarRequiredDateTextField("dateOfBirth",
-                form, componentsToUpdateList);
-        form.add(dateOfBirth);
-
         // Construct feedback panel
         final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback", new IFeedbackMessageFilter() {
             public boolean accept(FeedbackMessage feedbackMessage) {
@@ -105,9 +121,10 @@ public class PatientsLoginPage extends BasePage {
             }
         });
 
-
         // Add links for forgotten password and register
-        add(new BookmarkablePageLink<PatientForgottenPasswordPage>("forgottenPasswordLink",
-                PatientForgottenPasswordPage.class));
+        String patientViewUrl = RadarUtility.getProperty("config.patientview.site.url");
+        add(new ExternalLink("forgottenPasswordLink", patientViewUrl + "forgotten-password.do"));
+
+
     }
 }

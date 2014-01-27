@@ -1,0 +1,103 @@
+<?xml version= "1.0"?>
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
+<patientview>
+    <sequence>1244</sequence>
+    <dateofreport>2012-09-21T14:43</dateofreport>
+    <flag></flag>
+    <centredetails>
+        <centrecode>99RCSLB</centrecode>
+        <centrename>Nottingham - QMC - Children's Kidney Unit</centrename>
+        <centreaddress1>Hospital A</centreaddress1>
+        <centreaddress2>Road A</centreaddress2>
+        <centreaddress3>Town A</centreaddress3>
+        <centreaddress4>County A</centreaddress4>
+        <centrepostcode>AA AAA</centrepostcode>
+        <centretelephone>0161 206 4023</centretelephone>
+        <centreemail></centreemail>
+    </centredetails>
+    <patient>
+        <personaldetails>
+            <surname>XML-99RCSLB</surname>
+            <forename>Patient9</forename>
+            <dateofbirth>1965-09-14</dateofbirth>
+            <sex>M</sex>
+            <nhsno>3136427416</nhsno>
+            <ethnicorigin></ethnicorigin>
+            <hospitalnumber>857</hospitalnumber>
+        </personaldetails>
+        <clinicaldetails>
+            <rrtstatus></rrtstatus>
+            <tpstatus></tpstatus>
+            <diagnosisdate>2005-01-01</diagnosisdate>
+            <diagnosis>Crohn's Disease</diagnosis>
+            <ibddiseaseextent>Crohn's Colitis</ibddiseaseextent>
+            <ibddiseasecomplications>Peri-anal disease (fissures, fistulas,abscesses): Large bowel stricturing:
+                Osteopaenia
+            </ibddiseasecomplications>
+            <ibdeimanifestations>None</ibdeimanifestations>
+            <familyhistory>Family history of bowel cancer</familyhistory>
+            <smokinghistory>Never smoked</smokinghistory>
+            <surgicalhistory>Other procedure - please specify, subtotal colcectomy, ileo-rectal anastomosis
+            </surgicalhistory>
+            <vaccinationrecord>Previous history of chicken pox, Previous TB (BCG) vaccination</vaccinationrecord>
+            <colonoscopysurveillance>2017-08-29</colonoscopysurveillance>
+            <bmdexam>2013-03-30</bmdexam>
+            <namedconsultant>Dr Renal A</namedconsultant>
+            <ibdnurse>Nurse A, Nurse AA</ibdnurse>
+        </clinicaldetails>
+        <testdetails>
+            <test>
+                <testname>Albumin</testname>
+                <testcode>albumin</testcode>
+                <units>g/L</units>
+                <daterange start="2011-08-17" stop="2012-08-17"/>
+                <result>
+                    <datestamp>2012-08-17T15:06</datestamp>
+                    <value>47</value>
+                </result>
+            </test>
+            <test>
+                <testname>serum ferritin:</testname>
+                <testcode>ferritin</testcode>
+                <units>ug/l</units>
+                <daterange start="2013-02-09" stop="2013-03-01"/>
+                <result>
+                    <datestamp>2013-02-15T15:29</datestamp>
+                    <value>43</value>
+                </result>
+            </test>
+            <test>
+                <testname>serum vitamin B12:</testname>
+                <testcode>vitb12</testcode>
+                <units>ng/L</units>
+                <daterange start="2012-08-17" stop="2012-08-17"/>
+                <result>
+                    <datestamp>2012-08-17T15:29</datestamp>
+                    <value>391</value>
+                </result>
+            </test>
+        </testdetails>
+    </patient>
+</patientview>

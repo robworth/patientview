@@ -56,6 +56,11 @@ public class ResultHeadingManagerImpl implements ResultHeadingManager {
     }
 
     @Override
+    public List<ResultHeading> getAll(String username) {
+        return resultHeadingDao.getAll(securityUserManager.getLoggedInSpecialty(), username);
+    }
+
+    @Override
     public List<ResultHeading> get(int panel) {
         return resultHeadingDao.get(panel, securityUserManager.getLoggedInSpecialty());
     }

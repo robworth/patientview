@@ -26,7 +26,8 @@ package org.patientview.patientview.unit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
+import org.patientview.patientview.model.User;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
@@ -34,6 +35,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.patientview.logon.LogonUtils;
+
+import java.util.List;
 
 public class UnitUpdateAction extends Action {
 
@@ -44,7 +47,21 @@ public class UnitUpdateAction extends Action {
         Unit unit = LegacySpringUtils.getUnitManager().get(BeanUtils.getProperty(form, "unitcode"));
         UnitUtils.buildUnit(unit, form);
         LegacySpringUtils.getUnitManager().save(unit);
-        request.setAttribute("unit", unit);
+
+        boolean isRadarGroup = "radargroup".equalsIgnoreCase(mapping.getParameter());
+
+        List items;
+        User user = LegacySpringUtils.getUserManager().getLoggedInUser();
+        if (LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(user).equals("superadmin")) {
+            items = LegacySpringUtils.getUnitManager().getAdminsUnits(isRadarGroup);
+        } else {
+            items = LegacySpringUtils.getUnitManager().getLoggedInUsersUnits();
+        }
+
+        request.setAttribute("units", items);
+        if (isRadarGroup) {
+            request.setAttribute("isRadarGroup", isRadarGroup);
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

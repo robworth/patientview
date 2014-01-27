@@ -24,7 +24,7 @@
 package org.patientview.patientview.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.service.PatientManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.support.MutableSortDefinition;
@@ -49,9 +49,20 @@ public class UnitPatientsControlller extends BaseController {
                               HttpServletRequest request) {
 
         unitcode = (unitcode == null) ? "" : unitcode;
-        PagedListHolder pagedListHolder =  (PagedListHolder) request.getSession().getAttribute("patients");
+
+        PagedListHolder pagedListHolder = (PagedListHolder) request.getSession().getAttribute("patients");
+
+        //TODO So we get every patient in the database and then start paging
+        //TODO There is probably not a single use case why you would want this many patients
+        //TODO Pagination needs to restrict query results
 
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
+
+            // Validation
+            if (StringUtils.isEmpty(unitcode) && StringUtils.isEmpty(nhsno) && StringUtils.isEmpty(name)) {
+                return "redirect:/renal/control/unitPatientsUnitSelect.do?validation=failed";
+            }
+
             nhsno = (nhsno == null) ? "" : nhsno;
             name = (name == null) ? "" : name;
             List patients = null;
@@ -85,7 +96,7 @@ public class UnitPatientsControlller extends BaseController {
 
         if (!"".equals(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-            request.setAttribute("unit", unit);
+            request.getSession().setAttribute("unit", unit);
         }
 
         return forwardTo(request, Routes.UNIT_PATIENTS_LIST_PAGE);

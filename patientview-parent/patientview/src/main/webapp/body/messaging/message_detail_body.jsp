@@ -1,5 +1,4 @@
 <%@ page import="org.patientview.utils.LegacySpringUtils" %>
-<%@ page import="org.patientview.patientview.model.Specialty" %>
 <%@ page import="org.patientview.patientview.model.User" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>

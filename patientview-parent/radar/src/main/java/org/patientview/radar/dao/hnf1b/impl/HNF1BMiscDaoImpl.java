@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.dao.hnf1b.impl;
 
 import org.patientview.radar.dao.hnf1b.HNF1BMiscDao;
@@ -28,9 +51,9 @@ public class HNF1BMiscDaoImpl extends BaseDaoImpl implements HNF1BMiscDao {
     private static final String OTHER_RENAL_MALFORMATIONS_FIELD_NAME = "otherRenalMalformations";
     private static final String OTHER_RENAL_MALFORMATIONS_DETAILS_FIELD_NAME = "otherRenalMalformationsDetails";
     private static final String DIABETES_FIELD_NAME = "diabetes";
-    private static final String AGE_AT_DIABETES_DIAGNOSIS_FIELD_NAME = "ageAtDiabetesDiagnosis";
+    private static final String DATE_AT_DIABETES_DIAGNOSIS_FIELD_NAME = "dateAtDiabetesDiagnosis";
     private static final String GOUT_FIELD_NAME = "gout";
-    private static final String AGE_AT_GOUT_DIAGNOSIS_FIELD_NAME = "ageAtGoutDiagnosis";
+    private static final String DATE_AT_GOUT_DIAGNOSIS_FIELD_NAME = "dateAtGoutDiagnosis";
     private static final String GENITAL_MALFORMATION_FIELD_NAME = "genitalMalformation";
     private static final String GENITAL_MALFORMATION_DETAILS_FIELD_NAME = "genitalMalformationDetails";
 
@@ -47,7 +70,7 @@ public class HNF1BMiscDaoImpl extends BaseDaoImpl implements HNF1BMiscDao {
                 .usingColumns(RADAR_NO_FIELD_NAME, RENAL_CYSTS_FIELD_NAME,
                         SINGLE_KIDNEY_FIELD_NAME, OTHER_RENAL_MALFORMATIONS_FIELD_NAME,
                         OTHER_RENAL_MALFORMATIONS_DETAILS_FIELD_NAME, DIABETES_FIELD_NAME,
-                        AGE_AT_DIABETES_DIAGNOSIS_FIELD_NAME, GOUT_FIELD_NAME, AGE_AT_GOUT_DIAGNOSIS_FIELD_NAME,
+                        DATE_AT_DIABETES_DIAGNOSIS_FIELD_NAME, GOUT_FIELD_NAME, DATE_AT_GOUT_DIAGNOSIS_FIELD_NAME,
                         GENITAL_MALFORMATION_FIELD_NAME, GENITAL_MALFORMATION_DETAILS_FIELD_NAME);
     }
 
@@ -74,13 +97,13 @@ public class HNF1BMiscDaoImpl extends BaseDaoImpl implements HNF1BMiscDao {
             geneticsMap.put(DIABETES_FIELD_NAME, hnf1BMisc.getDiabetes().getId());
         }
 
-        geneticsMap.put(AGE_AT_DIABETES_DIAGNOSIS_FIELD_NAME, hnf1BMisc.getAgeAtDiabetesDiagnosis());
+        geneticsMap.put(DATE_AT_DIABETES_DIAGNOSIS_FIELD_NAME, hnf1BMisc.getDateAtDiabetesDiagnosis());
 
         if (hnf1BMisc.getGout() != null) {
             geneticsMap.put(GOUT_FIELD_NAME, hnf1BMisc.getGout().getId());
         }
 
-        geneticsMap.put(AGE_AT_GOUT_DIAGNOSIS_FIELD_NAME, hnf1BMisc.getAgeAtGoutDiagnosis());
+        geneticsMap.put(DATE_AT_GOUT_DIAGNOSIS_FIELD_NAME, hnf1BMisc.getDateAtGoutDiagnosis());
 
         if (hnf1BMisc.getGenitalMalformation() != null) {
             geneticsMap.put(GENITAL_MALFORMATION_FIELD_NAME, hnf1BMisc.getGenitalMalformation().getId());
@@ -117,9 +140,9 @@ public class HNF1BMiscDaoImpl extends BaseDaoImpl implements HNF1BMiscDao {
             hnf1BMisc.setOtherRenalMalformations(YesNo.getYesNo(rs.getInt(OTHER_RENAL_MALFORMATIONS_FIELD_NAME)));
             hnf1BMisc.setOtherRenalMalformationsDetails(rs.getString(OTHER_RENAL_MALFORMATIONS_DETAILS_FIELD_NAME));
             hnf1BMisc.setDiabetes(YesNo.getYesNo(rs.getInt(DIABETES_FIELD_NAME)));
-            hnf1BMisc.setAgeAtDiabetesDiagnosis(rs.getInt(AGE_AT_DIABETES_DIAGNOSIS_FIELD_NAME));
+            hnf1BMisc.setDateAtDiabetesDiagnosis(rs.getDate(DATE_AT_DIABETES_DIAGNOSIS_FIELD_NAME));
             hnf1BMisc.setGout(YesNo.getYesNo(rs.getInt(GOUT_FIELD_NAME)));
-            hnf1BMisc.setAgeAtGoutDiagnosis(rs.getInt(AGE_AT_GOUT_DIAGNOSIS_FIELD_NAME));
+            hnf1BMisc.setDateAtGoutDiagnosis(rs.getDate(DATE_AT_GOUT_DIAGNOSIS_FIELD_NAME));
             hnf1BMisc.setGenitalMalformation(YesNo.getYesNo(rs.getInt(GENITAL_MALFORMATION_FIELD_NAME)));
             hnf1BMisc.setGenitalMalformationDetails(rs.getString(GENITAL_MALFORMATION_DETAILS_FIELD_NAME));
 

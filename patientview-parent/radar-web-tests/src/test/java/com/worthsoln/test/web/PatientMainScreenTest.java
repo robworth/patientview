@@ -22,6 +22,7 @@
  */
 package com.worthsoln.test.web;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,6 +33,7 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.*;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
 public class PatientMainScreenTest extends BaseTest{
 
 
@@ -57,7 +59,7 @@ public class PatientMainScreenTest extends BaseTest{
         assertLinkPresentWithText("Hospitalisation");
     }
 
-    @Test
+    @Ignore
     public void testSRNSPatientScreen() {
         testPatientMainScreen("patient3","pppppp","01-08-1985");
 
@@ -69,7 +71,7 @@ public class PatientMainScreenTest extends BaseTest{
         testTabs();
     }
 
-    @Test
+    @Ignore
     public void testALPORTPatientScreen() {
         testPatientMainScreen("patient4","pppppp","01-08-1985");
 
@@ -81,7 +83,7 @@ public class PatientMainScreenTest extends BaseTest{
         testTabs();
     }
 
-    @Test
+    @Ignore
     public void testHNF1BPatientScreen() {
         testPatientMainScreen("patient5","pppppp","01-08-1985");
 
@@ -92,7 +94,7 @@ public class PatientMainScreenTest extends BaseTest{
 
         testTabs();
     }
-    @Test
+    @Ignore
     public void testOthersPatientScreen() {
         testPatientMainScreen("patient6","pppppp","01-08-1985");
 

@@ -1,3 +1,26 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.common.test;
 
 import org.apache.commons.io.IOUtils;
@@ -120,7 +143,9 @@ public class BaseTestPvDbSchema {
 
         while (resultSet.next()) {
             String tableName =  resultSet.getString(1);
-            dropStatement.execute("DROP table " + tableName);
+            String sqlStatement = "DROP table " + tableName;
+            LOGGER.info(sqlStatement);
+            dropStatement.execute(sqlStatement);
         }
 
         dropStatement.execute("SET FOREIGN_KEY_CHECKS = 1;");
@@ -148,6 +173,19 @@ public class BaseTestPvDbSchema {
         dropStatement.close();
     }
 
+    public void clearData() throws Exception {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            clearData(connection);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+    }
+
     protected void createTables(Connection connection, List<String> sqlFileNames) throws Exception {
         LOGGER.info("Starting create tables");
 
@@ -165,6 +203,7 @@ public class BaseTestPvDbSchema {
                 for (String sqlStatement : createTablesScript.split(";")) {
                     if (StringUtils.isNotBlank(sqlStatement)) {
                         try {
+                            LOGGER.info(sqlStatement);
                             statement.execute(sqlStatement);
                         } catch (SQLException e) {
                             String error = e.getMessage() + " error executing: " + script + ", sql:"

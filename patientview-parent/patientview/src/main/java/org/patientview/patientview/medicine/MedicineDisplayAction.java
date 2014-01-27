@@ -23,10 +23,11 @@
 
 package org.patientview.patientview.medicine;
 
+import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.model.Medicine;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
@@ -45,17 +46,31 @@ public class MedicineDisplayAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        User user = UserUtils.retrieveUser(request);
-        List medicines = getMedicinesForPatient(user, request);
+        User user = null;
+        String param = mapping.getParameter();
+        boolean isRadarGroup = false;
+        if ("medication".equals(param)) {
+            isRadarGroup = true;
+            user = UserUtils.retrieveUser(request);
+        } else  if ("controlMedication".equals(param)) {
+            isRadarGroup = true;
+            String username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+            user = LegacySpringUtils.getUserManager().get(username);
+        } else {
+            user = UserUtils.retrieveUser(request);
+        }
+
+        List medicines = getMedicinesForPatient(user, request, isRadarGroup);
         sortNullDatesOnMedicines(medicines);
 
         request.setAttribute("medicines", medicines);
         request.setAttribute("user", user);
 
+        ActionUtils.setUpNavLink(mapping.getParameter(), request);
         return LogonUtils.logonChecks(mapping, request);
     }
 
-    private List getMedicinesForPatient(User user, HttpServletRequest request) throws Exception {
+    private List getMedicinesForPatient(User user, HttpServletRequest request, boolean isRadarGroup) throws Exception {
         List<MedicineWithShortName> medicinesWithShortName = new ArrayList<MedicineWithShortName>();
         if (user != null) {
             List<Medicine> medicines = LegacySpringUtils.getMedicineManager().getUserMedicines(user);
@@ -63,6 +78,9 @@ public class MedicineDisplayAction extends Action {
             for (Medicine med : medicines) {
                 Unit unit = UnitUtils.retrieveUnit(med.getUnitcode());
                 if (unit != null) {
+                    if (isRadarGroup && "radargroup".equalsIgnoreCase(unit.getShortname())) {
+                        continue;
+                    }
                     medicinesWithShortName.add(new MedicineWithShortName(med, unit.getShortname()));
                 } else {
                     medicinesWithShortName.add(new MedicineWithShortName(med, "UNKNOWN UNIT:" + med.getUnitcode()));

@@ -28,7 +28,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.support.PagedListHolder;
 
@@ -43,7 +43,8 @@ public class UnitUserEditAction extends Action {
             throws Exception {
         String username = BeanUtils.getProperty(form, "username");
         String password = BeanUtils.getProperty(form, "password");
-        String name = BeanUtils.getProperty(form, "name");
+        String firstName = BeanUtils.getProperty(form, "firstName");
+        String lastName = BeanUtils.getProperty(form, "lastName");
         String email = BeanUtils.getProperty(form, "email");
         boolean emailverified = "true".equals(BeanUtils.getProperty(form, "emailverified"));
         String unitcode = BeanUtils.getProperty(form, "unitcode");
@@ -52,7 +53,15 @@ public class UnitUserEditAction extends Action {
         boolean isRecipient = "true".equals(BeanUtils.getProperty(form, "isrecipient"));
         boolean isClinician = "true".equals(BeanUtils.getProperty(form, "isclinician"));
 
-        UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, emailverified, role, firstlogon);
+        UnitAdmin unitAdmin = new UnitAdmin();
+        unitAdmin.setUsername(username);
+        unitAdmin.setPassword(password);
+        unitAdmin.setFirstName(firstName);
+        unitAdmin.setLastName(lastName);
+        unitAdmin.setEmail(email);
+        unitAdmin.setEmailverified(emailverified);
+        unitAdmin.setRole(role);
+        unitAdmin.setFirstlogon(firstlogon);
         unitAdmin.setIsrecipient(isRecipient);
         unitAdmin.setIsclinician(isClinician);
 
