@@ -23,16 +23,16 @@
 
 package org.patientview.patientview.controller.lookinglocal;
 
+import org.patientview.model.Unit;
 import org.patientview.patientview.PatientDetails;
 import org.patientview.patientview.comment.CommentUtils;
 import org.patientview.patientview.controller.Routes;
 import org.patientview.patientview.medicine.MedicineWithShortName;
-import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.TestResultWithUnitShortname;
-import org.patientview.patientview.model.Panel;
 import org.patientview.patientview.model.Medicine;
+import org.patientview.patientview.model.Panel;
+import org.patientview.patientview.model.TestResultWithUnitShortname;
+import org.patientview.patientview.model.User;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
