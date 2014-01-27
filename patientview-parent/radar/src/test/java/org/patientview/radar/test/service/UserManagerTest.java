@@ -38,8 +38,6 @@ public class UserManagerTest extends TestPvDbSchema {
     @Inject
     private PatientManager patientManager;
 
-
-
     @Inject
     private TestDataHelper testDataHelper;
 
