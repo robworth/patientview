@@ -95,11 +95,16 @@ public class UnitPatientsControlller extends BaseController {
                 pagedListHolder.resort();
             }
         }
+        //Reset the unit selection on the first page
+        if (page == null) {
+            request.getSession().setAttribute("unit", null);
+        }
 
-        if (!"".equals(unitcode)) {
+        if (StringUtils.isNotEmpty(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
             request.getSession().setAttribute("unit", unit);
         }
+
 
         return forwardTo(request, Routes.UNIT_PATIENTS_LIST_PAGE);
     }
