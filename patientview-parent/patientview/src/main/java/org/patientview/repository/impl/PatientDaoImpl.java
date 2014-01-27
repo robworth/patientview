@@ -259,24 +259,23 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                                                    Specialty specialty) {
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT DISTINCT ");
-        query.append("       usr.username ");
+        query.append("SELECT usr.username ");
         query.append(",      usr.password ");
         query.append(",      usr.firstname ");
         query.append(",      usr.lastname ");
         query.append(",      usr.email ");
         query.append(",      usr.emailverified ");
         query.append(",      usr.accountlocked ");
-        query.append(",      ptt.nhsno ");
-        query.append(",      ptt.unitcode ");
+        query.append(",      MAX(ptt.nhsno) nhsno ");
+        query.append(",      MAX(ptt.unitcode) unitcode ");
         query.append(",      null lastverificationdate ");
         query.append(",      usr.firstlogon ");
         query.append(",      usr.lastlogon ");
-        query.append(",      ptt.id ");
-        query.append(",      ptt.treatment ");
-        query.append(",      ptt.dateofbirth ");
-        query.append(",      ptt.rrtModality ");
-        query.append(",      ptt.mostRecentTestResultDateRangeStopDate ");
+        query.append(",      MAX(ptt.id) id ");
+        query.append(",      MAX(ptt.treatment) treatment ");
+        query.append(",      MAX(ptt.dateofbirth) dateofbirth ");
+        query.append(",      MAX(ptt.rrtModality) rrtModality  ");
+        query.append(",      MAX(ptt.mostRecentTestResultDateRangeStopDate) mostRecentTestResultDateRangeStopDate ");
         query.append("FROM user usr ");
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("LEFT  JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
@@ -290,15 +289,27 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             query.append("AND usm.nhsno LIKE ? ");
         }
         if (StringUtils.hasText(firstname)) {
-            query.append("AND   usr.firstname LIKE ? ");
+            query.append("AND usr.firstname LIKE ? ");
         }
         if (StringUtils.hasText(lastname)) {
-            query.append("AND   usr.lastname LIKE ? ");
+            query.append("AND usr.lastname LIKE ? ");
         }
         if (!showgps) {
             query.append("AND usr.username NOT LIKE '%-GP' ");
         }
-        query.append("AND    str.specialty_id = ?  ORDER BY usr.lastname, usr.firstname ASC ");
+        query.append("AND    str.specialty_id = ? ");
+
+        query.append("GROUP BY  usr.username ");
+        query.append(",         usr.password ");
+        query.append(",         usr.firstname ");
+        query.append(",         usr.lastname ");
+        query.append(",         usr.email ");
+        query.append(",         usr.emailverified ");
+        query.append(",         usr.accountlocked ");
+        query.append(",         usr.firstlogon ");
+        query.append(",         usr.lastlogon ");
+        query.append(" ORDER BY usr.lastname, usr.firstname ASC  ");
+
 
         List<Object> params = new ArrayList<Object>();
 
