@@ -276,15 +276,6 @@ public class UtilityManagerImpl implements UtilityManager {
         return utilityDao.getUserName(nhsNo);
     }
 
-    // todo this method should remove after running once
-    public void generateUserWithUsermapping() {
-        List<Consultant> consultants = utilityDao.getConsultants(null, -1, -1);
-        for (Consultant consultant : consultants) {
-            String password = new RandPass(RandPass.NONCONFUSING_ALPHABET).getPass(8);
-            password = DigestUtils.sha256Hex(password);
-            userDao.createRawUser(consultant.getFullName(), password, consultant.getForename(),
-                    consultant.getSurname(), null, consultant.getCentre().getUnitCode(), null);
-        }
 
     public String getUserName(Long id) {
         return utilityDao.getUserName(id);

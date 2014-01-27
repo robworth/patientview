@@ -60,7 +60,8 @@ public interface UserDao {
 
     User createUser(User user);
 
-    Long createLockedPVUser(String username, String password, String name, String email) throws Exception;
+    Long createLockedPVUser(String username, String password, String firstName, String lastName, String email)
+            throws Exception;
 
     PatientUser getPatientViewUser(String nhsno);
 

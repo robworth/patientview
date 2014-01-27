@@ -131,12 +131,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
         userInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
-                .usingColumns(USER_USERNAME_FIELD_NAME, USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME, USER_NAME_FIELD_NAME, USER_DUMMY_PATIENT_FIELD_NAME,
+                .usingColumns(USER_USERNAME_FIELD_NAME,
+                        USER_PASSWORD_FIELD_NAME,
+                        USER_EMAIL_FIELD_NAME,
                         USER_ACCOUNT_LOCKED_FIELD_NAME,
-                        USER_IS_CLINICIAN_FIELD_NAME);
-                        USER_EMAIL_FIELD_NAME, USER_FIRST_NAME_FIELD_NAME, USER_LAST_NAME_FIELD_NAME,
-                        USER_DUMMY_PATIENT_FIELD_NAME, USER_IS_CLINICIAN_FIELD_NAME);
+                        USER_IS_CLINICIAN_FIELD_NAME,
+                        USER_EMAIL_FIELD_NAME,
+                        USER_FIRST_NAME_FIELD_NAME,
+                        USER_LAST_NAME_FIELD_NAME,
+                        USER_DUMMY_PATIENT_FIELD_NAME);
 
         userMappingInsert = new SimpleJdbcInsert(dataSource).withTableName(USER_MAPPING_TABLE_NAME)
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
@@ -506,7 +509,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, user.getUsername());
         userMap.put(USER_PASSWORD_FIELD_NAME, user.getPassword());
-        userMap.put(USER_NAME_FIELD_NAME, user.getName());
+        userMap.put(USER_FIRST_NAME_FIELD_NAME, user.getFirstName());
+        userMap.put(USER_LAST_NAME_FIELD_NAME, user.getLastName());
         userMap.put(USER_EMAIL_FIELD_NAME, user.getEmail());
         userMap.put(USER_DUMMY_PATIENT_FIELD_NAME, false);
         userMap.put(USER_ACCOUNT_LOCKED_FIELD_NAME, false);
@@ -518,7 +522,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     }
 
-    public Long createLockedPVUser(String username, String password, String name, String email) throws Exception {
+    public Long createLockedPVUser(String username, String password, String firstName, String lastName, String email)
+            throws Exception {
 
         Map<String, Object> userMap = new HashMap<String, Object>();
         userMap.put(USER_USERNAME_FIELD_NAME, username);

@@ -313,7 +313,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                 patientUser = new PatientUser();
 
                 patientUser.setUsername(generateUsername(patient));
-                patientUser.setName(patient.getForename() + " " + patient.getSurname());
+                patientUser.setFirstName(patient.getForename());
+                patientUser.setLastName(patient.getSurname());
                 patientUser.setPassword(User.getPasswordHash(generateRandomPassword()));
                 patientUser.setEmail(patient.getEmailAddress());
 

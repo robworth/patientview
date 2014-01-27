@@ -206,7 +206,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                 user = new PatientUser();
                 user.setUserId(userDao.createLockedPVUser(username,
                         User.getPasswordHash(RandomStringUtils.randomAlphanumeric(8)),
-                        patient.getForename() + " " + patient.getSurname(), null));
+                        patient.getForename(), patient.getSurname(), null));
                 numUsersCreated++;
                 userCreated = true;
             } else {
