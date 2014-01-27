@@ -108,7 +108,8 @@ public class RoleHelper {
         PatientUser patientUser = new PatientUser();
         patientUser.setEmail(nhsNo + "@patientview.com");
         patientUser.setUsername("TestUser");
-        patientUser.setName("Test User");
+        patientUser.setFirstName("Test");
+        patientUser.setLastName("User");
         patientUser.setPassword("HasPassword");
 
         return (PatientUser) userDao.createUser(patientUser);
