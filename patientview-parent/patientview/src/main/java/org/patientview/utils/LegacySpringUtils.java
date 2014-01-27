@@ -126,7 +126,6 @@ public final class LegacySpringUtils {
     private static GeneticsManager geneticsManager;
 
     private LegacySpringUtils() {
-
     }
 
     public static AboutmeManager getAboutmeManager() {
