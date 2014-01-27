@@ -52,10 +52,11 @@ public interface PatientDao {
     List<Patient> get(String centreCode);
 
     // Note: generics not used as the result is half user, half patient
-    List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
-                                         Specialty specialty);
+    List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String firstname, String lastname,
+                                         boolean showgps, Specialty specialty);
 
-    List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps, Specialty specialty);
+    List getAllUnitPatientsWithTreatmentDao(String nhsno, String firstname, String lastname, boolean showgps,
+                                       Specialty specialty);
 
     // Note: generics not used as the result is half user, half patient
     List<PatientLogonWithTreatment> getUnitPatientsAllWithTreatmentDao(String unitcode, Specialty specialty);

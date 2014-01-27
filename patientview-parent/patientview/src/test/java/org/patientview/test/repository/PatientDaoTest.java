@@ -116,7 +116,7 @@ public class PatientDaoTest extends BaseDaoTest {
          * getUnitPatientsWithTreatmentDao
          */
 
-        patients = patientDao.getUnitPatientsWithTreatmentDao(CENTRE_1, NHS_NO_1, NAME_OF_USER, false, specialty);
+        patients = patientDao.getUnitPatientsWithTreatmentDao(CENTRE_1, NHS_NO_1, NAME_OF_USER,NAME_OF_USER, false, specialty);
         assertTrue("Can't get patients with treatment", patients.size() > 0);
 
         /**

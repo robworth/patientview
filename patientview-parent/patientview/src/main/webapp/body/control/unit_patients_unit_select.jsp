@@ -65,8 +65,12 @@
       <td><input type="text" name="nhsno" value=""></td>
     </tr>
     <tr>
-      <td><b>Name</b></td>
-      <td><input type="text" name="name" value=""></td>
+      <td><b>Firstname</b></td>
+      <td><input type="text" name="firstname" value=""></td>
+    </tr>
+    <tr>
+      <td><b>Lastname</b></td>
+      <td><input type="text" name="lastname" value=""></td>
     </tr>
     <tr>
       <td><b>Show GPs</b></td>

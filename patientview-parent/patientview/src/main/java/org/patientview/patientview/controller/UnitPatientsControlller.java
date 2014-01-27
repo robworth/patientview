@@ -43,7 +43,8 @@ public class UnitPatientsControlller extends BaseController {
     public String getPatients(@RequestParam(value = "unitcode", required = false) String unitcode,
                               @RequestParam(value = "page", required = false) String page,
                               @RequestParam(value = "nhsno", required = false) String nhsno,
-                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "firstname", required = false) String firstname,
+                              @RequestParam(value = "lastname", required = false) String lastname,
                               @RequestParam(value = "showgps", required = false) boolean showgps,
                               @RequestParam(value = "property", required = false) String property,
                               HttpServletRequest request) {
@@ -59,18 +60,20 @@ public class UnitPatientsControlller extends BaseController {
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
 
             // Validation
-            if (StringUtils.isEmpty(unitcode) && StringUtils.isEmpty(nhsno) && StringUtils.isEmpty(name)) {
+            if (StringUtils.isEmpty(unitcode) && StringUtils.isEmpty(nhsno))
+            {
                 return "redirect:/renal/control/unitPatientsUnitSelect.do?validation=failed";
             }
 
             nhsno = (nhsno == null) ? "" : nhsno;
-            name = (name == null) ? "" : name;
+            firstname = (firstname == null) ? "" : firstname;
+            lastname = (lastname == null) ? "" : lastname;
             List patients = null;
             PatientManager patientManager = LegacySpringUtils.getPatientManager();
             if (StringUtils.isEmpty(unitcode)) {
-                patients = patientManager.getAllUnitPatientsWithTreatment(nhsno, name, showgps);
+                patients = patientManager.getAllUnitPatientsWithTreatment(nhsno, firstname, lastname, showgps);
             } else {
-                patients = patientManager.getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
+                patients = patientManager.getUnitPatientsWithTreatment(unitcode, nhsno, firstname, lastname, showgps);
             }
             pagedListHolder = new PagedListHolder(patients);
             request.getSession().setAttribute("patients", pagedListHolder);

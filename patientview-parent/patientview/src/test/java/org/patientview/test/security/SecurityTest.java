@@ -329,7 +329,7 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty2, unitadmin, "unitadmin");
         loginAsUser(unitadmin.getUsername(), specialty2);
 
-        patientManager.getAllUnitPatientsWithTreatment("", "", true);
+        patientManager.getAllUnitPatientsWithTreatment("", "","", true);
 
     }
 
@@ -342,7 +342,7 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
         loginAsUser(superadmin.getUsername(), specialty);
 
-        patientManager.getAllUnitPatientsWithTreatment("", "", true);
+        patientManager.getAllUnitPatientsWithTreatment("", "", "", true);
     }
 
     private void loginAsUser(String username, Specialty specialty) {

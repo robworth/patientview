@@ -173,8 +173,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     //todo PERFORMANCE FIX: commented out the emailverification table to improve query speed.
     // todo PERFORMANCE FIX & GENERAL BUG: removed the left join to the pv_user_log, need to reimplement
     @Override
-    public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
-                                                Specialty specialty) {
+    public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String firstname, String lastname,
+                                                boolean showgps, Specialty specialty) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT    usr.username ");
         query.append(",         usr.password ");
@@ -197,7 +197,6 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
         query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
-    //    query.append("LEFT JOIN emailverification emv ON usr.username = emv.username ");
         query.append("WHERE     str.role = 'patient' ");
         query.append("AND       usr.username = usm.username ");
         query.append("AND       usr.id = str.user_id ");
@@ -207,11 +206,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (StringUtils.hasText(nhsno)) {
             query.append("AND   usm.nhsno LIKE ? ");
         }
-        if (StringUtils.hasText(name)) {
-            query.append("AND   usr.name LIKE ? ");
+        if (StringUtils.hasText(firstname)) {
+            query.append("AND   usr.firstname LIKE ? ");
+        }
+        if (StringUtils.hasText(lastname)) {
+            query.append("AND   usr.lastname LIKE ? ");
         }
         if (!showgps) {
-            query.append("AND   usr.name NOT LIKE '%-GP' ");
+            query.append("AND   usr.username NOT LIKE '%-GP' ");
         }
         query.append("AND       str.specialty_id = ? ");
         query.append("GROUP BY  usr.username ");
@@ -226,19 +228,23 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append(",         lastverificationdate ");
         query.append(",         usr.firstlogon ");
         query.append(",         usr.lastlogon  ");
-        query.append(" ORDER BY usr.name ASC ");
+        query.append(" ORDER BY usr.lastname, usr.firstname ASC ");
 
 
         List<Object> params = new ArrayList<Object>();
 
         params.add(unitcode);
 
-        if (nhsno != null && nhsno.length() > 0) {
+        if (StringUtils.hasText(nhsno)) {
             params.add('%' + nhsno + '%');
         }
 
-        if (name != null && name.length() > 0) {
-            params.add('%' + name + '%');
+        if (StringUtils.hasText(firstname)) {
+            params.add('%' + firstname + '%');
+        }
+
+        if (StringUtils.hasText(lastname)) {
+            params.add('%' + lastname + '%');
         }
         params.add(specialty.getId());
 
@@ -249,7 +255,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     //todo PERFORMANCE FIX: commented out the emailverification table to improve query speed.
     // todo PERFORMANCE FIX & GENERAL BUG: removed the left join to the pv_user_log, need to reimplement
     @Override
-    public List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps,
+    public List getAllUnitPatientsWithTreatmentDao(String nhsno, String firstname, String lastname, boolean showgps,
                                                    Specialty specialty) {
 
         StringBuilder query = new StringBuilder();
@@ -283,11 +289,14 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (nhsno != null && nhsno.length() > 0) {
             query.append("AND usm.nhsno LIKE ? ");
         }
-        if (name != null && name.length() > 0) {
-            query.append("AND usr.name LIKE ? ");
+        if (StringUtils.hasText(firstname)) {
+            query.append("AND   usr.firstname LIKE ? ");
+        }
+        if (StringUtils.hasText(lastname)) {
+            query.append("AND   usr.lastname LIKE ? ");
         }
         if (!showgps) {
-            query.append("AND usr.name NOT LIKE '%-GP' ");
+            query.append("AND usr.username NOT LIKE '%-GP' ");
         }
         query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC ");
 
@@ -297,8 +306,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             params.add('%' + nhsno + '%');
         }
 
-        if (name != null && name.length() > 0) {
-            params.add('%' + name + '%');
+        if (StringUtils.hasText(firstname)) {
+            params.add('%' + firstname + '%');
+        }
+
+        if (StringUtils.hasText(lastname)) {
+            params.add('%' + lastname + '%');
         }
         params.add(specialty.getId());
 
@@ -342,7 +355,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "AND "
                 + "   specialtyuserrole.specialty_id = ? "
                 + "ORDER BY "
-                + "   user.name ASC";
+                + "   user.lastname, user.firstname ASC";
 
         List<Object> params = new ArrayList<Object>();
 
