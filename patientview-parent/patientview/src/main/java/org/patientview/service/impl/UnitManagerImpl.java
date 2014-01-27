@@ -107,6 +107,19 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getAllVisible(String[] sourceTypesToInclude) {
+        List<Unit> units = new ArrayList<Unit>();
+
+        for (Unit unit : unitDao.getAll(null, sourceTypesToInclude)) {
+            if (unit.isVisible()) {
+                units.add(unit);
+            }
+        }
+
+        return units;
+    }
+
+    @Override
     public List<Unit> getUnitsWithUser() {
         return unitDao.getUnitsWithUser(securityUserManager.getLoggedInSpecialty());
     }

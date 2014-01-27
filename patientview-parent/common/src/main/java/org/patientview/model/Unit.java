@@ -190,6 +190,9 @@ public class Unit extends BaseModel {
     @Column
     private String country;
 
+    @Column
+    private boolean visible;
+
     public Unit() {
     }
 
@@ -784,5 +787,13 @@ public class Unit extends BaseModel {
 
     public void setLastImportDate(Date lastImportDate) {
         this.lastImportDate = lastImportDate;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

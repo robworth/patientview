@@ -57,3 +57,5 @@ FROM  user_table_datafix;
 UPDATE USER usr INNER JOIN user_table_datafix ddf ON usr.username = ddf.username SET usr.firstname = ddf.firstname, usr.lastname = ddf.surname;
 
 ALTER TABLE USER DROP COLUMN NAME;
+
+ALTER TABLE unit ADD COLUMN visible TINYINT DEFAULT 1;
