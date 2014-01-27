@@ -175,7 +175,8 @@ public class UserManagerImpl implements UserManager {
         user.setFailedlogons(unitAdmin.getFailedlogons());
         user.setFirstlogon(unitAdmin.isFirstlogon());
         user.setLastlogon(unitAdmin.getLastlogon());
-        user.setName(unitAdmin.getName());
+        user.setFirstName(unitAdmin.getFirstName());
+        user.setLastName(unitAdmin.getLastName());
         user.setPassword(unitAdmin.getPassword());
         user.setUsername(unitAdmin.getUsername());
         user.setIsrecipient(unitAdmin.isIsrecipient());
@@ -218,7 +219,8 @@ public class UserManagerImpl implements UserManager {
         user.setFailedlogons(patientLogon.getFailedlogons());
         user.setFirstlogon(patientLogon.isFirstlogon());
         user.setLastlogon(patientLogon.getLastlogon());
-        user.setName(patientLogon.getName());
+        user.setFirstName(patientLogon.getFirstName());
+        user.setLastName(patientLogon.getLastName());
         user.setPassword(patientLogon.getPassword());
         user.setUsername(patientLogon.getUsername());
 

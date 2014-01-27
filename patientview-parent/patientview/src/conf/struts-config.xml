@@ -78,7 +78,8 @@
         <form-bean name="patientForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="username" type="java.lang.String"/>
             <form-property name="password" type="java.lang.String"/>
-            <form-property name="name" type="java.lang.String"/>
+            <form-property name="firstName" type="java.lang.String"/>
+            <form-property name="lastName" type="java.lang.String"/>
             <form-property name="email" type="java.lang.String"/>
             <form-property name="emailverified" type="java.lang.String"/>
             <form-property name="nhsno" type="java.lang.String"/>

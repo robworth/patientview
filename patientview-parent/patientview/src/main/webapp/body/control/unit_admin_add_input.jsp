@@ -51,8 +51,12 @@
                 <td><html:text property="username" /></td>
             </tr>
             <tr>
-                <td><b>Name</b></td>
-                <td><html:text property="name" /></td>
+                <td><b>First Name</b></td>
+                <td><html:text property="firstName" /></td>
+            </tr>
+            <tr>
+                <td><b>Last Name</b></td>
+                <td><html:text property="lastName" /></td>
             </tr>
             <tr>
                 <td><b>Email Address</b></td>

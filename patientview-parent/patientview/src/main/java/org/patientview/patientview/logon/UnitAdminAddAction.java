@@ -46,13 +46,22 @@ public class UnitAdminAddAction extends Action {
                                  HttpServletResponse response) throws Exception {
         String username = BeanUtils.getProperty(form, "username");
         String password = LogonUtils.generateNewPassword();
-        String name = BeanUtils.getProperty(form, "name");
+        String firstName = BeanUtils.getProperty(form, "firstName");
+        String lastName = BeanUtils.getProperty(form, "lastName");
         String email = BeanUtils.getProperty(form, "email");
         String unitcode = BeanUtils.getProperty(form, "unitcode");
         String role = BeanUtils.getProperty(form, "role");
         boolean isRecipient = "true".equals(BeanUtils.getProperty(form, "isrecipient"));
         boolean isClinician = "true".equals(BeanUtils.getProperty(form, "isclinician"));
-        UnitAdmin unitAdmin = new UnitAdmin(username, password, name, email, false, role, true);
+        UnitAdmin unitAdmin = new UnitAdmin();
+        unitAdmin.setUsername(username);
+        unitAdmin.setPassword(password);
+        unitAdmin.setFirstName(firstName);
+        unitAdmin.setLastName(lastName);
+        unitAdmin.setEmail(email);
+        unitAdmin.setEmailverified(false);
+        unitAdmin.setRole(role);
+        unitAdmin.setFirstlogon(true);
         unitAdmin.setIsrecipient(isRecipient);
         unitAdmin.setIsclinician(isClinician);
 

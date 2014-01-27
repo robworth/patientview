@@ -430,11 +430,12 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         String username = null;
 
         try {
-            username = jdbcTemplate
-                .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
-                        "WHERE u.username = um.username " +
-                        "AND um.nhsno = ? " +
-                        "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+      
+            return jdbcTemplate.queryForObject(
+                    "SELECT DISTINCT CONCAT(u.firstName, ' ', u.lastName) FROM user u, usermapping um " +
+                            "WHERE u.username = um.username " +
+                            "AND um.nhsno = ? " +
+                            "AND u.username NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
         } catch (EmptyResultDataAccessException era) {
             LOGGER.debug("No username result found for " + nhsNo);
         }
@@ -488,9 +489,9 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             Clinician clinician = new Clinician();
 
             // In future we might need to split the fullname of the user for a clinician
-            String fullName = resultSet.getString("name");
+            clinician.setForename(resultSet.getString("firstName"));
             clinician.setId(resultSet.getLong("id"));
-            clinician.setSurname(fullName);
+            clinician.setSurname(resultSet.getString("lastName"));
 
              // Centre could be null, in which case we get a 0 returned by getLong
             String unitcode = resultSet.getString("unitcode");

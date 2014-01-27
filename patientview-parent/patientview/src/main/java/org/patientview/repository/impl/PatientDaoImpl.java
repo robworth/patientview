@@ -178,7 +178,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         StringBuilder query = new StringBuilder();
         query.append("SELECT    usr.username ");
         query.append(",         usr.password ");
-        query.append(",         usr.name ");
+        query.append(",         usr.firstname ");
+        query.append(",         usr.lastname ");
         query.append(",         usr.email ");
         query.append(",         usr.emailverified ");
         query.append(",         usr.accountlocked ");
@@ -215,7 +216,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append("AND       str.specialty_id = ? ");
         query.append("GROUP BY  usr.username ");
         query.append(",         usr.password ");
-        query.append(",         usr.name ");
+        query.append(",         usr.firstname ");
+        query.append(",         usr.lastname ");
         query.append(",         usr.email ");
         query.append(",         usr.emailverified ");
         query.append(",         usr.accountlocked ");
@@ -254,7 +256,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         query.append("SELECT DISTINCT ");
         query.append("       usr.username ");
         query.append(",      usr.password ");
-        query.append(",      usr.name ");
+        query.append(",      usr.firstname ");
+        query.append(",      usr.lastname ");
         query.append(",      usr.email ");
         query.append(",      usr.emailverified ");
         query.append(",      usr.accountlocked ");
@@ -308,7 +311,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         String sql = "SELECT "
                 + "   user.username,  "
                 + "   user.password, "
-                + "   user.name, "
+                + "   user.firstname, "
+                + "   user.lastname, "
                 + "   user.email, "
                 + "   user.emailverified, "
                 + "   user.lastlogon, "
@@ -371,7 +375,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patient.setForename(resultSet.getString("forename"));
             patient.setDateofbirth(resultSet.getDate("dateofbirth"));
             patient.setPostcode(resultSet.getString("postcode"));
-            patient.setId(resultSet.getLong("id"));
+
             return patient;
         }
     }
@@ -383,7 +387,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
             patientLogonWithTreatment.setUsername(resultSet.getString("username"));
             patientLogonWithTreatment.setPassword(resultSet.getString("password"));
-            patientLogonWithTreatment.setName(resultSet.getString("name"));
+            patientLogonWithTreatment.setFirstName(resultSet.getString("firstName"));
+            patientLogonWithTreatment.setLastName(resultSet.getString("lastName"));
             patientLogonWithTreatment.setEmail(resultSet.getString("email"));
             patientLogonWithTreatment.setEmailverified(resultSet.getBoolean("emailverified"));
             patientLogonWithTreatment.setAccountlocked(resultSet.getBoolean("accountlocked"));

@@ -94,7 +94,8 @@ public class UserDaoTest extends BaseDaoTest {
         AdminUser adminUser = new AdminUser();
         adminUser.setEmail("admin@radar101.com");
         adminUser.setUsername("admin@radar101.com");
-        adminUser.setName("Admin");
+        adminUser.setFirstName("Admin");
+        adminUser.setLastName("");
         adminUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
 
         userDao.saveAdminUser(adminUser);
@@ -110,7 +111,8 @@ public class UserDaoTest extends BaseDaoTest {
         AdminUser adminUser = new AdminUser();
         adminUser.setEmail("admin@radar101.com");
         adminUser.setUsername("admin@radar101.com");
-        adminUser.setName("Admin");
+        adminUser.setFirstName("Admin");
+        adminUser.setLastName("");
         adminUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
 
         userDao.saveAdminUser(adminUser);
@@ -177,7 +179,8 @@ public class UserDaoTest extends BaseDaoTest {
         PatientUser patientUser = new PatientUser();
         patientUser.setUsername("test_user");
         patientUser.setEmail("test_user@test.com");
-        patientUser.setName("Test Name");
+        patientUser.setFirstName("Test");
+        patientUser.setLastName("Name");
         patientUser.setRadarNumber(123);
         patientUser.setDateOfBirth(new Date());
         patientUser.setPassword(User.getPasswordHash("password12"));

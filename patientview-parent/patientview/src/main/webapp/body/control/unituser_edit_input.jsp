@@ -40,8 +40,12 @@
                 <div class="controls"><html:hidden name="unitUser" property="username" write="true"/></div>
             </div>
             <div class="control-group">
-                <label class="control-label">Name</label>
-                <div class="controls"><html:text name="unitUser" property="name"/></div>
+                <label class="control-label">First Name</label>
+                <div class="controls"><html:text name="unitUser" property="firstName"/></div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Last Name</label>
+                <div class="controls"><html:text name="unitUser" property="lastName"/></div>
             </div>
             <div class="control-group">
                 <label class="control-label">Email Address</label>

@@ -69,7 +69,7 @@
 
         <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
             <tr>
-                <th class="tableheader" onclick="sort('name')"><a href="#">Name<br />(edit)</a></th>
+                <th class="tableheader" onclick="sort('firstName')"><a href="#">Name<br />(edit)</a></th>
                 <th class="tableheader" onclick="sort('nhsno')"><a href="#">NHS Number<br />(view patient)</a></th>
                 <th class="tableheader" onclick="sort('dateofbirth')"><a href="#">DoB</a></th>
                 <th class="tableheader" onclick="sort('unitcode')"><a href="#">Unit Code</a></th>
