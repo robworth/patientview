@@ -298,7 +298,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (!showgps) {
             query.append("AND usr.username NOT LIKE '%-GP' ");
         }
-        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC ");
+        query.append("AND    str.specialty_id = ?  ORDER BY usr.lastname, usr.firstname ASC ");
 
         List<Object> params = new ArrayList<Object>();
 
