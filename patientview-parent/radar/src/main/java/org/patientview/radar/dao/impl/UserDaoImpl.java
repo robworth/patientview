@@ -133,7 +133,6 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns(ID_FIELD_NAME)
                 .usingColumns(USER_USERNAME_FIELD_NAME,
                         USER_PASSWORD_FIELD_NAME,
-                        USER_EMAIL_FIELD_NAME,
                         USER_ACCOUNT_LOCKED_FIELD_NAME,
                         USER_IS_CLINICIAN_FIELD_NAME,
                         USER_EMAIL_FIELD_NAME,
