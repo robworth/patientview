@@ -69,7 +69,7 @@
 
         <table cellpadding="3" border="0" class="table table-striped table-bordered table-condensed">
             <tr>
-                <th class="tableheader" onclick="sort('name')"><a href="#">Name<br />(edit)</a></th>
+                <th class="tableheader" onclick="sort('firstName')"><a href="#">Name<br />(edit)</a></th>
                 <th class="tableheader" onclick="sort('nhsno')"><a href="#">NHS Number<br />(view patient)</a></th>
                 <th class="tableheader" onclick="sort('dateofbirth')"><a href="#">DoB</a></th>
                 <th class="tableheader" onclick="sort('unitcode')"><a href="#">Unit Code</a></th>
@@ -83,13 +83,14 @@
                 <th class="tableheader" onclick="sort('lastdatadate')"><a href="#">Last Data Received Date</a></th>
                 <th colspan="5">&nbsp;</th>
             </tr>
-            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogon" property="pageList">
+            <logic:iterate id="patient" name="patients" type="org.patientview.patientview.logon.PatientLogonWithTreatment" property="pageList">
 
                 <%
                     Map <String, String> patientKeyParams = new HashMap <String, String>();
                     patientKeyParams.put("nhsno", patient.getNhsno() );
                     patientKeyParams.put("unitcode", patient.getUnitcode());
                     patientKeyParams.put("username", patient.getUsername());
+                    patientKeyParams.put("patientId", patient.getPatientId().toString());
                     request.setAttribute("patientKeyParams", patientKeyParams);
                 %>
 
@@ -106,7 +107,7 @@
                         </logic:present>
                     </td>
                     <td class="tablecell">
-                        <html:link action="/control/patientView" paramId="username" paramName="patient" paramProperty="username" >
+                        <html:link action="/control/patientView" name="patientKeyParams">
                             <bean:write name="patient" property="nhsno"/>
                         </html:link>
                     </td>
@@ -120,7 +121,10 @@
                             <bean:write name="patient" property="treatment"/>
                         </logic:notEmpty>
                     </td>
-                    <td class="tablecell"><bean:write name="patient" property="email"/></td>
+                    <td class="tablecell">
+                        <logic:notEmpty name="patient" property="email">
+                             <bean:write name="patient" property="email"/></td>
+                        </logic:notEmpty>
                     <td class="tablecell">
                         <logic:equal value="false" name="patient" property="emailverified">
                             <big><font color="red">&#10008;</font></big>
@@ -190,8 +194,10 @@
                     <logic:present role="superadmin,unitadmin">
                         <td>
                             <bean:define id="username" name="patient" property="username" />
-                            <bean:define id="email" name="patient" property="email" />
-                            <bean:define id="emailverified" name="patient" property="emailverified"/>
+                            <logic:notEmpty name="patient" property="email">
+                                <bean:define id="email" name="patient" property="email" />
+                                <bean:define id="emailverified" name="patient" property="emailverified"/>
+                            </logic:notEmpty>
                             <input type="button" value="Send Verification Email" class="btn formbutton" ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
                         </td>
                     </logic:present>

@@ -24,7 +24,7 @@
 package org.patientview.patientview.unit;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.user.UserUtils;
@@ -60,16 +60,17 @@ public final class UnitUtils {
         UserManager userManager = LegacySpringUtils.getUserManager();
         UnitManager unitManager = LegacySpringUtils.getUnitManager();
         User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
-        List items = null;
+        List items;
+        final String role = userManager.getCurrentSpecialtyRole(user);
         if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
             items = unitManager.getAll(null, new String[]{"radargroup", "renalunit"});
-        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
+        } else if (role.equals("unitadmin") || role.equals("unitstaff")) {
             items = unitManager.getLoggedInUsersUnits();
         } else {
             items = new ArrayList();
         }
 
-        request.setAttribute("units", items);
+        request.getSession().setAttribute("units", items);
     }
 
     /**

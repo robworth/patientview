@@ -1,7 +1,32 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.model.hnf1b;
 
 import org.patientview.radar.model.BaseModel;
 import org.patientview.radar.model.enums.YesNo;
+
+import java.util.Date;
 
 public class HNF1BMisc extends BaseModel {
 
@@ -11,9 +36,9 @@ public class HNF1BMisc extends BaseModel {
     private YesNo otherRenalMalformations;
     private String otherRenalMalformationsDetails;
     private YesNo diabetes;
-    private int ageAtDiabetesDiagnosis;
+    private Date dateAtDiabetesDiagnosis;
     private YesNo gout;
-    private int ageAtGoutDiagnosis;
+    private Date dateAtGoutDiagnosis;
     private YesNo genitalMalformation;
     private String genitalMalformationDetails;
 
@@ -81,44 +106,20 @@ public class HNF1BMisc extends BaseModel {
         this.otherRenalMalformationsDetails = otherRenalMalformationsDetails;
     }
 
-    public int getAgeAtDiabetesDiagnosis() {
-        return ageAtDiabetesDiagnosis;
+    public Date getDateAtDiabetesDiagnosis() {
+        return dateAtDiabetesDiagnosis;
     }
 
-    public String getAgeAtDiabetesDiagnosisAsString() {
-        return Integer.toString(ageAtDiabetesDiagnosis);
+    public void setDateAtDiabetesDiagnosis(Date dateAtDiabetesDiagnosis) {
+        this.dateAtDiabetesDiagnosis = dateAtDiabetesDiagnosis;
     }
 
-    public void setAgeAtDiabetesDiagnosisAsString(String ageAtDiabetesDiagnosis) {
-        try {
-            this.ageAtDiabetesDiagnosis = Integer.parseInt(ageAtDiabetesDiagnosis);
-        } catch (Exception e) {
-            // not sure obviously not a number
-        }
+    public Date getDateAtGoutDiagnosis() {
+        return dateAtGoutDiagnosis;
     }
 
-    public void setAgeAtDiabetesDiagnosis(int ageAtDiabetesDiagnosis) {
-        this.ageAtDiabetesDiagnosis = ageAtDiabetesDiagnosis;
-    }
-
-    public int getAgeAtGoutDiagnosis() {
-        return ageAtGoutDiagnosis;
-    }
-
-    public String getAgeAtGoutDiagnosisAsString() {
-        return Integer.toString(ageAtGoutDiagnosis);
-    }
-
-    public void setAgeAtGoutDiagnosisAsString(String ageAtGoutDiagnosis) {
-        try {
-            this.ageAtGoutDiagnosis = Integer.parseInt(ageAtGoutDiagnosis);
-        } catch (Exception e) {
-            // not sure obviously not a number
-        }
-    }
-
-    public void setAgeAtGoutDiagnosis(int ageAtGoutDiagnosis) {
-        this.ageAtGoutDiagnosis = ageAtGoutDiagnosis;
+    public void setDateAtGoutDiagnosis(Date dateAtGoutDiagnosis) {
+        this.dateAtGoutDiagnosis = dateAtGoutDiagnosis;
     }
 
     public String getGenitalMalformationDetails() {

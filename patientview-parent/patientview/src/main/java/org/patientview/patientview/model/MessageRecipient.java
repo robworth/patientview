@@ -23,6 +23,8 @@
 
 package org.patientview.patientview.model;
 
+import org.patientview.model.Unit;
+
 import java.util.Collections;
 import java.util.Comparator;
 

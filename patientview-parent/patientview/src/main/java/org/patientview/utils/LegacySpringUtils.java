@@ -34,6 +34,7 @@ import org.patientview.service.EmailManager;
 import org.patientview.service.EmailVerificationManager;
 import org.patientview.service.FeatureManager;
 import org.patientview.service.FeedbackManager;
+import org.patientview.service.GeneticsManager;
 import org.patientview.service.ImportManager;
 import org.patientview.service.JoinRequestManager;
 import org.patientview.service.LetterManager;
@@ -50,7 +51,6 @@ import org.patientview.service.TimeManager;
 import org.patientview.service.UKTransplantManager;
 import org.patientview.service.UnitManager;
 import org.patientview.service.UserManager;
-import org.patientview.service.UserLogManager;
 import org.patientview.service.ibd.IbdManager;
 import org.patientview.service.impl.SpringApplicationContextBean;
 
@@ -111,8 +111,6 @@ public final class LegacySpringUtils {
 
     private static UserManager userManager;
 
-    private static UserLogManager userLogManager;
-
     private static IbdManager ibdManager;
 
     private static MessageManager messageManager;
@@ -125,8 +123,9 @@ public final class LegacySpringUtils {
 
     private static Properties contextProperties;
 
-    private LegacySpringUtils() {
+    private static GeneticsManager geneticsManager;
 
+    private LegacySpringUtils() {
     }
 
     public static AboutmeManager getAboutmeManager() {
@@ -309,14 +308,6 @@ public final class LegacySpringUtils {
         return userManager;
     }
 
-    public static UserLogManager getUserLogManager() {
-        return userLogManager;
-    }
-
-    public static void setUserLogManager(UserLogManager userLogManager) {
-        LegacySpringUtils.userLogManager = userLogManager;
-    }
-
     public static void setUserManager(UserManager userManager) {
         LegacySpringUtils.userManager = userManager;
     }
@@ -375,5 +366,13 @@ public final class LegacySpringUtils {
 
     public static void setContextProperties(Properties contextProperties) {
         LegacySpringUtils.contextProperties = contextProperties;
+    }
+
+    public static GeneticsManager getGeneticsManager() {
+        return geneticsManager;
+    }
+
+    public static void setGeneticsManager(GeneticsManager geneticsManager) {
+        LegacySpringUtils.geneticsManager = geneticsManager;
     }
 }

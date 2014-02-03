@@ -20,6 +20,7 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+
 package org.patientview.quartz;
 
 import com.Ostermiller.util.CSVPrinter;
@@ -131,7 +132,7 @@ public class UktImportExportScheduler {
             patientArray[i][0] = (patient.getNhsno() == null) ? "" : patient.getNhsno();
             patientArray[i][1] = cleanName(patient.getSurname());
             patientArray[i][2] = cleanName(patient.getForename());
-            patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateofbirth();
+            patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateOfBirthStr();
             patientArray[i][FOUR] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
         }
         return patientArray;

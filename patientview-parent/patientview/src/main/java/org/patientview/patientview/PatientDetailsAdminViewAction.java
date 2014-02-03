@@ -23,16 +23,16 @@
 
 package org.patientview.patientview;
 
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.edtacode.EdtaCodeUtils;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +43,14 @@ public class PatientDetailsAdminViewAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         String username = ActionUtils.retrieveStringPropertyValue("username", form, request);
+        String nhsno = ActionUtils.retrieveStringPropertyValue("nhsno", form, request);
+        String unitcode = ActionUtils.retrieveStringPropertyValue("unitcode", form, request);
+        String patientId = ActionUtils.retrieveStringPropertyValue("patientId", form, request);
 
         request.getSession().setAttribute("userBeingViewedUsername", username);
+        request.getSession().setAttribute("userBeingViewedNhsno", nhsno);
+        request.getSession().setAttribute("userBeingViewedUnitcode", unitcode);
+        request.getSession().setAttribute("userBeingViewedPatientId", Long.parseLong(patientId));
 
         // allow the logged in user to be overridden when viewing the site as a patient using an admin account
         User user = UserUtils.retrieveUser(request);

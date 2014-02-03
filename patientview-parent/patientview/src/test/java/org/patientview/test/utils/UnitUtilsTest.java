@@ -26,9 +26,8 @@ package org.patientview.test.utils;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
@@ -216,7 +215,7 @@ public class UnitUtilsTest extends BaseServiceTest {
         assertTrue("radaradmin should be present", securityUserManager.isRolePresent("radaradmin"));
         request = new MockHttpServletRequest();
         UnitUtils.setUserUnits(request);
-        assertEquals("units size is wrong.",null, request.getAttribute("units"));
+        assertEquals("units size is wrong.", 0, ((List) request.getAttribute("units")).size());
         logout();
     }
 

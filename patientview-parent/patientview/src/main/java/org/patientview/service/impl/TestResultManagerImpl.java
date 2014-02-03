@@ -57,7 +57,19 @@ public class TestResultManagerImpl implements TestResultManager {
 
     @Override
     public List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel) {
-        return testResultDao.getTestResultForPatient(user.getUsername(), panel, unitManager.getUsersUnits(user));
+        return getTestResultForPatient(user, panel, false);
+    }
+
+    @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel, boolean isRadarGroup) {
+        return testResultDao.getTestResultForPatient(user.getUsername(), panel, unitManager.getUsersUnits(user),
+                isRadarGroup);
+    }
+
+    @Override
+    public List<TestResultWithUnitShortname> getTestResultForPatient(User user, List<String> resultCodes,
+                                                                     String monthBeforeNow) {
+        return testResultDao.getTestResultForPatient(user.getUsername(), resultCodes, monthBeforeNow);
     }
 
     @Override

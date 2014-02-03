@@ -41,7 +41,10 @@ public class User extends BaseModel {
     private String password;
 
     @Column(nullable = true)
-    private String name;
+    private String firstName;
+
+    @Column(nullable = true)
+    private String lastName;
 
     @Column(nullable = true)
     private String email;
@@ -83,12 +86,25 @@ public class User extends BaseModel {
         return LegacySpringUtils.getUserManager().getCurrentSpecialtyRole(this);
     }
 
+    @Transient
     public String getName() {
-        return name;
+        return firstName + " " + lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {

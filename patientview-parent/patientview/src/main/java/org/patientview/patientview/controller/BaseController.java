@@ -20,6 +20,7 @@
  * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
+
 package org.patientview.patientview.controller;
 
 import org.patientview.patientview.logon.LogonUtils;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
  *  Base Controller,supplies the forward/redirect method.All spring controller should extend this.
  */
 public class BaseController {
+
 
     /**
      * Return the forward page path.
@@ -57,4 +59,5 @@ public class BaseController {
     protected String getSpecialtyContext() {
         return LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
     }
+
 }

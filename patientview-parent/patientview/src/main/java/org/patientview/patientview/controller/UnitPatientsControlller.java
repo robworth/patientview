@@ -24,7 +24,7 @@
 package org.patientview.patientview.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.service.PatientManager;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.support.MutableSortDefinition;
@@ -43,23 +43,37 @@ public class UnitPatientsControlller extends BaseController {
     public String getPatients(@RequestParam(value = "unitcode", required = false) String unitcode,
                               @RequestParam(value = "page", required = false) String page,
                               @RequestParam(value = "nhsno", required = false) String nhsno,
-                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "firstname", required = false) String firstname,
+                              @RequestParam(value = "lastname", required = false) String lastname,
                               @RequestParam(value = "showgps", required = false) boolean showgps,
                               @RequestParam(value = "property", required = false) String property,
                               HttpServletRequest request) {
 
         unitcode = (unitcode == null) ? "" : unitcode;
-        PagedListHolder pagedListHolder =  (PagedListHolder) request.getSession().getAttribute("patients");
+
+        PagedListHolder pagedListHolder = (PagedListHolder) request.getSession().getAttribute("patients");
+
+        //TODO So we get every patient in the database and then start paging
+        //TODO There is probably not a single use case why you would want this many patients
+        //TODO Pagination needs to restrict query results
 
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
+
+            // Validation
+            if (StringUtils.isEmpty(unitcode) && StringUtils.isEmpty(nhsno)
+                    && StringUtils.isEmpty(firstname + lastname)) {
+                return "redirect:/renal/control/unitPatientsUnitSelect.do?validation=failed";
+            }
+
             nhsno = (nhsno == null) ? "" : nhsno;
-            name = (name == null) ? "" : name;
+            firstname = (firstname == null) ? "" : firstname;
+            lastname = (lastname == null) ? "" : lastname;
             List patients = null;
             PatientManager patientManager = LegacySpringUtils.getPatientManager();
             if (StringUtils.isEmpty(unitcode)) {
-                patients = patientManager.getAllUnitPatientsWithTreatment(nhsno, name, showgps);
+                patients = patientManager.getAllUnitPatientsWithTreatment(nhsno, firstname, lastname, showgps);
             } else {
-                patients = patientManager.getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
+                patients = patientManager.getUnitPatientsWithTreatment(unitcode, nhsno, firstname, lastname, showgps);
             }
             pagedListHolder = new PagedListHolder(patients);
             request.getSession().setAttribute("patients", pagedListHolder);
@@ -82,11 +96,16 @@ public class UnitPatientsControlller extends BaseController {
                 pagedListHolder.resort();
             }
         }
-
-        if (!"".equals(unitcode)) {
-            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
-            request.setAttribute("unit", unit);
+        //Reset the unit selection on the first page
+        if (page == null) {
+            request.getSession().setAttribute("unit", null);
         }
+
+        if (StringUtils.isNotEmpty(unitcode)) {
+            Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
+            request.getSession().setAttribute("unit", unit);
+        }
+
 
         return forwardTo(request, Routes.UNIT_PATIENTS_LIST_PAGE);
     }

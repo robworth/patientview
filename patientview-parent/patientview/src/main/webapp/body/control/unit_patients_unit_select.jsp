@@ -32,6 +32,16 @@
     <h1>Select Unit</h1>
 </div>
 
+<%
+    if (request.getParameter("validation") != null) {
+%>
+<div class="alert alert error">
+    Please select either a renal unit, NHS number or a Forename/Surname
+</div>
+<%
+    }
+%>
+
 <form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitPatients" method="post">
 <table cellpadding="3" >
     <tr>
@@ -45,7 +55,7 @@
               <option value="" >-- All Units --</option>
             </logic:present>
             <logic:iterate id="unit" name="units" >
-                <option value="${unit.unitcode}" >${unit.name}</option>
+                <option value="${unit.unitcode}">${unit.name}</option>
             </logic:iterate>
           </select>
       </td>
@@ -55,8 +65,12 @@
       <td><input type="text" name="nhsno" value=""></td>
     </tr>
     <tr>
-      <td><b>Name</b></td>
-      <td><input type="text" name="name" value=""></td>
+      <td><b>Forename</b></td>
+      <td><input type="text" name="firstname" value=""></td>
+    </tr>
+    <tr>
+      <td><b>Surname</b></td>
+      <td><input type="text" name="lastname" value=""></td>
     </tr>
     <tr>
       <td><b>Show GPs</b></td>
@@ -66,7 +80,6 @@
       <td><html:submit value="Search" styleClass="btn" /></td>
     </tr>
  </table>
-
 </form>
 </div>
 </div>

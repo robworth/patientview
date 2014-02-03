@@ -29,6 +29,8 @@
 <div class="page-header">
     <h1>Forgotten password</h1>
 </div>
+<h3 style="color: blue;">If you know your username, and have an email address registered with RPV, you can reset your&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+password yourself now.</h3>
 <logic:notEmpty name="nullUser">
     <div class="alert alert-info">Please enter your user name and email address.</div>
 </logic:notEmpty>
@@ -59,6 +61,11 @@
         <div class="form-actions">
             <input type="submit" value="Submit" class="btn"/>
         </div>
+        <h3 style="color: blue;">If you have forgotten your username, or don't have a working email address registered with RPV,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        you need to contact your local unit's RPV Admin.</h3>
     </fieldset>
+</form>
+<form action="contactMyUnit.do" class="form-horizontal">
+    <input type="submit" value="Contact my unit" class="btn" style="margin-top: -20px;"/>
 </form>
 

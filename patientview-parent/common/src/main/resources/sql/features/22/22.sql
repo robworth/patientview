@@ -8,7 +8,8 @@ CREATE TABLE `pv_user_log` (
   PRIMARY KEY (`Id`)
 );
 
--- Insert data into pv_user_log table with exist patient user,
+-- todo need to run this on ssg server overnight
+--  Insert data into pv_user_log table with exist patient user,
 -- so that we won't miss data.
 INSERT INTO pv_user_log(nhsno, unitcode, lastdatadate)
 SELECT DISTINCT um.nhsno, l.unitcode, l.date

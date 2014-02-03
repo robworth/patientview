@@ -24,9 +24,9 @@
 package org.patientview.repository.impl;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
-import org.patientview.patientview.model.Unit_;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
+import org.patientview.model.Unit_;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
@@ -285,7 +285,8 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         public UnitAdmin mapRow(ResultSet resultSet, int i) throws SQLException {
             UnitAdmin unitAdmin = new UnitAdmin();
             unitAdmin.setUsername(resultSet.getString("username"));
-            unitAdmin.setName(resultSet.getString("name"));
+            unitAdmin.setFirstName(resultSet.getString("firstName"));
+            unitAdmin.setLastName(resultSet.getString("lastName"));
             unitAdmin.setEmail(resultSet.getString("email"));
             unitAdmin.setEmailverified(resultSet.getBoolean("emailverified"));
             unitAdmin.setRole(resultSet.getString("surrole"));

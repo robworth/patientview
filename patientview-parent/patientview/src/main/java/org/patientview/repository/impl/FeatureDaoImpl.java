@@ -24,7 +24,7 @@
 package org.patientview.repository.impl;
 
 import org.patientview.patientview.model.Letter;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.FeatureDao;
 import org.springframework.stereotype.Repository;
