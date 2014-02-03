@@ -40,6 +40,7 @@
       <tr>
         <th class="tableheader">Unit Code</th>
         <th class="tableheader">Name</th>
+        <th class="tableheader">Last Imported Date</th>
         <th></th>
         <th></th>
       </tr>
@@ -47,8 +48,9 @@
         <tr>
           <td class="tablecell"><bean:write name="unit" property="unitcode"/></td>
           <td class="tablecell"><bean:write name="unit" property="name"/></td>
+          <td class="tablecell"><bean:write name="unit" property="formattedLastImportDate"/></td>
 
-          <logic:present role="superadmin,unitadmin,radaradmin">
+          <logic:present role="superadmin,unitadmin">
             <td>
                 <logic:equal property="sourceType" name="unit" value="radargroup">
                     <html:form action="/control/radarGroupEdit">

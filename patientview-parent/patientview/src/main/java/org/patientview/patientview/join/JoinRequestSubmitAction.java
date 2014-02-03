@@ -27,7 +27,7 @@ import org.patientview.ibd.action.BaseAction;
 import org.patientview.patientview.EmailUtils;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.JoinRequest;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;

@@ -28,14 +28,13 @@ import org.patientview.ibd.Ibd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PatientLogonWithTreatment extends PatientLogon {
 
     private String treatment;
     private Date dateofbirth;
+    private Long patientId;
     private static final String DATE_FORMAT = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "yyyy-MM-dd";
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientLogonWithTreatment.class);
@@ -55,17 +54,8 @@ public class PatientLogonWithTreatment extends PatientLogon {
         return dateofbirth;
     }
 
-    public void setDateofbirth(String dateofbirth) {
-        if (dateofbirth != null) {
-            // It seems that the Dob in the DB have different date formats.
-            for (String dateFormat : new String[]{DATE_FORMAT, DATE_FORMAT_2}) {
-                try {
-                    this.dateofbirth = new SimpleDateFormat(dateFormat).parse(dateofbirth);
-                } catch (ParseException e) {
-                    LOGGER.debug("Could not parse date of birth {}", dateofbirth);
-                }
-            }
-        }
+    public void setDateofbirth(Date dateofbirth) {
+        this.dateofbirth = dateofbirth;
     }
 
     public String getDateofbirthFormatted() {
@@ -74,5 +64,13 @@ public class PatientLogonWithTreatment extends PatientLogon {
         }
 
         return "";
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 }

@@ -23,20 +23,27 @@
 
 package org.patientview.patientview;
 
+import org.patientview.model.BaseModel;
+import org.patientview.model.Unit;
 import org.patientview.model.enums.XmlImportNotification;
-import org.patientview.patientview.model.Unit;
 import org.patientview.patientview.parser.ResultParser;
 import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 @Component(value = "xmlImportUtils")
 public final class XmlImportUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportUtils.class);
 
     @Value("${noreply.email}")
     private String noReplyEmail;
@@ -157,7 +164,13 @@ public final class XmlImportUtils {
         String fileName = xmlFile.getName();
         String unitCode = fileName.substring(0, fileName.indexOf("_"));
 
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        Unit unit = null;
+        try {
+             unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        } catch (Exception ee) {
+            LOGGER.debug("Cannot find unit, using default support email address");
+        }
+
         String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
@@ -170,7 +183,6 @@ public final class XmlImportUtils {
                 "[PatientView] File import failed: " + fileName, emailBody);
 
     }
-
 
     public String getNhsNumber(String filename) {
         try {
@@ -190,5 +202,45 @@ public final class XmlImportUtils {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    /**
+     * Copy all the fields from one source object to another original object
+     *
+     * @param target
+     * @param source
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseModel> T copyObject(T target, T source) {
+
+        Long id = target.getId();
+
+        Class clazz = target.getClass();
+        for (Method setterMethod : clazz.getDeclaredMethods()) {
+
+            if (setterMethod.getName().startsWith("set") && !setterMethod.getName().equals("setId")) {
+
+                try {
+                    Method getterMethod = null;
+
+                    getterMethod = source.getClass().getMethod(setterMethod.getName().replace("set", "get"));
+
+                    setterMethod.invoke(target, getterMethod.invoke(source));
+
+                } catch (NoSuchMethodException msh) {
+                    LOGGER.debug("NoSuchMethodException thrown");
+                } catch (InvocationTargetException ete) {
+                    LOGGER.debug("InvocationTargetException thrown");
+                } catch (IllegalAccessException ie) {
+                    LOGGER.debug("IllegalAccessException thrown");
+                }
+            }
+        }
+
+        target.setId(id);
+
+
+        return target;
     }
 }

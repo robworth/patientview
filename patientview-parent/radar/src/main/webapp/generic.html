@@ -1,4 +1,27 @@
 
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -232,17 +255,8 @@ jQuery(function() {
                         </li>
                     </wicket:enclosure>
 
-                    <li class="" style="position: static;" wicket:id="existingPatientsContainer">
-                        <a title="Existing Patients" class="ajxsub" href="#">Existing Patients</a>
-                        <ul style="display: none; ">
-                            <li class="sfirst" style="position: static; ">
-                                <a wicket:id="patientsListingPageLink" href="../patients" title="Modify Existing Patients">Modify
-                                    Patients</a>
-                            </li>
-                            <li class="" style="position: static; ">
-                                <a wicket:id="recruitmentPageLink" href="../recruitment" title="Recruitment">Recruitment</a>
-                            </li>
-                        </ul>
+                    <li style="position: static;" wicket:id="existingPatientsContainer">
+                        <a wicket:id="patientsListingPageLink" href="#" title="Existing Patients">Existing Patients</a>
                     </li>
 
                     <!--<li class="" style="position: static; ">-->
@@ -399,7 +413,7 @@ jQuery(function() {
                     <input type="text" wicket:id="dateOfBirth" style="width:70px;" value="" name="dateOfBirth" id="dateOfBirthb" onkeyup="radarUtility.sanitiseDateInput(this);" onchange="editPatientPage.formIsDirty=true;"/>
 <span class="yui-skin-sam">&nbsp;<span style="display:none;position:absolute;z-index: 99999;" id="dateOfBirthbDp"></span><img style="cursor: pointer; border: none;" id="dateOfBirthbIcon" src="wicket/resource/org.apache.wicket.extensions.yui.calendar.DatePicker/icon1-ver-1336379224000.gif" alt="" title=""/></span>
                     <span id="dateOfBirthFeedbackIndicator1a" style="display:none"></span>
-                    <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyy. To select a different month or year in the
+                    <a href="#" class="info"><em>Help</em><span>Use format dd-mm-yyyy. To select a different month or year in the
                 date picker, click the current month or year at the top.<br/><br/></span> </a>
 
                     <span class="feedback" wicket:id="dateOfBirthFeedback" id="dateOfBirthFeedback1b"><wicket:panel>

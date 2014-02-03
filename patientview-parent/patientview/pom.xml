@@ -29,7 +29,7 @@
     <parent>
         <groupId>org.patientview</groupId>
         <artifactId>patientview-parent</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1.2-SNAPSHOT</version>
     </parent>
 
     <groupId>org.patientview</groupId>
@@ -37,7 +37,7 @@
     <packaging>war</packaging>
 
     <!--Snapshot means a version is downloaded every runtime-->
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.2-SNAPSHOT</version>
 
     <name>Renal Patient View</name>
     <url>https://www.renalpatientview.org</url>
@@ -125,7 +125,7 @@
             <id>production</id>
             <properties>
                 <env>production</env>
-                <tomcatmanagerurl>https://www.renalpatientview.org:9080/manager/html</tomcatmanagerurl>
+                <tomcatmanagerurl>https://www.patientview.org:9080/manager/html</tomcatmanagerurl>
                 <warpath>/</warpath>
                 <profile.build.output-webapp-dir>${project.build.directory}/${project.build.finalName}
                 </profile.build.output-webapp-dir>
@@ -346,7 +346,7 @@
         <dependency>
             <groupId>org.patientview</groupId>
             <artifactId>common</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1.2-SNAPSHOT</version>
         </dependency>
 
         <!-- POI - USED FOR EXCEL API -->

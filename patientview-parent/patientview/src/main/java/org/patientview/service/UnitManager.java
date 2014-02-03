@@ -24,8 +24,8 @@
 package org.patientview.service;
 
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.patientview.model.User;
 import org.springframework.security.access.annotation.Secured;
@@ -69,6 +69,8 @@ public interface UnitManager {
 
     List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
 
+    List<Unit> getAllVisible(String[] sourceTypesToInclude);
+
     List<Unit> getAdminsUnits();
 
     List<Unit> getAdminsUnits(boolean isRadarGroup);
@@ -76,6 +78,8 @@ public interface UnitManager {
     List<Unit> getUnitsWithUser();
 
     List<Unit> getLoggedInUsersUnits();
+
+    List<Unit> getLoggedInUsersRenalUnits();
 
     List<Unit> getUsersUnits(User user);
 
@@ -88,9 +92,6 @@ public interface UnitManager {
     List<UnitStat> getUnitStatsForUnit(String unitCode);
 
     List<UnitAdmin> getUnitUsers(String unitcode);
-
-    @Secured(value =  "ROLE_RENAL_SUPERADMIN")
-    List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup);
 
     @Secured(value =  "ROLE_RENAL_SUPERADMIN")
     List<UnitAdmin> getAllUnitUsers();

@@ -1,16 +1,28 @@
+/*
+ * PatientView
+ *
+ * Copyright (c) Worth Solutions Limited 2004-2013
+ *
+ * This file is part of PatientView.
+ *
+ * PatientView is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with PatientView in a file
+ * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package PatientView
+ * @link http://www.patientview.org
+ * @author PatientView <info@patientview.org>
+ * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+ * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+ */
+
 package org.patientview.radar.web.pages.patient.hnf1b;
 
-import org.patientview.model.Patient;
-import org.patientview.radar.model.generic.AddPatientModel;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.DemographicsManager;
-import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.panels.GeneticsPanel;
-import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
-import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
-import org.patientview.radar.web.panels.hnf1b.HNF1BMiscPanel;
-import org.patientview.radar.web.visitors.PatientFormVisitor;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -25,9 +37,21 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.model.Patient;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.PatientManager;
+import org.patientview.radar.web.RadarApplication;
+import org.patientview.radar.web.behaviours.RadarBehaviourFactory;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.panels.NonAlportGeneticsPanel;
+import org.patientview.radar.web.panels.alport.MedicinePanel;
+import org.patientview.radar.web.panels.generic.GenericDemographicsPanel;
+import org.patientview.radar.web.panels.generic.MedicalResultsPanel;
+import org.patientview.radar.web.panels.hnf1b.HNF1BMiscPanel;
+import org.patientview.radar.web.visitors.PatientFormVisitor;
 
 @AuthorizeInstantiation({User.ROLE_PROFESSIONAL, User.ROLE_SUPER_USER})
-public class HNF1BPatientPage extends BasePage {
+public class  HNF1BPatientPage extends BasePage {
 
     public enum Tab {
         // Used for storing the current tab
@@ -35,7 +59,8 @@ public class HNF1BPatientPage extends BasePage {
         GENETICS(2),
         PROTEINURIA(3),
         HNF1BMisc(4),
-        MEDICAL_RESULTS(5);
+        MEDICAL_RESULTS(5),
+        MEDICINE(RadarApplication.MEDICINE_PAGE_NO);
 
         private int pageNumber;
 
@@ -51,39 +76,33 @@ public class HNF1BPatientPage extends BasePage {
     protected static final String PARAM_ID = "id";
 
     @SpringBean
-    private DemographicsManager demographicsManager;
+    private PatientManager patientManager;
 
     private Patient patient;
     private MarkupContainer linksContainer;
 
     // The panels we are using
     private GenericDemographicsPanel genericDemographicsPanel;
-    private GeneticsPanel geneticsPanel;
+    private NonAlportGeneticsPanel geneticsPanel;
     private HNF1BMiscPanel hnf1BMiscPanel;
     private MedicalResultsPanel medicalResultsPanel;
+    private MedicinePanel medicinePanel;
 
     private Tab currentTab = Tab.DEMOGRAPHICS;
 
-    public HNF1BPatientPage(AddPatientModel patientModel) {
+    public HNF1BPatientPage(){
+        init(new Patient());
+    }
 
-        patient = demographicsManager.getDemographicsByNhsNoAndUnitCode(patientModel.getPatientId(),
-                patientModel.getDiseaseGroup().getId());
-
-        // set the nhs id or chi id based on model
-        if (patient == null) {
-            patient = new Patient();
-            patient.setDiseaseGroup(patientModel.getDiseaseGroup());
-            patient.setRenalUnit(patientModel.getCentre());
-            patient.setNhsno(patientModel.getPatientId());
-            patient.setNhsNumberType(patientModel.getNhsNumberType());
-        }
-
+    public HNF1BPatientPage(Patient patient, PageParameters pageParameters) {
+        super(pageParameters);
+        this.patient = patient;
         init(patient);
     }
 
     public HNF1BPatientPage(PageParameters pageParameters) {
         // this constructor is used when a patient exists
-        patient = demographicsManager.getDemographicsByRadarNumber(pageParameters.get("id").toLong());
+        patient = patientManager.getPatientByRadarNumber(pageParameters.get("id").toLong());
         init(patient);
     }
 
@@ -97,7 +116,7 @@ public class HNF1BPatientPage extends BasePage {
         };
         add(genericDemographicsPanel);
 
-        geneticsPanel = new GeneticsPanel("geneticsPanel", patient) {
+        geneticsPanel = new NonAlportGeneticsPanel("geneticsPanel", patient) {
             @Override
             public boolean isVisible() {
                 return currentTab.equals(Tab.GENETICS);
@@ -124,6 +143,17 @@ public class HNF1BPatientPage extends BasePage {
 
         add(medicalResultsPanel);
 
+        add(genericDemographicsPanel, medicalResultsPanel);
+
+        medicinePanel = new MedicinePanel("medicinePanel", patient) {
+            @Override
+            public boolean isVisible() {
+                return currentTab.equals(Tab.MEDICINE);
+            }
+        };
+        medicinePanel.setOutputMarkupPlaceholderTag(true);
+        add(medicinePanel);
+
         // Add a container for the links to update the highlighted tab
         linksContainer = new WebMarkupContainer("linksContainer");
         linksContainer.setOutputMarkupId(true);
@@ -134,6 +164,7 @@ public class HNF1BPatientPage extends BasePage {
         linksContainer.add(new TabAjaxLink("geneticsLink", Tab.GENETICS));
         linksContainer.add(new TabAjaxLink("hnf1BMiscLink", Tab.HNF1BMisc));
         linksContainer.add(new TabAjaxLink("medicalResultsLink", Tab.MEDICAL_RESULTS));
+        linksContainer.add(new TabAjaxLink("medicineLink", Tab.MEDICINE));
 
         IModel<Integer> pageNumberModel = new Model<Integer>();
         pageNumberModel.setObject(Tab.DEMOGRAPHICS.getPageNumber());
@@ -147,7 +178,7 @@ public class HNF1BPatientPage extends BasePage {
     }
 
     public static PageParameters getPageParameters(Patient patient) {
-        return new PageParameters().set(PARAM_ID, patient.getId());
+        return new PageParameters().set(PARAM_ID, patient.getRadarNo());
     }
 
     public Tab getCurrentTab() {
@@ -182,7 +213,7 @@ public class HNF1BPatientPage extends BasePage {
                 target.add(linksContainer);
 
                 // add each panel to the response
-                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel);
+                target.add(genericDemographicsPanel, geneticsPanel, hnf1BMiscPanel, medicalResultsPanel, medicinePanel);
 
                 Component pageNumber = getPage().get("pageNumber");
                 IModel pageNumberModel = pageNumber.getDefaultModel();

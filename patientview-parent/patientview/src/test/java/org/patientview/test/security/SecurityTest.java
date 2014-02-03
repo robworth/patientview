@@ -23,11 +23,9 @@
 
 package org.patientview.test.security;
 
-import org.patientview.patientview.model.Specialty;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
-import org.patientview.patientview.model.Feedback;
-import org.patientview.patientview.model.UserMapping;
 import org.patientview.service.*;
 import org.patientview.test.helpers.SecurityHelpers;
 import org.patientview.test.helpers.ServiceHelpers;
@@ -320,7 +318,8 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
         loginAsUser(superadmin.getUsername(), specialty);
 
-        unitManager.getAllUnitUsers(null);
+        //reinstatement. I don't know why without assert statement, I guess test no exception thrown. see testGetAllUnitUsersWithUnitAdmin method.
+        unitManager.getAllUnitUsers();
     }
 
     @Test(expected = AccessDeniedException.class)
@@ -330,7 +329,7 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty2, unitadmin, "unitadmin");
         loginAsUser(unitadmin.getUsername(), specialty2);
 
-        patientManager.getAllUnitPatientsWithTreatment("", "", true);
+        patientManager.getAllUnitPatientsWithTreatment("", "","", true);
 
     }
 
@@ -343,7 +342,7 @@ public class SecurityTest extends BaseServiceTest {
         serviceHelpers.createSpecialtyUserRole(specialty, superadmin, "superadmin");
         loginAsUser(superadmin.getUsername(), specialty);
 
-        patientManager.getAllUnitPatientsWithTreatment("", "", true);
+        patientManager.getAllUnitPatientsWithTreatment("", "", "", true);
     }
 
     private void loginAsUser(String username, Specialty specialty) {

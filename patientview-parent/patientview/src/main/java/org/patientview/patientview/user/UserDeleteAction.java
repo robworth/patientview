@@ -26,7 +26,7 @@ package org.patientview.patientview.user;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.logon.PatientLogon;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -52,7 +52,8 @@ public class UserDeleteAction extends Action {
         patient.setUsername(username);
         patient.setNhsno(nhsno);
         User user = LegacySpringUtils.getUserManager().get(username);
-        patient.setName(user.getName());
+        patient.setFirstName(user.getFirstName());
+        patient.setLastName(user.getLastName());
 
         LegacySpringUtils.getUserManager().delete(username, unitcode);
 

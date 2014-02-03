@@ -25,10 +25,10 @@ package org.patientview.service.impl;
 
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.logon.UnitAdmin;
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.model.PatientCount;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UnitStat;
 import org.patientview.repository.PatientCountDao;
@@ -107,6 +107,19 @@ public class UnitManagerImpl implements UnitManager {
     }
 
     @Override
+    public List<Unit> getAllVisible(String[] sourceTypesToInclude) {
+        List<Unit> units = new ArrayList<Unit>();
+
+        for (Unit unit : unitDao.getAll(null, sourceTypesToInclude)) {
+            if (unit.isVisible()) {
+                units.add(unit);
+            }
+        }
+
+        return units;
+    }
+
+    @Override
     public List<Unit> getUnitsWithUser() {
         return unitDao.getUnitsWithUser(securityUserManager.getLoggedInSpecialty());
     }
@@ -124,6 +137,17 @@ public class UnitManagerImpl implements UnitManager {
     @Override
     public List<Unit> getLoggedInUsersUnits() {
         return getUsersUnits(userManager.getLoggedInUser());
+    }
+
+    @Override
+    public List<Unit> getLoggedInUsersRenalUnits() {
+        List<Unit> renalUnits = new ArrayList<Unit>();
+        for (Unit unit : getUsersUnits(userManager.getLoggedInUser())) {
+            if (unit.getSourceType().equalsIgnoreCase("renalunit")) {
+                renalUnits.add(unit);
+            }
+        }
+        return renalUnits;
     }
 
     @Override
@@ -186,12 +210,8 @@ public class UnitManagerImpl implements UnitManager {
         return unitDao.getUnitUsers(unitcode, securityUserManager.getLoggedInSpecialty());
     }
 
-    public List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup) {
-        return unitDao.getAllUnitUsers(isRadarGroup, securityUserManager.getLoggedInSpecialty());
-    }
-
     public List<UnitAdmin> getAllUnitUsers() {
-        return unitDao.getAllUnitUsers(null, securityUserManager.getLoggedInSpecialty());
+        return unitDao.getAllUnitUsers(securityUserManager.getLoggedInSpecialty());
     }
 
     @Override

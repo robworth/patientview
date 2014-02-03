@@ -47,7 +47,7 @@
         </tr>
         <tr>
           <td><b>Password</b></td>
-          <td class="password"><bean:write name="plaintextPassword"/></td>
+          <td class="password"><h3><bean:write name="plaintextPassword"/></h3></td>
         </tr>
         <tr>
           <td><b>Name</b></td>

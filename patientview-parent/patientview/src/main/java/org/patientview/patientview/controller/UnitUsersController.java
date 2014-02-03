@@ -24,7 +24,7 @@
 package org.patientview.patientview.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.SortDefinition;
@@ -43,12 +43,7 @@ public class UnitUsersController extends BaseController {
     public String getUsers(@RequestParam(value = "unitcode", required = false) String unitcode,
                            @RequestParam(value = "page", required = false) String page,
                            @RequestParam(value = "property", required = false) String property,
-                           @RequestParam(value = "isRadarGroup", required = false) Boolean isRadarGroup,
                            HttpServletRequest request) {
-        if (isRadarGroup != null) {
-            request.setAttribute("isRadarGroup", isRadarGroup);
-        }
-
         if (StringUtils.isNotEmpty(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
             request.setAttribute("unit", unit);
@@ -58,7 +53,7 @@ public class UnitUsersController extends BaseController {
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
             List unitUsers = null;
             if (StringUtils.isEmpty(unitcode)) {
-                unitUsers = LegacySpringUtils.getUnitManager().getAllUnitUsers(isRadarGroup);
+                unitUsers = LegacySpringUtils.getUnitManager().getAllUnitUsers();
             } else {
                 unitUsers = LegacySpringUtils.getUnitManager().getUnitUsers(unitcode);
             }

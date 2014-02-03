@@ -2,7 +2,7 @@
 <%@ page import="org.patientview.patientview.model.User" %>
 <%@ page import="org.patientview.patientview.model.SpecialtyUserRole" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.patientview.patientview.model.Specialty" %>
+<%@ page import="org.patientview.model.Specialty" %>
 <%--
   ~ PatientView
   ~

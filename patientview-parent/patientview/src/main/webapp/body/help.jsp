@@ -89,7 +89,7 @@
 
         <dt><a name="Anchor-How-35882"></a>How do I join?</dt>
         <dd>Renal PatientView is only available at participating renal units, but that is now most units in the UK.  <a href="http://www.renal.org/rixg/units.html" target="_blank">Check on this list</a> if you don't know if yours has it, or is due to get it.
-            To join, you sign the enrolment form after seeing examples or a demo.  A member of staff signs the form too.  It is then given to your local Renal PatientView administrator.  They will send starter information, and your username and password, to you and to your GP (your GP has a different login). You can also send your request to join by clicking on the 'I want to join' button at <a href="/">www.renalpatientview.org</a>. </dd>
+            To join, you sign the enrolment form after seeing examples or a demo.  A member of staff signs the form too.  It is then given to your local Renal PatientView administrator.  They will send starter information, and your username and password, to you and to your GP (your GP has a different login). You can also send your request to join by clicking on the 'I want to join' button at <a href="/">www.patientview.org</a>. </dd>
 
         <dt><a name="Anchor-Unit-236258"></a>My unit isn't using PatientView. How can I get it to join?</dt>
         <dd>We hope that soon almost all units will be participating. In some units, changes to their local computer systems have delayed joining.  A few units, especially at children's hospitals, don't have computer-held records at all, and this has delayed them.</dd>

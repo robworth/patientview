@@ -25,7 +25,7 @@ package org.patientview.patientview.join;
 
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.logon.LogonUtils;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -42,7 +42,7 @@ public class JoinRequestInputAction extends Action {
                                  HttpServletResponse response)
             throws Exception {
 
-        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(null, new String[]{"renalunit"});
+        List<Unit> units = LegacySpringUtils.getUnitManager().getAllVisible(new String[]{"renalunit"});
         request.setAttribute("units", units);
 
         request.getSession().setAttribute("antiSpamQuestion", ActionUtils.getAntiSpamQuestion(request));

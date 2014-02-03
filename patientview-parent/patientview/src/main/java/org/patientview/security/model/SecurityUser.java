@@ -23,7 +23,7 @@
 
 package org.patientview.security.model;
 
-import org.patientview.patientview.model.Specialty;
+import org.patientview.model.Specialty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

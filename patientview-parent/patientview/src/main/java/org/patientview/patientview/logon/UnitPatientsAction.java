@@ -23,17 +23,17 @@
 
 package org.patientview.patientview.logon;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.model.Unit;
+import org.patientview.model.Unit;
+import org.patientview.utils.LegacySpringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class UnitPatientsAction extends Action {
 
@@ -43,8 +43,11 @@ public class UnitPatientsAction extends Action {
         unitcode = (unitcode == null) ? "" : unitcode;
         String nhsno = BeanUtils.getProperty(form, "nhsno");
         nhsno = (nhsno == null) ? "" : nhsno;
-        String name = BeanUtils.getProperty(form, "name");
-        name = (name == null) ? "" : name;
+        String firstname = BeanUtils.getProperty(form, "firstname");
+        firstname = (firstname == null) ? "" : firstname;
+        String lastname = BeanUtils.getProperty(form, "lastname");
+        lastname = (lastname == null) ? "" : lastname;
+
         boolean showgps = "true".equals(BeanUtils.getProperty(form, "showgps"));
 
         if (!"".equals(unitcode)) {
@@ -52,8 +55,8 @@ public class UnitPatientsAction extends Action {
             request.setAttribute("unit", unit);
         }
 
-        List patients
-                = LegacySpringUtils.getPatientManager().getUnitPatientsWithTreatment(unitcode, nhsno, name, showgps);
+        List patients = LegacySpringUtils.getPatientManager().getUnitPatientsWithTreatment(unitcode, nhsno, firstname,
+                lastname, showgps);
 
         request.setAttribute("patients", patients);
 

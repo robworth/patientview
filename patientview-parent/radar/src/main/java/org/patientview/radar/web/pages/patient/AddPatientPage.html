@@ -1,3 +1,26 @@
+<!--
+  ~ PatientView
+  ~
+  ~ Copyright (c) Worth Solutions Limited 2004-2013
+  ~
+  ~ This file is part of PatientView.
+  ~
+  ~ PatientView is free software: you can redistribute it and/or modify it under the terms of the
+  ~ GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~ PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+  ~ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License along with PatientView in a file
+  ~ titled COPYING. If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ @package PatientView
+  ~ @link http://www.patientview.org
+  ~ @author PatientView <info@patientview.org>
+  ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
+  ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
+  -->
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,7 +42,7 @@
         <form wicket:id="form">
             <div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"></div>
 
-            <div id="mainBlock">
+            <div id="mainBlock" class="short-container">
 
                 <p><span></span></p>
 
@@ -33,11 +56,11 @@
                     <tr>
                         <td>
                             <div wicket:id="guidanceContainer">
-                                For Consent forms and Disease Groups entry criteria, see
-                                <a href="#" target="_new" wicket:id="consentFormsAndDiseaseGroupsCriteriaLink">http://www.rarerenal.org/join/criteria-and-consent/</a>
+                                For Consent forms and Disease Groups entry criteria,
+                                <a href="#" target="_new" wicket:id="consentFormsAndDiseaseGroupsCriteriaLink">Click Here</a>
                                 <br/><br/>
-                                For a step by step guide to enrolling a patient, see
-                                <a href="#" target="_new" wicket:id="enrollingAPatientGuideLink">http://rarerenal.org/radar-registry/radar-registry-background-information/radar-recruitment-guide/</a>
+                                For a step by step guide to enrolling a patient,
+                                <a href="#" target="_new" wicket:id="enrollingAPatientGuideLink">Click Here</a>
                                 <br/><br/>
                             </div>
                         </td>
@@ -73,34 +96,33 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input class="saveBtn" type="button" wicket:id="submit" value="Add Patient"/>
+                                            <input class="saveBtn add-patient-save" type="button" wicket:id="submit" value="Search"/>
                                         </td>
                                     </tr>
                                 </tb>
                             </table>
 
-                            <span class="feedback" wicket:id="feedback"></span>
-
-                            <div wicket:id="pvMessageContainer">
-                                <ul>
-                                    <li>Go to <a href="#" target="_new" wicket:id="patientViewLink"></a></li>
-                                    <li>You can use the same login that you use for this website</li>
-                                    <li>Click on "Add patient" in on the left</li>
-                                    <li>Fill in the patient&apos;s details</li>
-                                    <li>Take note of the patient&apos;s username and password so they can be sent to the patient</li>
-                                    <li>Once complete on PatientView, come back here and try again</li>
-                                </ul>
-                                <p>If you are unsure about adding a patient to PatientView and sending out passwords etc,
-                                    in the first instance talk to the member of staff in your unit who deals with PatientView registrations.</p>
-                            </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            </div>
 
+                <span class="feedback" wicket:id="feedback"></span>
+
+            </div>
         </form>
     </div>
+
+
+     <div class="select-patient-table">
+         <div wicket:id="selectPatientPanel" class="add-patient-container"></div>
+         <div wicket:id="createPatientPanel"></div>
+     </div>
+
+
+
+
+
     <p wicket:id="pageNumber"></p>
 </wicket:extend>
 
