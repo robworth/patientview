@@ -68,7 +68,6 @@ public class DiagnosisDaoImpl extends BaseDaoImpl implements DiagnosisDao {
                         "MUTATION_9S");
     }
 
-
     public void saveDiagnosis(final Diagnosis diagnosis) {
         Map<String, Object> diagnosisMap = new HashMap<String, Object>() {
             {
