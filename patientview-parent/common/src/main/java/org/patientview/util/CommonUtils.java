@@ -97,7 +97,10 @@ public final class CommonUtils {
     }
 
     public static String formatDate(Date date) {
-
-        return UK_DATE_FORMATTER.format(date);
+        if (date != null) {
+            return UK_DATE_FORMATTER.format(date);
+        } else {
+            return null;
+        }
     }
 }
