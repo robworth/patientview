@@ -128,7 +128,7 @@ public class PatientAddAction extends Action {
             LegacySpringUtils.getUserManager().save(userMappingPatientEnters);
             LegacySpringUtils.getUserManager().save(userMappingGp);
 
-            if (LegacySpringUtils.getPatientManager().get(nhsno, unitcode) != null) {
+            if (LegacySpringUtils.getPatientManager().get(nhsno, unitcode) == null) {
                 Patient patient = new Patient();
                 patient.setNhsno(nhsno);
                 patient.setUnitcode(unitcode);

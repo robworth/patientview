@@ -27,7 +27,7 @@ var chart;
 
 function drawChart() {
     $.ajax({
-        url: '/patient/graphic_testresult.do?resultType1=' + $('#result_Type1').val() + '&resultType2=' + $('#result_Type2').val() + "&period=" + $('#period').val(),
+        url: '/patient/graphic_testresult.do?resultType1=' + $('#result_Type1').val() + "&period=" + $('#period').val(),
         dataType:"json",
         async: false,
         success: function(resultData){

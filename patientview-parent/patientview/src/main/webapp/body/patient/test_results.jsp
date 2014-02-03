@@ -48,15 +48,6 @@
             </logic:iterate>
         </ul>
     </div>
-    <div class="btn-group" style="margin-left: -3px;">
-        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="heading2"></span><span id="d2" class="caret"></span></button>
-        <ul class="dropdown dropdown-menu">
-            <li><a id="btn_2_none" href="#" onclick='changeChart(this, "","")'>&nbsp;</a></li>
-            <logic:iterate name="resultsHeadings" id="heading" type="org.patientview.patientview.model.ResultHeading" >
-                <li><a id="btn_2" href="#" onclick='changeChart(this, "<bean:write name="heading" property="headingcode"/>", "<bean:write name="heading" property="heading"/>")'><bean:write name="heading" property="heading"/> </a></li>
-            </logic:iterate>
-        </ul>
-    </div>
 
 </div>
 

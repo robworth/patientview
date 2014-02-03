@@ -198,6 +198,7 @@ public class PatientManagerImpl implements PatientManager {
         PatientDetails patientDetail = new PatientDetails();
 
         patientDetail.setPatient(patient);
+
         patientDetail.setUnit(unit);
         patientDetail.setEdtaDiagnosis(edtaCodeManager.getEdtaCode(patient.getDiagnosis()));
         patientDetail.setEdtaTreatment(edtaCodeManager.getEdtaCode(patient.getTreatment()));
