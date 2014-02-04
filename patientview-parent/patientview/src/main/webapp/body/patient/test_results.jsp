@@ -33,7 +33,8 @@
 </div>
 <div>
     <ul class="nav nav-tabs">
-        <li class="active"><html:link action="/patient/results">Tabular</html:link></li>
+        <li class="active"><a href="#">Graphic</a></li>
+        <li><html:link action="/patient/results">Tabular</html:link></li>
     </ul>
 </div>
 
