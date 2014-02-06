@@ -483,6 +483,22 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
     }
 
+    public String getUserFullName(Long id) {
+        if (id == null) {
+            return "";
+        }
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT CONCAT(u.firstname, ' ', u.lastname) name  FROM user u " +
+                            "WHERE u.id = ? " +
+                            "AND u.username NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get user with id {}", id);
+            return "";
+
+        }
+    }
+
     private class ClinicianRowMapper implements RowMapper<Clinician> {
         public Clinician mapRow(ResultSet resultSet, int i) throws SQLException {
             // Construct a relative object and set all the fields

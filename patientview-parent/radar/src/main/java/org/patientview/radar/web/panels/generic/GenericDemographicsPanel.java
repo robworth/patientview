@@ -479,7 +479,7 @@ public class GenericDemographicsPanel extends Panel {
 
         form.add(renalUnit);
 
-        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
+        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserFullName(
                 patient.getRadarConsentConfirmedByUserId()));
 
         final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",

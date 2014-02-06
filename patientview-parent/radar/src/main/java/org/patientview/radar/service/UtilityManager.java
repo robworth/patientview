@@ -89,4 +89,6 @@ public interface UtilityManager {
     String getUserName(String nhsNo);
 
     String getUserName(Long id);
+
+    String getUserFullName(Long id);
 }
