@@ -122,7 +122,7 @@ public class TestResultDaoImpl extends AbstractHibernateDAO<TestResult> implemen
         } else {
             sql += " ) ";
         }
-        sql += " ORDER BY testresult.datestamp desc ";
+        sql += " ORDER BY testresult.datestamp DESC ";
 
 
 

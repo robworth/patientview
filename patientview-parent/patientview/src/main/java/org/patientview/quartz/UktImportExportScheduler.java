@@ -35,12 +35,15 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  *  Handle the import and export of UK transplant information for patients
  */
 public class UktImportExportScheduler {
+
+    private static final SimpleDateFormat EXPORT_DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
 
     @Value("${run.ukt.import.export}")
     private String runUkt;
@@ -132,7 +135,7 @@ public class UktImportExportScheduler {
             patientArray[i][0] = (patient.getNhsno() == null) ? "" : patient.getNhsno();
             patientArray[i][1] = cleanName(patient.getSurname());
             patientArray[i][2] = cleanName(patient.getForename());
-            patientArray[i][THREE] = (patient.getDateofbirth() == null) ? "" : patient.getDateOfBirthStr();
+            patientArray[i][THREE] = (patient.getDob() == null) ? "" : EXPORT_DATE_FORMAT.format(patient.getDob());
             patientArray[i][FOUR] = (patient.getPostcode() == null) ? "" : patient.getPostcode();
         }
         return patientArray;

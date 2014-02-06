@@ -59,3 +59,5 @@ UPDATE USER usr INNER JOIN user_table_datafix ddf ON usr.username = ddf.username
 ALTER TABLE USER DROP COLUMN NAME;
 
 ALTER TABLE unit ADD COLUMN visible TINYINT DEFAULT 1;
+
+ALTER TABLE testresult ADD COLUMN units;

@@ -412,6 +412,11 @@
       <td><html:text name="unit" property="haemodialysisuniturl12" /></td>
     </tr>
 
+    <tr>
+      <td><b>Make the unit visible</b></td>
+      <td><html:checkbox name="unit" property="visible" /></td>
+    </tr>
+
 
     <tr>
       <td><html:submit value="Update" styleClass="btn"/></td>

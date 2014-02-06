@@ -30,16 +30,19 @@ public class TestResultDateRange {
     private String testCode;
     private String startDate;
     private String stopDate;
+    private String units;
 
     public TestResultDateRange() {
     }
 
-    public TestResultDateRange(String nhsNo, String unitcode, String testCode, String startDate, String endDate) {
+    public TestResultDateRange(String nhsNo, String unitcode, String testCode, String startDate, String endDate,String
+                               units) {
         this.nhsNo = nhsNo;
         this.unitcode = unitcode;
         this.testCode = testCode;
         this.startDate = startDate;
         this.stopDate = endDate;
+        this.units = units;
     }
 
     public String getStopDate() {
@@ -81,4 +84,13 @@ public class TestResultDateRange {
     public void setTestCode(String testCode) {
         this.testCode = testCode;
     }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
+    }
 }
+

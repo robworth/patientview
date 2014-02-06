@@ -77,7 +77,7 @@ public class PatientResultSubmitAllAction extends Action {
             LegacySpringUtils.getCommentManager().save(comment);
         } else {
             TestResult testResult = new TestResult(nhsno, UnitUtils.PATIENT_ENTERS_UNITCODE, dateTime, testCode,
-                    testValue);
+                    testValue, null);
             LegacySpringUtils.getTestResultManager().save(testResult);
         }
     }
