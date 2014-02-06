@@ -35,7 +35,7 @@ public class TestResultDateRange {
     public TestResultDateRange() {
     }
 
-    public TestResultDateRange(String nhsNo, String unitcode, String testCode, String startDate, String endDate,String
+    public TestResultDateRange(String nhsNo, String unitcode, String testCode, String startDate, String endDate, String
                                units) {
         this.nhsNo = nhsNo;
         this.unitcode = unitcode;

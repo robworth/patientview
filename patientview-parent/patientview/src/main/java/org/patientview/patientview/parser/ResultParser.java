@@ -200,7 +200,7 @@ public class ResultParser {
                             dateRangeStop.add(Calendar.HOUR, HOURS_IN_DAY); // set it to end of day instead of beginning
                         }
                     } else if (testResultNode.getNodeType() == Node.ELEMENT_NODE
-                            && testResultNode.getNodeName().equals("units")){
+                            && testResultNode.getNodeName().equals("units")) {
                         units = testResultNode.getFirstChild() != null ? testResultNode.getFirstChild().getNodeValue()
                                 : null;
 
