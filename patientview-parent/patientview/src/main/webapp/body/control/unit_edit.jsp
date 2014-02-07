@@ -413,7 +413,7 @@
     </tr>
 
     <tr>
-      <td><b>Make the unit visible</b></td>
+      <td><b>Visible for user to join</b></td>
       <td><html:checkbox name="unit" property="visible" /></td>
     </tr>
 

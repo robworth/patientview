@@ -168,6 +168,7 @@
             <form-property name="haemodialysisuniturl12" type="java.lang.String"/>
             <form-property name="sourceType" type="java.lang.String"/>
             <form-property name="filename" type="java.lang.String"/>
+            <form-property name="visible" type="java.lang.Boolean"/>
         </form-bean>
         <form-bean name="gpgForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="src" type="java.lang.String"/>
