@@ -60,4 +60,8 @@ ALTER TABLE USER DROP COLUMN NAME;
 
 ALTER TABLE unit ADD COLUMN visible TINYINT DEFAULT 1;
 
-ALTER TABLE testresult ADD COLUMN units VARCHAR(20);
+#ALTER TABLE testresult ADD COLUMN units VARCHAR(20); not doable
+
+UPDATE patient SET sex = 'F' WHERE sex = 'Female';
+
+UPDATE patient SET sex = 'M' WHERE sex = 'Male';

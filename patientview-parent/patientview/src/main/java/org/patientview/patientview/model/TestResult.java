@@ -54,22 +54,18 @@ public class TestResult extends BaseModel {
     @Column(nullable = false)
     private String value;
 
-    @Column(nullable = false)
-    private String units;
-
     private static final int HASH_SEED = 31;
 
     public TestResult() {
     }
 
-    public TestResult(String nhsno, String unitcode, Calendar datestamp, String testcode, String value, String units) {
+    public TestResult(String nhsno, String unitcode, Calendar datestamp, String testcode, String value) {
         this.nhsno = nhsno;
         this.unitcode = unitcode;
         this.testcode = testcode;
         this.datestamped = datestamp;
         this.value = value;
         this.prepost = "";
-        this.units = units;
     }
 
     public Calendar getDatestamped() {
@@ -135,14 +131,6 @@ public class TestResult extends BaseModel {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public String getUnits() {
-        return units;
-    }
-
-    public void setUnits(String units) {
-        this.units = units;
     }
 
     @Transient

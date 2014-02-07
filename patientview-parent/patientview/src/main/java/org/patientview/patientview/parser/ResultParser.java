@@ -140,7 +140,6 @@ public class ResultParser {
             String testCode = "";
             String startDate = "";
             String stopDate = "";
-            String units = "";
             for (int j = 0; j < testResultNodes.getLength(); j++) {
                 Node testResultNode = testResultNodes.item(j);
                 if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
@@ -151,16 +150,10 @@ public class ResultParser {
                 } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
                         && (testResultNode.getNodeName().equals("testcode"))) {
                     testCode = testResultNode.getFirstChild().getNodeValue();
-                } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
-                        && (testResultNode.getNodeName().equals("units"))) {
-                    if (testResultNode.getFirstChild() != null) {
-                        units = testResultNode.getFirstChild().getNodeValue();
-                    }
                 }
             }
             TestResultDateRange dateRange =
-                    new TestResultDateRange(getData("nhsno"), getData("centrecode"), testCode, startDate, stopDate,
-                            units);
+                    new TestResultDateRange(getData("nhsno"), getData("centrecode"), testCode, startDate, stopDate);
             dateRanges.add(dateRange);
         }
     }
@@ -175,7 +168,6 @@ public class ResultParser {
             String testCode = "";
             String dateRangeStartString;
             String dateRangeStopString;
-            String units = "";
             Calendar dateRangeStart = null;
             Calendar dateRangeStop = null;
             for (int j = 0; j < testResultNodes.getLength(); j++) {
@@ -199,15 +191,10 @@ public class ResultParser {
                             dateRangeStop = TimestampUtils.createTimestamp(dateRangeStopString);
                             dateRangeStop.add(Calendar.HOUR, HOURS_IN_DAY); // set it to end of day instead of beginning
                         }
-                    } else if (testResultNode.getNodeType() == Node.ELEMENT_NODE
-                            && testResultNode.getNodeName().equals("units")) {
-                        units = testResultNode.getFirstChild() != null ? testResultNode.getFirstChild().getNodeValue()
-                                : null;
-
-                    } else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
+                    }  else if ((testResultNode.getNodeType() == Node.ELEMENT_NODE)
                             && (testResultNode.getNodeName().equals("result"))) {
                         TestResult testResult = new TestResult(getData("nhsno"), getData("centrecode"), null,
-                                testCode, "", units);
+                                testCode, "");
                         NodeList resultDataNodes = testResultNode.getChildNodes();
                         for (int k = 0; k < resultDataNodes.getLength(); k++) {
                             Node resultDataNode = resultDataNodes.item(k);
