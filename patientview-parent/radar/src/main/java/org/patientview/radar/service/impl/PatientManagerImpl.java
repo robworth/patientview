@@ -79,6 +79,8 @@ public class PatientManagerImpl implements PatientManager {
      */
     public void save(final Patient patient){
 
+
+
         // If this is a link record then we need to stop any duplicated data being saved
         if (patient.isLinked()) {
             RadarUtility.cleanLinkRecord(patient);
@@ -91,6 +93,7 @@ public class PatientManagerImpl implements PatientManager {
             overRideLinkRecord(patientDao.getById(patient.getPatientLinkId()), patient);
 
         }
+
 
     }
 

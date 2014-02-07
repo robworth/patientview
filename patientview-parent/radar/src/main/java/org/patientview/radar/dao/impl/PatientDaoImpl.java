@@ -219,6 +219,16 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
     public void save(final Patient patient) {
 
+        // Sex fix
+        if (patient.getSexModel() != null) {
+            if (patient.getSexModel().getType().equalsIgnoreCase("male")) {
+                patient.setSex("M");
+            } else if (patient.getSexModel().getType().equalsIgnoreCase("female")) {
+                patient.setSex("F");
+            }
+        }
+
+
         // If we have an ID then update, otherwise insert new and set the ID
         if (patient.hasValidId()) {
             jdbcTemplate.update(
@@ -274,7 +284,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     patient.getForename(),
                     patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()) : null,
                     patient.getAge(),
-                    patient.getSexModel() != null ? patient.getSexModel().getType() : null,
+                    patient.getSex(),
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
                     patient.getAddress1(),
                     patient.getAddress2(),
@@ -318,7 +328,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("dateofbirth", patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(
                                     patient.getDob()) : null);
                     put("AGE", patient.getAge());
-                    put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
+                    put("SEX", patient.getSex());
                     put("ethnicGp", patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null);
                     put("address1", patient.getAddress1());
                     put("address2", patient.getAddress2());
@@ -359,6 +369,16 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             Long radarNumber = getNextRadarNumber();
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", radarNumber, id.longValue());
             patient.setRadarNo(radarNumber);
+
+
+            // Sex fix
+            if (patient.getSexModel().getType() != null) {
+                if (patient.getSexModel().getType().equalsIgnoreCase("m")) {
+                    patient.setSex("Male");
+                } else if (patient.getSexModel().getType().equalsIgnoreCase("f")) {
+                    patient.setSex("Female");
+                }
+            }
 
         }
     }
