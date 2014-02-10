@@ -216,64 +216,7 @@ public class RadarUtility {
 
     }
 
-    public static boolean isNhsNumberValid(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, false);
-    }
 
-    public static boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, true);
-    }
-
-    private static boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
-
-        // Only permit 10 characters
-        if (nhsNumber.length() != 10) {
-            return false;
-        }
-
-        // Remove all whitespace and non-visible characters such as tab, new line etc
-        nhsNumber = nhsNumber.replaceAll("\\s", "");
-
-        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
-        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
-
-        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
-            return true;
-        }
-
-        return isNhsChecksumValid(nhsNumber);
-    }
-
-    private static boolean isNhsChecksumValid(String nhsNumber) {
-        /**
-         * Generate the checksum using modulus 11 algorithm
-         */
-        int checksum = 0;
-
-        try {
-            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= 8; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
-                checksum += value;
-            }
-
-            //(modulus 11)
-            checksum = 11 - checksum % 11;
-
-            if (checksum == 11) {
-                checksum = 0;
-            }
-
-            // Does checksum match the 10th digit?
-            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false; // nhsNumber contains letters
-        }
-    }
 
 
 

@@ -31,6 +31,13 @@
     <h1>Results</h1>
 </div>
 
+<div>
+    <ul class="nav nav-tabs">
+        <li><html:link action="/patient/testresults">Graphic</html:link></li>
+        <li class="active"><a href="#">Tabular</a></li>
+    </ul>
+</div>
+
 <h3>Result panels</h3>
 
 <div class="pagination">
