@@ -26,6 +26,8 @@ package org.patientview.radar.model.hnf1b;
 import org.patientview.radar.model.BaseModel;
 import org.patientview.radar.model.enums.YesNo;
 
+import java.util.Date;
+
 public class HNF1BMisc extends BaseModel {
 
     private Long radarNo;
@@ -34,9 +36,9 @@ public class HNF1BMisc extends BaseModel {
     private YesNo otherRenalMalformations;
     private String otherRenalMalformationsDetails;
     private YesNo diabetes;
-    private int ageAtDiabetesDiagnosis;
+    private Date dateAtDiabetesDiagnosis;
     private YesNo gout;
-    private int ageAtGoutDiagnosis;
+    private Date dateAtGoutDiagnosis;
     private YesNo genitalMalformation;
     private String genitalMalformationDetails;
 
@@ -104,44 +106,20 @@ public class HNF1BMisc extends BaseModel {
         this.otherRenalMalformationsDetails = otherRenalMalformationsDetails;
     }
 
-    public int getAgeAtDiabetesDiagnosis() {
-        return ageAtDiabetesDiagnosis;
+    public Date getDateAtDiabetesDiagnosis() {
+        return dateAtDiabetesDiagnosis;
     }
 
-    public String getAgeAtDiabetesDiagnosisAsString() {
-        return Integer.toString(ageAtDiabetesDiagnosis);
+    public void setDateAtDiabetesDiagnosis(Date dateAtDiabetesDiagnosis) {
+        this.dateAtDiabetesDiagnosis = dateAtDiabetesDiagnosis;
     }
 
-    public void setAgeAtDiabetesDiagnosisAsString(String ageAtDiabetesDiagnosis) {
-        try {
-            this.ageAtDiabetesDiagnosis = Integer.parseInt(ageAtDiabetesDiagnosis);
-        } catch (Exception e) {
-            // not sure obviously not a number
-        }
+    public Date getDateAtGoutDiagnosis() {
+        return dateAtGoutDiagnosis;
     }
 
-    public void setAgeAtDiabetesDiagnosis(int ageAtDiabetesDiagnosis) {
-        this.ageAtDiabetesDiagnosis = ageAtDiabetesDiagnosis;
-    }
-
-    public int getAgeAtGoutDiagnosis() {
-        return ageAtGoutDiagnosis;
-    }
-
-    public String getAgeAtGoutDiagnosisAsString() {
-        return Integer.toString(ageAtGoutDiagnosis);
-    }
-
-    public void setAgeAtGoutDiagnosisAsString(String ageAtGoutDiagnosis) {
-        try {
-            this.ageAtGoutDiagnosis = Integer.parseInt(ageAtGoutDiagnosis);
-        } catch (Exception e) {
-            // not sure obviously not a number
-        }
-    }
-
-    public void setAgeAtGoutDiagnosis(int ageAtGoutDiagnosis) {
-        this.ageAtGoutDiagnosis = ageAtGoutDiagnosis;
+    public void setDateAtGoutDiagnosis(Date dateAtGoutDiagnosis) {
+        this.dateAtGoutDiagnosis = dateAtGoutDiagnosis;
     }
 
     public String getGenitalMalformationDetails() {

@@ -54,7 +54,6 @@ import org.patientview.model.Patient;
 import org.patientview.model.Sex;
 import org.patientview.radar.exception.RegisterException;
 import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UnitManager;
 import org.patientview.radar.service.UserManager;
@@ -221,8 +220,6 @@ public class GenericDemographicsPanel extends Panel {
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
 
-        nonEditableComponents.add(ethnicity);
-
         // Address fields
         TextField address1 = new TextField("address1");
         TextField address2 = new TextField("address2");
@@ -296,7 +293,7 @@ public class GenericDemographicsPanel extends Panel {
         DropDownChoice addIdType = null;
 
         // Link patients should not be able to add hospital numbers
-        if (patient.isLinked()) {
+        if (!patient.isLinked()) {
             addIdType =
                 new DropDownChoice("idType", Arrays.asList(IdType.HOSPITAL_NUMBER,
                         IdType.RENAL_REGISTRY_NUMBER, IdType.UK_TRANSPLANT_NUMBER, IdType.REPUBLIC_OF_IRELAND,
@@ -446,6 +443,7 @@ public class GenericDemographicsPanel extends Panel {
                 return model.getObject().isLinked();
 
             }
+
         };
 
         String sourceUnitNameLabelValue = model.getObject().getPatientLinkUnitCode() != null
@@ -460,31 +458,28 @@ public class GenericDemographicsPanel extends Panel {
         };
         form.add(sourceUnitCodeLabel, sourceUnitCode);
 
-        // if its a super user then the drop down will let them change renal units
-        // if its a normal user they can only add to their own renal unit
-        DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
+        final DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
 
-        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    Patient patient = model.getObject();
-                    if (patient != null) {
-                        clinician.updateCentre(patient.getRenalUnit() != null ?
-                                patient.getRenalUnit().getUnitCode() :
-                                null);
-                    }
-
-                    // re-render the component
-                    clinician.clearInput();
-                    target.add(clinician);
+        renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Patient patient = model.getObject();
+                if (patient != null) {
+                    clinician.updateCentre(patient.getRenalUnit() != null ?
+                            patient.getRenalUnit().getUnitCode() :
+                            null);
                 }
-            });
-        }
+
+                // re-render the component
+                clinician.clearInput();
+                target.add(clinician);
+            }
+        });
+
 
         form.add(renalUnit);
 
-        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserName(
+        final IModel<String> consentUserModel = new Model<String>(utilityManager.getUserFullName(
                 patient.getRadarConsentConfirmedByUserId()));
 
         final Label tickConsentUser = new Label("radarConsentConfirmedByUserId",

@@ -23,9 +23,7 @@
 
 package org.patientview.patientview;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.patientview.model.BaseModel;
-import org.patientview.model.Patient;
 import org.patientview.model.Unit;
 import org.patientview.model.enums.XmlImportNotification;
 import org.patientview.patientview.parser.ResultParser;
@@ -39,6 +37,7 @@ import org.xml.sax.SAXParseException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 @Component(value = "xmlImportUtils")
@@ -165,7 +164,13 @@ public final class XmlImportUtils {
         String fileName = xmlFile.getName();
         String unitCode = fileName.substring(0, fileName.indexOf("_"));
 
-        Unit unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        Unit unit = null;
+        try {
+             unit = LegacySpringUtils.getImportManager().retrieveUnit(unitCode);
+        } catch (Exception ee) {
+            LOGGER.debug("Cannot find unit, using default support email address");
+        }
+
         String toAddress = EmailUtils.getUnitOrSystemAdminEmailAddress(unit);
 
         List<String> ccAddresses = LegacySpringUtils.getAdminNotificationManager().getEmailAddresses(
@@ -209,31 +214,32 @@ public final class XmlImportUtils {
      */
     public static <T extends BaseModel> T copyObject(T target, T source) {
 
-       Long id = target.getId();
+        Long id = target.getId();
 
-       Long linkPatientId = null;
+        Class clazz = target.getClass();
+        for (Method setterMethod : clazz.getDeclaredMethods()) {
 
-        // We have to retain the Patient Link Id as well as the normal Id if the object is a patient
-       if (target instanceof Patient) {
-           linkPatientId = (Long) ((Patient) target).getPatientLinkId();
-       }
+            if (setterMethod.getName().startsWith("set") && !setterMethod.getName().equals("setId")) {
 
-        try {
+                try {
+                    Method getterMethod = null;
 
-            BeanUtils.copyProperties(target, source);
+                    getterMethod = source.getClass().getMethod(setterMethod.getName().replace("set", "get"));
 
-        } catch (InvocationTargetException ete) {
-            LOGGER.error("Failed to clone object", ete);
-        } catch (IllegalAccessException ie) {
-            LOGGER.error("Failed to clone object", ie);
+                    setterMethod.invoke(target, getterMethod.invoke(source));
+
+                } catch (NoSuchMethodException msh) {
+                    LOGGER.debug("NoSuchMethodException thrown");
+                } catch (InvocationTargetException ete) {
+                    LOGGER.debug("InvocationTargetException thrown");
+                } catch (IllegalAccessException ie) {
+                    LOGGER.debug("IllegalAccessException thrown");
+                }
+            }
         }
 
         target.setId(id);
 
-        // Assuming the we have a patientLinkId because the target in a Patient object
-        if (linkPatientId != null) {
-            ((Patient) target).setPatientLinkId(linkPatientId);
-        }
 
         return target;
     }

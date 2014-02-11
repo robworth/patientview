@@ -110,7 +110,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     public PatientUser getPatientUserWithUsername(String username, Date dateOfBirth) {
         PatientUser user = userDao.getPatientUserWithUsername(username);
-        if (user != null) {
+        if (user != null && user.getDateOfBirth() != null) {
             return user.getDateOfBirth().equals(dateOfBirth) ? user : null;
         }
         return null;
@@ -200,7 +200,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         patientUser.setId(0L);
         // now fill in the radar patient stuff
         // and invalidate the id and this will create a record in tbl_patient_users
-        patientUser.setRadarNumber(patient.getId());
+        patientUser.setRadarNumber(patient.getRadarNo());
         patientUser.setDateOfBirth(patient.getDob());
         userDao.savePatientUser(patientUser);
 
@@ -313,7 +313,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                 patientUser = new PatientUser();
 
                 patientUser.setUsername(generateUsername(patient));
-                patientUser.setName(patient.getForename() + " " + patient.getSurname());
+                patientUser.setFirstName(patient.getForename());
+                patientUser.setLastName(patient.getSurname());
                 patientUser.setPassword(User.getPasswordHash(generateRandomPassword()));
                 patientUser.setEmail(patient.getEmailAddress());
 
@@ -504,12 +505,16 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         username = username.toLowerCase();
 
-        int i = 1;
-        while (userDao.usernameExistsInPatientView(username + i) ||
-                userDao.getPatientUserWithUsername(username + i) != null) {
-            ++i;
+        if (userDao.usernameExistsInPatientView(username)) {
+            int i = 1;
+            while (userDao.usernameExistsInPatientView(username + i) ||
+                    userDao.getPatientUserWithUsername(username + i) != null) {
+                ++i;
+            }
+            username += i;
         }
-        return username + i;
+
+        return username;
     }
 
 

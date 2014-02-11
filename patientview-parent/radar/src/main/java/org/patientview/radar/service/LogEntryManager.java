@@ -21,31 +21,16 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.service.impl;
+package org.patientview.radar.service;
 
-import org.patientview.patientview.model.UserLog;
-import org.patientview.repository.UserLogDao;
-import org.patientview.service.UserLogManager;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
+import org.patientview.radar.model.LogEntry;
 
 /**
  *
  */
-@Service(value = "userLogManager")
-public class UserLogManagerImpl implements UserLogManager {
+public interface LogEntryManager {
 
-    @Inject
-    private UserLogDao userLogDao;
+    void save(LogEntry logEntry);
 
-    @Override
-    public UserLog getUserLog(String nhsNo) {
-        return userLogDao.get(nhsNo);
-    }
-
-    @Override
-    public void save(UserLog userLog) {
-        userLogDao.save(userLog);
-    }
 }

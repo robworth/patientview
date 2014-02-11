@@ -25,7 +25,6 @@ package org.patientview.patientview.logon;
 
 import org.apache.commons.lang.StringUtils;
 import org.patientview.ibd.Ibd;
-import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +34,7 @@ public class PatientLogonWithTreatment extends PatientLogon {
 
     private String treatment;
     private Date dateofbirth;
+    private Long patientId;
     private static final String DATE_FORMAT = "dd.MM.y";
     private static final String DATE_FORMAT_2 = "yyyy-MM-dd";
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientLogonWithTreatment.class);
@@ -54,10 +54,8 @@ public class PatientLogonWithTreatment extends PatientLogon {
         return dateofbirth;
     }
 
-    public void setDateofbirth(String dateofbirth) {
-
-       this.dateofbirth = CommonUtils.parseDate(dateofbirth);
-
+    public void setDateofbirth(Date dateofbirth) {
+        this.dateofbirth = dateofbirth;
     }
 
     public String getDateofbirthFormatted() {
@@ -66,5 +64,13 @@ public class PatientLogonWithTreatment extends PatientLogon {
         }
 
         return "";
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
     }
 }

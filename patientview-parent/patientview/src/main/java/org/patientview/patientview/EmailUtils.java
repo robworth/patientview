@@ -93,7 +93,7 @@ public final class EmailUtils {
         String toAddress = null;
 
         if (unit == null || StringUtils.isBlank(unit.getRenaladminemail())) {
-            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress(servletContext);
+            toAddress = LegacySpringUtils.getAdminNotificationManager().getSupportEmailAddress();
         } else {
             toAddress = unit.getRenaladminemail();
         }

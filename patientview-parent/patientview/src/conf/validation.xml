@@ -271,8 +271,11 @@
             <field property="username" depends="required">
                 <msg key="username.required" name="required"/>
             </field>
-            <field property="name" depends="required">
-                <msg key="name.required" name="required"/>
+            <field property="firstName" depends="required">
+                <msg key="firstName.required" name="required"/>
+            </field>
+            <field property="lastName" depends="required">
+                <msg key="lastName.required" name="required"/>
             </field>
             <field property="nhsno" depends="required,mask">
                 <msg key="nhsno.required" name="required"/>
@@ -294,8 +297,11 @@
             <field property="username" depends="required">
                 <msg key="username.required" name="required"/>
             </field>
-            <field property="name" depends="required">
-                <msg key="name.required" name="required"/>
+            <field property="firstName" depends="required">
+                <msg key="firstName.required" name="required"/>
+            </field>
+            <field property="lastName" depends="required">
+                <msg key="lastName.required" name="required"/>
             </field>
             <field property="nhsno" depends="required,mask">
                 <msg key="nhsno.required" name="required"/>
@@ -317,8 +323,11 @@
             <field property="username" depends="required">
                 <msg key="username.required" name="required"/>
             </field>
-            <field property="name" depends="required">
-                <msg key="name.required" name="required"/>
+            <field property="firstName" depends="required">
+                <msg key="firstName.required" name="required"/>
+            </field>
+            <field property="lastName" depends="required">
+                <msg key="lastName.required" name="required"/>
             </field>
             <field property="email" depends="email">
                 <msg key="email.valid" name="email"/>

@@ -27,19 +27,22 @@
 
 <html:xhtml/>
 
-<div class="hero">
-    <div id="myCarousel" class="carousel slide">
-        <!-- Carousel items -->
-        <div class="carousel-inner">
-            <div class="active item">
-                <img src="/img/content/heroImage-man.jpg" alt="heroImage">
-                <div class="carousel-caption">
-                    <h4 class="largeCarouselTitle"><em>Renal PatientView</em></h4>
-                    <ul class="heroList">
-                        <li><em>Manage </em> your condition and medications</li>
-                        <li><em>Monitor </em> your symptoms and tests</li>
-                        <li><em>Make</em> contact with your unit</li>
-                    </ul>
+<div class="row">
+    <div class="span12">
+        <div class="hero">
+            <div id="myCarousel" class="carousel slide">
+                <div class="carousel-inner">
+                    <div class="active item">
+                        <img src="/img/content/heroImage-man.jpg" alt="heroImage">
+                        <div class="carousel-caption">
+                            <h4 class="largeCarouselTitle"><em>Renal PatientView</em></h4>
+                            <ul class="heroList">
+                                <li><em>Manage </em> your condition and medications</li>
+                                <li><em>Monitor </em> your symptoms and tests</li>
+                                <li><em>Make</em> contact with your unit</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

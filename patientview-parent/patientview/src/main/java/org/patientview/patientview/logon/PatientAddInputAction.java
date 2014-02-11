@@ -23,14 +23,20 @@
 
 package org.patientview.patientview.logon;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.patientview.patientview.unit.UnitUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.service.UnitManager;
+import org.patientview.service.UserManager;
+import org.patientview.utils.LegacySpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
+import java.util.List;
 
 public class PatientAddInputAction extends Action {
 
@@ -38,7 +44,19 @@ public class PatientAddInputAction extends Action {
         ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        UnitUtils.setUserRenalUnits(request);
+
+        UserManager userManager = LegacySpringUtils.getUserManager();
+        UnitManager unitManager = LegacySpringUtils.getUnitManager();
+        User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
+        List items = unitManager.getAll(null, new String[]{"renalunit"});
+
+        if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
+            request.getSession().setAttribute("units", items);
+        } else if (userManager.getCurrentSpecialtyRole(user).equals("unitadmin")) {
+            List userUnits = unitManager.getLoggedInUsersUnits();
+            Collection units = CollectionUtils.intersection(userUnits, items);
+            request.getSession().setAttribute("units", units);
+        }
 
         return LogonUtils.logonChecks(mapping, request);
     }

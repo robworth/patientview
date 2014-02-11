@@ -142,9 +142,6 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         Patient patient = null;
 
         try {
-
-
-
             StringBuilder query = new StringBuilder();
             query.append("SELECT  * ");
             query.append("FROM    patient ");
@@ -194,7 +191,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                 patient.setNhsno(resultSet.getString("nhsno"));
                 patient.setSurname(resultSet.getString("surname"));
                 patient.setForename(resultSet.getString("forename"));
-                patient.setDateofbirth(resultSet.getString("dateofbirth"));
+                patient.setDateofbirth(resultSet.getDate("dateofbirth"));
                 patient.setUnitcode(resultSet.getString("unitcode"));
                 patient.setMostRecentTestResultDateRangeStopDate(
                         resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
@@ -210,7 +207,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             patient.setNhsno(resultSet.getString("nhsno"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setForename(resultSet.getString("forename"));
-            patient.setDateofbirth(resultSet.getString("dateofbirth"));
+            patient.setDateofbirth(resultSet.getDate("dateofbirth"));
             patient.setUnitcode(resultSet.getString("unitcode"));
             patient.setMostRecentTestResultDateRangeStopDate(
                     resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
@@ -221,6 +218,16 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
 
     public void save(final Patient patient) {
+
+        // Sex fix
+        if (patient.getSexModel() != null) {
+            if (patient.getSexModel().getType().equalsIgnoreCase("male")) {
+                patient.setSex("M");
+            } else if (patient.getSexModel().getType().equalsIgnoreCase("female")) {
+                patient.setSex("F");
+            }
+        }
+
 
         // If we have an ID then update, otherwise insert new and set the ID
         if (patient.hasValidId()) {
@@ -277,7 +284,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     patient.getForename(),
                     patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()) : null,
                     patient.getAge(),
-                    patient.getSexModel() != null ? patient.getSexModel().getType() : null,
+                    patient.getSex(),
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
                     patient.getAddress1(),
                     patient.getAddress2(),
@@ -304,7 +311,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     patient.getIndiaId(),
                     patient.getRadarConsentConfirmedByUserId(),
                     patient.isGeneric(),
-                    patient.getPatientLinkId(),
+                    patient.getPatientLinkId() == null ? null : patient.getPatientLinkId(),
                     patient.getId());
         } else {
             Number id = patientInsert.executeAndReturnKey(new HashMap<String, Object>() {
@@ -321,7 +328,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("dateofbirth", patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(
                                     patient.getDob()) : null);
                     put("AGE", patient.getAge());
-                    put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
+                    put("SEX", patient.getSex());
                     put("ethnicGp", patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null);
                     put("address1", patient.getAddress1());
                     put("address2", patient.getAddress2());
@@ -353,7 +360,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("generic", patient.isGeneric());
                     put("radarConsentConfirmedByUserId", patient.getRadarConsentConfirmedByUserId());
                     put("sourceType", SourceType.RADAR.getName());
-                    put("patientLinkId", patient.getPatientLinkId());
+                    put("patientLinkId", patient.getPatientLinkId() == null ? null : patient.getPatientLinkId());
                 }
             });
             patient.setId(id.longValue());
@@ -362,6 +369,16 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             Long radarNumber = getNextRadarNumber();
             jdbcTemplate.update("UPDATE patient set radarNo = ? WHERE id = ? ", radarNumber, id.longValue());
             patient.setRadarNo(radarNumber);
+
+
+            // Sex fix
+            if (patient.getSexModel().getType() != null) {
+                if (patient.getSexModel().getType().equalsIgnoreCase("m")) {
+                    patient.setSex("Male");
+                } else if (patient.getSexModel().getType().equalsIgnoreCase("f")) {
+                    patient.setSex("Female");
+                }
+            }
 
         }
     }
@@ -377,6 +394,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         query.append("WHERE  m.nhsno = p.nhsno ");
         query.append("AND    u.username NOT LIKE '%-GP%' ");
         query.append("AND    u.username = m.username ");
+        query.append("AND    m.unitcode <> 'PATIENT' ");
         query.append("AND    m.unitcode IN (");
         query.append(unitCodeValues);
         query.append(")");
@@ -450,6 +468,9 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
             // Needs fixing into getting a Enum
             patient.setSourceType(resultSet.getString("sourceType"));
             patient.setPatientLinkId(resultSet.getLong("patientLinkId"));
+            if (patient.getPatientLinkId() == 0) {
+                patient.setPatientLinkId(null);
+            }
             patient.setRadarConsentConfirmedByUserId(resultSet.getLong("radarConsentConfirmedByUserId"));
             patient.setGenericDiagnosisModel(getGenericDiagnosis(resultSet.getString("genericDiagnosis"),
                     patient.getDiseaseGroup()));

@@ -30,7 +30,7 @@ import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
-import org.patientview.radar.dao.DemographicsDao;
+import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.filter.PatientUserFilter;
@@ -62,7 +62,7 @@ public class UserDaoTest extends BaseDaoTest {
     private UserDao userDao;
 
     @Inject
-    private DemographicsDao demographicsDao;
+    private PatientDao patientDao;
 
     @Inject
     private UtilityDao utilityDao;
@@ -94,7 +94,8 @@ public class UserDaoTest extends BaseDaoTest {
         AdminUser adminUser = new AdminUser();
         adminUser.setEmail("admin@radar101.com");
         adminUser.setUsername("admin@radar101.com");
-        adminUser.setName("Admin");
+        adminUser.setFirstName("Admin");
+        adminUser.setLastName("");
         adminUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
 
         userDao.saveAdminUser(adminUser);
@@ -110,7 +111,8 @@ public class UserDaoTest extends BaseDaoTest {
         AdminUser adminUser = new AdminUser();
         adminUser.setEmail("admin@radar101.com");
         adminUser.setUsername("admin@radar101.com");
-        adminUser.setName("Admin");
+        adminUser.setFirstName("Admin");
+        adminUser.setLastName("");
         adminUser.setPassword(User.getPasswordHash(RadarUtility.generateNewPassword()));
 
         userDao.saveAdminUser(adminUser);
@@ -177,7 +179,8 @@ public class UserDaoTest extends BaseDaoTest {
         PatientUser patientUser = new PatientUser();
         patientUser.setUsername("test_user");
         patientUser.setEmail("test_user@test.com");
-        patientUser.setName("Test Name");
+        patientUser.setFirstName("Test");
+        patientUser.setLastName("Name");
         patientUser.setRadarNumber(123);
         patientUser.setDateOfBirth(new Date());
         patientUser.setPassword(User.getPasswordHash("password12"));
@@ -456,7 +459,7 @@ public class UserDaoTest extends BaseDaoTest {
         patient.setNhsno(getTestNhsNo());
         patient.setDiseaseGroup(diseaseGroup);
         patient.setRenalUnit(centre);
-        demographicsDao.saveDemographics(patient);
+        patientDao.save(patient);
         assertNotNull(patient.getId());
         return patient;
     }

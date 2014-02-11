@@ -38,3 +38,5 @@ update patient set sourceType = 'PatientView';  -- these are all PV patients
  */
  ALTER TABLE patient ADD COLUMN `mostRecentTestResultDateRangeStopDate` datetime DEFAULT NULL;
 
+ DROP INDEX nhsno ON patient;
+

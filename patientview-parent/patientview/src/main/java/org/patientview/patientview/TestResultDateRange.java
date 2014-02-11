@@ -81,4 +81,6 @@ public class TestResultDateRange {
     public void setTestCode(String testCode) {
         this.testCode = testCode;
     }
+
 }
+

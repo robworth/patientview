@@ -51,7 +51,8 @@ public abstract class User extends BaseModel implements UserDetails {
 
     // todo this date should probably be in the PatientUser
     private Date dateRegistered = new Date(); // Construct this - DAO will overwrite with correct value
-    private String name;
+    private String firstName;
+    private String lastName;
 
     public abstract String getSecurityRole();
 
@@ -124,11 +125,23 @@ public abstract class User extends BaseModel implements UserDetails {
     }
 
     public String getName() {
-        return name;
+        return firstName + " " + lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public boolean isClinician() {

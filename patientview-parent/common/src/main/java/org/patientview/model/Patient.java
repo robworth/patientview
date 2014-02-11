@@ -28,7 +28,6 @@ import org.joda.time.Years;
 import org.patientview.model.enums.NhsNumberType;
 import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.model.generic.GenericDiagnosis;
-import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +40,6 @@ import java.util.Date;
 @Entity
 public class Patient extends BaseModel {
 
-
-    @Transient
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
     @Transient
     private static final SimpleDateFormat UK_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -55,7 +50,7 @@ public class Patient extends BaseModel {
     @Column
     private String forename;
     @Column
-    private String dateofbirth;
+    private Date dateofbirth;
     @Column
     private String sex;
     @Column
@@ -130,7 +125,7 @@ public class Patient extends BaseModel {
     @Column
     private String surnameAlias;
 
-    @Column
+    @Column(nullable = true)
     private Integer age;
 
     @Column
@@ -154,7 +149,7 @@ public class Patient extends BaseModel {
     @Column
     private String emailAddress;
 
-    @Column
+    @Column(nullable = true)
     private Integer rrtModality;
 
     @Column
@@ -184,7 +179,7 @@ public class Patient extends BaseModel {
     @Column
     private Date dateOfGenericDiagnosis;
 
-    @Column
+    @Column(nullable = true)
     private Long radarConsentConfirmedByUserId;
 
     @Column
@@ -193,7 +188,7 @@ public class Patient extends BaseModel {
     @Column
     private String sourceType;
 
-    @Column
+    @Column(nullable = true)
     private Long patientLinkId;
 
     @Transient
@@ -225,9 +220,6 @@ public class Patient extends BaseModel {
 
     @Transient
     private RRTModality rrtModalityEunm;
-
-    @Transient
-    private Date dob;
 
     @Transient
     private Status statusModel;
@@ -307,15 +299,25 @@ public class Patient extends BaseModel {
         this.unitcode = (unitCode != null) ? unitCode.toUpperCase() : unitCode;
     }
 
-    public String getDateofbirth() {
+    public Date getDateofbirth() {
         return dateofbirth;
     }
 
     public String getFormatedDateOfBirth() {
-         return UK_DATE_FORMAT.format(CommonUtils.parseDate(dateofbirth));
+
+        if (dateofbirth != null) {
+            return UK_DATE_FORMAT.format(dateofbirth);
+        } else {
+            return null;
+        }
+
     }
 
-    public void setDateofbirth(String dateofbirth) {
+    public String getDateOfBirthStr() {
+        return UK_DATE_FORMAT.format(dateofbirth);
+    }
+
+    public void setDateofbirth(Date dateofbirth) {
         this.dateofbirth = dateofbirth;
     }
 
@@ -505,8 +507,8 @@ public class Patient extends BaseModel {
 
     public Integer getAge() {
         // Return the difference between now and the date of birth
-        if (dob != null) {
-            return Years.yearsBetween(new DateTime(dob), new DateTime(new Date())).getYears();
+        if (dateofbirth != null) {
+            return Years.yearsBetween(new DateTime(dateofbirth), new DateTime(new Date())).getYears();
         }
         return null;
     }
@@ -780,11 +782,11 @@ public class Patient extends BaseModel {
     }
 
     public Date getDob() {
-        return dob;
+        return getDateofbirth();
     }
 
     public void setDob(Date dob) {
-        this.dob = dob;
+        setDateofbirth(dob);
     }
 
     public Boolean getDiagnosisDateSelect() {
@@ -838,6 +840,7 @@ public class Patient extends BaseModel {
     public void setPatientLinkUnitCode(String patientLinkUnitCode) {
         this.patientLinkUnitCode = patientLinkUnitCode;
     }
+
 }
 
 

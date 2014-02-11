@@ -1,29 +1,7 @@
-/*
- * PatientView
- *
- * Copyright (c) Worth Solutions Limited 2004-2013
- *
- * This file is part of PatientView.
- *
- * PatientView is free software: you can redistribute it and/or modify it under the terms of the
- * GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
- * PatientView is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with PatientView in a file
- * titled COPYING. If not, see <http://www.gnu.org/licenses/>.
- *
- * @package PatientView
- * @link http://www.patientview.org
- * @author PatientView <info@patientview.org>
- * @copyright Copyright (c) 2004-2013, Worth Solutions Limited
- * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
- */
-
 package org.patientview.radar.test.service;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.patientview.model.Centre;
@@ -59,8 +37,6 @@ public class UserManagerTest extends TestPvDbSchema {
 
     @Inject
     private PatientManager patientManager;
-
-
 
     @Inject
     private TestDataHelper testDataHelper;
@@ -105,14 +81,17 @@ public class UserManagerTest extends TestPvDbSchema {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void testPatientUserRegistration() throws Exception {
         // create a user row as per patient view
         PatientUser patientUser = new PatientUser();
-        patientUser.setName("my user");
+        patientUser.setFirstName("my user");
         patientUser.setUsername("testusername");
         patientUser.setEmail("test@test.com");
         patientUser.setPassword("passwordhash");
         userDao.createUser(patientUser);
+        //userDao.createRawUser("testusername", "passwordhash", "my", "user", "test@test.com",
+        //        "unitcode1", "NHS123");
 
         // create a demographic
         Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", SourceType.RADAR);

@@ -285,7 +285,8 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         public UnitAdmin mapRow(ResultSet resultSet, int i) throws SQLException {
             UnitAdmin unitAdmin = new UnitAdmin();
             unitAdmin.setUsername(resultSet.getString("username"));
-            unitAdmin.setName(resultSet.getString("name"));
+            unitAdmin.setFirstName(resultSet.getString("firstName"));
+            unitAdmin.setLastName(resultSet.getString("lastName"));
             unitAdmin.setEmail(resultSet.getString("email"));
             unitAdmin.setEmailverified(resultSet.getBoolean("emailverified"));
             unitAdmin.setRole(resultSet.getString("surrole"));

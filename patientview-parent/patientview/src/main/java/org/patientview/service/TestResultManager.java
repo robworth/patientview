@@ -41,6 +41,11 @@ public interface TestResultManager {
 
     List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel);
 
+    List<TestResultWithUnitShortname> getTestResultForPatient(User user, List<String> resultCodes,
+                                                              String monthBeforeNow);
+
+    List<TestResultWithUnitShortname> getTestResultForPatient(User user, Panel panel, boolean isRadarGroup);
+
     void save(TestResult testResult);
 
     List<TestResult> get(String nhsno, String unitcode);

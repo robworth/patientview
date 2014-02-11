@@ -29,7 +29,8 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
-<ul class="nav nav-pills">
+<div class="span12 seperatingLine">
+<ul class="nav nav-pills nav-pills-no-border">
     <li <%=("index".equals(request.getAttribute("currentNav"))) ? "class\"active\"" : "" %>><html:link action="/index">Home</html:link></li>
     <%
         if (LegacySpringUtils.getSecurityUserManager().isLoggedInToSpecialty()) {
@@ -90,7 +91,7 @@
         <li <%=("medicines".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/medicines">Medicines</html:link></li>
     </logic:present>
 
-    <li <%=("results".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/results">Results</html:link></li>
+    <li <%=("results".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/testresults">Results</html:link></li>
 
     <li <%=("letters".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/letters" >Letters</html:link></li>
 
@@ -122,6 +123,41 @@
         <%
             }
         %>
+    </logic:present>
+
+    <logic:present specialty="renal">
+        <logic:equal value="demographics" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="demographics"  value="true"/>
+        </logic:equal>
+        <logic:equal value="medicalResults" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="medicalResults"  value="true"/>
+        </logic:equal>
+        <logic:equal value="genetics" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="genetics"  value="true"/>
+        </logic:equal>
+        <logic:equal value="medication" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="medication"  value="true"/>
+        </logic:equal>
+        <logic:equal value="controlMedicalResults" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="medicalResults"  value="true"/>
+        </logic:equal>
+        <logic:equal value="controlMedication" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="medication"  value="true"/>
+        </logic:equal>
+        <logic:equal value="controlDemographics" name="currentNav">
+            <bean:define id="radarDisease"  value="true"/>
+            <bean:define id="demographics"  value="true"/>
+        </logic:equal>
+
+        <li <logic:equal value="true" name="radarDisease">class="active"</logic:equal>>
+            <a href="#" onclick="clickRadardisease(this)">Radar Disease</a>
+        </li>
     </logic:present>
 
     <logic:present specialty="renal">

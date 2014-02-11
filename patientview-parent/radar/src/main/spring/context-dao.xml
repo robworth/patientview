@@ -161,4 +161,8 @@
         <!--<property name="breakAfterAcquireFailure" value=""/>-->
     </bean>
 
+    <bean id="logEntryDao" class="org.patientview.radar.dao.impl.LogEntryDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
 </beans>

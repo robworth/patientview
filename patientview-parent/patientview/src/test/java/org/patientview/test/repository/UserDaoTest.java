@@ -97,7 +97,8 @@ public class UserDaoTest extends BaseDaoTest {
 
         User user = new User();
         user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
+        user.setFirstName("Firstname");
+        user.setLastName("Lastname");
         user.setPassword("password");
         user.setUsername("test");
 
@@ -119,7 +120,8 @@ public class UserDaoTest extends BaseDaoTest {
 
         User user = new User();
         user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
+        user.setFirstName("Firstname");
+        user.setLastName("Lastname");
         user.setPassword("password");
         user.setUsername("test");
         user.setAccountlocked(true);
@@ -147,21 +149,25 @@ public class UserDaoTest extends BaseDaoTest {
     public void testGetAllDelete() {
         User user = new User();
         user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
+        user.setFirstName("Firstname");
+        user.setLastName("Lastname");
+
         user.setPassword("password");
         user.setUsername("test");
         userDao.save(user);
 
         user = new User();
         user.setEmail("test2@worthsolns.com");
-        user.setName("Firstname Lastname2");
+        user.setFirstName("Firstname2");
+        user.setLastName("Lastname2");
         user.setPassword("password2");
         user.setUsername("test2");
         userDao.save(user);
 
         user = new User();
         user.setEmail("test3@worthsolns.com");
-        user.setName("Firstname Lastname3");
+        user.setFirstName("Firstname3");
+        user.setLastName("Lastname3");
         user.setPassword("password3");
         user.setUsername("test3");
         userDao.save(user);
@@ -343,35 +349,40 @@ public class UserDaoTest extends BaseDaoTest {
         // Add user
         User user = new User();
         user.setEmail("test@worthsolns.com");
-        user.setName("Firstname Lastname");
+        user.setFirstName("Firstname");
+        user.setLastName("Lastname");
         user.setPassword("password");
         user.setUsername("username1");
         userDao.save(user);
 
         User user1 = new User();
         user1.setEmail("test1@worthsolns.com");
-        user1.setName("Firstname Lastname1");
+        user.setFirstName("Firstname1");
+        user.setLastName("Lastname1");
         user1.setPassword("password1");
         user1.setUsername("testname1");
         userDao.save(user1);
 
         User user2 = new User();
         user2.setEmail("test2@worthsolns.com");
-        user2.setName("Firstname Lastname2");
+        user.setFirstName("Firstname2");
+        user.setLastName("Lastname2");
         user2.setPassword("password2");
         user2.setUsername("testname2");
         userDao.save(user2);
 
         User user3 = new User();
         user3.setEmail("test3@worthsolns.com");
-        user3.setName("Firstname Lastname3");
+        user.setFirstName("Firstname3");
+        user.setLastName("Lastname3");
         user3.setPassword("password3");
         user3.setUsername("testname3-GP");
         userDao.save(user3);
 
         User user4 = new User();
         user4.setEmail("test2@worthsolns.com");
-        user4.setName("Firstname Lastname2");
+        user.setFirstName("Firstname2");
+        user.setLastName("Lastname2");
         user4.setPassword("password2");
         user4.setUsername("username2");
         userDao.save(user4);

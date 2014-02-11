@@ -52,7 +52,6 @@ import org.patientview.radar.model.user.User;
 import org.patientview.radar.service.DemographicsManager;
 import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
-import org.patientview.radar.util.RadarUtility;
 import org.patientview.radar.web.RadarApplication;
 import org.patientview.radar.web.RadarSecuredSession;
 import org.patientview.radar.web.components.ComponentHelper;
@@ -61,6 +60,7 @@ import org.patientview.radar.web.components.RadarRequiredTextField;
 import org.patientview.radar.web.pages.BasePage;
 import org.patientview.radar.web.panels.CreatePatientPanel;
 import org.patientview.radar.web.panels.SelectPatientPanel;
+import org.patientview.util.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,17 +124,19 @@ public class AddPatientPage extends BasePage {
                 demographicsFilter.addSearchCriteria(DemographicsFilter.UserField.NHSNO.toString(),
                         model.getPatientId());
 
+                List<String> radarUnits = userManager.getPatientRadarMappings(model.getPatientId());
+
                 // check nhs number is valid
-                if (!RadarUtility.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
+                if (!CommonUtils.isNhsNumberValidWhenUppercaseLettersAreAllowed(model.getPatientId())) {
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
                     error(NHS_NUMBER_INVALID_MSG);
 
-                } else if (CollectionUtils.isNotEmpty(userManager.getPatientRadarMappings(model.getPatientId()))) {
+                } else if (CollectionUtils.isNotEmpty(radarUnits)) {
                     // check that this nhsno has a mapping in the radar system
                     selectPatientPanel.setVisible(false);
                     createPatientPanel.setVisible(false);
-                    error("A patient with this NHS or CHI number already exists");
+                    error("The patient is currently a member of the " + radarUnits.get(0) + " Registry");
                 }
 
                 if (!hasError()) {

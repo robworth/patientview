@@ -78,7 +78,8 @@
         <form-bean name="patientForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="username" type="java.lang.String"/>
             <form-property name="password" type="java.lang.String"/>
-            <form-property name="name" type="java.lang.String"/>
+            <form-property name="firstName" type="java.lang.String"/>
+            <form-property name="lastName" type="java.lang.String"/>
             <form-property name="email" type="java.lang.String"/>
             <form-property name="emailverified" type="java.lang.String"/>
             <form-property name="nhsno" type="java.lang.String"/>
@@ -94,6 +95,7 @@
             <form-property name="overrideInvalidNhsno" type="java.lang.String"/>
             <form-property name="isrecipient" type="java.lang.String"/>
             <form-property name="isclinician" type="java.lang.String"/>
+            <form-property name="patientId" type="java.lang.String"/>
         </form-bean>
         <form-bean name="unitForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="unitcode" type="java.lang.String"/>
@@ -166,6 +168,7 @@
             <form-property name="haemodialysisuniturl12" type="java.lang.String"/>
             <form-property name="sourceType" type="java.lang.String"/>
             <form-property name="filename" type="java.lang.String"/>
+            <form-property name="visible" type="java.lang.Boolean"/>
         </form-bean>
         <form-bean name="gpgForm" type="org.apache.struts.validator.DynaValidatorActionForm">
             <form-property name="src" type="java.lang.String"/>
@@ -280,7 +283,16 @@
             <form-property name="conversationId" type="java.lang.Long"/>
             <form-property name="unitCode" type="java.lang.String"/>
         </form-bean>
+
+        <form-bean name="resultForm"
+                   type="org.apache.struts.action.DynaActionForm">
+            <form-property name="resultType1" type="java.lang.String"/>
+            <form-property name="resultType2" type="java.lang.String"/>
+            <form-property name="period" type="java.lang.String"/>
+        </form-bean>
     </form-beans>
+
+
 
     <!-- ========== Global Forward Definitions ============================== -->
     <global-forwards>
@@ -397,6 +409,16 @@
             <forward name="success" path="/patient/diagnostics.jsp"/>
         </action>
 
+        <action path="/patient/graphic_testresult"
+                type="org.patientview.patientview.ResultsAction"
+                name="resultForm">
+        </action>
+
+        <action path="/patient/testresults"
+                type="org.patientview.patientview.ResultsInitAction">
+            <forward name="success" path="/patient/test_results.jsp"/>
+        </action>
+
         <action path="/patient/results"
                 type="org.patientview.patientview.TestResultsAction" parameter="results">
             <forward name="success" path="/patient/results.jsp"/>
@@ -421,6 +443,46 @@
         <action path="/patient/contact"
                 type="org.patientview.patientview.ContactAction" parameter="contact" name="feedbackForm">
             <forward name="success" path="/patient/contact.jsp"/>
+        </action>
+
+        <action path="/patient/demographics"
+                type="org.patientview.patientview.PatientDetailsAction" parameter="demographics"  name="ibdPatientDetailsForm">
+            <forward name="success" path="/patient/patient_details.jsp"/>
+        </action>
+
+        <action path="/patient/medicalResults"
+                type="org.patientview.patientview.TestResultsAction" parameter="medicalResults">
+            <forward name="success" path="/patient/results.jsp"/>
+        </action>
+
+        <action path="/patient/genetics"
+                type="org.patientview.patientview.PatientGeneticsAction" parameter="genetics">
+            <forward name="success" path="/patient/genetics.jsp"/>
+        </action>
+
+        <action path="/patient/medication"
+                type="org.patientview.patientview.medicine.MedicineDisplayAction" parameter="medication">
+            <forward name="success" path="/patient/medicines.jsp"/>
+        </action>
+
+        <action path="/control/demographics"
+                type="org.patientview.patientview.PatientDetailsAction" parameter="controlDemographics"  name="ibdPatientDetailsForm">
+            <forward name="success" path="/patient/patient_details.jsp"/>
+        </action>
+
+        <action path="/control/medicalResults"
+                type="org.patientview.patientview.TestResultsAction" parameter="controlMedicalResults">
+            <forward name="success" path="/patient/results.jsp"/>
+        </action>
+
+        <action path="/control/genetics"
+                type="org.patientview.patientview.PatientGeneticsAction" parameter="genetics">
+            <forward name="success" path="/patient/genetics.jsp"/>
+        </action>
+
+        <action path="/control/medication"
+                type="org.patientview.patientview.medicine.MedicineDisplayAction" parameter="controlMedication">
+            <forward name="success" path="/patient/medicines.jsp"/>
         </action>
 
         <action path="/patient/education"
@@ -1016,12 +1078,13 @@
         </action>
 
         <action path="/control/feedbackUnitSelect"
-                type="org.patientview.patientview.logon.LogonAddInputAction"
+                type="org.patientview.patientview.feedback.FeedbackInputAction"
                 name="unitForm"
                 scope="request"
                 validate="false">
             <forward name="success" path="/control/feedback_unit_select.jsp"/>
         </action>
+
 
         <action path="/control/feedbackView"
                 type="org.patientview.patientview.feedback.FeedbackViewAction"
@@ -1323,6 +1386,23 @@
                 scope="request">
             <forward name="input" path="/control/group_edit.jsp"/>
             <forward name="success" path="/control/group_edit.jsp"/>
+        </action>
+
+        <action path="/contactMyUnit"
+                type="org.patientview.patientview.join.JoinRequestInputAction"
+                name="joinForm"
+                scope="request"
+                validate="false">
+            <forward name="success" path="/contactunit.jsp"/>
+        </action>
+
+        <action path="/contactUnitSubmit"
+                type="org.patientview.patientview.ContactMyUnitSubmitAction"
+                name="joinForm"
+                scope="request"
+                validate="false">
+            <forward name="input" path="/contactunit.jsp"/>
+            <forward name="success" path="/contact-unit-confirmation.jsp"/>
         </action>
 
         <!--

@@ -98,19 +98,8 @@ public class RadarDaoImpl extends AbstractHibernateDAO<Demographics> implements 
 
     @Override
     public void createProfessionalUserInRadar(User user, Unit unit) {
-        String[] name = user.getName().split(" ");
-        String forename = name[0];
-        String surname = "";
-
-        if (name.length > 1) {
-            surname = name[1];
-
-            if (name.length > 2) {
-                for (int x = 2; x < name.length; x++) {
-                    surname += " " + name[x];
-                }
-            }
-        }
+        String forename = user.getFirstName();
+        String surname = user.getLastName();
 
         // create the professional user record first
         Map<String, Object> professionalUserMap = new HashMap<String, Object>();

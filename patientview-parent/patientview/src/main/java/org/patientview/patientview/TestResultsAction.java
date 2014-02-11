@@ -23,6 +23,10 @@
 
 package org.patientview.patientview;
 
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.patientview.actionutils.ActionUtils;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.patientview.model.Comment;
@@ -34,16 +38,13 @@ import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.unit.UnitUtils;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,12 +54,26 @@ public class TestResultsAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                  HttpServletResponse response)
             throws Exception {
-        User user = UserUtils.retrieveUser(request);
+
+        User user = null;
+        String param = mapping.getParameter();
+        boolean isRadarGroup = false;
+        if ("medicalResults".equals(param)) {
+            isRadarGroup = true;
+            user = UserUtils.retrieveUser(request);
+        } else  if ("controlMedicalResults".equals(param)) {
+            isRadarGroup = true;
+            String username = (String) request.getSession().getAttribute("userBeingViewedUsername");
+            user = LegacySpringUtils.getUserManager().get(username);
+        } else {
+            user = UserUtils.retrieveUser(request);
+        }
 
         if (user != null) {
             request.setAttribute("user", user);
 
             Panel currentPanel = managePanels(request);
+
 
             List<TestResultWithUnitShortname> results = extractTestResultsWithComments(currentPanel, user);
 
@@ -169,7 +184,7 @@ public class TestResultsAction extends Action {
     }
 
     private Collection<Result> turnResultsListIntoRecords(List<TestResultWithUnitShortname> resultsList) {
-        Map<TestResultId, Result> resultsRecords = new TreeMap<TestResultId, Result>();
+        Map<TestResultId, Result> resultsRecords = new TreeMap<TestResultId, Result>(Collections.reverseOrder());
         for (TestResultWithUnitShortname testResult : resultsList) {
             TestResultId testResultId = new TestResultId(testResult);
             Result result = resultsRecords.get(testResultId);
@@ -179,6 +194,7 @@ public class TestResultsAction extends Action {
             }
             result.addResult(testResult.getTestcode(), testResult.getValue());
         }
+
         return resultsRecords.values();
     }
 }
@@ -218,9 +234,9 @@ class TestResultId implements Comparable {
                 return thisPrepost.compareToIgnoreCase(compareToPrepost);
             }
         } else if (dateStamped.before(resultToCompareThisTo.getDateStamped())) {
-            return 1;
-        } else {
             return -1;
+        } else {
+            return 1;
         }
     }
 

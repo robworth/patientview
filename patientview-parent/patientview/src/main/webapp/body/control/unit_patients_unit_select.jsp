@@ -36,7 +36,7 @@
     if (request.getParameter("validation") != null) {
 %>
 <div class="alert alert error">
-    Please select either a renal unit, NHS number or Name
+    Please select either a renal unit, NHS number or a Forename/Surname
 </div>
 <%
     }
@@ -65,8 +65,12 @@
       <td><input type="text" name="nhsno" value=""></td>
     </tr>
     <tr>
-      <td><b>Name</b></td>
-      <td><input type="text" name="name" value=""></td>
+      <td><b>Forename</b></td>
+      <td><input type="text" name="firstname" value=""></td>
+    </tr>
+    <tr>
+      <td><b>Surname</b></td>
+      <td><input type="text" name="lastname" value=""></td>
     </tr>
     <tr>
       <td><b>Show GPs</b></td>

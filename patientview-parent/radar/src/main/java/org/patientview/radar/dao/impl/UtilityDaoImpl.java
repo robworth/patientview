@@ -28,6 +28,7 @@ import org.patientview.model.Centre;
 import org.patientview.model.Clinician;
 import org.patientview.model.Country;
 import org.patientview.model.Ethnicity;
+import org.patientview.model.enums.SourceType;
 import org.patientview.radar.dao.UtilityDao;
 import org.patientview.radar.model.Consultant;
 import org.patientview.radar.model.DiagnosisCode;
@@ -246,14 +247,19 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public int getPatientCountByUnit(Centre centre) {
         try {
-
             StringBuilder query = new StringBuilder();
-            query.append("SELECT  COUNT(DISTINCT nhsno) ");
-            query.append("FROM    usermapping usm ");
-            query.append("WHERE   EXISTS (SELECT  1 ");
-            query.append("                FROM    patient ptt ");
-            query.append("                WHERE   ptt.nhsno = usm.nhsno) ");
-            query.append("AND     usm.unitCode = ? ");
+            query.append("SELECT  COUNT(DISTINCT p.nhsno) ");
+            query.append("FROM    user u ");
+            query.append("INNER JOIN patient p ");
+            query.append("INNER JOIN usermapping m ");
+            query.append("WHERE  m.nhsno = p.nhsno ");
+            query.append("AND    u.username NOT LIKE '%-GP%' ");
+            query.append("AND    u.username = m.username ");
+            query.append("AND    m.unitcode <> 'PATIENT' ");
+            query.append("AND    m.unitcode = ? ");
+            query.append("AND    p.sourceType = '");
+            query.append(SourceType.RADAR.getName());
+            query.append("'");
 
             return jdbcTemplate.queryForObject(query.toString(), new Object[]{centre.getUnitCode()}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
@@ -360,7 +366,7 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
 
     public Clinician getClinician(Long id) {
         List<Clinician> clinicians = jdbcTemplate.query("SELECT " +
-                " u.id, u.username, u.name, um.unitcode " +
+                " u.id, u.username, u.firstname, u.lastname, um.unitcode " +
                 "FROM user u, usermapping um " +
                 "WHERE " +
                 "    u.username = um.username " +
@@ -424,11 +430,12 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         String username = null;
 
         try {
-            username = jdbcTemplate
-                .queryForObject("SELECT DISTINCT u.name FROM user u, usermapping um " +
-                        "WHERE u.username = um.username " +
-                        "AND um.nhsno = ? " +
-                        "AND u.name NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
+      
+            return jdbcTemplate.queryForObject(
+                    "SELECT DISTINCT CONCAT(u.firstName, ' ', u.lastName) FROM user u, usermapping um " +
+                            "WHERE u.username = um.username " +
+                            "AND um.nhsno = ? " +
+                            "AND u.username NOT LIKE '%-GP%'; ", new Object[]{nhsNo}, String.class);
         } catch (EmptyResultDataAccessException era) {
             LOGGER.debug("No username result found for " + nhsNo);
         }
@@ -466,9 +473,25 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
         }
         try {
             return jdbcTemplate
-                    .queryForObject("SELECT u.name FROM user u " +
+                    .queryForObject("SELECT u.username FROM user u " +
                             "WHERE u.id = ? " +
-                            "AND u.name NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
+                            "AND u.username NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.debug("Could not get user with id {}", id);
+            return "";
+
+        }
+    }
+
+    public String getUserFullName(Long id) {
+        if (id == null) {
+            return "";
+        }
+        try {
+            return jdbcTemplate
+                    .queryForObject("SELECT CONCAT(u.firstname, ' ', u.lastname) name  FROM user u " +
+                            "WHERE u.id = ? " +
+                            "AND u.username NOT LIKE '%-GP%'; ", new Object[]{id}, String.class);
         } catch (EmptyResultDataAccessException e) {
             LOGGER.debug("Could not get user with id {}", id);
             return "";
@@ -482,9 +505,9 @@ public class UtilityDaoImpl extends BaseDaoImpl implements UtilityDao {
             Clinician clinician = new Clinician();
 
             // In future we might need to split the fullname of the user for a clinician
-            String fullName = resultSet.getString("name");
+            clinician.setForename(resultSet.getString("firstName"));
             clinician.setId(resultSet.getLong("id"));
-            clinician.setSurname(fullName);
+            clinician.setSurname(resultSet.getString("lastName"));
 
              // Centre could be null, in which case we get a 0 returned by getLong
             String unitcode = resultSet.getString("unitcode");

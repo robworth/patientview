@@ -84,7 +84,7 @@ public class MedicalResultsPanel extends Panel {
         MedicalResult medicalResult = null;
 
         if (patient.hasValidId()) {
-            medicalResult = medicalResultManager.getMedicalResult(patient.getId(),
+            medicalResult = medicalResultManager.getMedicalResult(patient.getRadarNo(),
                     patient.getDiseaseGroup().getId());
         }
 
@@ -96,7 +96,7 @@ public class MedicalResultsPanel extends Panel {
 
         if (medicalResult == null) {
             medicalResult = new MedicalResult();
-            medicalResult.setRadarNo(patient.getId());
+            medicalResult.setRadarNo(patient.getRadarNo());
             medicalResult.setDiseaseGroup(patient.getDiseaseGroup());
             medicalResult.setNhsNo(patient.getNhsno());
         }
@@ -246,7 +246,7 @@ public class MedicalResultsPanel extends Panel {
                 }
 
                 if (medicalResult.isToBeValidated() && !hasError()) {
-                    medicalResult.setRadarNo(patient.getId());
+                    medicalResult.setRadarNo(patient.getRadarNo());
                     medicalResult.setNhsNo(patient.getNhsno());
                     medicalResultManager.save(medicalResult);
                 }

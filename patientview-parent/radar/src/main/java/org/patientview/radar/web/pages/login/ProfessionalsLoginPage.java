@@ -23,27 +23,27 @@
 
 package org.patientview.radar.web.pages.login;
 
-import org.patientview.radar.model.user.ProfessionalUser;
-import org.patientview.radar.model.user.User;
-import org.patientview.radar.service.UserManager;
-import org.patientview.radar.web.RadarSecuredSession;
-import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
-import org.patientview.radar.web.components.RadarRequiredTextField;
-import org.patientview.radar.web.pages.BasePage;
-import org.patientview.radar.web.pages.ProfessionalsPage;
-import org.patientview.radar.web.pages.regisration.ChangeRegistrationDetails;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.patientview.radar.model.user.ProfessionalUser;
+import org.patientview.radar.model.user.User;
+import org.patientview.radar.service.UserManager;
+import org.patientview.radar.util.RadarUtility;
+import org.patientview.radar.web.RadarSecuredSession;
+import org.patientview.radar.web.components.RadarRequiredPasswordTextField;
+import org.patientview.radar.web.components.RadarRequiredTextField;
+import org.patientview.radar.web.pages.BasePage;
+import org.patientview.radar.web.pages.ProfessionalsPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +134,7 @@ public class ProfessionalsLoginPage extends BasePage {
             }
         });
         add(form);
-        add(new BookmarkablePageLink("forgotPasswordLink", ProfessionalForgottenPasswordPage.class));
-        add(new BookmarkablePageLink("changeDetailsLink", ChangeRegistrationDetails.class));
+        String patientViewUrl = RadarUtility.getProperty("config.patientview.site.url");
+        add(new ExternalLink("forgotPasswordLink", patientViewUrl + "forgotten-password.do"));
     }
 }

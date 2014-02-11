@@ -50,10 +50,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao {
 
@@ -149,6 +149,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     patient.getSurnameAlias(),
                     patient.getForename(),
                     patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(patient.getDob()) : null,
+                    patient.getDateofbirth(),
                     patient.getAge(),
                     patient.getSexModel() != null ? patient.getSexModel().getType() : null,
                     patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null,
@@ -196,9 +197,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                     put("surname", patient.getSurname());
                     put("surnameAlias", patient.getSurnameAlias());
                     put("forename", patient.getForename());
-                    put("dateofbirth", patient.getDob() != null ?
-                            new SimpleDateFormat(DATE_FORMAT).format(
-                                    patient.getDob()) : null);
+                    put("dateofbirth", patient.getDateofbirth());
                     put("AGE", patient.getAge());
                     put("SEX", patient.getSexModel() != null ? patient.getSexModel().getType() : null);
                     put("ethnicGp",
@@ -248,37 +247,6 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
 
         }
 
-    }
-
-
-    public Patient getDemographicsByRadarNumber(long radarNumber) {
-
-        Patient patient = null;
-
-        try {
-
-            try {
-                patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE radarNo = ?",
-                    new Object[]{radarNumber}, new DemographicsRowMapper());
-            } catch (EmptyResultDataAccessException e) {
-                // Can't find the patient by radar number try the normal key
-                if (patient == null) {
-                    patient = jdbcTemplate.queryForObject("SELECT * FROM patient WHERE id = ?",
-                            new Object[]{radarNumber}, new DemographicsRowMapper());
-                }
-            }
-
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.debug("No demographic record found for radar number {}", radarNumber);
-            return null;
-        }
-
-        return patient;
-    }
-
-
-    public List<Patient> getDemographicsByRenalUnit(Centre centre) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Patient get(Long id) {
@@ -430,6 +398,9 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
                             dateOfBirthString);
                 }
             }
+            Date dateOfBirth = resultSet.getDate("dateofbirth");
+            patient.setDateofbirth(dateOfBirth);
+            patient.setDob(dateOfBirth);
 
             // Addresses
             patient.setAddress1(resultSet.getString("address1"));

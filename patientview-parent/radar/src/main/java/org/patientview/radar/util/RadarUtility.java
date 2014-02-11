@@ -38,7 +38,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * Radar Utility - miscellaneous utility methods go here
@@ -46,6 +49,22 @@ import java.util.Date;
 public class RadarUtility {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RadarUtility.class);
+    private static Properties properties;
+
+    static {
+        properties = new Properties();
+        InputStream inputStream = RadarUtility.class.getClassLoader().getResourceAsStream("radar.properties");
+        try {
+            properties.load(inputStream);
+            inputStream.close();
+        } catch (IOException io) {
+            LOGGER.error("Properties not loaded");
+        }
+    }
+
+    public static String getProperty(String name) {
+        return properties.getProperty(name);
+    }
 
     /**
      * @param event1Start cannot be null
@@ -197,64 +216,9 @@ public class RadarUtility {
 
     }
 
-    public static boolean isNhsNumberValid(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, false);
-    }
 
-    public static boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
-        return isNhsNumberValid(nhsNumber, true);
-    }
 
-    private static boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
 
-        // Remove all whitespace and non-visible characters such as tab, new line etc
-        nhsNumber = nhsNumber.replaceAll("\\s", "");
-
-        // Only permit 10 characters
-        if (nhsNumber.length() != 10) {
-            return false;
-        }
-
-        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
-        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
-
-        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
-            return true;
-        }
-
-        return isNhsChecksumValid(nhsNumber);
-    }
-
-    private static boolean isNhsChecksumValid(String nhsNumber) {
-        /**
-         * Generate the checksum using modulus 11 algorithm
-         */
-        int checksum = 0;
-
-        try {
-            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
-            for (int i = 0; i <= 8; i++) {
-                int value = Integer.parseInt(nhsNumber.charAt(i) + "") * (10 - i);
-                checksum += value;
-            }
-
-            //(modulus 11)
-            checksum = 11 - checksum % 11;
-
-            if (checksum == 11) {
-                checksum = 0;
-            }
-
-            // Does checksum match the 10th digit?
-            if (checksum == Integer.parseInt(nhsNumber.charAt(9) + "")) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false; // nhsNumber contains letters
-        }
-    }
 
 
 }

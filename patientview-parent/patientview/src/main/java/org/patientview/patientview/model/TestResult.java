@@ -61,7 +61,7 @@ public class TestResult extends BaseModel {
 
     public TestResult(String nhsno, String unitcode, Calendar datestamp, String testcode, String value) {
         this.nhsno = nhsno;
-        setUnitcode(unitcode);
+        this.unitcode = unitcode;
         this.testcode = testcode;
         this.datestamped = datestamp;
         this.value = value;

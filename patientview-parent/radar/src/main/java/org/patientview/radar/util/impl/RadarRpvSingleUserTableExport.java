@@ -30,7 +30,6 @@ import org.patientview.radar.dao.DemographicsDao;
 import org.patientview.radar.dao.PatientDao;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.dao.UtilityDao;
-import org.patientview.radar.model.user.AdminUser;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.model.user.ProfessionalUser;
 import org.patientview.radar.model.user.User;
@@ -207,7 +206,7 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
                 user = new PatientUser();
                 user.setUserId(userDao.createLockedPVUser(username,
                         User.getPasswordHash(RandomStringUtils.randomAlphanumeric(8)),
-                        patient.getForename() + " " + patient.getSurname(), null));
+                        patient.getForename(), patient.getSurname(), null));
                 numUsersCreated++;
                 userCreated = true;
             } else {
@@ -241,24 +240,6 @@ public class RadarRpvSingleUserTableExport implements UserUpgradeManager {
         return TripleDes.decrypt(copy);
     }
 
-    private class AdminUserRowMapper implements RowMapper<AdminUser> {
-        public AdminUser mapRow(ResultSet resultSet, int i) throws SQLException {
-            AdminUser adminUser = new AdminUser();
-
-            adminUser.setId(resultSet.getLong("uID"));
-            adminUser.setName(resultSet.getString("uName"));
-            adminUser.setEmail(resultSet.getString("uEmail"));
-
-            try {
-                adminUser.setPassword(User.getPasswordHash(decryptField(resultSet.getBytes("uPass"))));
-                adminUser.setUsername(decryptField(resultSet.getBytes("uUserName")));
-            } catch (Exception e) {
-                LOGGER.error("Could not decrypt user information for admin user ", adminUser.getId());
-            }
-
-            return adminUser;
-        }
-    }
 
     private class ProfessionalUserRowMapper implements RowMapper<ProfessionalUser> {
         public ProfessionalUser mapRow(ResultSet resultSet, int i) throws SQLException {

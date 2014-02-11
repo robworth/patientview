@@ -42,7 +42,7 @@ public class JoinRequestInputAction extends Action {
                                  HttpServletResponse response)
             throws Exception {
 
-        List<Unit> units = LegacySpringUtils.getUnitManager().getAll(null, new String[]{"renalunit"});
+        List<Unit> units = LegacySpringUtils.getUnitManager().getAllVisible(new String[]{"renalunit"});
         request.setAttribute("units", units);
 
         request.getSession().setAttribute("antiSpamQuestion", ActionUtils.getAntiSpamQuestion(request));

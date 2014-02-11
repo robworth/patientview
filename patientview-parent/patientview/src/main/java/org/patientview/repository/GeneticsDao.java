@@ -23,17 +23,13 @@
 
 package org.patientview.repository;
 
-import org.patientview.patientview.model.UserLog;
+import org.patientview.patientview.model.Genetics;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- */
 @Transactional(propagation = Propagation.MANDATORY)
-public interface UserLogDao {
+public interface GeneticsDao {
 
-    UserLog get(String nhsNo);
+    Genetics get(Long radarNo);
 
-    void save(UserLog userLog);
 }

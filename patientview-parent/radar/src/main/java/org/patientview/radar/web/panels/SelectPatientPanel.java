@@ -44,6 +44,7 @@ import org.patientview.radar.service.PatientManager;
 import org.patientview.radar.service.UserManager;
 import org.patientview.radar.service.UtilityManager;
 import org.patientview.radar.util.RadarUtility;
+import org.patientview.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,7 +158,7 @@ public class SelectPatientPanel extends Panel {
                 it.add(new Label("nhsNo", patient.getNhsno()));
                 it.add(new Label("forename", patient.getForename()));
                 it.add(new Label("surname", patient.getSurname()));
-                it.add(new Label("dateOfBirth", patient.getDateofbirth()));
+                it.add(new Label("dateOfBirth", CommonUtils.formatDate(patient.getDateofbirth())));
                 it.add(new Label("unitCode", utilityManager.getCentre(patient.getUnitcode()).getAbbreviation()));
                 String dateResultsLastReceivedLabel = "";
                 if (it.getModelObject().getMostRecentTestResultDateRangeStopDate() != null) {

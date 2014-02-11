@@ -26,6 +26,7 @@ package org.patientview.repository.impl;
 import org.patientview.model.Patient;
 import org.patientview.model.Patient_;
 import org.patientview.model.Specialty;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.logon.PatientLogonWithTreatment;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.PatientDao;
@@ -44,6 +45,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository(value = "patientDao")
@@ -89,6 +91,26 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
         wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsno));
         wherePredicates.add(builder.equal(from.get(Patient_.unitcode), unitcode));
+        wherePredicates.add(builder.equal(from.get(Patient_.sourceType), SourceType.PATIENT_VIEW.getName()));
+
+        buildWhereClause(criteria, wherePredicates);
+
+        try {
+            return getEntityManager().createQuery(criteria).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Patient getRadarPatient(String nhsNo) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Patient> criteria = builder.createQuery(Patient.class);
+        Root<Patient> from = criteria.from(Patient.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
+
+        wherePredicates.add(builder.equal(from.get(Patient_.nhsno), nhsNo));
+        wherePredicates.add(builder.equal(from.get(Patient_.sourceType), SourceType.RADAR.getName()));
 
         buildWhereClause(criteria, wherePredicates);
 
@@ -114,7 +136,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         try {
             return getEntityManager().createQuery(criteria).getResultList();
         } catch (Exception e) {
-            return null;
+            return Collections.emptyList();
         }
 
     }
@@ -147,31 +169,34 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         return getEntityManager().createQuery(criteria).getResultList();
     }
 
+    //todo refactor into one query with the one below
+    //todo PERFORMANCE FIX: commented out the emailverification table to improve query speed.
+    // todo PERFORMANCE FIX & GENERAL BUG: removed the left join to the pv_user_log, need to reimplement
     @Override
-    public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String name, boolean showgps,
-                                                Specialty specialty) {
+    public List getUnitPatientsWithTreatmentDao(String unitcode, String nhsno, String firstname, String lastname,
+                                                boolean showgps, Specialty specialty) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT    usr.username ");
         query.append(",         usr.password ");
-        query.append(",         usr.name ");
+        query.append(",         usr.firstname ");
+        query.append(",         usr.lastname ");
         query.append(",         usr.email ");
         query.append(",         usr.emailverified ");
         query.append(",         usr.accountlocked ");
         query.append(",         usm.nhsno ");
         query.append(",         usm.unitcode ");
-        query.append(",         emv.lastverificationdate ");
+        query.append(",         null lastverificationdate ");
         query.append(",         usr.firstlogon ");
         query.append(",         usr.lastlogon ");
-        query.append(",         ptt.treatment ");
-        query.append(",         ptt.dateofbirth ");
-        query.append(",         ptt.rrtModality ");
-        query.append(",         psl.lastdatadate ");
+        query.append(",         MAX(ptt.id) id ");
+        query.append(",         MAX(ptt.treatment) treatment ");
+        query.append(",         MAX(ptt.dateofbirth) dateofbirth ");
+        query.append(",         MAX(ptt.rrtModality) rrtModality ");
+        query.append(",         MAX(ptt.mostRecentTestResultDateRangeStopDate) mostRecentTestResultDateRangeStopDate ");
         query.append("FROM USER usr ");
-        query.append("LEFT JOIN emailverification emv ON usr.username = emv.username ");
-        query.append("LEFT JOIN specialtyuserrole str ON str.user_id = usr.id ");
-        query.append("LEFT JOIN usermapping usm ON usm.username = usr.username ");
+        query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
         query.append("LEFT JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
-        query.append("LEFT JOIN pv_user_log psl ON usm.nhsno = psl.nhsno ");
+        query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
         query.append("WHERE     str.role = 'patient' ");
         query.append("AND       usr.username = usm.username ");
         query.append("AND       usr.id = str.user_id ");
@@ -181,72 +206,110 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         if (StringUtils.hasText(nhsno)) {
             query.append("AND   usm.nhsno LIKE ? ");
         }
-        if (StringUtils.hasText(name)) {
-            query.append("AND   usr.name LIKE ? ");
+        if (StringUtils.hasText(firstname)) {
+            query.append("AND   usr.firstname LIKE ? ");
+        }
+        if (StringUtils.hasText(lastname)) {
+            query.append("AND   usr.lastname LIKE ? ");
         }
         if (!showgps) {
-            query.append("AND   usr.name NOT LIKE '%-GP' ");
+            query.append("AND   usr.username NOT LIKE '%-GP' ");
         }
-        query.append("AND       str.specialty_id = ? ORDER BY usr.name ASC ");
+        query.append("AND       str.specialty_id = ? ");
+        query.append("GROUP BY  usr.username ");
+        query.append(",         usr.password ");
+        query.append(",         usr.firstname ");
+        query.append(",         usr.lastname ");
+        query.append(",         usr.email ");
+        query.append(",         usr.emailverified ");
+        query.append(",         usr.accountlocked ");
+        query.append(",         usm.nhsno ");
+        query.append(",         usm.unitcode ");
+        query.append(",         lastverificationdate ");
+        query.append(",         usr.firstlogon ");
+        query.append(",         usr.lastlogon  ");
+        query.append(" ORDER BY usr.lastname, usr.firstname ASC ");
+
 
         List<Object> params = new ArrayList<Object>();
 
         params.add(unitcode);
 
-        if (nhsno != null && nhsno.length() > 0) {
+        if (StringUtils.hasText(nhsno)) {
             params.add('%' + nhsno + '%');
         }
 
-        if (name != null && name.length() > 0) {
-            params.add('%' + name + '%');
+        if (StringUtils.hasText(firstname)) {
+            params.add('%' + firstname + '%');
+        }
+
+        if (StringUtils.hasText(lastname)) {
+            params.add('%' + lastname + '%');
         }
         params.add(specialty.getId());
 
         return jdbcTemplate.query(query.toString(), params.toArray(), new PatientLogonWithTreatmentExtendMapper());
     }
 
-
+    //todo refactor into one query with the one above
+    //todo PERFORMANCE FIX: commented out the emailverification table to improve query speed.
+    // todo PERFORMANCE FIX & GENERAL BUG: removed the left join to the pv_user_log, need to reimplement
     @Override
-    public List getAllUnitPatientsWithTreatmentDao(String nhsno, String name, boolean showgps,
+    public List getAllUnitPatientsWithTreatmentDao(String nhsno, String firstname, String lastname, boolean showgps,
                                                    Specialty specialty) {
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT DISTINCT ");
-        query.append("       usr.username ");
+        query.append("SELECT usr.username ");
         query.append(",      usr.password ");
-        query.append(",      usr.name ");
+        query.append(",      usr.firstname ");
+        query.append(",      usr.lastname ");
         query.append(",      usr.email ");
         query.append(",      usr.emailverified ");
         query.append(",      usr.accountlocked ");
-        query.append(",      ptt.nhsno ");
-        query.append(",      ptt.unitcode ");
-        query.append(",      em.lastverificationdate ");
+        query.append(",      MAX(ptt.nhsno) nhsno ");
+        query.append(",      MAX(ptt.unitcode) unitcode ");
+        query.append(",      null lastverificationdate ");
         query.append(",      usr.firstlogon ");
         query.append(",      usr.lastlogon ");
-        query.append(",      ptt.treatment ");
-        query.append(",      ptt.dateofbirth ");
-        query.append(",      ptt.rrtModality ");
-        query.append(",      pvl.lastdatadate ");
+        query.append(",      MAX(ptt.id) id ");
+        query.append(",      MAX(ptt.treatment) treatment ");
+        query.append(",      MAX(ptt.dateofbirth) dateofbirth ");
+        query.append(",      MAX(ptt.rrtModality) rrtModality  ");
+        query.append(",      MAX(ptt.mostRecentTestResultDateRangeStopDate) mostRecentTestResultDateRangeStopDate ");
         query.append("FROM user usr ");
         query.append("INNER JOIN usermapping usm ON usm.username = usr.username ");
-        query.append("INNER JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
-        query.append("LEFT  JOIN emailverification em ON usr.username = em.username ");
+        query.append("LEFT  JOIN patient ptt ON usm.nhsno = ptt.nhsno ");
         query.append("INNER JOIN specialtyuserrole str ON str.user_id = usr.id ");
-        query.append("LEFT  JOIN pv_user_log pvl ON ptt.nhsno = pvl.nhsno ");
         query.append("WHERE  str.role = 'patient' ");
         query.append("AND    usr.id = str.user_id ");
         query.append("AND    usm.unitcode <> 'PATIENT' ");
+        query.append("AND    ptt.nhsno IS NOT NULL ");
         query.append("AND    IF(ptt.patientLinkId = 0, NULL, ptt.patientLinkId) IS NULL ");
         if (nhsno != null && nhsno.length() > 0) {
             query.append("AND usm.nhsno LIKE ? ");
         }
-        if (name != null && name.length() > 0) {
-            query.append("AND usr.name LIKE ? ");
+        if (StringUtils.hasText(firstname)) {
+            query.append("AND usr.firstname LIKE ? ");
+        }
+        if (StringUtils.hasText(lastname)) {
+            query.append("AND usr.lastname LIKE ? ");
         }
         if (!showgps) {
-            query.append("AND usr.name NOT LIKE '%-GP' ");
+            query.append("AND usr.username NOT LIKE '%-GP' ");
         }
-        query.append("AND    str.specialty_id = ?  ORDER BY usr.name ASC ");
+        query.append("AND    str.specialty_id = ? ");
+
+        query.append("GROUP BY  usr.username ");
+        query.append(",         usr.password ");
+        query.append(",         usr.firstname ");
+        query.append(",         usr.lastname ");
+        query.append(",         usr.email ");
+        query.append(",         usr.emailverified ");
+        query.append(",         usr.accountlocked ");
+        query.append(",         usr.firstlogon ");
+        query.append(",         usr.lastlogon ");
+        query.append(" ORDER BY usr.lastname, usr.firstname ASC  ");
+
 
         List<Object> params = new ArrayList<Object>();
 
@@ -254,8 +317,12 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             params.add('%' + nhsno + '%');
         }
 
-        if (name != null && name.length() > 0) {
-            params.add('%' + name + '%');
+        if (StringUtils.hasText(firstname)) {
+            params.add('%' + firstname + '%');
+        }
+
+        if (StringUtils.hasText(lastname)) {
+            params.add('%' + lastname + '%');
         }
         params.add(specialty.getId());
 
@@ -268,7 +335,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         String sql = "SELECT "
                 + "   user.username,  "
                 + "   user.password, "
-                + "   user.name, "
+                + "   user.firstname, "
+                + "   user.lastname, "
                 + "   user.email, "
                 + "   user.emailverified, "
                 + "   user.lastlogon, "
@@ -277,7 +345,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "   user.firstlogon, "
                 + "   user.accountlocked, "
                 + "   patient.treatment, "
-                + "   patient.dateofbirth "
+                + "   patient.dateofbirth, "
+                + "   patient.id "
                 + "FROM "
                 + "   user, "
                 + "   specialtyuserrole, "
@@ -297,7 +366,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "AND "
                 + "   specialtyuserrole.specialty_id = ? "
                 + "ORDER BY "
-                + "   user.name ASC";
+                + "   user.lastname, user.firstname ASC";
 
         List<Object> params = new ArrayList<Object>();
 
@@ -311,7 +380,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
     public List<Patient> getUktPatients() {
 
         String sql = "SELECT DISTINCT patient.nhsno, patient.surname, patient.forename, "
-                + " patient.dateofbirth, patient.postcode FROM patient, user, usermapping "
+                + " patient.dateofbirth, patient.postcode, patient.id FROM patient, user, usermapping "
                 + " WHERE patient.nhsno REGEXP '^[0-9]{10}$' AND patient.nhsno = usermapping.nhsno "
                 + "AND user.username = usermapping.username "
                 + " AND usermapping.username NOT LIKE '%-GP' AND user.dummypatient = 0";
@@ -328,7 +397,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patient.setNhsno(resultSet.getString("nhsno"));
             patient.setSurname(resultSet.getString("surname"));
             patient.setForename(resultSet.getString("forename"));
-            patient.setDateofbirth(resultSet.getString("dateofbirth"));
+            patient.setDateofbirth(resultSet.getDate("dateofbirth"));
             patient.setPostcode(resultSet.getString("postcode"));
 
             return patient;
@@ -342,7 +411,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
 
             patientLogonWithTreatment.setUsername(resultSet.getString("username"));
             patientLogonWithTreatment.setPassword(resultSet.getString("password"));
-            patientLogonWithTreatment.setName(resultSet.getString("name"));
+            patientLogonWithTreatment.setFirstName(resultSet.getString("firstName"));
+            patientLogonWithTreatment.setLastName(resultSet.getString("lastName"));
             patientLogonWithTreatment.setEmail(resultSet.getString("email"));
             patientLogonWithTreatment.setEmailverified(resultSet.getBoolean("emailverified"));
             patientLogonWithTreatment.setAccountlocked(resultSet.getBoolean("accountlocked"));
@@ -351,8 +421,8 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
             patientLogonWithTreatment.setLastlogon(resultSet.getDate("lastlogon"));
             patientLogonWithTreatment.setUnitcode(resultSet.getString("unitcode"));
             patientLogonWithTreatment.setTreatment(resultSet.getString("treatment"));
-            patientLogonWithTreatment.setDateofbirth(resultSet.getString("dateofbirth"));
-
+            patientLogonWithTreatment.setDateofbirth(resultSet.getDate("dateofbirth"));
+            patientLogonWithTreatment.setPatientId(resultSet.getLong("id"));
             return patientLogonWithTreatment;
         }
     }
@@ -361,10 +431,10 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
         @Override
         public PatientLogonWithTreatment mapRow(ResultSet resultSet, int i) throws SQLException {
             PatientLogonWithTreatment patientLogonWithTreatment = super.mapRow(resultSet, i);
-
+            patientLogonWithTreatment.setPatientId(resultSet.getLong("id"));
             patientLogonWithTreatment.setLastverificationdate(resultSet.getDate("lastverificationdate"));
             patientLogonWithTreatment.setRrtModality(resultSet.getInt("rrtModality"));
-            patientLogonWithTreatment.setLastdatadate(resultSet.getDate("lastdatadate"));
+            patientLogonWithTreatment.setLastdatadate(resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
             return patientLogonWithTreatment;
         }
     }

@@ -31,6 +31,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * User: james@solidstategroup.com
  * Date: 12/12/13
@@ -41,6 +43,10 @@ public final class CommonUtils {
     public static final String UK_DATE_FORMAT = "dd-MM-yyyy";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtils.class);
+
+    private static final int NHS_NUMBER_LENGTH = 10;
+    private static final int NHS_NUMBER_MODULUS = 11;
+    private static final int NHS_NUMBER_MODULUS_OFFSET = 11;
 
     private static final String DATE_FORMAT_0 = "dd-MM-yy";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -97,7 +103,68 @@ public final class CommonUtils {
     }
 
     public static String formatDate(Date date) {
+        if (date != null) {
+            return UK_DATE_FORMATTER.format(date);
+        } else {
+            return null;
+        }
+    }
 
-        return UK_DATE_FORMATTER.format(date);
+    public static boolean isNhsNumberValid(String nhsNumber, boolean ignoreUppercaseLetters) {
+
+        // Only permit 10 characters
+        if (nhsNumber.length() != NHS_NUMBER_LENGTH) {
+            return false;
+        }
+
+        // Remove all whitespace and non-visible characters such as tab, new line etc
+        nhsNumber = nhsNumber.replaceAll("\\s", "");
+
+        boolean nhsNoContainsOnlyNumbers = nhsNumber.matches("[0-9]+");
+        boolean nhsNoContainsLowercaseLetters = !nhsNumber.equals(nhsNumber.toUpperCase());
+
+        if (!nhsNoContainsOnlyNumbers && ignoreUppercaseLetters && !nhsNoContainsLowercaseLetters) {
+            return true;
+        }
+
+        return isNhsChecksumValid(nhsNumber);
+    }
+
+
+    public static boolean isNhsNumberValid(String nhsNumber) {
+        return CommonUtils.isNhsNumberValid(nhsNumber, false);
+    }
+
+    public static boolean isNhsNumberValidWhenUppercaseLettersAreAllowed(String nhsNumber) {
+        return CommonUtils.isNhsNumberValid(nhsNumber, true);
+    }
+
+    private static boolean isNhsChecksumValid(String nhsNumber) {
+        /**
+         * Generate the checksum using modulus 11 algorithm
+         */
+        int checksum = 0;
+
+        try {
+            // Multiply each of the first 9 digits by 10-character position (where the left character is in position 0)
+            for (int i = 0; i < NHS_NUMBER_LENGTH - 1; i++) {
+                int value = parseInt(nhsNumber.charAt(i) + "") * (NHS_NUMBER_LENGTH - i);
+                checksum += value;
+            }
+
+            //(modulus 11)
+            checksum = NHS_NUMBER_MODULUS_OFFSET - checksum % NHS_NUMBER_MODULUS;
+
+            if (checksum == NHS_NUMBER_MODULUS_OFFSET) {
+                checksum = 0;
+            }
+
+            // Does checksum match the 10th digit?
+            return checksum == parseInt(String.valueOf(nhsNumber.charAt(NHS_NUMBER_LENGTH - 1)));
+
+
+        } catch (NumberFormatException e) {
+            return false; // nhsNumber contains letters
+        }
     }
 }

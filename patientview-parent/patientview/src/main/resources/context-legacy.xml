@@ -324,8 +324,8 @@
                 <ref bean="diabetesCarePlanManager"/>
             </list>
         </property>
-    </bean>
-
+    </bean>    
+    
     <bean id="setContextProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setContextProperties"/>
         <property name="arguments">
@@ -334,5 +334,15 @@
             </list>
         </property>
     </bean>
+    
+    <bean id="setGeneticsManager" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.patientview.utils.LegacySpringUtils.setGeneticsManager"/>
+            <property name="arguments">
+                <list>
+                    <ref bean="geneticsManager"/>
+                </list>
+            </property>
+        </bean>        
+
 
 </beans>

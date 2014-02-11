@@ -63,12 +63,12 @@ public class GeneticsPanel extends Panel {
         Genetics genetics = null;
 
         if (patient.hasValidId()) {
-            genetics = geneticsManager.get(patient.getId());
+            genetics = geneticsManager.get(patient.getRadarNo());
         }
 
         if (genetics == null) {
             genetics = new Genetics();
-            genetics.setRadarNo(patient.getId());
+            genetics.setRadarNo(patient.getRadarNo());
         }
 
         // main model for this tab
@@ -93,7 +93,7 @@ public class GeneticsPanel extends Panel {
                 }
 
                 if (!hasError()) {
-                    genetics.setRadarNo(patient.getId());
+                    genetics.setRadarNo(patient.getRadarNo());
                     geneticsManager.save(genetics);
                 }
             }

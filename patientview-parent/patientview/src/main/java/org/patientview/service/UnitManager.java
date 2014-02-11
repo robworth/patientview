@@ -69,6 +69,8 @@ public interface UnitManager {
 
     List<Unit> getAll(String[] sourceTypesToExclude, String[] sourceTypesToInclude);
 
+    List<Unit> getAllVisible(String[] sourceTypesToInclude);
+
     List<Unit> getAdminsUnits();
 
     List<Unit> getAdminsUnits(boolean isRadarGroup);
@@ -76,6 +78,8 @@ public interface UnitManager {
     List<Unit> getUnitsWithUser();
 
     List<Unit> getLoggedInUsersUnits();
+
+    List<Unit> getLoggedInUsersRenalUnits();
 
     List<Unit> getUsersUnits(User user);
 

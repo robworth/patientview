@@ -69,6 +69,9 @@ public class PatientCentreDropDown extends DropDownChoice<Centre> {
             } else if (viewingUser.getSecurityRole().equals(User.ROLE_PROFESSIONAL)) {
                 for (Unit unit : unitManager.getRenalUnits(viewingUser)) {
                     Centre centre = new Centre();
+                    centre.setId(unit.getId());
+                    centre.setAbbreviation(unit.getUnitcode());
+                    centre.setRenalAdminEmail(centre.getRenalAdminEmail());
                     centre.setUnitCode(unit.getUnitcode());
                     centre.setName(unit.getName());
                     centres.add(centre);
@@ -78,5 +81,8 @@ public class PatientCentreDropDown extends DropDownChoice<Centre> {
 
         setChoices(centres);
         setChoiceRenderer(new ChoiceRenderer<Centre>("name", "id"));
+
+        setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
     }
 }

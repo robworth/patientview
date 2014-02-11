@@ -23,33 +23,35 @@
 
 package org.patientview.repository.impl;
 
-import org.patientview.patientview.model.UserLog;
-import org.patientview.patientview.model.UserLog_;
+import org.patientview.patientview.model.Genetics;
+import org.patientview.patientview.model.Genetics_;
 import org.patientview.repository.AbstractHibernateDAO;
-import org.patientview.repository.UserLogDao;
+import org.patientview.repository.GeneticsDao;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.ArrayList;
 
-
-@Repository(value = "userLogDao")
-public class UserLogDaoImpl extends AbstractHibernateDAO<UserLog> implements UserLogDao {
-
+@Repository(value = "geneticsDao")
+public class GeneticsDaoImpl extends AbstractHibernateDAO<Genetics> implements GeneticsDao {
 
     @Override
-    public UserLog get(String nhsNo) {
+    public Genetics get(Long radarNo) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<UserLog> criteria = builder.createQuery(UserLog.class);
-        Root<UserLog> userLogRoot = criteria.from(UserLog.class);
+        CriteriaQuery<Genetics> criteria = builder.createQuery(Genetics.class);
+        Root<Genetics> from = criteria.from(Genetics.class);
+        List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
-        criteria.where(builder.equal(userLogRoot.get(UserLog_.nhsno), nhsNo));
+        wherePredicates.add(builder.equal(from.get(Genetics_.radarNo), radarNo));
+
+        buildWhereClause(criteria, wherePredicates);
 
         try {
             return getEntityManager().createQuery(criteria).getSingleResult();
-        } catch (NoResultException e) {
+        } catch (Exception e) {
             return null;
         }
     }

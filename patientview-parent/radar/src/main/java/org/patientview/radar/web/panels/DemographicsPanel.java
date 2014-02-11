@@ -178,10 +178,10 @@ public class DemographicsPanel extends Panel {
 
                 // create new diagnosis if it doesnt exist becuase diagnosis code is set in demographics tab
                 if (patient.hasValidId()) {
-                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getId());
+                    Diagnosis diagnosis = diagnosisManager.getDiagnosisByRadarNumber(patient.getRadarNo());
                     if (diagnosis == null) {
                         Diagnosis diagnosisNew = new Diagnosis();
-                        diagnosisNew.setRadarNumber(patient.getId());
+                        diagnosisNew.setRadarNumber(patient.getRadarNo());
                         DiagnosisCode diagnosisCode = (DiagnosisCode) ((DropDownChoice) get("diagnosis"))
                                 .getModelObject();
                         diagnosisNew.setDiagnosisCode(diagnosisCode);
@@ -242,7 +242,7 @@ public class DemographicsPanel extends Panel {
 
         RadarRequiredDropdownChoice diagnosis =
                 new RadarRequiredDropdownChoice("diagnosis", RadarModelFactory.getDiagnosisCodeModel(
-                        new Model<Long>(patientModel.getObject().getId()),
+                        new Model<Long>(patientModel.getObject().getRadarNo()),
                         diagnosisManager),
                         diagnosisManager.getDiagnosisCodes(),
                         new ChoiceRenderer("abbreviation", "id"), form, componentsToUpdateList) {
@@ -359,7 +359,6 @@ public class DemographicsPanel extends Panel {
         DropDownChoice<Ethnicity> ethnicity = new DropDownChoice<Ethnicity>("ethnicity", utilityManager.
                 getEthnicities(), new ChoiceRenderer<Ethnicity>("name", "id"));
         form.add(sex, ethnicity);
-        nonEditableComponents.add(sex);
 
         // Address fields
         TextField address1 = new TextField("address1");
@@ -421,24 +420,21 @@ public class DemographicsPanel extends Panel {
 
         DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, form.getModelObject());
 
-        // if its a super user then the drop down will let them change renal units
-        // if its a normal user they can only add to their own renal unit
-        if (user.getSecurityRole().equals(User.ROLE_SUPER_USER)) {
-            renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    Patient patient = model.getObject();
-                    if (patient != null) {
-                        clinician.updateCentre(patient.getRenalUnit() != null ?
-                                patient.getRenalUnit().getUnitCode() :
-                                null);
-                    }
-
-                    clinician.clearInput();
-                    target.add(clinician);
+        renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Patient patient = model.getObject();
+                if (patient != null) {
+                    clinician.updateCentre(patient.getRenalUnit() != null ?
+                            patient.getRenalUnit().getUnitCode() :
+                            null);
                 }
-            });
-        }
+
+                clinician.clearInput();
+                target.add(clinician);
+            }
+        });
+
 
         form.add(renalUnit);
 
@@ -467,6 +463,7 @@ public class DemographicsPanel extends Panel {
                 target.add(tickConsentUser);
 
                 if (consent.getModel().getObject().equals(Boolean.TRUE)) {
+                    model.getObject().setRadarConsentConfirmedByUserId(RadarSecuredSession.get().getUser().getUserId());
                     consentUserModel.setObject(RadarSecuredSession.get().getUser().getName());
                     tickConsentUser.setVisible(true);
 
