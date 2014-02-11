@@ -458,7 +458,7 @@ public class GenericDemographicsPanel extends Panel {
         };
         form.add(sourceUnitCodeLabel, sourceUnitCode);
 
-        DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
+        final DropDownChoice<Centre> renalUnit = new PatientCentreDropDown("renalUnit", user, patient);
 
         renalUnit.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             @Override
