@@ -47,7 +47,6 @@ import org.patientview.quartz.handler.ErrorHandler;
 import org.patientview.repository.UnitDao;
 import org.patientview.service.ImportManager;
 import org.patientview.service.LogEntryManager;
-import org.patientview.service.UnitManager;
 import org.patientview.util.CommonUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.slf4j.Logger;
@@ -73,9 +72,6 @@ import java.util.List;
 public class ImportManagerImpl implements ImportManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportManagerImpl.class);
-
-    @Inject
-    private UnitManager unitManager;
 
     @Inject
     private XmlImportUtils xmlImportUtils;
@@ -299,7 +295,7 @@ public class ImportManagerImpl implements ImportManager {
 
     private void validateUnitCode(Centre centre) throws ProcessException {
 
-        if (unitManager.get(centre.getCentreCode()) == null) {
+        if (unitDao.get(centre.getCentreCode(), null) == null) {
             throw new ProcessException("The unit code supplied by the file does not exist in the database");
         }
 
