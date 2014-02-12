@@ -115,40 +115,6 @@
         %>
     </logic:present>
 
-    <logic:present specialty="renal">
-        <logic:equal value="demographics" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="demographics"  value="true"/>
-        </logic:equal>
-        <logic:equal value="medicalResults" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="medicalResults"  value="true"/>
-        </logic:equal>
-        <logic:equal value="genetics" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="genetics"  value="true"/>
-        </logic:equal>
-        <logic:equal value="medication" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="medication"  value="true"/>
-        </logic:equal>
-        <logic:equal value="controlMedicalResults" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="medicalResults"  value="true"/>
-        </logic:equal>
-        <logic:equal value="controlMedication" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="medication"  value="true"/>
-        </logic:equal>
-        <logic:equal value="controlDemographics" name="currentNav">
-            <bean:define id="radarDisease"  value="true"/>
-            <bean:define id="demographics"  value="true"/>
-        </logic:equal>
-
-        <li <logic:equal value="true" name="radarDisease">class="active"</logic:equal>>
-            <a href="#" onclick="clickRadardisease(this)">Radar Disease</a>
-        </li>
-    </logic:present>
 
     <logic:present specialty="renal">
         <li <%=("contact".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>><html:link action="/patient/contact">Contact</html:link></li>
