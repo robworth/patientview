@@ -28,13 +28,13 @@
     <parent>
         <groupId>org.patientview</groupId>
         <artifactId>patientview-parent</artifactId>
-        <version>1.1.2-SNAPSHOT</version>
+        <version>1.1.3-RELEASE</version>
     </parent>
 
     <groupId>org.patientview</groupId>
     <artifactId>common</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.1.3-RELEASE</version>
     <name>PatientView Common</name>
 
     <properties>
