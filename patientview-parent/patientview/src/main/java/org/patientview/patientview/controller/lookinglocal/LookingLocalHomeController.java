@@ -23,9 +23,13 @@
 package org.patientview.patientview.controller.lookinglocal;
 
 import org.patientview.patientview.controller.BaseController;
+import org.patientview.patientview.controller.Routes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,15 +37,15 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *  Looking local home controller
  */
-//@Controller
+@Controller
 public class LookingLocalHomeController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LookingLocalHomeController.class);
     /**
      * Deal with the URIs "/lookinglocal/home"
      */
-    // @RequestMapping(value = Routes.LOOKING_LOCAL_HOME)
-    // @ResponseBody
+    @RequestMapping(value = Routes.LOOKING_LOCAL_HOME)
+    @ResponseBody
     public void getHomeXml(HttpServletResponse response) {
 
         try {
@@ -54,8 +58,8 @@ public class LookingLocalHomeController extends BaseController {
     /**
      * Deal with the URIs "/lookinglocal/main"
      */
-    //@RequestMapping(value = Routes.LOOKING_LOCAL_MAIN)
-    //@ResponseBody
+    @RequestMapping(value = Routes.LOOKING_LOCAL_MAIN)
+    @ResponseBody
     public void getMainScreenXml(HttpServletResponse response) {
 
         try {
@@ -68,8 +72,8 @@ public class LookingLocalHomeController extends BaseController {
     /**
      * Deal with the URIs "/lookinglocal/details"
      */
-    //@RequestMapping(value = Routes.LOOKING_LOCAL_DETAILS)
-    //@ResponseBody
+    @RequestMapping(value = Routes.LOOKING_LOCAL_DETAILS)
+    @ResponseBody
     public void getDetailsScreenXml(HttpServletRequest request, HttpServletResponse response,
                                     @RequestParam(value = "selection", required = false) String selection) {
 
@@ -95,8 +99,8 @@ public class LookingLocalHomeController extends BaseController {
     /**
      * Deal with the URIs "/lookinglocal/resultsDisplay"
      */
-    //@RequestMapping(value = Routes.LOOKING_LOCAL_RESULTS_DISPLAY)
-    //@ResponseBody
+    @RequestMapping(value = Routes.LOOKING_LOCAL_RESULTS_DISPLAY)
+    @ResponseBody
     public void getMedicalResultsXml(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "selection", required = false) String selection) {
 
@@ -112,8 +116,8 @@ public class LookingLocalHomeController extends BaseController {
     /**
      * Deal with the URIs "/lookinglocal/letterDisplay"
      */
-    //@RequestMapping(value = Routes.LOOKING_LOCAL_LETTER_DISPLAY)
-    //@ResponseBody
+    @RequestMapping(value = Routes.LOOKING_LOCAL_LETTER_DISPLAY)
+    @ResponseBody
     public void getLetterXml(HttpServletRequest request, HttpServletResponse response,
                              @RequestParam(value = "selection", required = false) String selection) {
 
