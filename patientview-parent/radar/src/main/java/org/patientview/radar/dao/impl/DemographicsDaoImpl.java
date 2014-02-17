@@ -561,7 +561,7 @@ public class DemographicsDaoImpl extends BaseDaoImpl implements DemographicsDao 
             List<DemographicsUserDetail> results
                     = jdbcTemplate.query(sql, params.toArray(), new DemographicsUserDetailMapper());
             if (results != null && results.size() > 1) {
-                LOGGER.error("Found duplicate results for nhsno {}, taking first", nhsno);
+                LOGGER.debug("Found duplicate results for nhsno {}, taking first", nhsno);
             }
             return results != null && results.size() > 0 ? results.get(0) : new DemographicsUserDetail();
         } catch (Exception e) {

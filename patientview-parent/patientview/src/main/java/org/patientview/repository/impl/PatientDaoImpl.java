@@ -362,7 +362,7 @@ public class PatientDaoImpl extends AbstractHibernateDAO<Patient> implements Pat
                 + "AND "
                 + "   specialtyuserrole.role = 'patient' "
                 + "AND "
-                + "   user.name NOT LIKE '%-GP' "
+                + "   user.username NOT LIKE '%-GP' "
                 + "AND "
                 + "   specialtyuserrole.specialty_id = ? "
                 + "ORDER BY "
