@@ -65,6 +65,10 @@ public final class LookingLocalUtils {
     public static final int OPTION_5 = 5;
     public static final int OPTION_6 = 6;
     public static final int OPTION_7 = 7;
+
+    //Dev Test
+    public static final String DEV_URL = "http://dev.solidstategroup.com/web";
+
     private LookingLocalUtils() {
     }
 
@@ -124,7 +128,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_DETAILS);
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.setAttribute("method", "post");
         formElement.setAttribute("pagingText", "Page 1 of 2");
         pageElement.appendChild(formElement);
@@ -219,7 +223,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_DETAILS);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.appendChild(formAction);
 
         // form method
@@ -245,7 +249,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_DETAILS);
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.setAttribute("method", "post");
         formElement.setAttribute("pagingText", "Page 1 of 4");
         pageElement.appendChild(formElement);
@@ -286,7 +290,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_DETAILS);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.appendChild(formAction);
 
         // form method
@@ -330,7 +334,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
         formElement.setAttribute("method", "post");
         formElement.setAttribute("pagingText", "Page 1 of 3");
         pageElement.appendChild(formElement);
@@ -403,7 +407,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
         formElement.appendChild(formAction);
 
         // form method
@@ -432,7 +436,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_LETTER_DISPLAY);
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_LETTER_DISPLAY);
         formElement.setAttribute("method", "post");
         formElement.setAttribute("pagingText", "Page 1 of 9");
         pageElement.appendChild(formElement);
@@ -460,7 +464,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_LETTER_DISPLAY);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_LETTER_DISPLAY);
         formElement.appendChild(formAction);
 
         // form method
@@ -486,7 +490,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
         formElement.setAttribute("method", "post");
         formElement.setAttribute("pagingText", "Page 1 of 10");
         pageElement.appendChild(formElement);
@@ -533,7 +537,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_RESULTS_DISPLAY);
         formElement.appendChild(formAction);
 
         // form method
@@ -631,7 +635,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_DETAILS);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.appendChild(formAction);
 
         // form method
@@ -666,7 +670,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", "/web" + Routes.LOOKING_LOCAL_MAIN); // todo how to login?
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_MAIN); // todo how to login?
         formElement.setAttribute("method", "post");
         formElement.setAttribute("name", "blank");
         pageElement.appendChild(formElement);
@@ -707,7 +711,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", "/web" + Routes.LOOKING_LOCAL_MAIN);  // todo how to login?
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_MAIN);  // todo how to login?
         formElement.appendChild(formAction);
 
         // form method
@@ -731,7 +735,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_DETAILS);
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.setAttribute("method", "post");
         pageElement.appendChild(formElement);
 
@@ -778,7 +782,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_DETAILS);
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_DETAILS);
         formElement.appendChild(formAction);
 
         // form method
