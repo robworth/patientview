@@ -707,7 +707,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", Routes.LOOKING_LOCAL_MAIN);  // todo how to login?
+        formAction.setAttribute("value", "/web" + Routes.LOOKING_LOCAL_MAIN);  // todo how to login?
         formElement.appendChild(formAction);
 
         // form method
