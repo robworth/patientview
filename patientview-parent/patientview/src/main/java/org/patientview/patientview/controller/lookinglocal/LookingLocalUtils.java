@@ -666,7 +666,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", Routes.LOOKING_LOCAL_MAIN); // todo how to login?
+        formElement.setAttribute("action", "/web" + Routes.LOOKING_LOCAL_MAIN); // todo how to login?
         formElement.setAttribute("method", "post");
         formElement.setAttribute("name", "blank");
         pageElement.appendChild(formElement);
