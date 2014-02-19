@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.patientview.model.Patient;
 import org.patientview.model.Unit;
+import org.patientview.model.enums.SourceType;
 import org.patientview.patientview.logging.AddLog;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
@@ -133,6 +134,7 @@ public class PatientAddAction extends Action {
                 patient.setNhsno(nhsno);
                 patient.setUnitcode(unitcode);
                 patient.setEmailAddress(email);
+                patient.setSourceType(SourceType.PATIENT_VIEW.getName());
                 LegacySpringUtils.getPatientManager().save(patient);
             }
 
