@@ -572,13 +572,14 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
     private Sex getSex(String sexType) {
         if (StringUtils.isNotEmpty(sexType)) {
             for (Sex sex : sexes) {
-                if (sex.getType().equals(sexType)) {
+                if (sex.getType().toLowerCase().startsWith(sexType.toLowerCase())) {
                     return sex;
                 }
             }
         }
         return null;
     }
+
 
 
 
