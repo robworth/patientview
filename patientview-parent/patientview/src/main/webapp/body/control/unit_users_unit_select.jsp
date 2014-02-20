@@ -40,7 +40,9 @@
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b><logic:present specialty="renal">${isRadarGroup? 'RaDaR Group':'Renal Unit'}</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
+      <td><b><logic:present specialty="renal">${isRadarGroup? 'RaDaR Group':'Renal Unit'}</logic:present>
+          <logic:present specialty="ibd">IBD Unit</logic:present>
+          <logic:present specialty="diabetes">Diabetes Unit</logic:present></b></td>
       <td>
           <select name="unitcode">
               <logic:present role="superadmin">
