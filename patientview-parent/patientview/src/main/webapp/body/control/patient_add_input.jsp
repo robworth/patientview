@@ -93,6 +93,7 @@
     <tr>
       <td><b>
           <logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present>
+          <logic:present specialty="diabetes">Diabetes Unit</logic:present>
       </b></td>
       <td><html:select property="unitcode">
              <html:options collection="units" property="unitcode" labelProperty="name"/>
