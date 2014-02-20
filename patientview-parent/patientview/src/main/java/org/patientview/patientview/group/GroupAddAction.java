@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionForm;
+import org.patientview.model.Specialty;
 import org.patientview.patientview.logon.LogonUtils;
 import org.patientview.model.Unit;
 import org.patientview.patientview.unit.UnitUtils;
@@ -61,8 +62,9 @@ public class GroupAddAction extends Action {
 
         Unit unit = new Unit();
         try {
+            Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
             unit.setSourceType("radargroup");
-            UnitUtils.buildUnit(unit, form);
+            UnitUtils.buildUnit(unit, form, specialty);
 
             LegacySpringUtils.getUnitManager().save(unit);
 

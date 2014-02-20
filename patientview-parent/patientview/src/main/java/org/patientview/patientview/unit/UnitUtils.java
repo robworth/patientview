@@ -24,6 +24,7 @@
 package org.patientview.patientview.unit;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.patientview.model.Specialty;
 import org.patientview.model.Unit;
 import org.patientview.patientview.model.User;
 import org.patientview.patientview.model.UserMapping;
@@ -34,6 +35,7 @@ import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -125,16 +127,23 @@ public final class UnitUtils {
     }
 
     // update the unit by setting it's properties
-    public static void buildUnit(Unit unit, Object form) throws Exception {
+    public static void buildUnit(Unit unit, Object form, Specialty specialty) throws Exception {
 
         // set defaults for sourceType and country, note this runs for updates as well as creates
         unit.setSourceType(BeanUtils.getProperty(form, "sourceType"));
-        if (unit.getSourceType() == null || unit.getSourceType().length() == 0) {
+        if (StringUtils.isEmpty(unit.getSourceType()) || (specialty != null &&
+                specialty.getName().equalsIgnoreCase("Renal"))) {
             unit.setSourceType("renalunit");
+            unit.setSpecialty(specialty);
+        }
+
+        if (specialty != null && specialty.getName().equalsIgnoreCase("diabetes")) {
+
         }
 
         if (unit.getCountry() == null || unit.getCountry().length() == 0) {
-            unit.setCountry("1");
+            unit.setSourceType("diabetesunit");
+            unit.setSpecialty(specialty);
         }
 
         // build object

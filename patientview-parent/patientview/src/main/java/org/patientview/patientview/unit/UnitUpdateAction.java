@@ -23,19 +23,19 @@
 
 package org.patientview.patientview.unit;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.patientview.model.Unit;
-import org.patientview.patientview.model.User;
-import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.patientview.model.Specialty;
+import org.patientview.model.Unit;
 import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.User;
+import org.patientview.utils.LegacySpringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class UnitUpdateAction extends Action {
@@ -45,7 +45,8 @@ public class UnitUpdateAction extends Action {
             throws Exception {
 
         Unit unit = LegacySpringUtils.getUnitManager().get(BeanUtils.getProperty(form, "unitcode"));
-        UnitUtils.buildUnit(unit, form);
+        Specialty specialty = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty();
+        UnitUtils.buildUnit(unit, form, specialty);
         LegacySpringUtils.getUnitManager().save(unit);
 
         boolean isRadarGroup = "radargroup".equalsIgnoreCase(mapping.getParameter());

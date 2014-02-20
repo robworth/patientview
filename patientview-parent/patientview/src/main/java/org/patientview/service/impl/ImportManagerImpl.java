@@ -376,21 +376,6 @@ public class ImportManagerImpl implements ImportManager {
         errorHandler.createLogEntry(xmlFile, action, "");
     }
 
-    private void createLogEntry(File xmlFile, String action, String extraInfoExplanation) {
-        LogEntry logEntry = new LogEntry();
-        logEntry.setActor(AddLog.ACTOR_SYSTEM);
-        logEntry.setDate(Calendar.getInstance());
-        logEntry.setNhsno(xmlImportUtils.getNhsNumber(xmlFile.getName()));
-        logEntry.setUnitcode(xmlImportUtils.getUnitCode(xmlFile.getName()));
-        logEntry.setUser("");
-        logEntry.setAction(action);
-        if (null != extraInfoExplanation && !"".equals(extraInfoExplanation)) {
-            logEntry.setExtrainfo(xmlFile.getName() + " : " + extraInfoExplanation);
-        } else {
-            logEntry.setExtrainfo(xmlFile.getName());
-        }
-        logEntryManager.save(logEntry);
-    }
 
     private void deleteFootCheckup(String nhsno, String unitcode) {
         LegacySpringUtils.getFootCheckupManager().delete(nhsno, unitcode);
@@ -405,5 +390,11 @@ public class ImportManagerImpl implements ImportManager {
 
     private void deleteEyeCheckup(String nhsno, String unitcode) {
         LegacySpringUtils.getEyeCheckupManager().delete(nhsno, unitcode);
-    }    
+    }
+
+    private void insertEyeCheckup(List<EyeCheckup> eyeCheckups) {
+        for (EyeCheckup eyeCheckup : eyeCheckups) {
+            LegacySpringUtils.getEyeCheckupManager().save(eyeCheckup);
+        }
+    }
 }

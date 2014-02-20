@@ -135,8 +135,8 @@ public final class LegacySpringUtils {
 
     private static DiabetesCarePlanManager diabetesCarePlanManager;
 
-    private static GeneticsManager geneticsManager;    
-    
+    private static GeneticsManager geneticsManager;
+
     private LegacySpringUtils() {
 
     }
