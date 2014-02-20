@@ -109,3 +109,9 @@ INSERT INTO USER (username, PASSWORD, firstname, lastname) VALUES ('diabetes-sa'
 
 INSERT INTO specialtyuserrole (role, specialty_id, user_id) VALUES ('superadmin', '3', '73579');
 
+DROP INDEX edtacode ON edtacode;
+
+CREATE INDEX edtaCode_idx ON edtacode(edtacode, specialty_id);
+
+INSERT INTO edtacode(edtacode, linkTYpe, description, specialty_id) VALUES( 'static','static', 'Further Information', '3');
+
