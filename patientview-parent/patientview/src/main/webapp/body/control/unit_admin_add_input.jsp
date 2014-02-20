@@ -75,7 +75,7 @@
             <tr>
                 <td><b><logic:present specialty="renal">Unit</logic:present>
                        <logic:present specialty="ibd">IBD Unit</logic:present>
-                       <logic:present specialty="diabetes">Diabetes Unit</logic:present></b></td>
+                       <logic:present specialty="diabetes">Unit</logic:present></b></td>
                 <td><html:select property="unitcode">
                     <logic:present role="superadmin">
                         <html:option value="">None</html:option>
