@@ -65,7 +65,7 @@ public final class UnitUtils {
         List items;
         final String role = userManager.getCurrentSpecialtyRole(user);
         if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
-            items = unitManager.getAll(null, new String[]{"radargroup", "renalunit"});
+            items = unitManager.getAll(null, new String[]{"radargroup", "renalunit", "diabetesunit"});
         } else if (role.equals("unitadmin") || role.equals("unitstaff")) {
             items = unitManager.getLoggedInUsersUnits();
         } else {
