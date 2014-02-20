@@ -131,14 +131,10 @@ public final class UnitUtils {
 
         // set defaults for sourceType and country, note this runs for updates as well as creates
         unit.setSourceType(BeanUtils.getProperty(form, "sourceType"));
-        if (StringUtils.isEmpty(unit.getSourceType()) || (specialty != null &&
-                specialty.getName().equalsIgnoreCase("Renal"))) {
+        if (StringUtils.isEmpty(unit.getSourceType()) || (specialty != null
+                && specialty.getName().equalsIgnoreCase("Renal"))) {
             unit.setSourceType("renalunit");
             unit.setSpecialty(specialty);
-        }
-
-        if (specialty != null && specialty.getName().equalsIgnoreCase("diabetes")) {
-
         }
 
         if (unit.getCountry() == null || unit.getCountry().length() == 0) {
