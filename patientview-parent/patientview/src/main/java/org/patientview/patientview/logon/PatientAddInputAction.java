@@ -48,7 +48,7 @@ public class PatientAddInputAction extends Action {
         UserManager userManager = LegacySpringUtils.getUserManager();
         UnitManager unitManager = LegacySpringUtils.getUnitManager();
         User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
-        List items = unitManager.getAll(null, new String[]{"renalunit"});
+        List items = unitManager.getAll(null, new String[]{"renalunit", "diabetesunit"});
 
         if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
             request.getSession().setAttribute("units", items);
