@@ -101,32 +101,34 @@
                 </logic:present>
             </logic:present>
 
-            <logic:present feature="messaging">
-                <%
-                    // need to get the number of unread messages if they have any
-                    User user = UserUtils.retrieveUser(request);
 
-                    if (user != null) {
-                        int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
-                %>
-                <li class="divider"></li>
-                <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
-                    <a href="/control/conversations.do">
-                        Messages
-                        <%
-                            if (numberUnreadMessages > 0) {
-                        %>
-                        <span class="badge badge-important"><%=numberUnreadMessages%></span>
-                        <%
-                            }
-                        %>
-                    </a>
-                </li>
-                <%
-                    }
-                %>
+            <logic:present specialty="renal">
+                <logic:present feature="messaging">
+                    <%
+                        // need to get the number of unread messages if they have any
+                        User user = UserUtils.retrieveUser(request);
+
+                        if (user != null) {
+                            int numberUnreadMessages = LegacySpringUtils.getMessageManager().getTotalNumberUnreadMessages(user.getId());
+                    %>
+                    <li class="divider"></li>
+                    <li <%= ("conversations".equals(request.getAttribute("currentNav"))) ? "class=\"active\"" : "" %>>
+                        <a href="/control/conversations.do">
+                            Messages
+                            <%
+                                if (numberUnreadMessages > 0) {
+                            %>
+                            <span class="badge badge-important"><%=numberUnreadMessages%></span>
+                            <%
+                                }
+                            %>
+                        </a>
+                    </li>
+                    <%
+                        }
+                    %>
+                </logic:present>
             </logic:present>
-
         </ul>
     </div>
 </div>
