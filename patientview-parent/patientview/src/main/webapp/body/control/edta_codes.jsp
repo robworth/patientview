@@ -28,13 +28,13 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>EDTA Links</h1>
+    <h1>Diagnosis Links</h1>
 </div>
 
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th class="tableheader">EDTA Code</th>
+            <th class="tableheader">Diagnosis Code</th>
             <th class="tableheader">Description</th>
             <th></th>
         </tr>

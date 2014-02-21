@@ -37,7 +37,7 @@
                 <li class="divider"></li>
             </logic:present>
             <logic:present role="superadmin">
-                <li><html:link action="/control/edtaCodeDisplay">EDTA Codes</html:link></li>
+                <li><html:link action="/control/edtaCodeDisplay">Diagnosis Codes</html:link></li>
                 <li><html:link action="/control/treatmentCodeDisplay">Treatment Codes</html:link></li>
                 <li><html:link action="/control/staticLinkEdit">Static Links</html:link></li>
                 <li><html:link action="/control/resultHeadingDisplay">Result Headings</html:link></li>
