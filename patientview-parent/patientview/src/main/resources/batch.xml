@@ -15,6 +15,7 @@
 
     <!--Define jobLauncher-->
     <bean id="jobLauncher" autowire="byType" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="taskExecutor" ref="executor"/>
     </bean>
 
     <!--Define jobRepository-->

@@ -596,7 +596,7 @@ public final class ImportMonitor {
         String emailBody = "";
         String newLine = System.getProperty("line.separator");
 
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]";
+        emailBody += "[This is an automated email from PatientView - do not reply to this email]";
         emailBody += newLine;
         emailBody += newLine + "There are some problems in XML Importer. Please see below for details.";
         emailBody += newLine;

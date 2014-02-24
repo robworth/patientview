@@ -92,7 +92,7 @@ public class FeedbackFormAction extends Action {
 
         String newLine = System.getProperty("line.separator");
         String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]" + newLine;
+        emailBody += "[This is an automated email from PatientView - do not reply to this email]" + newLine;
         emailBody += newLine;
         emailBody += "A patient has posted some feedback about " + unit.getShortname()
                 + ". Please login to Renal PatientView to see the feedback in full "

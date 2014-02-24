@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -94,6 +95,7 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     @Override
+    @Async(value = "emailExecutor")
     public void sendEmail(ServletContext context, String fromAddress, String toAddress, String ccAddress,
                           String subject, String emailText) {
         try {
@@ -113,6 +115,7 @@ public class EmailManagerImpl implements EmailManager {
         }
     }
 
+    @Async(value = "emailExecutor")
     public void sendEmail(String from, String[] to, String[] bcc, String subject, String body) {
 
         if (!StringUtils.hasLength(from)) {

@@ -58,7 +58,7 @@ public class ForgottenPasswordAction extends Action {
                         user.setFirstlogon(true);
 
                         // Email password
-                        String message = "[This is an automated email from Renal PatientView - "
+                        String message = "[This is an automated email from PatientView - "
                                 + "do not reply to this email]\n"
                                 + "\n"
                                 + "Hello User,\n"

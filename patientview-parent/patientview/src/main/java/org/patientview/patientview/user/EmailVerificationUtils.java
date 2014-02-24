@@ -78,7 +78,7 @@ public final class EmailVerificationUtils {
         String newLine = System.getProperty("line.separator");
 
         String emailBody = "";
-        emailBody += "[This is an automated email from Renal PatientView - do not reply to this email]" + newLine;
+        emailBody += "[This is an automated email from PatientView - do not reply to this email]" + newLine;
         emailBody += newLine;
         emailBody += "Either you have requested that your email be verified or you have recently been added to "
                 + "Renal PatientView with an email address and it needs to be verified." + newLine;

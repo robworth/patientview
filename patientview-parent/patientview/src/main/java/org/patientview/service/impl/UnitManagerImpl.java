@@ -77,7 +77,7 @@ public class UnitManagerImpl implements UnitManager {
 
     @Override
     public boolean checkDuplicateUnitCode(String unitCode) {
-        return unitDao.get(unitCode, securityUserManager.getLoggedInSpecialty()) != null;
+        return unitDao.get(unitCode, null) != null;
     }
 
     @Override
