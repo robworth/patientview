@@ -64,8 +64,11 @@ public final class UnitUtils {
         User user =  LegacySpringUtils.getUserManager().getLoggedInUser();
         List items;
         final String role = userManager.getCurrentSpecialtyRole(user);
+
         if (userManager.getCurrentSpecialtyRole(user).equals("superadmin")) {
-            items = unitManager.getAll(null, new String[]{"radargroup", "renalunit", "diabetesunit"});
+
+            items = unitManager.getLoggedInUsersUnits();
+
         } else if (role.equals("unitadmin") || role.equals("unitstaff")) {
             items = unitManager.getLoggedInUsersUnits();
         } else {
