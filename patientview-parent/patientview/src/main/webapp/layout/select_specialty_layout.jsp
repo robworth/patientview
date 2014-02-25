@@ -1,3 +1,4 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 
 <%--
@@ -23,8 +24,18 @@
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
 
-<tiles:insert definition="select.specialty.layout" flush="true" >
+<!DOCTYPE html>
+<html lang="en">
 
-    <tiles:put name="body" value="/body/launchpad.jsp" />
+<tiles:insert attribute="header" />
+<tiles:insert attribute="title" />
+<tiles:insert attribute="info_strip" />
+<tiles:insert attribute="main_header" />
+<tiles:insert attribute="left_nav" />
+<tiles:insert attribute="body_header" />
+<tiles:insert attribute="body" />
+<tiles:insert attribute="body_footer" />
+<tiles:insert attribute="main_footer" />
+<tiles:insert attribute="footer" />
 
-</tiles:insert>
+</html>

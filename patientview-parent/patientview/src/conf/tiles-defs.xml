@@ -40,6 +40,20 @@
     <put name="main_footer" value="/common/main_footer.jsp"/>
     <put name="footer" value="/common/footer.jsp"/>
   </definition>
+
+    <definition name="select.specialty.layout" path="/layout/select_specialty_layout.jsp">
+        <put name="header" value="/common/header.jsp?cdToStyles="/>
+        <put name="title" value="/common/title.jsp"/>
+        <put name="info_strip" value="/common/info_strip.jsp"/>
+        <put name="main_header" value="/common/main_header.jsp"/>
+        <put name="left_nav" value="/common/left_nav.jsp"/>
+        <put name="body_header" value="/common/body_header.jsp"/>
+        <put name="body" value="/common/index.jsp"/>
+        <put name="body_footer" value="/common/body_footer.jsp"/>
+        <put name="main_footer" value="/common/main_footer.jsp"/>
+        <put name="footer" value="/common/footer.jsp"/>
+    </definition>
+
   <definition name="patient.layout" path="/layout/default_layout.jsp" extends="default.layout">
     <put name="header" value="/common/header.jsp?cdToStyles=../"/>
     <put name="info_strip" value="/common/patient/info_strip.jsp"/>
