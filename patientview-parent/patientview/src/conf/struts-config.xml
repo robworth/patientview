@@ -299,8 +299,8 @@
         <forward name="control"                    path="/control/index.jsp"/>
         <forward name="patientPasswordChangeInput" path="/patient/password_change.jsp"/>
         <forward name="controlPasswordChangeInput" path="/control/password_change.jsp"/>
-        <forward name="patientAccountUpdateInput" path="/patient/account.jsp"/>
-        <forward name="controlAccountUpdateInput" path="/control/account.jsp"/>
+        <forward name="patientAccountUpdateInput"  path="/patient/account.jsp"/>
+        <forward name="controlAccountUpdateInput"  path="/control/account.jsp"/>
         <forward name="patientEntryBloodPressure"  path="/patient/patient_entry_bp.jsp"/>
         <forward name="patientEntryGlucose"        path="/patient/patient_entry_glucose.jsp"/>
         <forward name="patientEntryWeight"         path="/patient/patient_entry_weight.jsp"/>
@@ -699,6 +699,7 @@
         <action path="/help"
                 type="org.patientview.patientview.IndexAction" parameter="help">
             <forward name="success" path="/help.jsp"/>
+            <forward name="success.diabetes" path="/diabetes/help.jsp"/>
         </action>
 
         <action path="/disclaimer"
