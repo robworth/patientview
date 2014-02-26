@@ -372,7 +372,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
 
             // Sex fix
-            if (patient.getSexModel().getType() != null) {
+            if (patient.getSexModel() != null) {
                 if (patient.getSexModel().getType().equalsIgnoreCase("m")) {
                     patient.setSex("Male");
                 } else if (patient.getSexModel().getType().equalsIgnoreCase("f")) {
