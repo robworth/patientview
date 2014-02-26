@@ -137,13 +137,13 @@ public final class UnitUtils {
         if (StringUtils.isEmpty(unit.getSourceType()) || (specialty != null
                 && specialty.getName().equalsIgnoreCase("Renal"))) {
             unit.setSourceType("renalunit");
-            unit.setSpecialty(specialty);
         }
 
         if (unit.getCountry() == null || unit.getCountry().length() == 0) {
             unit.setSourceType("diabetesunit");
-            unit.setSpecialty(specialty);
         }
+
+        unit.setSpecialty(specialty);
 
         // build object
         unit.setUnitcode(BeanUtils.getProperty(form, "unitcode"));
@@ -226,6 +226,6 @@ public final class UnitUtils {
         unit.setHaemodialysisunitphone12(BeanUtils.getProperty(form, "haemodialysisunitphone12"));
         unit.setHaemodialysisunitlocation12(BeanUtils.getProperty(form, "haemodialysisunitlocation12"));
         unit.setHaemodialysisuniturl12(BeanUtils.getProperty(form, "haemodialysisuniturl12"));
-        unit.setVisible(Boolean.getBoolean(BeanUtils.getProperty(form, "visible")));
+        unit.setVisible(Boolean.parseBoolean(BeanUtils.getProperty(form, "visible")));
     }
 }

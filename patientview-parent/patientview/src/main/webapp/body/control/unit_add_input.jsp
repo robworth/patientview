@@ -140,279 +140,286 @@
       <td><html:text property="outofhours" /></td>
     </tr>
 
-    <tr>
-      <td><b>Peritoneal Dialysis Phone</b></td>
-      <td><html:text property="peritonealdialysisphone" /></td>
-    </tr>
+    <logic:present specialty="renal">
+
+        <tr>
+          <td><b>Peritoneal Dialysis Phone</b></td>
+          <td><html:text property="peritonealdialysisphone" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Peritoneal Dialysis Email</b></td>
+          <td><html:text property="peritonealdialysisemail" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 1 Name</b></td>
+          <td><html:text property="haemodialysisunitname1" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 1 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone1" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 1 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation1" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 1 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl1" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 2 Name</b></td>
+          <td><html:text property="haemodialysisunitname2" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 2 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone2" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 2 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation2" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 2 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl2" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 3 Name</b></td>
+          <td><html:text property="haemodialysisunitname3" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 3 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone3" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 3 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation3" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 3 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl3" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 4 Name</b></td>
+          <td><html:text property="haemodialysisunitname4" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 4 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone4" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 4 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation4" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 4 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl4" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 5 Name</b></td>
+          <td><html:text property="haemodialysisunitname5" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 5 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone5" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 5 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation5" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 5 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl5" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 6 Name</b></td>
+          <td><html:text property="haemodialysisunitname6" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 6 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone6" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 6 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation6" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 6 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl6" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 7 Name</b></td>
+          <td><html:text property="haemodialysisunitname7" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 7 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone7" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 7 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation7" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 7 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl7" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 8 Name</b></td>
+          <td><html:text property="haemodialysisunitname8" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 8 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone8" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 8 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation8" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 8 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl8" /></td>
+        </tr>
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 9 Name</b></td>
+          <td><html:text property="haemodialysisunitname9" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 9 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone9" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 9 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation9" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 9 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl9" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 10 Name</b></td>
+          <td><html:text property="haemodialysisunitname10" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 10 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone10" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 10 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation10" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 10 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl10" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 11 Name</b></td>
+          <td><html:text property="haemodialysisunitname11" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 11 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone11" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 11 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation11" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 11 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl11" /></td>
+        </tr>
+
+
+
+        <tr>
+          <td><b>Haemodialysis Unit 12 Name</b></td>
+          <td><html:text property="haemodialysisunitname12" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 12 Phone</b></td>
+          <td><html:text property="haemodialysisunitphone12" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 12 Location</b></td>
+          <td><html:text property="haemodialysisunitlocation12" /></td>
+        </tr>
+
+        <tr>
+          <td><b>Haemodialysis Unit 12 Web Address</b></td>
+          <td><html:text property="haemodialysisuniturl12" /></td>
+        </tr>
+    </logic:present>
 
     <tr>
-      <td><b>Peritoneal Dialysis Email</b></td>
-      <td><html:text property="peritonealdialysisemail" /></td>
+        <td><b>Visible for user to join</b></td>
+        <td><html:checkbox name="unit" property="visible" /></td>
     </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 1 Name</b></td>
-      <td><html:text property="haemodialysisunitname1" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 1 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone1" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 1 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation1" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 1 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl1" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 2 Name</b></td>
-      <td><html:text property="haemodialysisunitname2" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 2 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone2" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 2 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation2" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 2 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl2" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 3 Name</b></td>
-      <td><html:text property="haemodialysisunitname3" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 3 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone3" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 3 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation3" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 3 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl3" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 4 Name</b></td>
-      <td><html:text property="haemodialysisunitname4" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 4 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone4" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 4 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation4" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 4 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl4" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 5 Name</b></td>
-      <td><html:text property="haemodialysisunitname5" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 5 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone5" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 5 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation5" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 5 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl5" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 6 Name</b></td>
-      <td><html:text property="haemodialysisunitname6" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 6 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone6" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 6 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation6" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 6 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl6" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 7 Name</b></td>
-      <td><html:text property="haemodialysisunitname7" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 7 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone7" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 7 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation7" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 7 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl7" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 8 Name</b></td>
-      <td><html:text property="haemodialysisunitname8" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 8 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone8" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 8 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation8" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 8 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl8" /></td>
-    </tr>
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 9 Name</b></td>
-      <td><html:text property="haemodialysisunitname9" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 9 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone9" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 9 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation9" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 9 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl9" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 10 Name</b></td>
-      <td><html:text property="haemodialysisunitname10" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 10 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone10" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 10 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation10" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 10 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl10" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 11 Name</b></td>
-      <td><html:text property="haemodialysisunitname11" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 11 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone11" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 11 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation11" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 11 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl11" /></td>
-    </tr>
-
-
-
-    <tr>
-      <td><b>Haemodialysis Unit 12 Name</b></td>
-      <td><html:text property="haemodialysisunitname12" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 12 Phone</b></td>
-      <td><html:text property="haemodialysisunitphone12" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 12 Location</b></td>
-      <td><html:text property="haemodialysisunitlocation12" /></td>
-    </tr>
-
-    <tr>
-      <td><b>Haemodialysis Unit 12 Web Address</b></td>
-      <td><html:text property="haemodialysisuniturl12" /></td>
-    </tr>
-
 
     <tr>
       <td><html:submit value="Add" styleClass="formButton"/></td>
