@@ -29,7 +29,7 @@
     <h1>Demo logins</h1>
 </div>
 
-<p>Here are some logins that you can use to test the system as if you were a renal patient.</p>
+<p>Here are some logins that you can use to test the system as if you were a patient.</p>
 
 <div class="span6">
     <table cellpadding="2" class="table table-bordered table-striped">
