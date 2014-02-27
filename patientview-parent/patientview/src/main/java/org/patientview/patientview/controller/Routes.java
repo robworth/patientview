@@ -33,6 +33,8 @@ public final class Routes {
     public static final String JOIN_REQUEST_EDIT_INPUT_URL = "/control/joinRequestEditInput";
 
     public static final String LOOKING_LOCAL_HOME = "/lookinglocal/home";
+    public static final String LOOKING_LOCAL_AUTH = "/lookinglocal/auth";
+    public static final String LOOKING_LOCAL_ERROR = "/lookinglocal/error";
     public static final String LOOKING_LOCAL_MAIN = "/lookinglocal/main";
     public static final String LOOKING_LOCAL_DETAILS = "/lookinglocal/details";
     public static final String LOOKING_LOCAL_RESULTS_DISPLAY = "/lookinglocal/resultsDisplay";
