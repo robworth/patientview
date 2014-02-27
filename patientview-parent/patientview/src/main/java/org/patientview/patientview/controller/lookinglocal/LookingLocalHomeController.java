@@ -79,15 +79,14 @@ public class LookingLocalHomeController extends BaseController {
         PatientViewPasswordEncoder encoder = new PatientViewPasswordEncoder();
         User user = securityUserManager.get(username);
 
-        if(user.getPassword().equals(encoder.encode(password))){
+        if (user.getPassword().equals(encoder.encode(password))) {
             SecurityUser userLogin = (SecurityUser) userDetailsService.loadUserByUsername(username);
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userLogin,
                     userLogin.getPassword(), userLogin.getAuthorities()));
 
             LOGGER.debug("passed");
             return "redirect:main";
-        }
-        else {
+        } else {
             LOGGER.debug("failed");
             return "redirect:error";
         }
