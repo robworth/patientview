@@ -40,7 +40,8 @@ public class DiseaseGroupDaoImpl extends BaseDaoImpl implements DiseaseGroupDao 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiseaseGroupDaoImpl.class);
 
     public List<DiseaseGroup> getAll() {
-         List<DiseaseGroup> diseaseGroups = jdbcTemplate.query("SELECT * FROM unit WHERE sourceType='radargroup'",
+         List<DiseaseGroup> diseaseGroups =
+                 jdbcTemplate.query("SELECT * FROM unit WHERE sourceType='radargroup' ORDER BY name",
                 new DiseaseGroupRowMapper());
         Collections.sort(diseaseGroups);
         return diseaseGroups;
