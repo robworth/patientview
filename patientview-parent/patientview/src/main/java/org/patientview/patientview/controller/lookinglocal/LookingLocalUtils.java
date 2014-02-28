@@ -67,7 +67,7 @@ public final class LookingLocalUtils {
     public static final int OPTION_7 = 7;
 
     //Dev Test
-    public static final String DEV_URL = "http://dev.solidstategroup.com/web";
+    public static final String DEV_URL = "http://patientview.dev.solidstategroup.com/web";
 
     private LookingLocalUtils() {
     }
