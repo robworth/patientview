@@ -1,3 +1,5 @@
+<%@ page import="org.patientview.patientview.controller.Routes" %>
+<%@ page import="org.springframework.security.web.savedrequest.SavedRequest" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 
 <%--
@@ -22,6 +24,15 @@
   ~ @copyright Copyright (c) 2004-2013, Worth Solutions Limited
   ~ @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
   --%>
+
+<%
+    // handle Looking Local security by redirecting to Looking Local home, not standard login
+    SavedRequest savedRequest = (SavedRequest)session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+
+    if(savedRequest != null)
+        if(savedRequest.getRedirectUrl().toLowerCase().contains("/lookinglocal/"))
+            response.sendRedirect("/web" + Routes.LOOKING_LOCAL_HOME);
+%>
 
 <tiles:insert definition="default.layout" flush="true" >
 

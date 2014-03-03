@@ -67,7 +67,7 @@ public final class LookingLocalUtils {
     public static final int OPTION_7 = 7;
 
     //Dev Test
-    public static final String DEV_URL = "http://dev.solidstategroup.com/web";
+    public static final String DEV_URL = "http://patientview.dev.solidstategroup.com/web";
 
     private LookingLocalUtils() {
     }
@@ -670,7 +670,7 @@ public final class LookingLocalUtils {
 
         // add form to screen
         Element formElement = doc.createElement("form");
-        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_MAIN); // todo how to login?
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_AUTH);
         formElement.setAttribute("method", "post");
         formElement.setAttribute("name", "blank");
         pageElement.appendChild(formElement);
@@ -711,7 +711,7 @@ public final class LookingLocalUtils {
         // form action
         Element formAction = doc.createElement("hiddenField");
         formAction.setAttribute("name", "formAction");
-        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_MAIN);  // todo how to login?
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_AUTH);
         formElement.appendChild(formAction);
 
         // form method
@@ -789,6 +789,47 @@ public final class LookingLocalUtils {
         Element formMethod = doc.createElement("hiddenField");
         formMethod.setAttribute("name", "formMethod");
         formMethod.setAttribute("value", "post");
+        formElement.appendChild(formMethod);
+
+        outputXml(doc, response);
+    }
+
+    public static void getErrorXml(HttpServletResponse response) throws Exception {
+
+        Document doc = getDocument();
+        // add page to screen
+        Element pageElement = doc.createElement("page");
+        pageElement.setAttribute("title", "There has been an error");
+        pageElement.setAttribute("transform", "default");
+        doc.getElementsByTagName("screen").item(0).appendChild(pageElement);
+
+        // add form to screen
+        Element formElement = doc.createElement("form");
+        formElement.setAttribute("action", DEV_URL + Routes.LOOKING_LOCAL_HOME);
+        formElement.setAttribute("method", "get");
+        pageElement.appendChild(formElement);
+
+        // static element
+        Element details = doc.createElement("static");
+        details.setAttribute("value", "There has been an error.");
+        formElement.appendChild(details);
+
+        // home button
+        Element home = doc.createElement("submit");
+        home.setAttribute("name", "home");
+        home.setAttribute("title", "Home");
+        formElement.appendChild(home);
+
+        // form action
+        Element formAction = doc.createElement("hiddenField");
+        formAction.setAttribute("name", "formAction");
+        formAction.setAttribute("value", DEV_URL + Routes.LOOKING_LOCAL_HOME);
+        formElement.appendChild(formAction);
+
+        // form method
+        Element formMethod = doc.createElement("hiddenField");
+        formMethod.setAttribute("name", "formMethod");
+        formMethod.setAttribute("value", "get");
         formElement.appendChild(formMethod);
 
         outputXml(doc, response);

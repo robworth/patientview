@@ -61,8 +61,13 @@
                     <% String context = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
                     request.setAttribute("context", context);%>
                     <logic:present role="superadmin,unitadmin">
+
                         <bean:define id="username" name="unitUser" property="username" />
-                        <bean:define id="email" name="unitUser" property="email" />
+
+                        <logic:present name="unitUser" property="email">
+                            <bean:define id="email" name="unitUser" property="email" />
+                        </logic:present>
+
                         <bean:define id="emailverified" name="unitUser" property="emailverified"/>
 
                         <input type="button" value="Send Verification Email" class="btn formbutton"

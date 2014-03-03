@@ -88,16 +88,16 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
         // Initialise a simple JDBC insert to be able to get the allocated ID
         patientInsert = new SimpleJdbcInsert(dataSource).withTableName("patient")
-        .usingGeneratedKeyColumns("id")
-        .usingColumns(
-                "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
-                "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
-                "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
-                "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
-                "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
-                "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
-                "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
-                "patientLinkId");
+                .usingGeneratedKeyColumns("id")
+                .usingColumns(
+                        "rrNo", "dateReg", "nhsno", "nhsNoType", "hospitalnumber", "uktNo", "surname",
+                        "surnameAlias", "forename", "dateofbirth", "AGE", "SEX", "ethnicGp", "address1",
+                        "address2", "address3", "address4", "POSTCODE", "radarConsentConfirmedByUserId",
+                        "postcodeOld", "CONSENT", "dateBapnReg", "consNeph", "unitcode",
+                        "STATUS", "emailAddress", "telephone1", "telephone2", "mobile", "rrtModality",
+                        "genericDiagnosis", "dateOfGenericDiagnosis", "otherClinicianAndContactInfo", "comments",
+                        "republicOfIrelandId", "isleOfManId", "channelIslandsId", "indiaId", "generic", "sourceType",
+                        "patientLinkId");
 
         radarNumberInsert = new SimpleJdbcInsert(dataSource).withTableName("rdr_radar_number")
                 .usingGeneratedKeyColumns("id");
@@ -185,19 +185,19 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
 
     private class PatientSearchMapper implements RowMapper<Patient> {
 
-            public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
-                Patient patient = new Patient();
-                patient.setId(resultSet.getLong("id"));
-                patient.setNhsno(resultSet.getString("nhsno"));
-                patient.setSurname(resultSet.getString("surname"));
-                patient.setForename(resultSet.getString("forename"));
-                patient.setDateofbirth(resultSet.getDate("dateofbirth"));
-                patient.setUnitcode(resultSet.getString("unitcode"));
-                patient.setMostRecentTestResultDateRangeStopDate(
-                        resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
-                return patient;
-            }
+        public Patient mapRow(ResultSet resultSet, int i) throws SQLException {
+            Patient patient = new Patient();
+            patient.setId(resultSet.getLong("id"));
+            patient.setNhsno(resultSet.getString("nhsno"));
+            patient.setSurname(resultSet.getString("surname"));
+            patient.setForename(resultSet.getString("forename"));
+            patient.setDateofbirth(resultSet.getDate("dateofbirth"));
+            patient.setUnitcode(resultSet.getString("unitcode"));
+            patient.setMostRecentTestResultDateRangeStopDate(
+                    resultSet.getDate("mostRecentTestResultDateRangeStopDate"));
+            return patient;
         }
+    }
 
     private class EnhancedPatientSearchMapper implements RowMapper<Patient> {
 
@@ -326,7 +326,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
                     put("surnameAlias", patient.getSurnameAlias());
                     put("forename", patient.getForename());
                     put("dateofbirth", patient.getDob() != null ? new SimpleDateFormat(DATE_FORMAT).format(
-                                    patient.getDob()) : null);
+                            patient.getDob()) : null);
                     put("AGE", patient.getAge());
                     put("SEX", patient.getSex());
                     put("ethnicGp", patient.getEthnicity() != null ? patient.getEthnicity().getCode() : null);
@@ -579,6 +579,7 @@ public class PatientDaoImpl extends BaseDaoImpl implements PatientDao, Initializ
         }
         return null;
     }
+
 
 
 

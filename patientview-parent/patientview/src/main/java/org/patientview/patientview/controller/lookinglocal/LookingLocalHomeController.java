@@ -24,13 +24,21 @@ package org.patientview.patientview.controller.lookinglocal;
 
 import org.patientview.patientview.controller.BaseController;
 import org.patientview.patientview.controller.Routes;
+import org.patientview.patientview.model.User;
+import org.patientview.security.impl.PatientViewPasswordEncoder;
+import org.patientview.security.model.SecurityUser;
+import org.patientview.service.SecurityUserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,6 +47,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class LookingLocalHomeController extends BaseController {
+
+    @Inject
+    private UserDetailsService userDetailsService;
+
+    @Inject
+    private SecurityUserManager securityUserManager;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LookingLocalHomeController.class);
     /**
@@ -52,6 +66,43 @@ public class LookingLocalHomeController extends BaseController {
             LookingLocalUtils.getHomeXml(response);
         } catch (Exception e) {
             LOGGER.error("Could not create home screen response output stream{}" + e);
+        }
+    }
+
+    /**
+     * Deal with the URIs "/lookinglocal/auth", check POSTed credentials and forward to main or error
+     */
+    @RequestMapping(value = Routes.LOOKING_LOCAL_AUTH)
+    public String getAuth(@RequestParam(value = "username", required = false) String username,
+                          @RequestParam(value = "password", required = false) String password) {
+
+        PatientViewPasswordEncoder encoder = new PatientViewPasswordEncoder();
+        User user = securityUserManager.get(username);
+
+        if (user.getPassword().equals(encoder.encode(password))) {
+            SecurityUser userLogin = (SecurityUser) userDetailsService.loadUserByUsername(username);
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userLogin,
+                    userLogin.getPassword(), userLogin.getAuthorities()));
+
+            LOGGER.debug("passed");
+            return "redirect:main";
+        } else {
+            LOGGER.debug("failed");
+            return "redirect:error";
+        }
+    }
+
+    /**
+     * Deal with the URIs "/lookinglocal/error"
+     */
+    @RequestMapping(value = Routes.LOOKING_LOCAL_ERROR)
+    @ResponseBody
+    public void getErrorScreenXml(HttpServletResponse response) {
+
+        try {
+            LookingLocalUtils.getErrorXml(response);
+        } catch (Exception e) {
+            LOGGER.error("Could not create main screen response output stream{}" + e);
         }
     }
 
