@@ -30,7 +30,6 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.SortDefinition;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,11 +39,16 @@ import java.util.List;
 @Controller
 public class UnitUsersController extends BaseController {
 
-    @RequestMapping(value = { Routes.UNIT_USERS_LIST_URL }, method = { RequestMethod.POST, RequestMethod.GET })
+    @RequestMapping(value = Routes.UNIT_USERS_LIST_URL)
     public String getUsers(@RequestParam(value = "unitcode", required = false) String unitcode,
                            @RequestParam(value = "page", required = false) String page,
                            @RequestParam(value = "property", required = false) String property,
+                           @RequestParam(value = "isRadarGroup", required = false) Boolean isRadarGroup,
                            HttpServletRequest request) {
+        if (isRadarGroup != null) {
+            request.setAttribute("isRadarGroup", isRadarGroup);
+        }
+
         if (StringUtils.isNotEmpty(unitcode)) {
             Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
             request.setAttribute("unit", unit);
@@ -54,7 +58,7 @@ public class UnitUsersController extends BaseController {
         if (StringUtils.isEmpty(page) || pagedListHolder == null) {
             List unitUsers = null;
             if (StringUtils.isEmpty(unitcode)) {
-                unitUsers = LegacySpringUtils.getUnitManager().getAllUnitUsers();
+                unitUsers = LegacySpringUtils.getUnitManager().getAllUnitUsers(isRadarGroup);
             } else {
                 unitUsers = LegacySpringUtils.getUnitManager().getUnitUsers(unitcode);
             }

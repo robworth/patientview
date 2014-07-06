@@ -30,14 +30,21 @@ import org.patientview.patientview.model.Unit_;
 import org.patientview.patientview.model.User;
 import org.patientview.repository.AbstractHibernateDAO;
 import org.patientview.repository.UnitDao;
+import org.patientview.utils.LegacySpringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NoResultException;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +56,16 @@ import java.util.List;
  */
 @Repository(value = "unitDao")
 public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void init() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Override
     public Unit get(String unitCode, Specialty specialty) {
@@ -65,10 +82,13 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         }
 
         buildWhereClause(criteria, wherePredicates);
-        try {
-            return getEntityManager().createQuery(criteria).getSingleResult();
-        } catch (NoResultException e) {
+
+        List<Unit> list = getEntityManager().createQuery(criteria).getResultList();
+
+        if (list == null || list.isEmpty() || list.size() > 1) {
             return null;
+        } else {
+            return list.get(0);
         }
     }
 
@@ -155,6 +175,11 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
 
     @Override
     public List<Unit> getAdminsUnits(Specialty specialty) {
+        return getAdminsUnits(specialty, false);
+    }
+
+    @Override
+    public List<Unit> getAdminsUnits(Specialty specialty, boolean isRadarGroup) {
 
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Unit> criteria = builder.createQuery(Unit.class);
@@ -162,7 +187,11 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
         List<Predicate> wherePredicates = new ArrayList<Predicate>();
 
         wherePredicates.add(builder.equal(from.get(Unit_.specialty), specialty));
-        wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+        if (isRadarGroup) {
+            wherePredicates.add(builder.equal(from.get(Unit_.sourceType), "radargroup"));
+        } else {
+            wherePredicates.add(builder.notEqual(from.get(Unit_.sourceType), "radargroup"));
+        }
 
         criteria.orderBy(builder.asc(from.get(Unit_.name)));
 
@@ -228,7 +257,7 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
     @Override
     public List<UnitAdmin> getUnitUsers(String unitcode, Specialty specialty) {
         String sql = "SELECT "
-                + "  u.*  "
+                + "  u.*, um.unitcode, sur.role as surrole "
                 + "FROM "
                 + "   User u, "
                 + "   UserMapping um, "
@@ -238,43 +267,52 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   u.id = sur.user_id "
                 + "AND "
-                + "   sur.specialty_id = :specialtyId "
+                + "   sur.specialty_id = ? "
                 + "AND "
-                + "   um.unitcode = :unitcode "
-                + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+                + "   um.unitcode = ? ";
 
-        Query query = getEntityManager().createNativeQuery(sql, User.class);
-
-        query.setParameter("specialtyId", specialty.getId());
-        query.setParameter("unitcode", unitcode);
-
-        List<User> users = query.getResultList();
-
-        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
-
-        for (User user : users) {
-            UnitAdmin unitAdmin = new UnitAdmin();
-            unitAdmin.setUsername(user.getUsername());
-            unitAdmin.setName(user.getName());
-            unitAdmin.setEmail(user.getEmail());
-            unitAdmin.setEmailverfied(user.isEmailverified());
-            unitAdmin.setRole(user.getRole());
-            unitAdmin.setFirstlogon(user.isFirstlogon());
-            unitAdmin.setIsrecipient(user.isIsrecipient());
-            unitAdmin.setIsclinician(user.isIsclinician());
-            unitAdmin.setLastlogon(user.getLastlogon());
-            unitAdmin.setAccountlocked(user.isAccountlocked());
-            unitAdmins.add(unitAdmin);
+        String userRole = LegacySpringUtils.getUserManager().getLoggedInUserRole();
+        if ("radaradmin".equals(userRole)) {
+            sql += " AND "
+                    + " (sur.role = 'radaradmin') ";
+        } else if ("unitadmin".equals(userRole)) {
+            sql += " AND "
+                    + " (sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
+        } else if ("superadmin".equals(userRole)) {
+            sql += " AND "
+                    + " (sur.role = 'radaradmin' OR sur.role = 'unitadmin' OR sur.role = 'unitstaff') ";
         }
 
-        return unitAdmins;
+        List<Object> params = new ArrayList<Object>();
+        params.add(specialty == null ? "" : specialty.getId());
+        params.add(unitcode);
+
+        return jdbcTemplate.query(sql, params.toArray(), new UnitAdminMapper());
+    }
+
+    private class UnitAdminMapper implements RowMapper<UnitAdmin> {
+        @Override
+        public UnitAdmin mapRow(ResultSet resultSet, int i) throws SQLException {
+            UnitAdmin unitAdmin = new UnitAdmin();
+            unitAdmin.setUsername(resultSet.getString("username"));
+            unitAdmin.setName(resultSet.getString("name"));
+            unitAdmin.setEmail(resultSet.getString("email"));
+            unitAdmin.setEmailverified(resultSet.getBoolean("emailverified"));
+            unitAdmin.setRole(resultSet.getString("surrole"));
+            unitAdmin.setFirstlogon(resultSet.getBoolean("firstlogon"));
+            unitAdmin.setIsrecipient(resultSet.getBoolean("isrecipient"));
+            unitAdmin.setIsclinician(resultSet.getBoolean("isclinician"));
+            unitAdmin.setLastlogon(resultSet.getDate("lastlogon"));
+            unitAdmin.setAccountlocked(resultSet.getBoolean("accountlocked"));
+            unitAdmin.setUnitcode(resultSet.getString("unitcode"));
+            return unitAdmin;
+        }
     }
 
     @Override
-    public List<UnitAdmin> getAllUnitUsers(Specialty specialty) {
+    public List<UnitAdmin> getAllUnitUsers(Boolean isRadarGroup, Specialty specialty) {
         String sql = "SELECT "
-                + "  u.*  "
+                + "  u.*, um.unitcode, sur.role as surrole  "
                 + "FROM "
                 + "   User u, "
                 + "   UserMapping um, "
@@ -284,33 +322,20 @@ public class UnitDaoImpl extends AbstractHibernateDAO<Unit> implements UnitDao {
                 + "AND "
                 + "   u.id = sur.user_id "
                 + "AND "
-                + "   sur.specialty_id = :specialtyId "
-                + "AND "
-                + "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
+                + "   sur.specialty_id = ? "
+                + "AND ";
 
-        Query query = getEntityManager().createNativeQuery(sql, User.class);
-
-        query.setParameter("specialtyId", specialty.getId());
-        List<User> users = query.getResultList();
-
-        List<UnitAdmin> unitAdmins = new ArrayList<UnitAdmin>();
-
-        for (User user : users) {
-            UnitAdmin unitAdmin = new UnitAdmin();
-            unitAdmin.setUsername(user.getUsername());
-            unitAdmin.setName(user.getName());
-            unitAdmin.setEmail(user.getEmail());
-            unitAdmin.setEmailverfied(user.isEmailverified());
-            unitAdmin.setRole(user.getRole());
-            unitAdmin.setFirstlogon(user.isFirstlogon());
-            unitAdmin.setIsrecipient(user.isIsrecipient());
-            unitAdmin.setIsclinician(user.isIsclinician());
-            unitAdmin.setLastlogon(user.getLastlogon());
-            unitAdmin.setAccountlocked(user.isAccountlocked());
-            unitAdmins.add(unitAdmin);
+        if (isRadarGroup == Boolean.TRUE) {
+            sql += "   (sur.role = 'radaradmin')";
+        } else {
+            sql += "   (sur.role = 'unitadmin' OR sur.role = 'unitstaff')";
         }
 
-        return unitAdmins;
+        List<Object> params = new ArrayList<Object>();
+        params.add(specialty == null ? "" : specialty.getId());
+
+        return jdbcTemplate.query(sql, params.toArray(), new UnitAdminMapper());
+
     }
 
     @Override

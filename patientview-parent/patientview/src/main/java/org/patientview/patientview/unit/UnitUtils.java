@@ -29,6 +29,8 @@ import org.patientview.patientview.model.UserMapping;
 import org.patientview.patientview.user.UserUtils;
 import org.patientview.utils.LegacySpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -36,6 +38,8 @@ import java.util.List;
 public final class UnitUtils {
 
     public static final String PATIENT_ENTERS_UNITCODE = "PATIENT";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnitUtils.class);
 
     private UnitUtils() {
     }
@@ -56,7 +60,8 @@ public final class UnitUtils {
         try {
             unit = LegacySpringUtils.getUnitManager().get(unitcode);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
         return unit;
     }
@@ -73,6 +78,7 @@ public final class UnitUtils {
     public static void buildUnit(Unit unit, Object form) throws Exception {
 
         // set defaults for sourceType and country, note this runs for updates as well as creates
+        unit.setSourceType(BeanUtils.getProperty(form, "sourceType"));
         if (unit.getSourceType() == null || unit.getSourceType().length() == 0) {
             unit.setSourceType("renalunit");
         }

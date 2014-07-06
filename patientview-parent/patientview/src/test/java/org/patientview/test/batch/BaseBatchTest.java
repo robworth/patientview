@@ -21,23 +21,32 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview.uktransplant;
+package org.patientview.test.batch;
 
-import javax.servlet.ServletContext;
-import java.io.File;
+import org.patientview.test.service.BaseServiceTest;
+import org.springframework.beans.factory.annotation.Value;
 
-public final class UktParserUtils {
+/**
+ * All jobs tests should extend.
+ */
 
-    private UktParserUtils() {
-    }
+public abstract class BaseBatchTest extends BaseServiceTest {
 
-    public static void updateData(ServletContext context, File uktFile) {
-        UktUpdater updater = new UktUpdater();
-        updater.update(context, uktFile);
-    }
+    @Value("${config.environment}")
+    private String configEnvironment;
 
-    public static void updateData(File uktFile) {
-        UktUpdater updater = new UktUpdater();
-        updater.update(null, uktFile);
+    /**
+     * // If profile is localhost or test or localhost-test return false;
+     *
+     * @return whether can run the testcase
+     */
+    protected boolean canRun() {
+        if (configEnvironment != null && !configEnvironment.equalsIgnoreCase("localhost")
+                && !configEnvironment.equalsIgnoreCase("test")
+                && !configEnvironment.equalsIgnoreCase("localhost-test")) {
+            return true;
+        }
+
+        return false;
     }
 }

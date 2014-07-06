@@ -29,21 +29,22 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>Select Unit</h1>
+    <h1>${isRadarGroup?'Select RaDaR Group':'Select Unit'}</h1>
 </div>
 
 
 <form action="/<%=LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext()%>/web/control/unitUsers" method="post">
+    <input type="hidden" name="isRadarGroup" value="${isRadarGroup}">
 <table cellpadding="3" >
     <tr>
       <td><img src="images/space.gif" height="10" /> </td>
     </tr>
     <tr>
-      <td><b><logic:present specialty="renal">Renal Unit</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
+      <td><b><logic:present specialty="renal">${isRadarGroup? 'RaDaR Group':'Renal Unit'}</logic:present><logic:present specialty="ibd">IBD Unit</logic:present></b></td>
       <td>
           <select name="unitcode">
               <logic:present role="superadmin">
-                  <option value="" >-- All Units --</option>
+                  <option value="" >-- ${isRadarGroup? 'All RaDaR groups' : 'All units'} --</option>
               </logic:present>
               <logic:iterate id="unit" name="units" >
                   <option value="${unit.unitcode}" >${unit.name}</option>

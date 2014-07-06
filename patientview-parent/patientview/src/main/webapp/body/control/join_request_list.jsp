@@ -40,7 +40,7 @@
 
     <div class="span10">
         <div class="row">
-            <form action="/web/control/joinRequestList" method="post" id="displayFormTop">
+            <form action="/<c:out value="${specialty}"/>/web/control/joinRequestList" method="post" id="displayFormTop">
                 <input type="hidden" name="page" id="page" value=""/>
                 <html:submit value="Show incomplete" styleId="incompleteTop" styleClass="btn" style="float:left;margin-left:5px;"/>
                 <html:submit value="Show complete" styleClass="btn" styleId="completeTop" style="float:left;margin-left:5px;"/>
@@ -55,7 +55,7 @@
 
             <c:choose>
                 <c:when test="${firstPage}">
-                    Prev&nbsp;
+                    &nbsp;
                 </c:when>
                 <c:otherwise>
                     <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=prev">Prev</a>&nbsp;
@@ -63,7 +63,7 @@
             </c:choose>
             <c:choose>
                 <c:when test="${lastPage}">
-                    Next
+                    &nbsp;
                 </c:when>
                 <c:otherwise>
                     <a href="/<c:out value="${specialty}"/>/web/control/joinRequestList?page=next">Next</a>&nbsp;
@@ -80,14 +80,14 @@
     <logic:notEmpty name="joinRequests">
 
         <tr class="tableheader">
-            <th class="tableheader" style="cursor:pointer" onclick="sort('firstName')">First Name</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('lastName')">Last Name</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfBirthFormatted')">Date of Birth</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('nhsNo')">NHS Number</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('unitcode')">Unit Code</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('email')">Email</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('dateOfRequestFormatted')">Date of Request</th>
-            <th class="tableheader" style="cursor:pointer" onclick="sort('isComplete')">Completed</th>
+            <th class="tableheader"><a href="#" onclick="sort('firstName')">First Name</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('lastName')">Last Name</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('dateOfBirth')">Date of Birth</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('nhsNo')">NHS Number</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('unitcode')">Unit Code</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('email')">Email</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('dateOfRequest')">Date of Request</a></th>
+            <th class="tableheader"><a href="#" onclick="sort('isComplete')">Completed</a></th>
             <th class="tableheader">Notes</th>
             <th class="tableheader" style="width: 50px;"></th>
         </tr>
@@ -129,7 +129,7 @@
 
     <div class="span10">
         <div class="row">
-            <form action="/web/control/joinRequestList" method="post" id="displayFormBottom">
+            <form action="/<c:out value="${specialty}"/>/web/control/joinRequestList" method="post" id="displayFormBottom">
                 <input type="hidden" name="page" id="page" value=""/>
                 <html:submit value="Show incomplete" styleId="incompleteBottom" styleClass="btn" style="float:left;margin-left:5px;"/>
                 <html:submit value="Show complete" styleClass="btn" styleId="completeBottom" style="float:left;margin-left:5px;"/>

@@ -58,7 +58,7 @@ public class MedicalResultsPanel extends Panel {
 
         MedicalResult medicalResult = null;
 
-        if (patient.hasValidId()) {
+        if (patient.hasValidId() && patient.getDiseaseGroup() != null) {
             medicalResult = medicalResultManager.getMedicalResult(patient.getId(),
                     patient.getDiseaseGroup().getId());
         }
@@ -108,8 +108,7 @@ public class MedicalResultsPanel extends Panel {
                             && medicalResult.getSerumCreatanine() == null
                             && medicalResult.getWeight() == null
                             && medicalResult.getHeight() == null
-                            && medicalResult.getBpSystolic() == null
-                            && medicalResult.getAntihypertensiveDrugs() == null) {
+                            && medicalResult.getBpSystolic() == null) {
                         error(TEST_RESULT_AT_LEAST_ONE);
                     }
 
@@ -141,7 +140,7 @@ public class MedicalResultsPanel extends Panel {
 
                         // format needs to be NNN.NN or NN.NN
                         int weightStringLength = medicalResult.getWeight().toString().length();
-                        int indexOfDot = medicalResult.getWeight().toString().indexOf("");
+                        int indexOfDot = medicalResult.getWeight().toString().indexOf(".");
 
                         if ((weightStringLength != 4 && weightStringLength != 5 && weightStringLength != 6) ||
                                 (weightStringLength == 6 && indexOfDot != 3) ||
@@ -158,7 +157,7 @@ public class MedicalResultsPanel extends Panel {
 
                         // format needs to be NNN.N or NN.N
                         int heightStringLength = medicalResult.getHeight().toString().length();
-                        int indexOfDot = medicalResult.getHeight().toString().indexOf("");
+                        int indexOfDot = medicalResult.getHeight().toString().indexOf(".");
 
                         if ((heightStringLength != 4 && heightStringLength != 5) ||
                                 (heightStringLength == 5 && indexOfDot != 3) ||
@@ -192,12 +191,6 @@ public class MedicalResultsPanel extends Panel {
                             get("bpDiastolic").error(DIASTOLIC_MUST_BE_LESS_THAN_OR_EQUAL_TO_SYSTOLIC);
                         }
                     }
-
-//                    if (medicalResult.getAntihypertensiveDrugs() != null
-//                            && !medicalResult.getAntihypertensiveDrugs().equals(MedicalResult.YesNo.UNKNOWN)
-//                            && medicalResult.getAntihypertensiveDrugsDate() == null) {
-//                        get("antihypertensiveDrugsDate").error(TEST_RESULT_NULL_DATE_MESSAGE);
-//                    }
 
                     if (medicalResult.getPcr() != null) {
                         if (medicalResult.getPcr() < 0 || medicalResult.getPcr() > 15000) {
@@ -254,15 +247,6 @@ public class MedicalResultsPanel extends Panel {
         form.add(new RadarTextFieldWithValidation<Integer>("bpSystolic", null, form, componentsToUpdateList));
         form.add(new RadarTextFieldWithValidation<Integer>("bpDiastolic", null, form, componentsToUpdateList));
         form.add(new RadarDateTextField("bpDate", form, componentsToUpdateList));
-
-//        RadioGroup<MedicalResult.YesNo> antihypertensiveDrugs = new RadioGroup<MedicalResult.YesNo>(
-//                "antihypertensiveDrugs");
-//        antihypertensiveDrugs.add(new Radio("yes", new Model(MedicalResult.YesNo.YES)));
-//        antihypertensiveDrugs.add(new Radio("no", new Model(MedicalResult.YesNo.NO)));
-//        antihypertensiveDrugs.add(new Radio("unknown", new Model(MedicalResult.YesNo.UNKNOWN)));
-//        form.add(antihypertensiveDrugs);
-//
-//        form.add(new RadarDateTextField("antihypertensiveDrugsDate", form, componentsToUpdateList));
 
         form.add(new RadarTextFieldWithValidation<Integer>("pcr", null, form, componentsToUpdateList));
         form.add(new RadarDateTextField("pcrDate", form, componentsToUpdateList));

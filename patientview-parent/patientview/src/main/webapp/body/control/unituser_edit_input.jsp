@@ -1,6 +1,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ page import="org.patientview.utils.LegacySpringUtils" %>
+
 
 <%--
   ~ PatientView
@@ -50,6 +52,7 @@
                 <div class="controls"><html:select property="role" name="unitUser">
                     <html:option value="unitstaff">Unit Staff</html:option>
                     <html:option value="unitadmin">Unit Admin</html:option>
+                    <html:option value="radaradmin">Radar Group Admin</html:option>
                 </html:select>
                 </div>
             </div>
@@ -98,8 +101,31 @@
                         <html:submit value="Unlock Password" styleClass="btn"/>
                     </html:form>
                 </logic:match>
+
+                <logic:present role="superadmin,unitadmin,radaradmin">
+                    <html:form action="/control/activityByUser" style="float:left;margin-left:5px;">
+                        <html:hidden name="unitUser" property="username" />
+                        <html:submit value="Activity" styleClass="btn" />
+                    </html:form>
+                </logic:present>
+
+                <% String context = LegacySpringUtils.getSecurityUserManager().getLoggedInSpecialty().getContext();
+                    request.setAttribute("context", context);%>
+                <logic:present role="superadmin,unitadmin,radaradmin">
+                    <bean:define id="username" name="unitUser" property="username" />
+                    <bean:define id="email" name="unitUser" property="email" />
+                    <bean:define id="emailverified" name="unitUser" property="emailverified"/>
+
+                    <span style="float:left;margin-left:5px;">
+                    <input type="button" value="Send Verification Email" class="btn formbutton"
+                    ${emailverified?"disabled":""} onclick="sendVerification('${username}','${email}', '/${context}/web/control/emailverification.do', this)">
+                    </span>
+                </logic:present>
+
             </div>
         </div>
 
     </div>
 </div>
+
+<script src="/js/emailverification.js" type="text/javascript"></script>

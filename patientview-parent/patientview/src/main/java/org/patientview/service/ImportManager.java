@@ -24,22 +24,27 @@ package org.patientview.service;
 
 import org.patientview.patientview.model.Unit;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 
 /**
- *
+ *  Importer for results, patient data etc
  */
 public interface ImportManager {
 
-    void update(ServletContext context, File xmlFile) throws Exception;
-
+    /**
+     * Import data into the system via XML file.
+     * Can be called from the web application to import a single file, or to be called as part of the
+     * scheduled importer job.  Each has the same behaviour.
+     * @param xmlFile the file to import
+     */
     void update(File xmlFile);
 
+    /**
+     * This method is here because importer task should running without login user's authority,
+     * so copy it from UnitManger to here.
+     */
     Unit retrieveUnit(String unitcode);
 
-    void update(ServletContext context, File xmlFile, File xsdFile) throws Exception;
-
-    void renameDirectory(ServletContext context, File xmlFile);
+    void archiveFileAfterProcessing(File xmlFile);
 
 }

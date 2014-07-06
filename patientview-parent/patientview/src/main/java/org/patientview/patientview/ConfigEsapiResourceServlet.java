@@ -23,6 +23,8 @@
 
 package org.patientview.patientview;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
 
 import javax.servlet.ServletException;
@@ -35,6 +37,8 @@ import java.io.File;
  */
 public class ConfigEsapiResourceServlet extends HttpServlet {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigEsapiResourceServlet.class);
+
     public void init() throws ServletException {
         super.init();
         try {
@@ -45,8 +49,8 @@ public class ConfigEsapiResourceServlet extends HttpServlet {
                 System.setProperty("org.owasp.esapi.resources", resourceDir);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
         }
 
 

@@ -22,19 +22,67 @@
  */
 package org.patientview.quartz;
 
-import org.patientview.job.XmlImportJob;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.patientview.patientview.FindXmlFiles;
+import org.patientview.utils.LegacySpringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.io.File;
 
 /**
  * Quartz XmlImportJobQuartzScheduler Job
  */
-public class XmlImportJobQuartzScheduler extends BaseQuartzScheduler {
+public class XmlImportJobQuartzScheduler {
 
-    @Autowired
-    private XmlImportJob xmlImportJob;
+    @Value("${run.xml.import}")
+    private String runXMLImport;
 
-   @Override
-    protected void setJob() {
-        super.setBatchJob(xmlImportJob);
+    @Value("${xml.directory}")
+    private String xmlDirectory;
+
+    private String[] fileEndings = {".xml", };
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlImportJobQuartzScheduler.class);
+
+    public void execute() {
+        try {
+            updateXmlFiles();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            LOGGER.debug(e.getMessage(), e);
+        }
+    }
+
+    private void updateXmlFiles() {
+        int numFilesProcessed = 0;
+        if ((runXMLImport == null) || !"false".equals(runXMLImport)) {
+            File[] xmlFiles = FindXmlFiles.findXmlFiles(xmlDirectory, fileEndings);
+            if (xmlFiles != null && xmlFiles.length > 0) {
+                LOGGER.debug("Starting updateXmlFiles for {} files", xmlFiles.length);
+                for (File xmlFile : xmlFiles) {
+                    LOGGER.debug("Starting updateXmlFiles for {} file", xmlFile.getAbsolutePath());
+                    LegacySpringUtils.getImportManager().update(xmlFile);
+                    numFilesProcessed++;
+                }
+            }
+            LOGGER.info("Patient data importer finished for {} files", numFilesProcessed);
+        }
+    }
+
+    public String getRunXMLImport() {
+        return runXMLImport;
+    }
+
+    public void setRunXMLImport(String runXMLImport) {
+        this.runXMLImport = runXMLImport;
+    }
+
+    public String getXmlDirectory() {
+        return xmlDirectory;
+    }
+
+    public void setXmlDirectory(String xmlDirectory) {
+        this.xmlDirectory = xmlDirectory;
     }
 }

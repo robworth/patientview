@@ -21,29 +21,32 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-package org.patientview.patientview;
+package org.patientview.patientview.group;
 
-import javax.servlet.ServletContext;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.patientview.patientview.logon.LogonUtils;
+import org.patientview.patientview.model.Unit;
+import org.patientview.utils.LegacySpringUtils;
 
-public interface ParserThread {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-    String getPrebit();
+public class GroupEditAction extends Action {
 
-    void setPrebit(String prebit);
+    public ActionForward execute(
+        ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String unitcode = BeanUtils.getProperty(form, "unitcode");
 
-    String getDirectory();
+        Unit unit = LegacySpringUtils.getUnitManager().get(unitcode);
 
-    void setDirectory(String directory);
+        request.getSession().setAttribute("unit", unit);
 
-    String getArchiveDirectory();
+        return LogonUtils.logonChecks(mapping, request);
+    }
 
-    void setArchiveDirectory(String archiveDirectory);
-
-    int getMinutesBetweenWait();
-
-    void setMinutesBetweenWait(int minutesBetweenWait);
-
-    ServletContext getServletContext();
-
-    void setServletContext(ServletContext servletContext);
 }

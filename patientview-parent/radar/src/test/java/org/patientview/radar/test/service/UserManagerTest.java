@@ -1,8 +1,10 @@
 package org.patientview.radar.test.service;
 
+import org.junit.Before;
 import org.patientview.model.Centre;
 import org.patientview.model.Patient;
 import org.patientview.model.enums.NhsNumberType;
+import org.patientview.model.generic.DiseaseGroup;
 import org.patientview.radar.dao.UserDao;
 import org.patientview.radar.model.user.PatientUser;
 import org.patientview.radar.service.DemographicsManager;
@@ -31,6 +33,21 @@ public class UserManagerTest extends TestPvDbSchema {
     @Autowired
     private DemographicsManager demographicsManager;
 
+    private DiseaseGroup diseaseGroup;
+
+    private Centre centre;
+
+    @Before
+    public void setUp() {
+        diseaseGroup = new DiseaseGroup();
+        diseaseGroup.setId("1");
+        diseaseGroup.setName("testGroup");
+        diseaseGroup.setShortName("shortName");
+
+        centre = new Centre();
+        centre.setUnitCode("testCodeA");
+    }
+
     @Test
     public void testPatientUserRegistration() throws Exception {
 
@@ -39,7 +56,7 @@ public class UserManagerTest extends TestPvDbSchema {
 
         // create a demographic
         Date dob = new Date();
-        Patient patient = createDemographics("Test", "User", null, "NHS123", "test@test.com", dob);
+        Patient patient = createDemographics("Test", "User", centre, "NHS123", "test@test.com", dob);
 
         userManager.registerPatient(patient);
 
@@ -62,8 +79,10 @@ public class UserManagerTest extends TestPvDbSchema {
         patient.setRenalUnit(centre);
         patient.setEmailAddress(email);
         patient.setDob(dateOfBirth);
+        patient.setDiseaseGroup(diseaseGroup);
         demographicsManager.saveDemographics(patient);
         assertNotNull(patient.getId());
         return patient;
     }
+
 }
