@@ -28,7 +28,7 @@
 <html:xhtml/>
 <div class="span9">
 <div class="page-header">
-    <h1>EDTA Links</h1>
+    <h1><bean:write name="header"/></h1>
 </div>
 
 <table class="table table-bordered table-striped">

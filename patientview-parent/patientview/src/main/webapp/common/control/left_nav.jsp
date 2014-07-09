@@ -39,6 +39,7 @@
             <logic:present role="superadmin">
                 <li><html:link action="/control/edtaCodeDisplay">EDTA Codes</html:link></li>
                 <li><html:link action="/control/treatmentCodeDisplay">Treatment Codes</html:link></li>
+                <li><html:link action="/control/radarGroupDisplay">Radar Groups</html:link></li>
                 <li><html:link action="/control/staticLinkEdit">Static Links</html:link></li>
                 <li><html:link action="/control/resultHeadingDisplay">Result Headings</html:link></li>
                 <li class="divider"></li>

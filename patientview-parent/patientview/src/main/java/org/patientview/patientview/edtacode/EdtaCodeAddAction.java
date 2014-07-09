@@ -47,6 +47,8 @@ public class EdtaCodeAddAction extends Action {
 
         request.setAttribute("edtaCode", edtaCode);
 
+        request.setAttribute("successMeg", "Links were added successfully.");
+
         return LogonUtils.logonChecks(mapping, request);
     }
 
