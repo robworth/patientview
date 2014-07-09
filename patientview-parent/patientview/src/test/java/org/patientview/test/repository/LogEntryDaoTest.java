@@ -265,7 +265,8 @@ public class LogEntryDaoTest extends BaseDaoTest {
 
         // So we now expect back entry 1 and not 2
         List<LogEntry> checkLogEntries = logEntryDao.getWithNhsNo(logEntry1.getNhsno(), logEntry1.getUser(),
-                logEntry1.getActor(), logEntry1.getAction(), logEntry1.getUnitcode(), startDate, endDate, specialty);
+                logEntry1.getActor(), logEntry1.getAction(), logEntry1.getUnitcode(), startDate, endDate, null,
+                specialty);
 
         assertNotNull(checkLogEntries);
         assertTrue("No log entries found", !checkLogEntries.isEmpty() && checkLogEntries.size() > 0);

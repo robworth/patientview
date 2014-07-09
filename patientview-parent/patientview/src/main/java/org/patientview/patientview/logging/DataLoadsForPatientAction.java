@@ -56,7 +56,7 @@ public class DataLoadsForPatientAction extends Action {
         List logEntries = new ArrayList();
         if (nhsno != null && !nhsno.equals("")) {
             logEntries = LegacySpringUtils.getLogEntryManager().getWithNhsNo(nhsno, "", "", AddLog.PATIENT_DATA, "",
-                    startdate, enddate);
+                    startdate, enddate, null);
         }
         return logEntries;
     }

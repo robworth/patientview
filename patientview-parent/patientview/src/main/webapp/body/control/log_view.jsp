@@ -40,26 +40,36 @@
 
   <html:form action="/control/logView">
 
+    <tr align="left">
+        <td>&nbsp;</td>
+        <td colspan="3">
+            <html:button property="today" value="Today" styleClass="btn" styleId="today"/>
+            <html:button property="yesterday" value="Yesterday" styleClass="btn" styleId="yesterday"/>
+            <html:button property="yesterdayAndToday" value="Yesterday and Today" styleClass="btn" styleId="yesterdayAndToday"/>
+            <html:button property="7days" value="7days" styleClass="btn" styleId="7days"/>
+        </td>
+    </tr>
+
     <tr>
       <td><b>Start Date</b></td>
-      <td><html:text property="startdate"/></td>
+      <td><html:text property="startdate" styleId="startdate"/></td>
       <td><b>End Date</b></td>
-      <td><html:text property="enddate"/></td>
+      <td><html:text property="enddate" styleId="enddate"/></td>
     </tr>
 
     <tr>
       <td><b>NHS No</b></td>
-      <td><html:text property="nhsno"/></td>
+      <td><html:text property="nhsno" styleId="nhsno"/></td>
       <td><b>User</b></td>
-      <td><html:text property="user"/></td>
+      <td><html:text property="user" styleId="user"/></td>
     </tr>
 
     <tr>
       <td><b>Actor</b></td>
-      <td><html:text property="actor"/></td>
+      <td><html:text property="actor" styleId="actor"/></td>
       <td><b>Action</b></td>
       <td>
-        <html:select property="action">
+        <html:select property="action" styleId="action">
           <html:option value=""/>
           <html:option value="password reset"/>
           <html:option value="password reset forgotten"/>
@@ -82,7 +92,7 @@
 
     <tr>
       <td><b>Unit</b></td>
-      <td colspan="3"><html:select property="unitcode">
+      <td colspan="3"><html:select property="unitcode" styleId="unitcode">
         <logic:present role="superadmin">
           <html:option value="">-- All units --</html:option>
         </logic:present>
@@ -93,6 +103,9 @@
     <tr align="left">
       <td>&nbsp;</td>
       <td><html:submit value="Search" styleClass="btn"/></td>
+      <logic:present name="order">
+        <input id="order" type="hidden" name="order" value='<bean:write name="order"/>'/>
+      </logic:present>
     </tr>
 
   </html:form>
@@ -116,7 +129,7 @@
     </thead>
     <thead>
         <tr>
-          <th class="tablecellbold">Date and time</th>
+          <th class="tablecellbold"><a href="#" id="dat">Date and time</a></th>
           <th class="tablecellbold">NHS No</th>
           <th class="tablecellbold">User</th>
           <th class="tablecellbold">Action</th>
@@ -158,3 +171,4 @@
 </table>
 </div>
 </div>
+<script src="/js/logview.js" type="text/javascript"></script>

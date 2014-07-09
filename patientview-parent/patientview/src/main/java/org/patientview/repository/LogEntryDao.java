@@ -46,7 +46,7 @@ public interface LogEntryDao {
     List<LogEntry> getWithNhsNo(String nhsno, Calendar startdate, Calendar enddate, String action, Specialty specialty);
 
     List<LogEntry> getWithNhsNo(String nhsno, String user, String actor, String action, String unitcode,
-                                Calendar startdate, Calendar enddate, Specialty specialty);
+                                Calendar startdate, Calendar enddate, Boolean orderByAsc, Specialty specialty);
 
     List<LogEntry> getWithUnitCode(String unitcode, Calendar startdate, Calendar enddate, Specialty specialty);
 }
