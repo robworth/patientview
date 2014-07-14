@@ -403,6 +403,17 @@
             <forward name="success" path="/patient/patient_entry.jsp"/>
         </action>
 
+        <action path="/patient/selectTestResultType"
+                type="org.patientview.patientview.patiententry.SelectTestResultTypeAction">
+            <forward name="success" path="/patient/test_result_type.jsp"/>
+        </action>
+
+        <action path="/patient/enterTestResult"
+                type="org.patientview.patientview.patiententry.EnterTestResultAction"
+                name="patientResultForm">
+            <forward name="success" path="/patient/results_entry.jsp"/>
+        </action>
+
         <action path="/patient/diagnostics"
                 type="org.patientview.patientview.diagnostics.DiagnosticsAction"
                 parameter="diagnostics">
@@ -516,6 +527,13 @@
             <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
         </action>
 
+        <action path="/patient/patientAddTestResults" type="org.patientview.patientview.patiententry.PatientResultAddAction"
+                name="patientResultForm"
+                input="input">
+            <forward name="input" path="/patient/results_entry.jsp"/>
+            <forward name="success" path="/patient/results_entry.jsp"/>
+        </action>
+
         <action path="/patient/patientSubmitsGlucoses" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction" parameter="patient_entry"
                 name="patientResultForm"
                 input="input">
@@ -526,6 +544,11 @@
         <action path="/patient/patientDeletesGlucose" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
                 name="patientResultDeleteForm" >
             <forward name="success" path="/patient/patient_entry_glucose.jsp"/>
+        </action>
+
+        <action path="/patient/patientDeleteTestResults" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"
+                name="patientResultDeleteForm" >
+            <forward name="success" path="/patient/results_entry.jsp"/>
         </action>
 
         <action path="/patient/patientAddsWeight" type="org.patientview.patientview.patiententry.PatientResultAddAction" parameter="patient_entry"
@@ -541,6 +564,14 @@
                 validate="false">
             <forward name="input" path="/patient/patient_entry_weight.jsp"/>
             <forward name="success" path="/patient/patient_entry_weight.jsp"/>
+        </action>
+
+        <action path="/patient/patientSubmitTestResults" type="org.patientview.patientview.patiententry.PatientResultSubmitAllAction"
+                name="patientResultForm"
+                input="input"
+                validate="false">
+            <forward name="input" path="/patient/results_entry.jsp"/>
+            <forward name="success" path="/patient/results_entry.jsp"/>
         </action>
 
         <action path="/patient/patientDeletesWeight" type="org.patientview.patientview.patiententry.PatientResultDeleteAction" parameter="patient_entry"

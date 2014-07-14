@@ -77,12 +77,26 @@
     </li>
     <li class="span3">
         <div class="thumbnail">
-            <html:link forward="patientEntryResultComment" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Comment</div></html:link>
+            <html:link action="/patient/selectTestResultType" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Any Result</div></html:link>
             <div class="caption">
-              <h5>Enter a comment on my results</h5>
-              <p><html:link forward="patientEntryResultComment" styleClass="btn">Enter</html:link></p>
+                <h5>Enter my Any Result</h5>
+                <p><html:link action="/patient/selectTestResultType" styleClass="btn">Enter</html:link></p>
             </div>
         </div>
     </li>
+
 </ul>
+<div style="margin: 10px 360px">
+    <ul class="thumbnails">
+        <li class="span3">
+            <div class="thumbnail">
+                <html:link forward="patientEntryResultComment" styleClass="thumbnail"><div class="launchPadTextAlternative renalResults">Comment</div></html:link>
+                <div class="caption">
+                    <h5>Enter a comment on my results</h5>
+                    <p><html:link forward="patientEntryResultComment" styleClass="btn">Enter</html:link></p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
 </logic:present>
