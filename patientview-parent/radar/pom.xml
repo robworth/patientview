@@ -32,7 +32,7 @@
     <properties>
         <wicket.version>1.5.10</wicket.version>
         <jetty.version>8.1.12.v20130726</jetty.version>
-        <spring.version>3.2.4.RELEASE</spring.version>
+        <spring.version>3.2.18.RELEASE</spring.version>
         <spring.security.version>3.1.4.RELEASE</spring.security.version>
     </properties>
 
